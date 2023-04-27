@@ -63,7 +63,8 @@ public class PlayerController : MonoBehaviour
         forward = 0;  yaw = 0; pitch = 0;
 
         // Forward
-        if (Input.GetKey(KeyCode.W)) forward = 1;
+        if (Input.GetKey(KeyCode.W)) forward = 1; // forward
+        else if (Input.GetKey(KeyCode.S)) forward = -1; // brake
 
         // Left/right
         if (Input.GetKey(KeyCode.A)) yaw = -1; // left
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour
 	private void FixedUpdate() {
         // Forward
         currentForward += (forward - currentForward) * forwardResponsiveness; // change slowly, not immediately
+        if (currentForward < 0) currentForward = 0; // not allowing reverse, only brake
         rb.velocity = transform.forward * maxSpeed * currentForward;
 
         // Limiting the altitude
