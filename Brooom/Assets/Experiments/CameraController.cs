@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         // Handle switching the view
-        if (Input.GetKeyDown(KeyCode.Tab)) {
+        if (Input.GetKeyDown(KeyCode.V)) {
             int previousCameraIndex = currentCameraIndex;
             currentCameraIndex++;
             if (currentCameraIndex == virtualCameras.Count)

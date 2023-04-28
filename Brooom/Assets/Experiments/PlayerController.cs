@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
         // Up/down
         if (Input.GetKey(KeyCode.Space)) pitch = -1; // up
-        else if (Input.GetKey(KeyCode.LeftControl)) pitch = 1; // down
+        else if (Input.GetKey(KeyCode.LeftShift)) pitch = 1; // down
     }
 
 	private void FixedUpdate() {
