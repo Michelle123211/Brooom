@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     public float[] GetValuesForDisplay() {
         float[] result = new float[] {
-            currentForward * maxSpeed, // current speed
+            rb.velocity.magnitude, // current speed
             maxSpeed, //max speed
             transform.position.y, // current altitude
             maxAltitude // max altitude

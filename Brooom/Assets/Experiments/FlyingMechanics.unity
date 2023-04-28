@@ -1105,6 +1105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 824956906}
+  - component: {fileID: 824956908}
   - component: {fileID: 824956905}
   - component: {fileID: 824956904}
   - component: {fileID: 824956907}
@@ -1173,14 +1174,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 824956903}
-  m_LocalRotation: {x: 0.14960362, y: -0, z: -0, w: 0.98874605}
-  m_LocalPosition: {x: 0, y: 0.8, z: -3.1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 828116706}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 17.208, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &824956907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1214,6 +1215,20 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &824956908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824956903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ac25571c6709e43b43b7b78386d5d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 3
+  lockedDuration: 2
 --- !u!1 &828116705
 GameObject:
   m_ObjectHideFlags: 0
