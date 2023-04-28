@@ -1329,6 +1329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 828116706}
+  - component: {fileID: 828116712}
   - component: {fileID: 828116710}
   - component: {fileID: 828116711}
   - component: {fileID: 828116707}
@@ -1412,7 +1413,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828116705}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7f97104db1d04a4e8f2191840ee1d81, type: 3}
   m_Name: 
@@ -1445,6 +1446,25 @@ MonoBehaviour:
   - {fileID: 504105635}
   - {fileID: 966898728}
   - {fileID: 1057587023}
+--- !u!114 &828116712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828116705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b1f9223cd96a64ea403a3a574b8b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 40
+  initialValue: 0.1
+  zeroThreshold: 0.001
+  accelerationFactor: 1.1
+  brakeDecelerationFactor: 0.8
+  decelerationFactor: 0.999
+  maxSpeedDelta: 0.01
 --- !u!1 &845177489
 GameObject:
   m_ObjectHideFlags: 0
