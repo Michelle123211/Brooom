@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
     float currentForward = 0, currentYaw = 0, currentPitch = 0;
 
 
-
     public void SetMaxSpeed(float maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
@@ -75,11 +74,11 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKey(KeyCode.LeftShift)) pitch = 1; // down
     }
 
-	private void FixedUpdate() {
+    private void FixedUpdate() {
         // Forward
-        currentForward += (forward - currentForward) * forwardResponsiveness; // change slowly, not immediately
+        currentForward += ((forward * maxSpeed) - currentForward) * forwardResponsiveness; // change slowly, not immediately
         if (currentForward < 0) currentForward = 0; // not allowing reverse, only brake
-        rb.velocity = transform.forward * maxSpeed * currentForward;
+        rb.velocity = transform.forward * currentForward;
 
         // Limiting the altitude
         if (transform.position.y >= maxAltitude && pitch < 1) {
