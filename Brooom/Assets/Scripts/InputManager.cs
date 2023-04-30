@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class UserInput : MonoBehaviourSingleton<UserInput>
+public class InputManager : MonoBehaviourSingleton<InputManager>
 {
 	public float ForwardInput { get; private set; }
 	public float TurnInput { get; private set; }

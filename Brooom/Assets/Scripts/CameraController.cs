@@ -74,7 +74,7 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         // Handle switching the view
-        if (UserInput.Instance.ViewPressed) {
+        if (InputManager.Instance.ViewPressed) {
             int previousCameraIndex = currentCameraIndex;
             currentCameraIndex++;
             if (currentCameraIndex == virtualCameras.Count)
