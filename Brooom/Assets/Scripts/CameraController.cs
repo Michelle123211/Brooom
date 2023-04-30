@@ -71,11 +71,10 @@ public class CameraController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         // Handle switching the view
-        if (Input.GetKeyDown(KeyCode.V)) {
+        if (UserInput.Instance.ViewPressed) {
             int previousCameraIndex = currentCameraIndex;
             currentCameraIndex++;
             if (currentCameraIndex == virtualCameras.Count)

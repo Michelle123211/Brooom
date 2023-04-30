@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     CameraController cameraController;
 
     // Storing the input (and therefore direction of the movement, -1 or 1)
-    float forward, yaw, pitch;
+    float forwardInput, yawInput, pitchInput;
 
     // Current values (for gradual change)
     float currentForward = 0; // current speed
@@ -90,52 +90,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-    // Update is called once per frame
-    void Update() {
-        // Handling input and storing it (for use in FixedUpdate)
-
-        forward = 0;  yaw = 0; pitch = 0;
-
-        // Forward
-        if (Input.GetKey(KeyCode.W)) forward = 1; // forward
-        else if (Input.GetKey(KeyCode.S)) forward = -1; // brake
-
-        // Left/right
-        if (Input.GetKey(KeyCode.A)) yaw = -1; // left
-        else if (Input.GetKey(KeyCode.D)) yaw = 1; // right
-
-        // Up/down
-        if (Input.GetKey(KeyCode.Space)) pitch = -1; // up
-        else if (Input.GetKey(KeyCode.LeftShift)) pitch = 1; // down
-    }
-
     private void FixedUpdate() {
         // Resolve bonus speed (if any)
         if (hasBonusSpeed)
             UpdateBonusSpeed();
 
         // Forward
-        currentForward += ((forward * maxSpeed) - currentForward) * forwardResponsiveness; // change slowly, not immediately
+        forwardInput = UserInput.Instance.ForwardInput; // -1 = brake, 1 = forward
+        currentForward += ((forwardInput * maxSpeed) - currentForward) * forwardResponsiveness; // change slowly, not immediately
         if (currentForward < 0) currentForward = 0; // not allowing reverse, only brake
         rb.velocity = transform.forward * (currentForward + bonusSpeed); // add also the bonus speed, if any
 
         // Limiting the altitude
-        if (transform.position.y >= maxAltitude && pitch < 1) {
+        pitchInput = UserInput.Instance.PitchInput; // -1 = up, 1 = down
+        if (transform.position.y >= maxAltitude && pitchInput < 1) {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-            if (pitch == -1) pitch = 0;
+            if (pitchInput == -1) pitchInput = 0;
         }
-        if (transform.position.y <= 4 && pitch == 1) // TODO: Change this later to distance from the terrain underneath (instead of y = 4)
-            pitch = 0;
+        if (transform.position.y <= 4 && pitchInput == 1) // TODO: Change this later to distance from the terrain underneath (instead of y = 4)
+            pitchInput = 0;
 
         // Yaw
-        currentYaw += (yaw - currentYaw) * yawResponsiveness; // change slowly, not immediately
+        yawInput = UserInput.Instance.TurnInput; // -1 = left, 1 = right
+        currentYaw += (yawInput - currentYaw) * yawResponsiveness; // change slowly, not immediately
         transform.Rotate(Vector3.up, currentYaw * turnSpeed);
         // Roll
         Vector3 eulerAngles = transform.localEulerAngles;
         eulerAngles.z = -currentYaw * maxRollAngle;
         // Pitch
-        currentPitch += (pitch - currentPitch) * pitchResponsiveness; // change slowly, not immediately
+        currentPitch += (pitchInput - currentPitch) * pitchResponsiveness; // change slowly, not immediately
         eulerAngles.x = currentPitch * maxPitchAngle;
 
         transform.localEulerAngles = eulerAngles;
