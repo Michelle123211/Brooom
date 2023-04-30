@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 5772583381441234778}
   - component: {fileID: 5772583381441234783}
   - component: {fileID: 5772583381441234780}
-  - component: {fileID: 5772583381441234781}
+  - component: {fileID: 349023420155418259}
   m_Layer: 0
   m_Name: Broom
   m_TagString: Untagged
@@ -325,8 +325,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5772583381441234781
-BoxCollider:
+--- !u!136 &349023420155418259
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -335,6 +335,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.8
+  m_Height: 1.08
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}

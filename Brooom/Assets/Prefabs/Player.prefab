@@ -165,7 +165,6 @@ GameObject:
   - component: {fileID: 170133169353488110}
   - component: {fileID: 170133169353488111}
   - component: {fileID: 170133169353488107}
-  - component: {fileID: 170133169353488109}
   - component: {fileID: 170133169353488108}
   m_Layer: 0
   m_Name: Player
@@ -230,10 +229,13 @@ MonoBehaviour:
   sensitivityEaseInDuration: 1
   maxAngleX: 60
   maxAngleY: 120
+  defaultFOV: 60
+  zoomedInFOV: 55
+  zoomDuration: 1
   virtualCameras:
-  - {fileID: 170133170036109995}
-  - {fileID: 4949515050018913281}
-  - {fileID: 3615994364904750984}
+  - {fileID: 170133170036109997}
+  - {fileID: 4949515050018913287}
+  - {fileID: 3615994364904750990}
 --- !u!54 &170133169353488107
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -250,20 +252,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!136 &170133169353488109
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 170133169353488105}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 4.2
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &170133169353488108
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -378,12 +366,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dec369d405800c47ab332ddcdb7e3d9, type: 3}
---- !u!1 &3615994364904750984 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3491125890455740738, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+--- !u!114 &3615994364904750990 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3491125890455740740, guid: 4dec369d405800c47ab332ddcdb7e3d9,
     type: 3}
   m_PrefabInstance: {fileID: 170133169209515722}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3615994364904750991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3491125890455740741, guid: 4dec369d405800c47ab332ddcdb7e3d9,
@@ -464,18 +458,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dec369d405800c47ab332ddcdb7e3d9, type: 3}
---- !u!1 &170133170036109995 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3491125890455740738, guid: 4dec369d405800c47ab332ddcdb7e3d9,
-    type: 3}
-  m_PrefabInstance: {fileID: 3615994364574815209}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &170133170036109996 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3491125890455740741, guid: 4dec369d405800c47ab332ddcdb7e3d9,
     type: 3}
   m_PrefabInstance: {fileID: 3615994364574815209}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &170133170036109997 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3491125890455740740, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3615994364574815209}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5926800018818510137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -675,9 +675,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dec369d405800c47ab332ddcdb7e3d9, type: 3}
---- !u!1 &4949515050018913281 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3491125890455740738, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+--- !u!114 &4949515050018913287 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3491125890455740740, guid: 4dec369d405800c47ab332ddcdb7e3d9,
     type: 3}
   m_PrefabInstance: {fileID: 8413512689855962435}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
