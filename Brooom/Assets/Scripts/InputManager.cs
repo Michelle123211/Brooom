@@ -5,14 +5,12 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviourSingleton<InputManager>
 {
-	[Tooltip("Names which should be visible to the player in the UI for the specific action (if different from the action name).")]
-	public List<InputActionName> actionReadableNames;
-
-
 	private PlayerInput playerInput;
 
-	// All input actions with their readable names (to be used e.g. from the rebinding menu)
-	private List<InputActionData> inputActions = new List<InputActionData>();
+	// All input actions
+	[HideInInspector]
+	public List<InputAction> inputActions = new List<InputAction>();
+
 	// Storing all the input actions together with their last value
 	private Dictionary<string, InputActionValue<bool>> boolActions = new Dictionary<string, InputActionValue<bool>>();
 	private Dictionary<string, InputActionValue<float>> floatActions = new Dictionary<string, InputActionValue<float>>();
@@ -49,6 +47,11 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 	// TODO: Add more if necessary
 
 
+	public PlayerInput GetPlayerInput() {
+		return playerInput;
+	}
+
+
 	private void Update() {
 		UpdateInputs();
 	}
@@ -57,16 +60,16 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 		// Update values of all the input actions
 		foreach (InputActionValue<bool> actionValue in boolActions.Values) {
 			// Handles only the "pressed right now" event (no "released" or "is being pressed")
-			actionValue.value = actionValue.actionData.action.WasPressedThisFrame();
+			actionValue.value = actionValue.action.WasPressedThisFrame();
 		}
 		foreach (InputActionValue<float> actionValue in floatActions.Values) {
-			actionValue.value = actionValue.actionData.action.ReadValue<float>();
+			actionValue.value = actionValue.action.ReadValue<float>();
 		}
 		foreach (InputActionValue<Vector2> actionValue in vector2Actions.Values) {
-			actionValue.value = actionValue.actionData.action.ReadValue<Vector2>();
+			actionValue.value = actionValue.action.ReadValue<Vector2>();
 		}
 		foreach (InputActionValue<Vector3> actionValue in vector3Actions.Values) {
-			actionValue.value = actionValue.actionData.action.ReadValue<Vector3>();
+			actionValue.value = actionValue.action.ReadValue<Vector3>();
 		}
 		// TODO: Add more types if necessary
 	}
@@ -82,37 +85,24 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 			//	case InputActionType.PassThrough:
 			//		break;
 			//}
-			InputActionData actionData = new InputActionData(action);
 			// Divide the actions according to their value type into corresponding dictionaries
-			inputActions.Add(actionData);
+			inputActions.Add(action);
 			switch (action.expectedControlType) {
 				case "Axis":
-					floatActions.Add(action.name, new InputActionValue<float>(actionData));
+					floatActions.Add(action.name, new InputActionValue<float>(action));
 					break;
 				case "Delta":
 				case "Vector2":
-					vector2Actions.Add(action.name, new InputActionValue<Vector2>(actionData));
+					vector2Actions.Add(action.name, new InputActionValue<Vector2>(action));
 					break;
 				case "Vector3":
-					vector3Actions.Add(action.name, new InputActionValue<Vector3>(actionData));
+					vector3Actions.Add(action.name, new InputActionValue<Vector3>(action));
 					break;
 				case "Button":
-					boolActions.Add(action.name, new InputActionValue<bool>(actionData));
+					boolActions.Add(action.name, new InputActionValue<bool>(action));
 					break;
 				// TODO: Add more types if necessary
 			}
-		}
-		// Override readable names if provided
-		foreach (InputActionName inputActionName in actionReadableNames) {
-			if (boolActions.ContainsKey(inputActionName.actionName))
-				boolActions[inputActionName.actionName].actionData.readableName = inputActionName.readableName;
-			if (floatActions.ContainsKey(inputActionName.actionName))
-				floatActions[inputActionName.actionName].actionData.readableName = inputActionName.readableName;
-			if (vector2Actions.ContainsKey(inputActionName.actionName))
-				vector2Actions[inputActionName.actionName].actionData.readableName = inputActionName.readableName;
-			if (vector3Actions.ContainsKey(inputActionName.actionName))
-				vector3Actions[inputActionName.actionName].actionData.readableName = inputActionName.readableName;
-			// TODO: Add more if necessary
 		}
 	}
 
@@ -125,33 +115,14 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 
 }
 
-[System.Serializable]
-public class InputActionName {
-	[Tooltip("Name of the action in the InputActions asset assigned to the PlayerInput component.")]
-	public string actionName;
-	[Tooltip("Name of the action visible to the player in the rebinding UI.")]
-	public string readableName;
-}
-
-public class InputActionData {
-	public InputAction action;
-	// name of the action visible to the player in the rebinding UI
-	public string readableName;
-
-	public InputActionData(InputAction action) {
-		this.action = action;
-		this.readableName = action.name;
-	}
-}
-
 public class InputActionValue<T> {
 	// input action with its readable name
-	public InputActionData actionData;
+	public InputAction action;
 	// value read in the last frame
 	public T value;
 
-	public InputActionValue(InputActionData actionData) {
-		this.actionData = actionData;
+	public InputActionValue(InputAction action) {
+		this.action = action;
 		this.value = default(T);
 	}
 }

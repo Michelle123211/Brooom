@@ -63,7 +63,7 @@
                     "name": "SwitchSpell",
                     "type": "Value",
                     "id": "da20660d-c5ed-4e58-8260-174c5acfee13",
-                    "expectedControlType": "Delta",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -210,15 +210,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "8ec9433c-a46a-4562-b5e8-d8096b19187f",
-                    "path": "<Mouse>/scroll",
+                    "name": "1D Axis",
+                    "id": "5e8c176a-1c23-4520-9ea1-2b4035f44485",
+                    "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
-                    "groups": "KeyboardAndMouse",
+                    "groups": "",
+                    "action": "SwitchSpell",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "38f60d6e-8bb4-4e7b-9194-ae9179501900",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "SwitchSpell",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "13244395-50d6-4596-9e05-82696528277f",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchSpell",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
