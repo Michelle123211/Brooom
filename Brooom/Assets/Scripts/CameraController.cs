@@ -74,15 +74,16 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         // Handle switching the view
-        if (InputManager.Instance.GetBoolValue("View")) {
-            int previousCameraIndex = currentCameraIndex;
-            currentCameraIndex++;
-            if (currentCameraIndex == virtualCameras.Count)
-                currentCameraIndex = 0;
-            currentCamera = virtualCameras[currentCameraIndex];
-            virtualCameras[currentCameraIndex].gameObject.SetActive(true);
-            virtualCameras[previousCameraIndex].gameObject.SetActive(false);
-        }
+        // TODO: Uncomment to support multiple views
+        //if (InputManager.Instance.GetBoolValue("View")) {
+        //    int previousCameraIndex = currentCameraIndex;
+        //    currentCameraIndex++;
+        //    if (currentCameraIndex == virtualCameras.Count)
+        //        currentCameraIndex = 0;
+        //    currentCamera = virtualCameras[currentCameraIndex];
+        //    virtualCameras[currentCameraIndex].gameObject.SetActive(true);
+        //    virtualCameras[previousCameraIndex].gameObject.SetActive(false);
+        //}
 
         // Gradually increase the sensitivity over the first "sensitivityEaseInDuration" seconds
         //  - at first the camera is following the mouse very slowly so it prevents quick jump at the beginning
