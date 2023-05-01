@@ -88,20 +88,16 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 			switch (action.expectedControlType) {
 				case "Axis":
 					floatActions.Add(action.name, new InputActionValue<float>(actionData));
-					Debug.Log($"Action {action.name} added.");
 					break;
 				case "Delta":
 				case "Vector2":
 					vector2Actions.Add(action.name, new InputActionValue<Vector2>(actionData));
-					Debug.Log($"Action {action.name} added.");
 					break;
 				case "Vector3":
 					vector3Actions.Add(action.name, new InputActionValue<Vector3>(actionData));
-					Debug.Log($"Action {action.name} added.");
 					break;
 				case "Button":
 					boolActions.Add(action.name, new InputActionValue<bool>(actionData));
-					Debug.Log($"Action {action.name} added.");
 					break;
 				// TODO: Add more types if necessary
 			}

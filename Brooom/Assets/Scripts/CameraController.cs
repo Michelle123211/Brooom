@@ -37,8 +37,8 @@ public class CameraController : MonoBehaviour
     private float currentSensitivity = 0f;
 
     // Current camera view
-    private int currentCameraIndex = 0;
     private CinemachineVirtualCamera currentCamera;
+    //private int currentCameraIndex = 0; // TODO: Uncomment to support multiple views
 
     // Changes the camera's FOV to zoom in/out
     public void ZoomIn(bool zoomIn) {
