@@ -995,6 +995,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39dc16c9dc8cdee4ba5c4a5f27e2ed84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionReadableNames:
+  - actionName: Forward
+    readableName: Speed up / Slow down
+  - actionName: Turn
+    readableName: Turn left/right
+  - actionName: Pitch
+    readableName: Ascend/Descend
+  - actionName: Look
+    readableName: Look around
+  - actionName: View
+    readableName: Switch view
+  - actionName: CastSpell
+    readableName: Cast spell
+  - actionName: SwitchSpell
+    readableName: Switch spell
+  - actionName: Restart
+    readableName: Restart attempt
+  - actionName: Pause
+    readableName: Pause game
 --- !u!4 &671483954
 Transform:
   m_ObjectHideFlags: 0
@@ -2195,7 +2214,7 @@ PrefabInstance:
     - target: {fileID: 170133169353488111, guid: 7c667e000148a8e4da84385030cb60bc,
         type: 3}
       propertyPath: virtualCameras.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 170133169353488111, guid: 7c667e000148a8e4da84385030cb60bc,
         type: 3}

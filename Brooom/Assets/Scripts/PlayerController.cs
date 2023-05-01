@@ -96,13 +96,13 @@ public class PlayerController : MonoBehaviour
             UpdateBonusSpeed();
 
         // Forward
-        forwardInput = InputManager.Instance.ForwardInput; // -1 = brake, 1 = forward
+        forwardInput = InputManager.Instance.GetFloatValue("Forward"); // -1 = brake, 1 = forward
         currentForward += ((forwardInput * maxSpeed) - currentForward) * forwardResponsiveness; // change slowly, not immediately
         if (currentForward < 0) currentForward = 0; // not allowing reverse, only brake
         rb.velocity = transform.forward * (currentForward + bonusSpeed); // add also the bonus speed, if any
 
         // Limiting the altitude
-        pitchInput = InputManager.Instance.PitchInput; // -1 = up, 1 = down
+        pitchInput = InputManager.Instance.GetFloatValue("Pitch"); // -1 = up, 1 = down
         if (transform.position.y >= maxAltitude && pitchInput < 1) {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             if (pitchInput == -1) pitchInput = 0;
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
             pitchInput = 0;
 
         // Yaw
-        yawInput = InputManager.Instance.TurnInput; // -1 = left, 1 = right
+        yawInput = InputManager.Instance.GetFloatValue("Turn"); // -1 = left, 1 = right
         currentYaw += (yawInput - currentYaw) * yawResponsiveness; // change slowly, not immediately
         transform.Rotate(Vector3.up, currentYaw * turnSpeed);
         // Roll
