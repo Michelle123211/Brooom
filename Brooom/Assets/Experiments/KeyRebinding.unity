@@ -153,7 +153,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &178117628
 MonoBehaviour:
@@ -779,74 +779,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595512131}
   m_CullTransparentMesh: 1
---- !u!1 &1664793752
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1664793755}
-  - component: {fileID: 1664793754}
-  - component: {fileID: 1664793753}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1664793753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664793752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &1664793754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664793752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &1664793755
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664793752}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1865063066
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,33 +1423,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActionsToExclude:
-  - {fileID: 5336141245861281125, guid: 175475dc95727a248b2fe2d546d39f3d, type: 3}
+  - {fileID: 3103811086490041843, guid: 6f76d616503ca714daaafed635b5506e, type: 3}
   inputActionsReadOnly:
-  - {fileID: -6876069785948470569, guid: 175475dc95727a248b2fe2d546d39f3d, type: 3}
-  - {fileID: 1019159959258296124, guid: 175475dc95727a248b2fe2d546d39f3d, type: 3}
+  - {fileID: 2954058516860953787, guid: 6f76d616503ca714daaafed635b5506e, type: 3}
+  - {fileID: -8870740735913537330, guid: 6f76d616503ca714daaafed635b5506e, type: 3}
   actionReadableNames:
-  - actionToRename: {fileID: 264028378871178600, guid: 175475dc95727a248b2fe2d546d39f3d,
+  - actionToRename: {fileID: 667927474174099362, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Speed up / Slow down
-  - actionToRename: {fileID: -4643307721870110147, guid: 175475dc95727a248b2fe2d546d39f3d,
+  - actionToRename: {fileID: 2156648695649895708, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Turn left/right
-  - actionToRename: {fileID: 3204441986454960422, guid: 175475dc95727a248b2fe2d546d39f3d,
+  - actionToRename: {fileID: 5341758591394364476, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Ascend/Descend
-  - actionToRename: {fileID: -6876069785948470569, guid: 175475dc95727a248b2fe2d546d39f3d,
+  - actionToRename: {fileID: 2954058516860953787, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Look around
-  - actionToRename: {fileID: -3446188238023579624, guid: 175475dc95727a248b2fe2d546d39f3d,
+  - actionToRename: {fileID: 7805071644057927190, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Cast spell
-  - actionToRename: {fileID: 6675124758349311692, guid: 175475dc95727a248b2fe2d546d39f3d,
+  - actionToRename: {fileID: -2926917849274012867, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Switch spell
-  - actionToRename: {fileID: 6783833335398089957, guid: 175475dc95727a248b2fe2d546d39f3d,
+  - actionToRename: {fileID: -8922227420213999750, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Restart attempt
-  - actionToRename: {fileID: 1019159959258296124, guid: 175475dc95727a248b2fe2d546d39f3d,
+  - actionToRename: {fileID: -8870740735913537330, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Pause game
   keyBinding: {fileID: 3193886168583877356, guid: 8ddc587ebd2e59a4aa3eb683f057ea7c,

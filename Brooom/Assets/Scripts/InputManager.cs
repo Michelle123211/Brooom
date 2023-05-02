@@ -125,6 +125,10 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 			//	case InputActionType.PassThrough:
 			//		break;
 			//}
+
+			// Show only actions from the in-game action map
+			if (action.actionMap.name != playerInput.defaultActionMap)
+				continue;
 			// Divide the actions according to their value type into corresponding dictionaries
 			inputActions.Add(action);
 			switch (action.expectedControlType) {

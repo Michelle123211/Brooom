@@ -1,5 +1,94 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1664793752
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1664793755}
+  - component: {fileID: 1664793754}
+  - component: {fileID: 1664793756}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1664793755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664793752}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7869422123377215318}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1664793754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664793752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!114 &1664793756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664793752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_PointAction: {fileID: -9013917783070578803, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_MoveAction: {fileID: -3898195249425563467, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_SubmitAction: {fileID: 5125221255408537333, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_CancelAction: {fileID: -5932970429031842590, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_LeftClickAction: {fileID: 4368590506193219443, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_MiddleClickAction: {fileID: 1742031908797008025, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_RightClickAction: {fileID: 7925184772402565837, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_ScrollWheelAction: {fileID: -9085627193162875850, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6068075890515106605, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 328843132322339313, guid: 6f76d616503ca714daaafed635b5506e,
+    type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!1 &7869422123377215316
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,7 +118,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1664793755}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,10 +135,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 175475dc95727a248b2fe2d546d39f3d,
+  m_Actions: {fileID: -944628639613478452, guid: 6f76d616503ca714daaafed635b5506e,
     type: 3}
   m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
+  m_UIInputModule: {fileID: 1664793756}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -60,7 +150,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -76,22 +166,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39dc16c9dc8cdee4ba5c4a5f27e2ed84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionReadableNames:
-  - actionName: Forward
-    readableName: Speed up / Slow down
-  - actionName: Turn
-    readableName: Turn left/right
-  - actionName: Pitch
-    readableName: Ascend/Descend
-  - actionName: Look
-    readableName: Look around
-  - actionName: View
-    readableName: Switch view
-  - actionName: CastSpell
-    readableName: Cast spell
-  - actionName: SwitchSpell
-    readableName: Switch spell
-  - actionName: Restart
-    readableName: Restart attempt
-  - actionName: Pause
-    readableName: Pause game
+  inputActions: []
