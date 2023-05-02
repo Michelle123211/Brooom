@@ -22,54 +22,65 @@ public class KeyRebindingUI : MonoBehaviour {
         gameObject.SetActive(!gameObject.activeInHierarchy);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-	private void OnEnable() {
-        // Refresh the list of bindings
-        // First remove all
+    // Removes all currently displayed KeyBindingUIs
+    private void RemoveAllRebindingUIs() {
         for (int i = keyBindingParent.childCount - 1; i >= 0; i--) {
             Destroy(keyBindingParent.GetChild(i).gameObject);
         }
-        // Then add the current ones
+    }
+
+    // Adds a new KeyBindingUI for all the actions
+    private void CreateRebindingUIsForAllActions() {
         foreach (InputAction action in InputManager.Instance.inputActions) {
             // Exclude the action if necessary
-            bool exclude = false;
-            foreach (InputActionReference actionToExclude in inputActionsToExclude) {
-                if (actionToExclude.action.name == action.name) {
-                    exclude = true;
-                    break;
-                }
-            }
-            if (exclude) continue;
+            if (ShouldBeExcluded(action)) continue;
             // Add binding UI for the action
             KeyBindingUI keyBindingInstance = Instantiate<KeyBindingUI>(keyBinding, keyBindingParent);
-            string name = action.name;
-            // Override redable names if provided
-            foreach (InputActionName actionName in actionReadableNames) {
-                if (actionName.actionToRename.action.name == action.name) {
-                    name = actionName.readableName;
-                    break;
-                }
-            }
+            string name = GetReadableActionName(action); // override redable name if provided
             keyBindingInstance.Initialize(action, name);
             // Make read-only if necessary
-            foreach (InputActionReference actionReadOnly in inputActionsReadOnly) {
-                if (actionReadOnly.name == action.name) {
-                    keyBindingInstance.MakeReadOnly();
-                    break;
-                }
+            if (ShouldBeReadOnly(action)) keyBindingInstance.MakeReadOnly();
+        }
+    }
+
+    // Returns true if the given action is among the ones to be excluded
+    private bool ShouldBeExcluded(InputAction action) {
+        foreach (InputActionReference actionToExclude in inputActionsToExclude) {
+            if (actionToExclude.action.name == action.name) {
+                return true;
             }
         }
+        return false;
+    }
+
+    // Returns the readable name of the given action (if provided), otherwise the action name
+    private string GetReadableActionName(InputAction action) {
+        foreach (InputActionName actionName in actionReadableNames) {
+            if (actionName.actionToRename.action.name == action.name) {
+                return actionName.readableName;
+            }
+        }
+        return action.name;
+    }
+
+    // Returns true if the binding of the given action should not be configurable
+    private bool ShouldBeReadOnly(InputAction action) {
+        foreach (InputActionReference actionReadOnly in inputActionsReadOnly) {
+            if (actionReadOnly.action.name == action.name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+	private void OnEnable() {
+        // Refresh the list of the bindings
+        RemoveAllRebindingUIs();
+        CreateRebindingUIsForAllActions();
+	}
+
+	private void OnDisable() {
+        InputManager.Instance.SaveBindings();
 	}
 }
 

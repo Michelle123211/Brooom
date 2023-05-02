@@ -18,13 +18,13 @@ public class KeyBindingUI : MonoBehaviour {
     [Tooltip("An object with a button to reset the binding.")]
     [SerializeField] private GameObject resetButton;
 
-    private PlayerInput playerInput;
 
     // The assigned input action
     private InputAction action;
 
     // For storing information about an ongoing rebinding operation
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
+
 
     // Updates the UI according to the action
     public void Initialize(InputAction action, string name) {
@@ -55,6 +55,10 @@ public class KeyBindingUI : MonoBehaviour {
             .Start(); // to set it all up
     }
 
+    public void ResetRebinding() { 
+        // TODO
+    }
+
     // Updates the UI to display the current binding
     private void UpdateBindingText() {
         int bindingIndex = action.GetBindingIndexForControl(action.controls[0]); // controls[0] - first is the currently active control
@@ -74,17 +78,5 @@ public class KeyBindingUI : MonoBehaviour {
 
         // Enable the action again
         action.Enable();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerInput = InputManager.Instance.GetPlayerInput();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

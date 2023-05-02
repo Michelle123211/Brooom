@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState : MonoBehaviourSingleton<PlayerState>
+public class PlayerState : MonoBehaviourSingleton<PlayerState>, IInitializableSingleton
 {
     private Dictionary<string, int> broomUpgradeLevels = new Dictionary<string, int>();
+
+    public void InitializeSingleton() {
+
+    }
 
 
     // Returns the highest purchased level of the given broom upgrade
@@ -18,18 +22,6 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>
     // Saves the given level as the highest purchased one for the given broom upgrade
     public void SetBroomUpgradeLevel(string upgradeName, int level) {
         broomUpgradeLevels[upgradeName] = level;
-    }
-
-	// Start is called before the first frame update
-	void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
 }

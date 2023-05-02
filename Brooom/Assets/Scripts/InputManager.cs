@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviourSingleton<InputManager>
+public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializableSingleton
 {
+	public const string rebindingSaveKey = "KeyBindings";
+	public const string playerInputNullError = "InputManager does not have a PlayerInput component. Do you access the InputManager after it was destroyed? Or did you forget to put InputManager prefab into the scene?";
+
 	private PlayerInput playerInput;
 
 	// All input actions
@@ -47,10 +50,43 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 	// TODO: Add more if necessary
 
 
+	public void InitializeSingleton() {
+		playerInput = GetComponent<PlayerInput>();
+		if (playerInput == null) {
+			Debug.LogWarning(playerInputNullError);
+			return;
+		}
+
+		LoadBindings();
+		SetupInputActions();
+		UpdateInputs();
+	}
+
+	public void SaveBindings() {
+		// TODO: Change it to saving to a file (together with the player state)
+		if (playerInput == null) {
+			Debug.LogWarning(playerInputNullError);
+			return;
+		}
+		string keyBindings = playerInput.actions.SaveBindingOverridesAsJson();
+		PlayerPrefs.SetString(rebindingSaveKey, keyBindings);
+	}
+
+	public void LoadBindings() {
+		// TODO: Change it to loading from a file (together with the player state)
+		if (playerInput == null) {
+			Debug.LogWarning(playerInputNullError);
+			return;
+		}
+		string keyBindings = PlayerPrefs.GetString(rebindingSaveKey, string.Empty);
+		if (!string.IsNullOrEmpty(keyBindings)) { // some bindings were saved previously
+			playerInput.actions.LoadBindingOverridesFromJson(keyBindings);
+		}
+	}
+
 	public PlayerInput GetPlayerInput() {
 		return playerInput;
 	}
-
 
 	private void Update() {
 		UpdateInputs();
@@ -75,6 +111,10 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 	}
 
 	private void SetupInputActions() {
+		if (playerInput == null) {
+			Debug.LogWarning(playerInputNullError);
+			return;
+		}
 		// Get all the actions
 		foreach (InputAction action in playerInput.actions) {
 			//switch (action.type) {
@@ -104,13 +144,6 @@ public class InputManager : MonoBehaviourSingleton<InputManager>
 				// TODO: Add more types if necessary
 			}
 		}
-	}
-
-	private void Start() {
-		playerInput = GetComponent<PlayerInput>();
-
-		SetupInputActions();
-		UpdateInputs();
 	}
 
 }
