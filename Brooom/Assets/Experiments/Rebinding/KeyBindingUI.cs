@@ -41,16 +41,16 @@ public class KeyBindingUI : MonoBehaviour {
     }
 
     public void StartRebinding() {
+        // Deactivate the action we are going to rebind
+        action.Disable();
+
         // Toggle the UI
         rebindingButton.gameObject.SetActive(false);
         waitingForInputText.SetActive(true);
 
-        // Deactivate the map
-        playerInput.currentActionMap.Disable();
-
         rebindingOperation = action.PerformInteractiveRebinding()
-            .WithControlsExcluding("") // TODO: Check the correct path for Escape
-            .OnMatchWaitForAnother(0.1f) // short delay
+            .WithControlsExcluding("Escape") // TODO: Check the correct path for Escape
+            .OnMatchWaitForAnother(0.1f) // short delay to give the program a chance to search for any other input which may be better match
             .OnComplete(operation => RebindComplete()) // when the rebinding is complete (input was given)
             .Start(); // to set it all up
     }
@@ -66,16 +66,14 @@ public class KeyBindingUI : MonoBehaviour {
     private void RebindComplete() {
         // Update the UI
         UpdateBindingText();
+        waitingForInputText.SetActive(false);
+        rebindingButton.gameObject.SetActive(true);
 
         // Dispose the allocated memory
         rebindingOperation.Dispose();
 
-        // Toggle the UI
-        waitingForInputText.SetActive(false);
-        rebindingButton.gameObject.SetActive(true);
-
-        // Activate the map
-        playerInput.currentActionMap.Enable();
+        // Enable the action again
+        action.Enable();
     }
 
     // Start is called before the first frame update
