@@ -170,7 +170,7 @@ MonoBehaviour:
   debugForward: 0
   debugTurn: 0
   debugPitch: 0
-  debugCastSpell: 0
+  debugCastSpell: 1
   debugSwitchSpell: 0
   debugRestart: 0
 --- !u!1001 &445516688
@@ -1109,8 +1109,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1595512132}
-  - {fileID: 2063988328}
   - {fileID: 1918953930}
+  - {fileID: 2063988328}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1152,7 +1152,7 @@ RectTransform:
   m_Children:
   - {fileID: 607730313}
   m_Father: {fileID: 1892121058}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -1203,10 +1203,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2063988327}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2063988332}
+        m_TargetAssemblyTypeName: KeyRebindingUI, Assembly-CSharp
+        m_MethodName: ToggleVisibility
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1403,7 +1403,7 @@ RectTransform:
   - {fileID: 1865063067}
   - {fileID: 1476724917}
   m_Father: {fileID: 1892121058}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1491,26 +1491,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActionsToExclude:
-  - View
+  - {fileID: 5336141245861281125, guid: 175475dc95727a248b2fe2d546d39f3d, type: 3}
   inputActionsReadOnly:
-  - Look
-  - Pause
+  - {fileID: -6876069785948470569, guid: 175475dc95727a248b2fe2d546d39f3d, type: 3}
+  - {fileID: 1019159959258296124, guid: 175475dc95727a248b2fe2d546d39f3d, type: 3}
   actionReadableNames:
-  - actionName: Forward
+  - actionToRename: {fileID: 264028378871178600, guid: 175475dc95727a248b2fe2d546d39f3d,
+      type: 3}
     readableName: Speed up / Slow down
-  - actionName: Turn
+  - actionToRename: {fileID: -4643307721870110147, guid: 175475dc95727a248b2fe2d546d39f3d,
+      type: 3}
     readableName: Turn left/right
-  - actionName: Pitch
+  - actionToRename: {fileID: 3204441986454960422, guid: 175475dc95727a248b2fe2d546d39f3d,
+      type: 3}
     readableName: Ascend/Descend
-  - actionName: Look
+  - actionToRename: {fileID: -6876069785948470569, guid: 175475dc95727a248b2fe2d546d39f3d,
+      type: 3}
     readableName: Look around
-  - actionName: CastSpell
+  - actionToRename: {fileID: -3446188238023579624, guid: 175475dc95727a248b2fe2d546d39f3d,
+      type: 3}
     readableName: Cast spell
-  - actionName: SwitchSpell
+  - actionToRename: {fileID: 6675124758349311692, guid: 175475dc95727a248b2fe2d546d39f3d,
+      type: 3}
     readableName: Switch spell
-  - actionName: Restart
+  - actionToRename: {fileID: 6783833335398089957, guid: 175475dc95727a248b2fe2d546d39f3d,
+      type: 3}
     readableName: Restart attempt
-  - actionName: Pause
+  - actionToRename: {fileID: 1019159959258296124, guid: 175475dc95727a248b2fe2d546d39f3d,
+      type: 3}
     readableName: Pause game
   keyBinding: {fileID: 3193886168583877356, guid: 8ddc587ebd2e59a4aa3eb683f057ea7c,
     type: 3}
