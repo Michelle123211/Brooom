@@ -185,6 +185,56 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Id
+      value: d6b04ada-c245-4d53-955a-aa7452f76ab2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Name
+      value: In Game
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Actions.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Bindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Actions.Array.data[0].m_Id
+      value: 50f37a47-fab6-4380-afec-b01a3ec91eff
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Bindings.Array.data[0].m_Id
+      value: 8b03e1c8-846f-4de2-a046-f93028ef33e0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Actions.Array.data[0].m_Name
+      value: New action
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Actions.Array.data[0].m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Bindings.Array.data[0].m_Action
+      value: New action
+      objectReference: {fileID: 0}
+    - target: {fileID: 7869422123377215317, guid: 609a283e32810384c8f7ed510b25e9e2,
+        type: 3}
+      propertyPath: inGameActionMap.m_Actions.Array.data[0].m_ExpectedControlType
+      value: Button
+      objectReference: {fileID: 0}
     - target: {fileID: 7869422123377215318, guid: 609a283e32810384c8f7ed510b25e9e2,
         type: 3}
       propertyPath: m_RootOrder
@@ -1452,6 +1502,7 @@ MonoBehaviour:
   - actionToRename: {fileID: -8870740735913537330, guid: 6f76d616503ca714daaafed635b5506e,
       type: 3}
     readableName: Pause game
+  actionMapToDisplay: Game
   keyBinding: {fileID: 3193886168583877356, guid: 8ddc587ebd2e59a4aa3eb683f057ea7c,
     type: 3}
   keyBindingParent: {fileID: 1882045302}

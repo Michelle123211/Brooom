@@ -12,6 +12,9 @@ public class KeyRebindingUI : MonoBehaviour {
     [Tooltip("Names which should be visible to the player in the UI for the specific action (if different from the action name).")]
     public List<InputActionName> actionReadableNames;
 
+    [Tooltip("Name of the action map whose actions should be displayed for rebinding.")]
+    public string actionMapToDisplay = "Game";
+
     [Tooltip("Prefab of UI for a single key binding.")]
     [SerializeField] private KeyBindingUI keyBinding;
     [Tooltip("Transform which is a parent of the key binding UIs.")]
@@ -31,7 +34,15 @@ public class KeyRebindingUI : MonoBehaviour {
 
     // Adds a new KeyBindingUI for all the actions
     private void CreateRebindingUIsForAllActions() {
-        foreach (InputAction action in InputManager.Instance.inputActions) {
+        PlayerInput playerInput = InputManager.Instance.GetPlayerInput();
+        if (playerInput == null) return;
+        // Try to get the desired action map
+        InputActionMap actionMap = playerInput.actions.FindActionMap(actionMapToDisplay);
+        if (actionMap == null) {
+            Debug.Log($"The given action map ({actionMapToDisplay}) does not exist.");
+        }
+        // Go through all the actions in the desired action map
+        foreach (InputAction action in playerInput.actions.FindActionMap(actionMapToDisplay)) {
             // Exclude the action if necessary
             if (ShouldBeExcluded(action)) continue;
             // Add binding UI for the action

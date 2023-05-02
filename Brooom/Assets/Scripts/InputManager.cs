@@ -10,9 +10,6 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 
 	private PlayerInput playerInput;
 
-	// All input actions
-	[HideInInspector]
-	public List<InputAction> inputActions = new List<InputAction>();
 
 	// Storing all the input actions together with their last value
 	private Dictionary<string, InputActionValue<bool>> boolActions = new Dictionary<string, InputActionValue<bool>>();
@@ -85,6 +82,9 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 	}
 
 	public PlayerInput GetPlayerInput() {
+		if (playerInput == null) {
+			Debug.LogWarning(playerInputNullError);
+		}
 		return playerInput;
 	}
 
@@ -115,7 +115,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 			Debug.LogWarning(playerInputNullError);
 			return;
 		}
-		// Get all the actions
+		// Go through all the actions
 		foreach (InputAction action in playerInput.actions) {
 			//switch (action.type) {
 			//	case InputActionType.Button:
@@ -126,11 +126,7 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 			//		break;
 			//}
 
-			// Show only actions from the in-game action map
-			if (action.actionMap.name != playerInput.defaultActionMap)
-				continue;
 			// Divide the actions according to their value type into corresponding dictionaries
-			inputActions.Add(action);
 			switch (action.expectedControlType) {
 				case "Axis":
 					floatActions.Add(action.name, new InputActionValue<float>(action));
