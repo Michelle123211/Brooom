@@ -74,7 +74,19 @@ public class KeyBindingUI : MonoBehaviour {
 
     // Updates the UI to display the current binding
     public void UpdateBindingText() {
-        rebindingButtonText.text = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
+        string bindingText = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
+        
+        // Handle special cases (to display better human readable text)
+        // TODO: Support localization
+        if (deviceLayoutName == "Mouse" && bindingText == "Delta") {
+            bindingText = "Mouse";
+        }
+        if (deviceLayoutName == "Mouse" && bindingText == "LMB") {
+            bindingText = "Left mouse button";
+        }
+
+        rebindingButtonText.text = bindingText;
+        
     }
 
     private void PerformSingleRebinding(int bindingIndex, bool allCompositeParts = false) {
