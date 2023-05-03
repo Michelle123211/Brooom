@@ -31,6 +31,13 @@ public class KeyRebindingUI : MonoBehaviour {
         gameObject.SetActive(!gameObject.activeInHierarchy);
     }
 
+    public void RefreshAllBindings() {
+        KeyBindingUI[] children = GetComponentsInChildren<KeyBindingUI>();
+        foreach (KeyBindingUI child in children) {
+            child.UpdateBindingText();
+        }
+    }
+
     // Removes all currently displayed KeyBindingUIs
     private void RemoveAllRebindingUIs() {
         for (int i = keyBindingParent.childCount - 1; i >= 0; i--) {
@@ -55,7 +62,7 @@ public class KeyRebindingUI : MonoBehaviour {
             KeyBindingUI keyBindingInstance = Instantiate<KeyBindingUI>(keyBinding, keyBindingParent);
             keyBindingInstance.SetRebindOverlay(rebindOverlay, rebindOverlayText);
             string name = GetReadableActionName(action); // override redable name if provided
-            keyBindingInstance.Initialize(action, name);
+            keyBindingInstance.Initialize(this, action, name);
             // Make read-only if necessary
             if (ShouldBeReadOnly(action)) keyBindingInstance.MakeReadOnly();
         }

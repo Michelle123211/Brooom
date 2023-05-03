@@ -23,6 +23,9 @@ public class KeyBindingUI : MonoBehaviour {
     // A label in the overlay which is used to display what was pressed already
     private TextMeshProUGUI rebindOverlayText;
 
+    // The parent object managing everything
+    KeyRebindingUI keyRebindingUI;
+
     // The assigned input action
     private InputAction action;
     private int bindingIndex;
@@ -37,16 +40,17 @@ public class KeyBindingUI : MonoBehaviour {
     }
 
     // Updates the UI according to the action
-    public void Initialize(InputAction action, string name) {
-        // Update the UI
+    public void Initialize(KeyRebindingUI keyRebindingUI, InputAction action, string name) {
+        this.keyRebindingUI = keyRebindingUI;
         this.action = action;
-        //bindingIndex = action.GetBindingIndexForControl(action.controls[0]); // controls[0] - first is the currently active control
+        // Get binding index
         bindingIndex = 0;
-        actionNameText.text = name;
         for (int i = 0; i < action.bindings.Count; i++) {
             if (action.bindings[i].isComposite) // composite binding has higher priority
                 bindingIndex = i;
         }
+        // Update UI
+        actionNameText.text = name;
         UpdateBindingText();
     }
 
@@ -57,10 +61,6 @@ public class KeyBindingUI : MonoBehaviour {
     }
 
     public void StartRebinding() {
-        // Deactivate the action we are going to rebind
-        action.Disable();
-
-
         // For composite go through all of its parts
         if (action.bindings[bindingIndex].isComposite) {
             int firstPartIndex = bindingIndex + 1;
@@ -72,16 +72,38 @@ public class KeyBindingUI : MonoBehaviour {
         }
     }
 
+    // Updates the UI to display the current binding
+    public void UpdateBindingText() {
+        rebindingButtonText.text = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
+    }
+
     private void PerformSingleRebinding(int bindingIndex, bool allCompositeParts = false) {
+        // Deactivate the action we are going to rebind
+        action.Disable();
+
         rebindingOperation = action.PerformInteractiveRebinding(bindingIndex)
-            .WithControlsExcluding("Escape") // TODO: Check the correct path for Escape
+            .WithCancelingThrough("<Keyboard>/escape")
+            .WithControlsExcluding("<Mouse>")
             .OnMatchWaitForAnother(0.1f)
             .OnCancel(operation => {
-                RebindFinished();
+                action.Enable();
+                UpdateUIAfterRebind();
+                UpdateBindingText();
+                CleanUp();
             })
             .OnComplete(operation => {
-                RebindFinished();
                 action.Enable();
+                UpdateUIAfterRebind();
+                // Check duplicate bindings
+                if (CheckForDuplicateBindings(bindingIndex, allCompositeParts)) {
+                    action.RemoveBindingOverride(bindingIndex); // remove the duplicate
+                    CleanUp();
+                    // Give it another try
+                    PerformSingleRebinding(bindingIndex, allCompositeParts);
+                    return;
+                }
+                UpdateBindingText();
+                CleanUp();
                 // If there are more composite parts, initiate a rebind for the next part
                 if (allCompositeParts) {
                     int nextBindingIndex = bindingIndex + 1;
@@ -108,49 +130,71 @@ public class KeyBindingUI : MonoBehaviour {
     }
 
     public void ResetRebindingToDefault() {
-        // If composite, remove overrides from part bindings
-        if (action.bindings[bindingIndex].isComposite) {
-            for (int i = bindingIndex; i < action.bindings.Count && action.bindings[i].isPartOfComposite; i++) {
-                action.RemoveBindingOverride(i);
+        // TODO: Allows duplicates after reset
+
+		// If composite, remove overrides from part bindings
+		if (action.bindings[bindingIndex].isComposite) {
+			for (int i = bindingIndex; i < action.bindings.Count && action.bindings[i].isPartOfComposite; i++) {
+				action.RemoveBindingOverride(i);
+			}
+		} else {
+			action.RemoveBindingOverride(bindingIndex);
+		}
+
+		// TODO: Use the following to handle duplicates (not working for composites though)
+		// Cache the current binding
+		//InputBinding newBinding = action.bindings[bindingIndex];
+		//string oldOverridePath = newBinding.overridePath;
+		//// Remove the current binding
+		//action.RemoveBindingOverride(bindingIndex);
+		//// Check all the actions for duplicates
+		//foreach (InputAction otherAction in action.actionMap.actions) {
+		//    if (otherAction == action) continue; // skip the same action
+		//    for (int i = 0; i < otherAction.bindings.Count; i++) {
+		//        InputBinding otherBinding = otherAction.bindings[i];
+		//        if (otherBinding.overridePath == newBinding.path) { // other action has a binding override equal to the default binding of the current action
+		//            // Swap the bindings - the other action will get the override of the current action we are jsut resetting
+		//            otherAction.ApplyBindingOverride(i, oldOverridePath);
+		//            keyRebindingUI.RefreshAllBindings();
+		//        }
+		//    }
+		//}
+
+		UpdateBindingText();
+    }
+
+    private bool CheckForDuplicateBindings(int bindingIndex, bool allCompositeParts = false) {
+        InputBinding lastBinding = action.bindings[bindingIndex];
+        // Check bindings in all the other actions
+        foreach (InputBinding otherBinding in action.actionMap.bindings) {
+            if (otherBinding.action == lastBinding.action) continue; // skip the same action
+            if (otherBinding.effectivePath == lastBinding.effectivePath) { // the same binding
+                Debug.Log($"Duplicate binding found ({lastBinding.effectivePath}) for actions '{otherBinding.action}' and '{lastBinding.action}'.");
+                return true;
             }
-        } else {
-            action.RemoveBindingOverride(bindingIndex);
         }
-        UpdateBindingText();
+        // Check all the composite parts up to the current one
+        for (int i = this.bindingIndex + 1; i < bindingIndex; i++) {
+            if (action.bindings[i].effectivePath == lastBinding.overridePath) {
+                Debug.Log($"Duplicate binding found ({lastBinding.effectivePath}) in composite parts of action '{lastBinding.action}'.");
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    // Updates the UI to display the current binding
-    private void UpdateBindingText() {
-        rebindingButtonText.text = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
-        //rebindingButtonText.text = InputControlPath.ToHumanReadableString(
-        //    action.bindings[bindingIndex].effectivePath,
-        //    InputControlPath.HumanReadableStringOptions.OmitDevice);
-    }
-
-    private void RebindFinished() {
+    private void UpdateUIAfterRebind() {
         // Update the UI
-        UpdateBindingText();
         waitingForInputText.SetActive(false);
         rebindingButton.gameObject.SetActive(true);
         rebindOverlay.SetActive(false);
 
-        // Dispose the allocated memory
-        rebindingOperation.Dispose();
-        rebindingOperation = null;
     }
 
-    private void RebindComplete() {
-        // Update the UI
-        UpdateBindingText();
-        waitingForInputText.SetActive(false);
-        rebindingButton.gameObject.SetActive(true);
-        rebindOverlay.SetActive(false);
-
+    private void CleanUp() {
         // Dispose the allocated memory
         rebindingOperation.Dispose();
         rebindingOperation = null;
-
-        // Enable the action again
-        action.Enable();
     }
 }
