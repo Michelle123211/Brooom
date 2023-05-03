@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
             UpdateBonusSpeed();
 
         // Forward
-        forwardInput = InputManager.Instance.GetFloatValue("Forward"); // -1 = brake, 1 = forward
+        forwardInput = -InputManager.Instance.GetFloatValue("Forward"); // -1 = forward, 1 = brake, then invert
         currentForward += ((forwardInput * maxSpeed) - currentForward) * forwardResponsiveness; // change slowly, not immediately
         if (currentForward < 0) currentForward = 0; // not allowing reverse, only brake
         rb.velocity = transform.forward * (currentForward + bonusSpeed); // add also the bonus speed, if any

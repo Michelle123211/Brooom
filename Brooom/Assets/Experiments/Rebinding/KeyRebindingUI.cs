@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class KeyRebindingUI : MonoBehaviour {
     [Tooltip("Input actions whose binding should not be displayed at all.")]
@@ -19,6 +20,11 @@ public class KeyRebindingUI : MonoBehaviour {
     [SerializeField] private KeyBindingUI keyBinding;
     [Tooltip("Transform which is a parent of the key binding UIs.")]
     [SerializeField] private Transform keyBindingParent;
+
+    [Tooltip("An overlay displayed over the UI while waiting for an input.")]
+    [SerializeField] private GameObject rebindOverlay;
+    [Tooltip("A label in the overlay which is used to display what was pressed already.")]
+    [SerializeField] private TextMeshProUGUI rebindOverlayText;
 
 
     public void ToggleVisibility() {
@@ -47,6 +53,7 @@ public class KeyRebindingUI : MonoBehaviour {
             if (ShouldBeExcluded(action)) continue;
             // Add binding UI for the action
             KeyBindingUI keyBindingInstance = Instantiate<KeyBindingUI>(keyBinding, keyBindingParent);
+            keyBindingInstance.SetRebindOverlay(rebindOverlay, rebindOverlayText);
             string name = GetReadableActionName(action); // override redable name if provided
             keyBindingInstance.Initialize(action, name);
             // Make read-only if necessary

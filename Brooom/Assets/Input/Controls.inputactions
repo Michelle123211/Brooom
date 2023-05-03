@@ -1,5 +1,5 @@
 {
-    "name": "Controls2",
+    "name": "Controls",
     "maps": [
         {
             "name": "Game",
@@ -100,7 +100,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "positive",
+                    "name": "negative",
                     "id": "e31e08d3-fde1-42ca-b15c-90753d73da51",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -111,7 +111,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "negative",
+                    "name": "positive",
                     "id": "df25656f-25ac-4fff-8cd4-f8c50ea6cab9",
                     "path": "<Keyboard>/s",
                     "interactions": "",
