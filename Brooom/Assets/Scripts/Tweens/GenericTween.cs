@@ -21,6 +21,9 @@ public class GenericTween : MonoBehaviour {
     // position
     [Tooltip("Start and end positions are given as relative displacements.")]
     public TweenPropertyPosition positionTween = new TweenPropertyPosition();
+    // rotation
+    [Tooltip("Start and end positions are given as relative displacements.")]
+    public TweenPropertyRotation rotationTween = new TweenPropertyRotation();
     // scale
     public TweenPropertyScale scaleTween = new TweenPropertyScale();
     // alpha through CanvasGroup
@@ -77,6 +80,7 @@ public class GenericTween : MonoBehaviour {
 
     private void Awake() {
         positionTween.SetInitialPosition(transform.position);
+        rotationTween.SetInitialRotation(transform.localEulerAngles);
         if (playOnAwake)
             DoTween();
     }
@@ -115,6 +119,7 @@ public class GenericTween : MonoBehaviour {
 
     private void TweenProperties(float time) {
         TweenProperty(positionTween, time);
+        TweenProperty(rotationTween, time);
         TweenProperty(alphaTween, time);
         TweenProperty(scaleTween, time);
         TweenProperty(colorTween, time);

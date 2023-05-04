@@ -38,6 +38,24 @@ public class TweenPropertyPosition : TweenProperty<Vector3> {
 }
 
 [System.Serializable]
+public class TweenPropertyRotation : TweenProperty<Vector3> {
+    public TweenPropertyValuesVector3 tweenPropertyValues = new TweenPropertyValuesVector3();
+
+    private Vector3 initialRotation;
+
+    public void SetInitialRotation(Vector3 rotation) {
+        initialRotation = rotation;
+    }
+
+    protected override TweenPropertyValues<Vector3> GetTweenPropertyValues() {
+        return tweenPropertyValues;
+    }
+    protected override void SetTweenedPropertyInternal(GameObject target, float time) {
+        target.transform.localEulerAngles = initialRotation + tweenPropertyValues.GetTweenValue(time);
+    }
+}
+
+[System.Serializable]
 public class TweenPropertyScale : TweenProperty<Vector3> {
     public TweenPropertyValuesVector3 tweenPropertyValues = new TweenPropertyValuesVector3();
     protected override TweenPropertyValues<Vector3> GetTweenPropertyValues() {
