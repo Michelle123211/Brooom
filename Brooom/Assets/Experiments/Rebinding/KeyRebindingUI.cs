@@ -22,10 +22,9 @@ public class KeyRebindingUI : MonoBehaviour {
     [SerializeField] private Transform keyBindingParent;
 
     [Tooltip("An overlay displayed over the UI while waiting for an input.")]
-    [SerializeField] private GameObject rebindOverlay;
-    [Tooltip("A label in the overlay which is used to display what was pressed already.")]
-    [SerializeField] private TextMeshProUGUI rebindOverlayText;
+    [SerializeField] private RebindOverlayUI rebindOverlay;
 
+    [SerializeField] private bool logDebuggingMessages = true;
 
     public void ToggleVisibility() {
         gameObject.SetActive(!gameObject.activeInHierarchy);
@@ -52,7 +51,7 @@ public class KeyRebindingUI : MonoBehaviour {
         // Try to get the desired action map
         InputActionMap actionMap = playerInput.actions.FindActionMap(actionMapToDisplay);
         if (actionMap == null) {
-            Debug.Log($"The given action map ({actionMapToDisplay}) does not exist.");
+            if (logDebuggingMessages) Debug.Log($"The given action map ({actionMapToDisplay}) does not exist.");
         }
         // Go through all the actions in the desired action map
         foreach (InputAction action in playerInput.actions.FindActionMap(actionMapToDisplay)) {
@@ -60,7 +59,7 @@ public class KeyRebindingUI : MonoBehaviour {
             if (ShouldBeExcluded(action)) continue;
             // Add binding UI for the action
             KeyBindingUI keyBindingInstance = Instantiate<KeyBindingUI>(keyBinding, keyBindingParent);
-            keyBindingInstance.SetRebindOverlay(rebindOverlay, rebindOverlayText);
+            keyBindingInstance.SetRebindOverlay(rebindOverlay);
             string name = GetReadableActionName(action); // override redable name if provided
             keyBindingInstance.Initialize(this, action, name);
             // Make read-only if necessary
