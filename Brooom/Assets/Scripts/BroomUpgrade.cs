@@ -25,7 +25,8 @@ public class BroomUpgrade : MonoBehaviour {
             if (CurrentLevel >= effectsForEachLevel.Count) {
                 Debug.LogWarning($"No effect of the {Name} upgrade specified for the {CurrentLevel + 1} level!");
             } else {
-                effectsForEachLevel[CurrentLevel].Invoke();
+                if (!Utils.IsNullEvent(effectsForEachLevel[CurrentLevel]))
+                    effectsForEachLevel[CurrentLevel].Invoke();
             }
             CurrentLevel++;
         } 

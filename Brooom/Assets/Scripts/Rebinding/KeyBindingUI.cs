@@ -161,7 +161,7 @@ public class KeyBindingUI : MonoBehaviour {
         rebindingButton.gameObject.SetActive(false);
         waitingForInputText.SetActive(true);
         rebindOverlay.SetWaitingForInputText($"Binding '{partName}'. Waiting for input...");
-        rebindOverlay.gameObject.SetActive(true);
+        rebindOverlay.gameObject.TweenAwareEnable();
 
         // Start rebinding
         rebindingOperation.Start();
@@ -228,7 +228,7 @@ public class KeyBindingUI : MonoBehaviour {
         UpdateResetButtonInteractibility();
         waitingForInputText.SetActive(false);
         rebindingButton.gameObject.SetActive(true);
-        rebindOverlay.gameObject.SetActive(false);
+        rebindOverlay.gameObject.TweenAwareDisable();
     }
 
     private void UpdateResetButtonInteractibility() {

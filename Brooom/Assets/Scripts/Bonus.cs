@@ -17,7 +17,8 @@ public class Bonus : MonoBehaviour {
             if (effect != null)
                 effect.ApplyBonusEffect(player);
             // Invoke the common events (e.g. particles, destroying self)
-            pickUpEvent.Invoke();
+            if (!Utils.IsNullEvent(pickUpEvent))
+                pickUpEvent.Invoke();
         }
 	}
 
