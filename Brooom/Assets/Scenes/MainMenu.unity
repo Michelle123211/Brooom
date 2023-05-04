@@ -712,14 +712,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.101960786}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.050980393}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1055,7 +1055,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 40
     m_Bottom: 0
-  m_ChildAlignment: 1
+  m_ChildAlignment: 4
   m_Spacing: 40
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
@@ -1542,7 +1542,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1398114514}
   m_HandleRect: {fileID: 1398114513}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4516,7 +4516,12 @@ PrefabInstance:
     - target: {fileID: 8359394296883772322, guid: bdee144f0a476b2439fcb940101795c2,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: -465.93
+      value: -465.5822
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359394296883772322, guid: bdee144f0a476b2439fcb940101795c2,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000091552734
       objectReference: {fileID: 0}
     - target: {fileID: 8359394297098118660, guid: bdee144f0a476b2439fcb940101795c2,
         type: 3}
@@ -4536,7 +4541,7 @@ PrefabInstance:
     - target: {fileID: 8359394297098118660, guid: bdee144f0a476b2439fcb940101795c2,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 505.93
+      value: 505.5822
       objectReference: {fileID: 0}
     - target: {fileID: 8359394297098118660, guid: bdee144f0a476b2439fcb940101795c2,
         type: 3}
@@ -4546,7 +4551,7 @@ PrefabInstance:
     - target: {fileID: 8359394297098118660, guid: bdee144f0a476b2439fcb940101795c2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -607.03503
+      value: -606.8611
       objectReference: {fileID: 0}
     - target: {fileID: 8359394297818488586, guid: bdee144f0a476b2439fcb940101795c2,
         type: 3}
@@ -4556,7 +4561,12 @@ PrefabInstance:
     - target: {fileID: 8359394297818488586, guid: bdee144f0a476b2439fcb940101795c2,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.01138516
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359394297818488586, guid: bdee144f0a476b2439fcb940101795c2,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bdee144f0a476b2439fcb940101795c2, type: 3}
@@ -5013,14 +5023,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+  m_Color: {r: 0.16862746, g: 0.16862746, b: 0.16862746, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5158,6 +5168,108 @@ MonoBehaviour:
   playOnAwake: 0
   revertAfter: 0
   positionTween:
+    tweenThisProperty: 0
+    tweenPropertyValues:
+      startValue: {x: 0, y: 0, z: 0}
+      endValue: {x: 0, y: 0, z: 0}
+      tweenCurves:
+        tweenCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 1
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        tweenComponentWise: 0
+        tweenCurves:
+        - serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 1
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        - serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 1
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        - serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 1
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+      tweenTarget: {fileID: 0}
+  rotationTween:
     tweenThisProperty: 0
     tweenPropertyValues:
       startValue: {x: 0, y: 0, z: 0}
@@ -5775,7 +5887,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 1920, y: 100}
+  m_SizeDelta: {x: 988.27, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &8169918171458951628
 MonoBehaviour:

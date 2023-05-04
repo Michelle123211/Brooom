@@ -398,6 +398,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1054949849769898220, guid: e45ca4df5f37ae1478fe2d08d7f77e93,
+        type: 3}
+      propertyPath: m_text
+      value: Player Overview & Shop
+      objectReference: {fileID: 0}
     - target: {fileID: 1054949850877811385, guid: e45ca4df5f37ae1478fe2d08d7f77e93,
         type: 3}
       propertyPath: m_Name
