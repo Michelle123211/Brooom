@@ -6,8 +6,26 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Experiments/FlyingMechanics.unity
-    guid: 3b971de4cd1fc7d45ab0492208b7febf
+    path: Assets/Scenes/MainMenu.unity
+    guid: 10b4e89dd631a6745932e85383a51e55
+  - enabled: 1
+    path: Assets/Scenes/Intro/CharacterCreation.unity
+    guid: d12aaabb9a35b8142bb2d66ecbdea6f9
+  - enabled: 1
+    path: Assets/Scenes/Intro/Tutorial.unity
+    guid: f5c8368f79e193c48b50cb8895789fd8
+  - enabled: 1
+    path: Assets/Scenes/Game/PlayerOverview.unity
+    guid: ea0a72c011d838c48a3ef6f4fc8f7045
+  - enabled: 1
+    path: Assets/Scenes/Game/Race.unity
+    guid: 7bb69fa8544f0cd41a79236dedf269d9
+  - enabled: 1
+    path: Assets/Scenes/Game/TestingTrack.unity
+    guid: be6917035d18e6e4c8a73e6be794c984
+  - enabled: 1
+    path: Assets/Scenes/Ending.unity
+    guid: 3bacfede75a12d8468f5b7a2b880c370
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: ac9ede4ade084904b85b81939a1644c3,
       type: 2}

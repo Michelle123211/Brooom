@@ -9,24 +9,23 @@ public class MainMenuUI : MonoBehaviour
         bool newGame = true;
         // TODO: If there is any previously saved state, load it here and set newGame to false
         if (newGame) {
-            // TODO: Load the CharacterCreation scene
-            Debug.Log("Start game.");
+            // Load the CharacterCreation scene
+            SceneLoader.Instance.LoadScene(Scene.CharacterCreation);
         } else {
-            // TODO: Load the PlayerOverview scene
-            Debug.Log("Continue game.");
+            // Load the PlayerOverview scene
+            SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
         }
     }
 
     public void RestartGame() {
         // TODO: Remove everything from the saved state
         // TODO: Reset the current state
-        // TODO: Load the CharacterCreation scene
-        Debug.Log("Restart game.");
+        // Load the CharacterCreation scene
+        SceneLoader.Instance.LoadScene(Scene.CharacterCreation);
     }
 
     public void ExitGame() {
         // TODO: Save the game state
-        Debug.Log("Exit game.");
         Application.Quit();
     }
 }
