@@ -2,8 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 
 public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, IInitializableSingleton {
+
+	[Tooltip("Name of the file (in the Resources) containing localization data. Without extension (e.g. 'translations').")]
+	public string fileName = "translations";
+
 	// The name of the currently selected language
 	public string CurrentLanguage { get; private set; }
 
@@ -14,7 +21,7 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 	// A dictionary containing for each language all the keys and their corresponding phrases
 	// ...............language.............key....phrase
 	private Dictionary<string, Dictionary<string, string>> completeDictionary;
-	// A dictionary containing only keys and phrases of the currently seelcted language
+	// A dictionary containing only keys and phrases of the currently selected language
 	//..................key....phrase
 	private Dictionary<string, string> currentLanguageDictionary;
 
@@ -59,7 +66,7 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 		}
 	}
 
-	// Returns an array of names of all the available languaages (in the same order as in the input table)
+	// Returns an array of names of all the available languaages (in the same order as in the input file)
 	public string[] GetAvailableLanguages() {
 		return availableLanguages;
 	}
@@ -68,8 +75,52 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 		LoadFromGoogleSheets();
 	}
 
-	// Loads languages and phrases from a Google Sheet
+	// Loads languages and phrases from a translations.json file
 	private void LoadFromGoogleSheets() {
-		// TODO: Load languages and phrases from a table
+		// Initialize dictioanry
+		completeDictionary = new Dictionary<string, Dictionary<string, string>>();
+		// Load the file
+		TextAsset translations = Resources.Load<TextAsset>(fileName);
+		if (translations == null) {
+			Debug.LogError($"The localization file '{fileName}' does not exist in the Resources.");
+			return;
+		}
+		JArray lines = JArray.Parse(translations.text); // an array (= lines) of objects (= phrases in different languages)
+		// Get an array of all the available languages
+		JObject firstLine = (JObject)lines[0];
+		availableLanguages = new string[firstLine.Count - 1];
+		int i = -1;
+		foreach (var pair in firstLine) {
+			if (i >= 0)
+				availableLanguages[i] = pair.Key;
+			i++;
+		}
+		// Initialize dictionaries for all the languages
+		foreach (var lang in availableLanguages)
+			completeDictionary.Add(lang, new Dictionary<string, string>());
+		// Store all the phrases in all of the languages into the dictionary
+		foreach (JToken line in lines) {
+			JObject lineObject = (JObject)line;
+			string key = (string)lineObject["Key"];
+			foreach (var lang in availableLanguages) {
+				string phrase = (string)lineObject[lang];
+				completeDictionary[lang][key] = phrase;
+			}
+		}
+		// Set the first language as the default one
+		CurrentLanguage = availableLanguages[0];
+		currentLanguageDictionary = completeDictionary[CurrentLanguage];
+		// Invoke the callback on language change
+		onCurrentLanguageChanged?.Invoke();
+	}
+
+	private void DebugOutput() {
+		foreach (var lang in completeDictionary.Keys) {
+			Debug.Log($"LANGUAGE: {lang}");
+			foreach (var phrase in completeDictionary[lang]) {
+				Debug.Log($"PHRASE <{phrase.Key}>: {phrase.Value}");
+			}
+			Debug.Log("-------------------------");
+		}
 	}
 }
