@@ -72,11 +72,11 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 	}
 
 	public void InitializeSingleton() {
-		LoadFromGoogleSheets();
+		
 	}
 
-	// Loads languages and phrases from a translations.json file
-	private void LoadFromGoogleSheets() {
+	// Loads languages and phrases from an input file located in Resources
+	private void LoadDataFromJSONFile() {
 		// Initialize dictioanry
 		completeDictionary = new Dictionary<string, Dictionary<string, string>>();
 		// Load the file
@@ -122,5 +122,9 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 			}
 			Debug.Log("-------------------------");
 		}
+	}
+
+	private void Awake() {
+		LoadDataFromJSONFile();
 	}
 }
