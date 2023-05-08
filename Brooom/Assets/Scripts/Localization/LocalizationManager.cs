@@ -17,6 +17,9 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 	// Callback on language changed - used from LocalizedTextMeshProUI to update text content
 	public Action onCurrentLanguageChanged;
 
+	// A key under which the current language is saved persistently
+	public const string currentLanguageSaveKey = "CurrentLanguage";
+
 
 	// A dictionary containing for each language all the keys and their corresponding phrases
 	// ...............language.............key....phrase
@@ -78,7 +81,9 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 		if (completeDictionary.TryGetValue(languageName, out Dictionary<string, string> languageDictionary)) {
 			CurrentLanguage = languageName;
 			currentLanguageDictionary = languageDictionary;
-			onCurrentLanguageChanged.Invoke(); // inform others interested that the language was changed
+			onCurrentLanguageChanged?.Invoke(); // inform others interested that the language was changed
+			// Save the current language persistently
+			PlayerPrefs.SetString(currentLanguageSaveKey, CurrentLanguage); // TODO: Change it to saving to a file (together with the player state)
 		} else {
 			Debug.LogWarning($"There is no language '{languageName}'.");
 		}
@@ -91,6 +96,12 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 
 	public void InitializeSingleton() {
 		LoadDataFromJSONFile();
+		// Load the persistently saved selected language from earlier
+		// TODO: Change it to loading from a file (together with the player state)
+		string loadedLanguage = PlayerPrefs.GetString(currentLanguageSaveKey, string.Empty);
+		if (!string.IsNullOrEmpty(loadedLanguage)) {
+			ChangeCurrentLanguage(loadedLanguage);
+		}
 	}
 
 	// Loads languages and phrases from an input file located in Resources
