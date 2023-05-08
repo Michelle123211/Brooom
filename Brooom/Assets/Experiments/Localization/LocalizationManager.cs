@@ -43,13 +43,31 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 				Debug.LogWarning($"There is an empty phrase for the key '{key}' in the language '{CurrentLanguage}'.");
 				localizedString = missingPhraseError;
 				return false;
-			} else { // the jey exists and the phrase too
+			} else { // the key exists and the phrase too
 				return true;
 			}
 		} else { // the key does not exist
 			Debug.Log($"There is no key '{key}' for the language '{CurrentLanguage}'.");
 			localizedString = missingKeyError;
 			return false;
+		}
+	}
+
+
+	// Returns phrase in the currently selected language and with the given key
+	// If the key does not exist or the associated phrase is empty, it will contain a placeholder
+	public string GetLocalizedString(string key) {
+		// Check if the key exists
+		if (currentLanguageDictionary.TryGetValue(key, out string localizedString)) {
+			if (string.IsNullOrEmpty(localizedString)) { // the key exists but the phrase does not
+				Debug.LogWarning($"There is an empty phrase for the key '{key}' in the language '{CurrentLanguage}'.");
+				return missingPhraseError;
+			} else { // the key exists and the phrase too
+				return localizedString;
+			}
+		} else { // the key does not exist
+			Debug.Log($"There is no key '{key}' for the language '{CurrentLanguage}'.");
+			return missingKeyError;
 		}
 	}
 
@@ -72,7 +90,7 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 	}
 
 	public void InitializeSingleton() {
-		
+		LoadDataFromJSONFile();
 	}
 
 	// Loads languages and phrases from an input file located in Resources
@@ -122,9 +140,5 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 			}
 			Debug.Log("-------------------------");
 		}
-	}
-
-	private void Awake() {
-		LoadDataFromJSONFile();
 	}
 }

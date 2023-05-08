@@ -32,12 +32,11 @@ public class LocalizedTextMeshProUI : MonoBehaviour {
 
 
 	public void UpdateText() {
-		LocalizationManager.Instance.TryGetLocalizedString(assignedKey, out string phrase);
-		textLabel.text = phrase;
+		textLabel.text = LocalizationManager.Instance.GetLocalizedString(assignedKey);
 	}
 
 	private void Awake() {
-		// TODO: Initialize with value of the currently selected language
+		// Initialize with value of the currently selected language
 		if (textLabel == null)
 			textLabel = GetComponent<TextMeshProUGUI>();
 		UpdateText();
@@ -46,6 +45,7 @@ public class LocalizedTextMeshProUI : MonoBehaviour {
 	private void OnEnable() {
 		// Register the callback on current language change
 		LocalizationManager.Instance.onCurrentLanguageChanged += UpdateText;
+		UpdateText();
 	}
 
 	private void OnDisable() {

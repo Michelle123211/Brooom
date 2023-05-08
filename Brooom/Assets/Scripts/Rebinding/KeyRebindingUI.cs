@@ -10,8 +10,6 @@ public class KeyRebindingUI : MonoBehaviour {
     public List<InputActionReference> inputActionsToExclude = new List<InputActionReference>();
     [Tooltip("Names of the input actions which should be displayed but not allowed to be modified.")]
     public List<InputActionReference> inputActionsReadOnly = new List<InputActionReference>();
-    [Tooltip("Names which should be visible to the player in the UI for the specific action (if different from the action name).")]
-    public List<InputActionName> actionReadableNames;
 
     [Tooltip("Name of the action map whose actions should be displayed for rebinding.")]
     public string actionMapToDisplay = "Game";
@@ -60,7 +58,10 @@ public class KeyRebindingUI : MonoBehaviour {
             // Add binding UI for the action
             KeyBindingUI keyBindingInstance = Instantiate<KeyBindingUI>(keyBinding, keyBindingParent);
             keyBindingInstance.SetRebindOverlay(rebindOverlay);
-            string name = GetReadableActionName(action); // override redable name if provided
+            string name = action.name;
+            if (LocalizationManager.Instance.TryGetLocalizedString($"Action{action.name}", out string readableName)) {
+                name = readableName;
+            }
             keyBindingInstance.Initialize(this, action, name);
             // Make read-only if necessary
             if (ShouldBeReadOnly(action)) keyBindingInstance.MakeReadOnly();
@@ -75,16 +76,6 @@ public class KeyRebindingUI : MonoBehaviour {
             }
         }
         return false;
-    }
-
-    // Returns the readable name of the given action (if provided), otherwise the action name
-    private string GetReadableActionName(InputAction action) {
-        foreach (InputActionName actionName in actionReadableNames) {
-            if (actionName.actionToRename.action.name == action.name) {
-                return actionName.readableName;
-            }
-        }
-        return action.name;
     }
 
     // Returns true if the binding of the given action should not be configurable

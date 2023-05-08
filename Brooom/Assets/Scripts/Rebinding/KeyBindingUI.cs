@@ -73,12 +73,18 @@ public class KeyBindingUI : MonoBehaviour {
         string bindingText = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
 
         // Handle special cases (to display better human readable text)
-        // TODO: Support localization
         if (deviceLayoutName == "Mouse" && bindingText == "Delta") {
-            bindingText = "Mouse";
+            bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscMouse");
         }
         if (deviceLayoutName == "Mouse" && bindingText == "LMB") {
-            bindingText = "Left mouse button";
+            bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscLMB");
+        }
+        if (bindingText == "Scroll Up/Scroll Down") {
+            bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscScroll");
+        }
+        if (bindingText.Contains("Space")) {
+            string localizedSpace = LocalizationManager.Instance.GetLocalizedString("RebindingMiscSpace");
+            bindingText = bindingText.Replace("Space", localizedSpace);
         }
 
         rebindingButtonText.text = bindingText;
@@ -112,6 +118,8 @@ public class KeyBindingUI : MonoBehaviour {
         } else
             partName = readablePartNames[0];
 
+
+
         rebindingOperation = action.PerformInteractiveRebinding(bindingIndex)
             .WithCancelingThrough("<Keyboard>/escape")
             .WithControlsExcluding("<Mouse>")
@@ -122,6 +130,7 @@ public class KeyBindingUI : MonoBehaviour {
                 // Update UI
                 UpdateUIAfterRebind();
                 UpdateBindingText();
+                rebindOverlay.SetDuplicateWarningText(" ");
                 CleanUp();
             })
             .OnComplete(operation => {
@@ -132,7 +141,8 @@ public class KeyBindingUI : MonoBehaviour {
                 // Check duplicate bindings
                 string bindingText = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
                 if (CheckForDuplicateBindings(bindingIndex, allCompositeParts)) {
-                    rebindOverlay.SetDuplicateWarningText($"{bindingText} is already in use. Please try something else.");
+                    string duplicateString = LocalizationManager.Instance.GetLocalizedString("RebindingLabelDuplicate");
+                    rebindOverlay.SetDuplicateWarningText(string.Format(duplicateString, bindingText));
                     action.RemoveBindingOverride(bindingIndex); // remove the duplicate
                     CleanUp();
                     // Give it another try
@@ -160,7 +170,8 @@ public class KeyBindingUI : MonoBehaviour {
         // Toggle the UI
         rebindingButton.gameObject.SetActive(false);
         waitingForInputText.SetActive(true);
-        rebindOverlay.SetWaitingForInputText($"Binding '{partName}'. Waiting for input...");
+        string waitingString = LocalizationManager.Instance.GetLocalizedString("RebindingLabelWaiting");
+        rebindOverlay.SetWaitingForInputText(string.Format(waitingString, readablePartNames[bindingIndex - this.bindingIndex - 1]));
         rebindOverlay.gameObject.TweenAwareEnable();
 
         // Start rebinding

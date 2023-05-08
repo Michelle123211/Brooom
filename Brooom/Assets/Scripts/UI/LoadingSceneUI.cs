@@ -13,21 +13,20 @@ public class LoadingSceneUI : MonoBehaviour
     private float timeout;
     private int numberOfDots = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    private void Start() {
         timeout = durationOfOneDot;
-        loadingText.text = "Loading";
+        loadingText.text = LocalizationManager.Instance.GetLocalizedString("LoadingLabel");
     }
 
-    // Update is called once per frame
-    void Update()
+
+	// Update is called once per frame
+	void Update()
     {
         timeout -= Time.deltaTime;
         if (timeout < 0) {
             numberOfDots = Utils.Wrap(numberOfDots + 1, 0, 3);
             if (numberOfDots == 0)
-                loadingText.text = "Loading";
+                loadingText.text = LocalizationManager.Instance.GetLocalizedString("LoadingLabel");
             else
                 loadingText.text += ".";
             timeout += durationOfOneDot;

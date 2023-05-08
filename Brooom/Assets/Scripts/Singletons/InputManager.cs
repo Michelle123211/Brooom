@@ -146,6 +146,11 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 		}
 	}
 
+	private void Awake() {
+		if (Instance != null && Instance != this)
+			Destroy(gameObject); // destroy redundant instance
+	}
+
 }
 
 public class InputActionValue<T> {
