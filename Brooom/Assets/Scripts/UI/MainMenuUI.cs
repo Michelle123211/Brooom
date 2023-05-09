@@ -29,7 +29,9 @@ public class MainMenuUI : MonoBehaviour
 
     public void ExitGame() {
         // TODO: Save the game state
-        Application.Quit();
+        // Load the Exit scene (so that all the GameObjects are unloaded except for these in DontDestroyOnLoad)
+        // This way the singletons will be destroyed last
+        SceneLoader.Instance.LoadScene(Scene.Exit, true, false);
     }
 
 	private void Start() {

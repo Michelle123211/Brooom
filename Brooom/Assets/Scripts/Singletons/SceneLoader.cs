@@ -70,4 +70,6 @@ public enum Scene {
 	PlayerOverview,
 	TestingTrack,
 	Ending,
+	Start,
+	Exit
 }
