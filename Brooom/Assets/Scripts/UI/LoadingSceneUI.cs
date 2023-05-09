@@ -12,11 +12,7 @@ public class LoadingSceneUI : MonoBehaviour
 
     private float timeout;
     private int numberOfDots = 0;
-
-    private void Start() {
-        timeout = durationOfOneDot;
-        loadingText.text = LocalizationManager.Instance.GetLocalizedString("LoadingLabel");
-    }
+    private string loadingString = "";
 
 
 	// Update is called once per frame
@@ -26,10 +22,16 @@ public class LoadingSceneUI : MonoBehaviour
         if (timeout < 0) {
             numberOfDots = Utils.Wrap(numberOfDots + 1, 0, 3);
             if (numberOfDots == 0)
-                loadingText.text = LocalizationManager.Instance.GetLocalizedString("LoadingLabel");
+                loadingText.text = loadingString;
             else
                 loadingText.text += ".";
             timeout += durationOfOneDot;
         }
+    }
+
+	private void OnEnable() {
+        timeout = durationOfOneDot;
+        loadingString = LocalizationManager.Instance.GetLocalizedString("LoadingLabel");
+        loadingText.text = loadingString;
     }
 }

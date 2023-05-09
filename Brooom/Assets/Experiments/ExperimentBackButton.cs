@@ -5,6 +5,6 @@ using UnityEngine;
 public class ExperimentBackButton : MonoBehaviour
 {
     public void BackToMenu() {
-        SceneLoader.Instance.LoadScene(Scene.MainMenu, true, true);
+        SceneLoader.Instance.LoadScene(Scene.MainMenu);
     }
 }
