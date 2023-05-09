@@ -59,12 +59,10 @@ public class KeyRebindingUI : MonoBehaviour {
             KeyBindingUI keyBindingInstance = Instantiate<KeyBindingUI>(keyBinding, keyBindingParent);
             keyBindingInstance.SetRebindOverlay(rebindOverlay);
             string name = action.name;
-            if (LocalizationManager.Instance.TryGetLocalizedString($"Action{action.name}", out string readableName)) {
+            if (LocalizationManager.Instance.TryGetLocalizedString($"Action{action.name}", out string readableName)) { // Get localized readable name
                 name = readableName;
             }
-            keyBindingInstance.Initialize(this, action, name);
-            // Make read-only if necessary
-            if (ShouldBeReadOnly(action)) keyBindingInstance.MakeReadOnly();
+            keyBindingInstance.Initialize(this, action, name, ShouldBeReadOnly(action)); // make read-only if necessary
         }
     }
 

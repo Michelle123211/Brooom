@@ -42,7 +42,7 @@ public class KeyBindingUI : MonoBehaviour {
     }
 
     // Updates the UI according to the action
-    public void Initialize(KeyRebindingUI keyRebindingUI, InputAction action, string name) {
+    public void Initialize(KeyRebindingUI keyRebindingUI, InputAction action, string name, bool isReadonly = false) {
         this.keyRebindingUI = keyRebindingUI;
         this.action = action;
         // Get binding index
@@ -57,15 +57,13 @@ public class KeyBindingUI : MonoBehaviour {
             readablePartNames[i] = readablePartNames[i].Trim();
         }
         // Update UI
+        if (!isReadonly) {
+            rebindingButton.interactable = true;
+            resetButton.gameObject.SetActive(true);
+        }
         actionNameText.text = name;
-        UpdateBindingText();
         UpdateResetButtonInteractibility();
-    }
-
-    // Makes the binding not configurable
-    public void MakeReadOnly() {
-        rebindingButton.interactable = false;
-        resetButton.gameObject.SetActive(false);
+        UpdateBindingText();
     }
 
     // Updates the UI to display the current binding
