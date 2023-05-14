@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2684536412001827692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6912528171724987007}
+  - component: {fileID: 2600800826929950149}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6912528171724987007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2684536412001827692}
+  m_LocalRotation: {x: -0.17846616, y: -0, z: -0, w: 0.9839461}
+  m_LocalPosition: {x: 0, y: -0.73, z: -0.608}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5772583381441234779}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: -20.561, y: 0, z: 0}
+--- !u!136 &2600800826929950149
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2684536412001827692}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 5.3
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5772583381051224150
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +323,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5772583381441234779}
   - component: {fileID: 5772583381441234778}
-  - component: {fileID: 349023420155418259}
   m_Layer: 0
   m_Name: Broom
   m_TagString: Untagged
@@ -299,6 +344,7 @@ Transform:
   m_Children:
   - {fileID: 5772583381051224153}
   - {fileID: 3654586688198220584}
+  - {fileID: 6912528171724987007}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -314,20 +360,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bce7d858f6924d429fd5ca3d08f4e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &349023420155418259
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5772583381441234776}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.8
-  m_Height: 1.08
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3836233760203898051
 PrefabInstance:
   m_ObjectHideFlags: 0

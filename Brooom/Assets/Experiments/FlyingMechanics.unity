@@ -1165,18 +1165,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786783788}
   m_CullTransparentMesh: 1
---- !u!114 &813891143 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3615994364904750990, guid: 7c667e000148a8e4da84385030cb60bc,
-    type: 3}
-  m_PrefabInstance: {fileID: 1662486334}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &845177489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,16 +2015,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 170133169353488111, guid: 7c667e000148a8e4da84385030cb60bc,
-        type: 3}
-      propertyPath: virtualCameras.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 170133169353488111, guid: 7c667e000148a8e4da84385030cb60bc,
-        type: 3}
-      propertyPath: virtualCameras.Array.data[3]
-      value: 
-      objectReference: {fileID: 813891143}
     - target: {fileID: 3615994364904750990, guid: 7c667e000148a8e4da84385030cb60bc,
         type: 3}
       propertyPath: m_LookAt
