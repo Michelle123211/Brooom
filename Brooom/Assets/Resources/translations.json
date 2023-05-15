@@ -1,1 +1,252 @@
-[{"Key":"Default","English":"PLACEHOLDER","Czech":"PLACEHOLDER"},{"Key":"MenuBtnExit","English":"Exit","Czech":"Ukončit"},{"Key":"MenuBtnSettings","English":"Settings","Czech":"Nastavení"},{"Key":"MenuBtnStart","English":"START","Czech":"HRÁT"},{"Key":"MenuBtnContinue","English":"CONTINUE","Czech":"POKRAČOVAT"},{"Key":"MenuBtnRestart","English":"Start Again","Czech":"Začít znovu"},{"Key":"MenuBtnMultiplayer","English":"Multiplayer","Czech":"Hra více hráčů"},{"Key":"MenuBtnAbout","English":"About","Czech":"O hře"},{"Key":"SettingsLabelTitle","English":"SETTINGS","Czech":"NASTAVENÍ"},{"Key":"SettingsBtnBack","English":"Back","Czech":"Zpět"},{"Key":"SettingsLabelGeneral","English":"General","Czech":"Obecné"},{"Key":"SettingsLabelSensitivity","English":"Mouse Sensitivity","Czech":"Citlivost myši"},{"Key":"SettingsLabelAudio","English":"Audio","Czech":"Zvuk"},{"Key":"SettingsLabelMusic","English":"Music","Czech":"Hudba"},{"Key":"SettingsLabelAmbience","English":"Ambience","Czech":"Zvuky prostředí"},{"Key":"SettingsLabelSFX","English":"Sound Effects","Czech":"Zvukové efekty"},{"Key":"SettingsLabelControls","English":"Controls","Czech":"Ovládání"},{"Key":"RebindingBtnReset","English":"Reset","Czech":"Obnovit"},{"Key":"RebindingLabelWaiting","English":"Binding '{0}'. Waiting for input...","Czech":"Mapování '{0}'. Čeká se na vstup..."},{"Key":"RebindingLabelDuplicate","English":"{0} is already in use. Please try something else.","Czech":"{0} už se používá jinde. Zkuste, prosím, něco jiného."},{"Key":"RebindingLabelCancel","English":"ESC to cancel.","Czech":"ESC pro zrušení."},{"Key":"RebindingMiscMouse","English":"Mouse","Czech":"Myš"},{"Key":"RebindingMiscLMB","English":"Left Mouse Button","Czech":"Levé tlačítko myši"},{"Key":"RebindingMiscSpace","English":"Space","Czech":"Mezerník"},{"Key":"RebindingMiscScroll","English":"Scroll Wheel","Czech":"Kolečko myši"},{"Key":"AboutLabelTitle","English":"ABOUT THE GAME","Czech":"O HŘE"},{"Key":"AboutBtnBack","English":"Back","Czech":"Zpět"},{"Key":"AboutLabelDescription","English":"This game was developed in 2023-2024\nas part of master thesis at the Charles University, Prague.","Czech":"Tato hra byla vytvořena v letech 2023-2024\njako součást diplomové práce na Karlově univerzitě v Praze."},{"Key":"AboutLabelTeam","English":"TEAM:\nMichaela Štolová - Game design, coding, UI.\nPavel Ježek - Tips, recommendations, support.","Czech":"TÝM:\nMichaela Štolová - Návrh hry, programování, uživatelské rozhraní.\nPavel Ježek - Tipy, doporučení, podpora."},{"Key":"AboutLabelAttributions","English":"ATTRIBUTIONS:","Czech":"POUŽITÉ ZDROJE:"},{"Key":"AboutLabelContact","English":"Report a bug or send feedback to:\nm.stolova@seznam.cz\nMichaela Štolová#1866","Czech":"Pro nahlášení závady nebo zaslání zpětné vazby využijte:\r\nm.stolova@seznam.cz\r\nMichaela Štolová#1866"},{"Key":"LoadingLabel","English":"Loading","Czech":"Načítání"},{"Key":"ActionForward","English":"Speed up / Slow down","Czech":"Zrychlení / Zpomalení"},{"Key":"ActionTurn","English":"Turn left / Turn right","Czech":"Zatočení doleva / Zatočení doprava"},{"Key":"ActionPitch","English":"Ascend / Descend","Czech":"Vzlétnutí nahoru / Slétnutí dolů"},{"Key":"ActionLook","English":"Look around","Czech":"Rozhlížení se"},{"Key":"ActionView","English":"Switch view","Czech":"Přepnutí pohledu"},{"Key":"ActionCastSpell","English":"Cast spell","Czech":"Seslání kouzla"},{"Key":"ActionSwitchSpell","English":"Switch spell up / Switch spell down","Czech":"Přepnutí kouzla nahoru / Přepnutí kouzla dolů"},{"Key":"ActionRestart","English":"Restart attempt","Czech":"Restartování pokusu"},{"Key":"ActionPause","English":"Pause game","Czech":"Pozastavení hry"}]
+[
+  {
+    "Key": "Default",
+    "English": "PLACEHOLDER",
+    "Czech": "PLACEHOLDER"
+  },
+  {
+    "Key": "MenuBtnExit",
+    "English": "Exit",
+    "Czech": "Ukončit"
+  },
+  {
+    "Key": "MenuBtnSettings",
+    "English": "Settings",
+    "Czech": "Nastavení"
+  },
+  {
+    "Key": "MenuBtnStart",
+    "English": "START",
+    "Czech": "HRÁT"
+  },
+  {
+    "Key": "MenuBtnContinue",
+    "English": "CONTINUE",
+    "Czech": "POKRAČOVAT"
+  },
+  {
+    "Key": "MenuBtnRestart",
+    "English": "Start Again",
+    "Czech": "Začít znovu"
+  },
+  {
+    "Key": "MenuBtnMultiplayer",
+    "English": "Multiplayer",
+    "Czech": "Hra více hráčů"
+  },
+  {
+    "Key": "MenuBtnAbout",
+    "English": "About",
+    "Czech": "O hře"
+  },
+  {
+    "Key": "SettingsLabelTitle",
+    "English": "SETTINGS",
+    "Czech": "NASTAVENÍ"
+  },
+  {
+    "Key": "SettingsBtnBack",
+    "English": "Back",
+    "Czech": "Zpět"
+  },
+  {
+    "Key": "SettingsLabelGeneral",
+    "English": "General",
+    "Czech": "Obecné"
+  },
+  {
+    "Key": "SettingsLabelSensitivity",
+    "English": "Mouse Sensitivity",
+    "Czech": "Citlivost myši"
+  },
+  {
+    "Key": "SettingsLabelAudio",
+    "English": "Audio",
+    "Czech": "Zvuk"
+  },
+  {
+    "Key": "SettingsLabelMusic",
+    "English": "Music",
+    "Czech": "Hudba"
+  },
+  {
+    "Key": "SettingsLabelAmbience",
+    "English": "Ambience",
+    "Czech": "Zvuky prostředí"
+  },
+  {
+    "Key": "SettingsLabelSFX",
+    "English": "Sound Effects",
+    "Czech": "Zvukové efekty"
+  },
+  {
+    "Key": "SettingsLabelControls",
+    "English": "Controls",
+    "Czech": "Ovládání"
+  },
+  {
+    "Key": "RebindingBtnReset",
+    "English": "Reset",
+    "Czech": "Obnovit"
+  },
+  {
+    "Key": "RebindingLabelWaiting",
+    "English": "Binding '{0}'. Waiting for input...",
+    "Czech": "Mapování '{0}'. Čeká se na vstup..."
+  },
+  {
+    "Key": "RebindingLabelDuplicate",
+    "English": "{0} is already in use. Please try something else.",
+    "Czech": "{0} už se používá jinde. Zkuste, prosím, něco jiného."
+  },
+  {
+    "Key": "RebindingLabelCancel",
+    "English": "ESC to cancel.",
+    "Czech": "ESC pro zrušení."
+  },
+  {
+    "Key": "RebindingMiscMouse",
+    "English": "Mouse",
+    "Czech": "Myš"
+  },
+  {
+    "Key": "RebindingMiscLMB",
+    "English": "Left Mouse Button",
+    "Czech": "Levé tlačítko myši"
+  },
+  {
+    "Key": "RebindingMiscSpace",
+    "English": "Space",
+    "Czech": "Mezerník"
+  },
+  {
+    "Key": "RebindingMiscScroll",
+    "English": "Scroll Wheel",
+    "Czech": "Kolečko myši"
+  },
+  {
+    "Key": "AboutLabelTitle",
+    "English": "ABOUT THE GAME",
+    "Czech": "O HŘE"
+  },
+  {
+    "Key": "AboutBtnBack",
+    "English": "Back",
+    "Czech": "Zpět"
+  },
+  {
+    "Key": "AboutLabelDescription",
+    "English": "This game was developed in 2023-2024\nas part of master thesis at the Charles University, Prague.",
+    "Czech": "Tato hra byla vytvořena v letech 2023-2024\njako součást diplomové práce na Karlově univerzitě v Praze."
+  },
+  {
+    "Key": "AboutLabelTeam",
+    "English": "TEAM:\nMichaela Štolová - Game design, coding, UI.\nPavel Ježek - Tips, recommendations, support.",
+    "Czech": "TÝM:\nMichaela Štolová - Návrh hry, programování, uživatelské rozhraní.\nPavel Ježek - Tipy, doporučení, podpora."
+  },
+  {
+    "Key": "AboutLabelAttributions",
+    "English": "ATTRIBUTIONS:",
+    "Czech": "POUŽITÉ ZDROJE:"
+  },
+  {
+    "Key": "AboutLabelContact",
+    "English": "Report a bug or send feedback to:\nm.stolova@seznam.cz\nMichaela Štolová#1866",
+    "Czech": "Pro nahlášení závad nebo zaslání zpětné vazby využijte:\nm.stolova@seznam.cz\nMichaela Štolová#1866"
+  },
+  {
+    "Key": "LoadingLabel",
+    "English": "Loading",
+    "Czech": "Načítání"
+  },
+  {
+    "Key": "ActionForward",
+    "English": "Speed up / Slow down",
+    "Czech": "Zrychlení / Zpomalení"
+  },
+  {
+    "Key": "ActionTurn",
+    "English": "Turn left / Turn right",
+    "Czech": "Zatočení doleva / Zatočení doprava"
+  },
+  {
+    "Key": "ActionPitch",
+    "English": "Ascend / Descend",
+    "Czech": "Vzlétnutí nahoru / Slétnutí dolů"
+  },
+  {
+    "Key": "ActionLook",
+    "English": "Look around",
+    "Czech": "Rozhlížení se"
+  },
+  {
+    "Key": "ActionView",
+    "English": "Switch view",
+    "Czech": "Přepnutí pohledu"
+  },
+  {
+    "Key": "ActionCastSpell",
+    "English": "Cast spell",
+    "Czech": "Seslání kouzla"
+  },
+  {
+    "Key": "ActionSwitchSpell",
+    "English": "Switch spell up / Switch spell down",
+    "Czech": "Přepnutí kouzla nahoru / Přepnutí kouzla dolů"
+  },
+  {
+    "Key": "ActionRestart",
+    "English": "Restart attempt",
+    "Czech": "Restartování pokusu"
+  },
+  {
+    "Key": "ActionPause",
+    "English": "Pause game",
+    "Czech": "Pozastavení hry"
+  },
+  {
+    "Key": "CharacterLabelTitle",
+    "English": "CHARACTER CREATION",
+    "Czech": "VYTVOŘENÍ POSTAVY"
+  },
+  {
+    "Key": "CharacterBtnBack",
+    "English": "Back",
+    "Czech": "Zpět"
+  },
+  {
+    "Key": "CharacterBtnContinue",
+    "English": "CONTINUE",
+    "Czech": "POKRAČOVAT"
+  },
+  {
+    "Key": "CharacterLabelName",
+    "English": "Name:",
+    "Czech": "Jméno:"
+  },
+  {
+    "Key": "CharacterLabelEmptyName",
+    "English": "The name cannot be empty.",
+    "Czech": "Jméno nesmí být prázdné."
+  },
+  {
+    "Key": "CharacterLabelSkinTone",
+    "English": "Skin tone:",
+    "Czech": "Odstín pleti:"
+  },
+  {
+    "Key": "CharacterLabelHairStyle",
+    "English": "Hair style:",
+    "Czech": "Účes:"
+  },
+  {
+    "Key": "CharacterLabelHairColor",
+    "English": "Hair color:",
+    "Czech": "Barva vlasů:"
+  },
+  {
+    "Key": "CharacterLabelOutfit",
+    "English": "Outfit:",
+    "Czech": "Oblečení:"
+  }
+]
