@@ -603,6 +603,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpeedBonus
       objectReference: {fileID: 0}
+    - target: {fileID: 437602159591655608, guid: 7d2c33997b8894943b47343a8cefd947,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 437602159591655608, guid: 7d2c33997b8894943b47343a8cefd947,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 437602159591655608, guid: 7d2c33997b8894943b47343a8cefd947,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d2c33997b8894943b47343a8cefd947, type: 3}
 --- !u!1 &478234793
@@ -1949,6 +1964,16 @@ PrefabInstance:
         type: 3}
       propertyPath: field of view
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 170133169350422498, guid: 7c667e000148a8e4da84385030cb60bc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 170133169350422498, guid: 7c667e000148a8e4da84385030cb60bc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.29999924
       objectReference: {fileID: 0}
     - target: {fileID: 170133169353488105, guid: 7c667e000148a8e4da84385030cb60bc,
         type: 3}
