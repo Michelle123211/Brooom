@@ -261,7 +261,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2177503570156276025}
         m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_material
+        m_MethodName: set_sharedMaterial
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2100000, guid: 72fcb87066e66d44e8b010aa6019a02e,
@@ -274,7 +274,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 251278334119355451}
         m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_material
+        m_MethodName: set_sharedMaterial
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2100000, guid: 72fcb87066e66d44e8b010aa6019a02e,
@@ -289,7 +289,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2177503570156276025}
         m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_material
+        m_MethodName: set_sharedMaterial
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2100000, guid: 1074479f8a2e8f34988a17bd52665468,
@@ -302,7 +302,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 251278334119355451}
         m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_material
+        m_MethodName: set_sharedMaterial
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2100000, guid: 1074479f8a2e8f34988a17bd52665468,
