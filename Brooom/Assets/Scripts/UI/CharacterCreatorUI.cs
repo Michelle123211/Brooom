@@ -9,12 +9,18 @@ public class CharacterCreatorUI : MonoBehaviour
     [SerializeField] CharacterCustomizationOptions customizationOptions;
     [Header("Character model parts")]
     [SerializeField] Material skinMaterial;
+    [SerializeField] Material hairMaterial;
+    [SerializeField] SkinnedMeshRenderer hairRenderer;
     [SerializeField] SkinnedMeshRenderer outfitRenderer;
+    [SerializeField] SkinnedMeshRenderer shoesRenderer;
 
     [Header("UI elements")]
     [SerializeField] CustomizationOptionUI optionPrefab;
     [SerializeField] ToggleGroup skinTonesOptions;
+    [SerializeField] ToggleGroup hairStyleOptions;
+    [SerializeField] ToggleGroup hairColorOptions;
     [SerializeField] ToggleGroup outfitOptions;
+    [SerializeField] ToggleGroup shoesOptions;
     [SerializeField] Button continueButton;
 
     private string currentName;
@@ -38,10 +44,17 @@ public class CharacterCreatorUI : MonoBehaviour
     }
 
 	private void OnEnable() {
-        // List all the skin tone options
+        // List all the...
+        // ... skin tone options
         FillCustomizationOptions(customizationOptions.skinTones, skinTonesOptions, skinMaterial);
-        // List all the outfit options
+        // ... hair style options
+        FillCustomizationOptions(customizationOptions.hair, hairStyleOptions, hairRenderer);
+        // ... hair color options
+        FillCustomizationOptions(customizationOptions.hairColor, hairColorOptions, hairMaterial);
+        // ... outfit options
         FillCustomizationOptions(customizationOptions.outfits, outfitOptions, outfitRenderer);
+        // ... shoes options
+        FillCustomizationOptions(customizationOptions.shoes, shoesOptions, shoesRenderer);
     }
 
     private void FillCustomizationOptions(Customization customization, ToggleGroup parentGroup, Material changedMaterial) {

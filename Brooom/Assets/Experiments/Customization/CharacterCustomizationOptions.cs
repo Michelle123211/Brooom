@@ -8,10 +8,13 @@ public class CharacterCustomizationOptions : ScriptableObject
     // Skin color
     public MaterialColorCustomization skinTones = new MaterialColorCustomization();
     // Hair style - Mesh
+    public MeshAndMaterialCustomization hair = new MeshAndMaterialCustomization();
     // Hair color - Color
+    public MaterialColorCustomization hairColor = new MaterialColorCustomization();
     // Outfit - Mesh + Materials
     public MeshAndMaterialCustomization outfits = new MeshAndMaterialCustomization();
     // Shoes - Mesh + Materials
+    public MeshAndMaterialCustomization shoes = new MeshAndMaterialCustomization();
     // TODO: Face - Texture
 }
 
@@ -37,11 +40,11 @@ public class MaterialColorCustomization : Customization {
 [System.Serializable]
 public class MeshAndMaterialCustomization : Customization {
     [Tooltip("A list of available meshes with their different material combinations.")]
-    public List<MeshAndMaterialVariant> variants;
+    public List<MeshAndMaterialVariant> meshVariants;
 
 	public override IEnumerable<CustomizationVariantData> EnumerateVariants() {
         int i = 0;
-        foreach (MeshAndMaterialVariant meshVariant in variants) {
+        foreach (MeshAndMaterialVariant meshVariant in meshVariants) {
             foreach (MaterialCustomization materialsVariant in meshVariant.materialVariants) {
                 i++;
                 yield return new CustomizationVariantData(i, meshVariant.itemMesh, materialsVariant.materials);

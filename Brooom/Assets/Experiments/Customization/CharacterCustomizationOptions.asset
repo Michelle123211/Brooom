@@ -18,8 +18,57 @@ MonoBehaviour:
     - {r: 0.85, g: 0.65232563, b: 0.5218605, a: 1}
     - {r: 0.7, g: 0.5366667, b: 0.42666668, a: 1}
     - {r: 0.55, g: 0.4227451, b: 0.3364706, a: 1}
+  hair:
+    meshVariants:
+    - displayName: Male1
+      itemMesh: {fileID: -8261066796910302577, guid: bff9112c2417da84f8c563d40f169d17,
+        type: 3}
+      materialNames:
+      - Hair
+      materialVariants:
+      - displayName: Default
+        materials:
+        - {fileID: 2100000, guid: 895ae046cf48de64aac65ac49122665d, type: 2}
+    - displayName: Female1
+      itemMesh: {fileID: -2439352532998724759, guid: bff9112c2417da84f8c563d40f169d17,
+        type: 3}
+      materialNames:
+      - Hair
+      - Hairband
+      materialVariants:
+      - displayName: Default
+        materials:
+        - {fileID: 2100000, guid: 895ae046cf48de64aac65ac49122665d, type: 2}
+        - {fileID: 2100000, guid: 61418c902a075c5489804aef424cfb2d, type: 2}
+    - displayName: Female2
+      itemMesh: {fileID: -2113134154381033435, guid: bff9112c2417da84f8c563d40f169d17,
+        type: 3}
+      materialNames:
+      - Hair
+      - Hairband
+      materialVariants:
+      - displayName: Default
+        materials:
+        - {fileID: 2100000, guid: 895ae046cf48de64aac65ac49122665d, type: 2}
+        - {fileID: 2100000, guid: 61418c902a075c5489804aef424cfb2d, type: 2}
+    - displayName: Male2
+      itemMesh: {fileID: -5009116608645562948, guid: bff9112c2417da84f8c563d40f169d17,
+        type: 3}
+      materialNames:
+      - Hair
+      materialVariants:
+      - displayName: Default
+        materials:
+        - {fileID: 2100000, guid: 895ae046cf48de64aac65ac49122665d, type: 2}
+  hairColor:
+    colors:
+    - {r: 1, g: 0.79607844, b: 0.32941177, a: 1}
+    - {r: 0.4056604, g: 0.25236797, b: 0.24301353, a: 1}
+    - {r: 0.8207547, g: 0.3704819, b: 0.24390352, a: 1}
+    - {r: 0.23584908, g: 0.17688681, b: 0.17688681, a: 1}
+    - {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
   outfits:
-    variants:
+    meshVariants:
     - displayName: TShirtAndPants
       itemMesh: {fileID: -4397063683021238952, guid: bff9112c2417da84f8c563d40f169d17,
         type: 3}
@@ -41,3 +90,40 @@ MonoBehaviour:
         - {fileID: 2100000, guid: dacddbae209f14745b8ca466eb88f2bd, type: 2}
         - {fileID: 2100000, guid: 1823f574a7c72da41abb46d262136d28, type: 2}
         - {fileID: 2100000, guid: 63079eef05d35284f86cf9ae2639d85c, type: 2}
+      - displayName: Brick
+        materials:
+        - {fileID: 2100000, guid: cc23edd25ada48f4eaa43d3db84d0118, type: 2}
+        - {fileID: 2100000, guid: 4112b7e2cff7260478e88e4cc7a034a7, type: 2}
+        - {fileID: 2100000, guid: 26928554efbf0c546a8e17bd77c93438, type: 2}
+        - {fileID: 2100000, guid: c2644e267db4f2a4da45558986536aa0, type: 2}
+      - displayName: Blue
+        materials:
+        - {fileID: 2100000, guid: e646ffc735bebeb498b41175923586db, type: 2}
+        - {fileID: 2100000, guid: 75a6513ea7e00454da31e5a95b0380dd, type: 2}
+        - {fileID: 2100000, guid: 4dc3de065d12ab146871cca4794f380a, type: 2}
+        - {fileID: 2100000, guid: 8a26411b2e5760f49a23b5cf091e3862, type: 2}
+  shoes:
+    meshVariants:
+    - displayName: BasicShoe
+      itemMesh: {fileID: -1412149109825156874, guid: bff9112c2417da84f8c563d40f169d17,
+        type: 3}
+      materialNames:
+      - Shoes
+      - Soles
+      materialVariants:
+      - displayName: DarkGrey
+        materials:
+        - {fileID: 2100000, guid: b0473fdaf08b7a447a614c2f53d12e81, type: 2}
+        - {fileID: 2100000, guid: 3d74868ab9b1a184d9fca8f0909deb78, type: 2}
+      - displayName: Grey
+        materials:
+        - {fileID: 2100000, guid: e17f5d0b1b379bc4280f6f20fb3bfa72, type: 2}
+        - {fileID: 2100000, guid: 68f0df6402db7a24e82152b9db0fa006, type: 2}
+      - displayName: Black
+        materials:
+        - {fileID: 2100000, guid: 09d617350dbb06b4b8920812a092d363, type: 2}
+        - {fileID: 2100000, guid: fbe26886ead760d46b5bee63ec4f6bf1, type: 2}
+      - displayName: LightGrey
+        materials:
+        - {fileID: 2100000, guid: d3b02de69e7947541bb5544f24e8dfef, type: 2}
+        - {fileID: 2100000, guid: f0bb3c4ff96379c4ea8a8b3cbecc9a04, type: 2}
