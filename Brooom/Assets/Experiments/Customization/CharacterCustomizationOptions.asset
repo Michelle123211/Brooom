@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d83dc237d7b361948970cecab1cac571, type: 3}
+  m_Name: CharacterCustomizationOptions
+  m_EditorClassIdentifier: 
+  skinTones:
+    colors:
+    - {r: 1, g: 0.7699115, b: 0.6106195, a: 1}
+    - {r: 0.85, g: 0.65232563, b: 0.5218605, a: 1}
+    - {r: 0.7, g: 0.5366667, b: 0.42666668, a: 1}
+    - {r: 0.55, g: 0.4227451, b: 0.3364706, a: 1}
+  outfits:
+    variants:
+    - displayName: TShirtAndPants
+      itemMesh: {fileID: -4397063683021238952, guid: bff9112c2417da84f8c563d40f169d17,
+        type: 3}
+      materialNames:
+      - Shirt
+      - Pants
+      - Sleeves
+      - Rim
+      materialVariants:
+      - displayName: Red
+        materials:
+        - {fileID: 2100000, guid: 83e07f97ad4ee75419978aaea3eb2218, type: 2}
+        - {fileID: 2100000, guid: 545eaef44a810f24b95c67f7e0284273, type: 2}
+        - {fileID: 2100000, guid: eac75b3554228184e839ed1296b4ba02, type: 2}
+        - {fileID: 2100000, guid: 3946faa54499d0544949ee68ab8fa231, type: 2}
+      - displayName: Green
+        materials:
+        - {fileID: 2100000, guid: a60bf319a07577b42841327fe3b99092, type: 2}
+        - {fileID: 2100000, guid: dacddbae209f14745b8ca466eb88f2bd, type: 2}
+        - {fileID: 2100000, guid: 1823f574a7c72da41abb46d262136d28, type: 2}
+        - {fileID: 2100000, guid: 63079eef05d35284f86cf9ae2639d85c, type: 2}

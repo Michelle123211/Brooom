@@ -15,8 +15,8 @@ public class LanguageButtonUI : MonoBehaviour
     [SerializeField]
     private Image inactiveImage;
 
-    public void ChangeLanguage(bool buttonValue) {
-        if (buttonValue) { // the assigned language is now selected
+    public void OnSelectedChanged(bool isSelected) {
+        if (isSelected) { // the assigned language is now selected
             // Change language globally
             LocalizationManager.Instance.ChangeCurrentLanguage(assignedLanguage);
         }
