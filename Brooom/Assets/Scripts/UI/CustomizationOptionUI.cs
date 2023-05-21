@@ -28,21 +28,9 @@ public class CustomizationOptionUI : MonoBehaviour
 
     public void OnActiveChanged(bool isActive) {
         if (isActive) {
-            ApplyCustomization();
+            // Apply customization
+            assignedData.ApplyCustomization(changedMaterial, changedRenderer);
             // TODO: Save the selected option
-        }
-    }
-
-    // Applies this customization (changes the assigned material or renderer)
-    private void ApplyCustomization() {
-        switch (assignedData.type) {
-            case CustomizationType.MaterialColor: // Changing Color of a Material
-                changedMaterial.color = assignedData.assignedColor;
-                break;
-            case CustomizationType.MeshAndMaterials: // Changing Mesh and Materials
-                changedRenderer.sharedMesh = assignedData.assignedMesh;
-                changedRenderer.sharedMaterials = assignedData.assignedMaterials;
-                break;
         }
     }
 }

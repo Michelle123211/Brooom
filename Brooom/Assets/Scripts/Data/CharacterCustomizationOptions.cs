@@ -94,9 +94,30 @@ public class CustomizationVariantData {
         assignedMesh = mesh;
         assignedMaterials = materials;
     }
+
+    // Applies this customization (changes the given material or renderer)
+    public void ApplyCustomization(Material changedMaterial, SkinnedMeshRenderer changedRenderer) {
+        if (type == CustomizationType.MaterialColor) { // Changing Color of a Material
+            changedMaterial.color = assignedColor;
+        } else if (type == CustomizationType.MeshAndMaterials) { // Changing Mesh and Materials
+            changedRenderer.sharedMesh = assignedMesh;
+            changedRenderer.sharedMaterials = assignedMaterials;
+        }
+    }
 }
 
 public enum CustomizationType { 
     MaterialColor,
     MeshAndMaterials
+}
+
+
+
+[System.Serializable]
+public class CharacterCustomizationSaveData {
+    public Color skinColor;
+    public string hairStyleName;
+    public Color hairColor;
+    public string outfitName;
+    public string shoesName;
 }
