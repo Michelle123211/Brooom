@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CharacterCreatorUI : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class CharacterCreatorUI : MonoBehaviour
     [SerializeField] CharacterAppearance character;
 
     [Header("UI elements")]
+    [SerializeField] TMP_InputField nameInputField;
     [SerializeField] CustomizationOptionUI optionPrefab;
     [SerializeField] ToggleGroup skinTonesOptions;
     [SerializeField] ToggleGroup hairStyleOptions;
@@ -46,7 +48,28 @@ public class CharacterCreatorUI : MonoBehaviour
         }
     }
 
-	private void Start() {
+    public void RandomizeName() {
+        // TODO: Select a name from a large list which will be used for the global leader board as well
+        string[] names = new string[] { "Anna", "Ben", "Charlie", "Diana", "Emil", "Filip", "Gustav", "Hannah", "Iva" };
+        currentName = names[Random.Range(0, names.Length - 1)];
+        nameInputField.text = currentName;
+    }
+
+    public void RandomizeCharacter() {
+        // For each ToggleGroup activate random child
+        ActivateRandomToggleInGroup(skinTonesOptions);
+        ActivateRandomToggleInGroup(hairStyleOptions);
+        ActivateRandomToggleInGroup(hairColorOptions);
+        ActivateRandomToggleInGroup(outfitOptions);
+        ActivateRandomToggleInGroup(shoesOptions);
+    }
+
+    private void ActivateRandomToggleInGroup(ToggleGroup group) {
+        Toggle[] options = group.GetComponentsInChildren<Toggle>();
+        options[Random.Range(0, options.Length - 1)].isOn = true;
+    }
+
+    private void Start() {
         customizationOptions = PlayerState.Instance.customizationOptions;
 
         // Reset the character to defaults
