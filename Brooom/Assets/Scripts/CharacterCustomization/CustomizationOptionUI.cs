@@ -28,9 +28,8 @@ public class CustomizationOptionUI : MonoBehaviour
 
     public void OnActiveChanged(bool isActive) {
         if (isActive) {
-            // Apply customization
+            // Apply customization to the character
             changedcharacter.ApplyCustomization(changedPart, assignedData);
-            // TODO: Save the selected option
         }
     }
 }

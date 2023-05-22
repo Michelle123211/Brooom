@@ -74,7 +74,7 @@ public class CharacterCreatorUI : MonoBehaviour
             Toggle toggle = option.GetComponent<Toggle>();
             toggle.group = parentGroup;
             option.Initialize(character, customizedPart, variant, i);
-            // TODO: Change to loading saved state
+            // The first option is the default one
             if (defaultToggle == null)
                 defaultToggle = toggle;
             ++i;

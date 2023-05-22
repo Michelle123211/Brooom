@@ -21,8 +21,8 @@ public class MainMenuUI : MonoBehaviour
     }
 
     public void RestartGame() {
-        // TODO: Remove everything from the saved state
-        // TODO: Reset the current state
+        // The saved state and current state will be reset after the new character is created
+        //      This gives the player an option to go back without losing the data
         // Load the CharacterCreation scene
         SceneLoader.Instance.LoadScene(Scene.CharacterCreation);
     }

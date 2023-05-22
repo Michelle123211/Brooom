@@ -14,7 +14,11 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, IInitializableSi
             else {
                 // Load it from a file and cache the result
                 characterCustomization = new CharacterCustomizationData();
-                characterCustomization.LoadFromSaveData(SaveSystem.LoadCharacterCustomization(), customizationOptions);
+                CharacterCustomizationSaveData characterSaveData = SaveSystem.LoadCharacterCustomization();
+                if (characterSaveData != null)
+                    characterCustomization.LoadFromSaveData(characterSaveData, customizationOptions);
+                else
+                    characterCustomization.InitializeToDefaultValues(customizationOptions);
                 return characterCustomization;
             }
         }
@@ -24,6 +28,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, IInitializableSi
             SaveSystem.SaveCharacterCustomization(characterCustomization.GetSaveData());
         }
     }
+
+    
 
 
     private Dictionary<string, int> broomUpgradeLevels = new Dictionary<string, int>();

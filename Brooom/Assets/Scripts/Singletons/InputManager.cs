@@ -60,22 +60,20 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 	}
 
 	public void SaveBindings() {
-		// TODO: Change it to saving to a file (together with the player state)
 		if (playerInput == null) {
 			Debug.LogWarning(playerInputNullError);
 			return;
 		}
 		string keyBindings = playerInput.actions.SaveBindingOverridesAsJson();
-		PlayerPrefs.SetString(rebindingSaveKey, keyBindings);
+		SaveSystem.SaveKeyBindings(keyBindings);
 	}
 
 	public void LoadBindings() {
-		// TODO: Change it to loading from a file (together with the player state)
 		if (playerInput == null) {
 			Debug.LogWarning(playerInputNullError);
 			return;
 		}
-		string keyBindings = PlayerPrefs.GetString(rebindingSaveKey, string.Empty);
+		string keyBindings = SaveSystem.LoadKeyBindings();
 		if (!string.IsNullOrEmpty(keyBindings)) { // some bindings were saved previously
 			playerInput.actions.LoadBindingOverridesFromJson(keyBindings);
 		}

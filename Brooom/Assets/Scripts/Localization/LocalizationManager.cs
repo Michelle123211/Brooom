@@ -82,8 +82,8 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 			CurrentLanguage = languageName;
 			currentLanguageDictionary = languageDictionary;
 			onCurrentLanguageChanged?.Invoke(); // inform others interested that the language was changed
-			// Save the current language persistently
-			PlayerPrefs.SetString(currentLanguageSaveKey, CurrentLanguage); // TODO: Change it to saving to a file (together with the player state)
+			// Save the current language persistently to a file
+			SaveSystem.SaveCurrentLanguage(CurrentLanguage);
 		} else {
 			Debug.LogWarning($"There is no language '{languageName}'.");
 		}
@@ -97,8 +97,7 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 	public void InitializeSingleton() {
 		LoadDataFromJSONFile();
 		// Load the persistently saved selected language from earlier
-		// TODO: Change it to loading from a file (together with the player state)
-		string loadedLanguage = PlayerPrefs.GetString(currentLanguageSaveKey, string.Empty);
+		string loadedLanguage = SaveSystem.LoadCurrentLanguage();
 		if (!string.IsNullOrEmpty(loadedLanguage)) {
 			ChangeCurrentLanguage(loadedLanguage);
 		}
