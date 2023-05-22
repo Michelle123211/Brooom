@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializableSingleton
+public class InputManager : MonoBehaviourSingleton<InputManager>, ISingleton
 {
 	public const string rebindingSaveKey = "KeyBindings";
 	public const string playerInputNullError = "InputManager does not have a PlayerInput component. Do you access the InputManager after it was destroyed? Or did you forget to put InputManager prefab into the scene?";
@@ -57,6 +57,13 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 		LoadBindings();
 		SetupInputActions();
 		UpdateInputs();
+	}
+
+	public void AwakeSingleton() {
+	}
+
+	protected override void SetSingletonOptions() {
+		Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.LazyInitialization;
 	}
 
 	public void SaveBindings() {
@@ -142,11 +149,6 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, IInitializable
 				// TODO: Add more types if necessary
 			}
 		}
-	}
-
-	private void Awake() {
-		if (Instance != null && Instance != this)
-			Destroy(gameObject); // destroy redundant instance
 	}
 
 }

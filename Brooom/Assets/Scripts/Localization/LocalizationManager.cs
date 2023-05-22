@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 
-public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, IInitializableSingleton {
+public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, ISingleton {
 
 	[Tooltip("Name of the file (in the Resources) containing localization data. Without extension (e.g. 'translations').")]
 	public string fileName = "translations";
@@ -101,6 +101,13 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 		if (!string.IsNullOrEmpty(loadedLanguage)) {
 			ChangeCurrentLanguage(loadedLanguage);
 		}
+	}
+
+	public void AwakeSingleton() {
+	}
+
+	protected override void SetSingletonOptions() {
+		Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.LazyInitialization;
 	}
 
 	// Loads languages and phrases from an input file located in Resources

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState : MonoBehaviourSingleton<PlayerState>, IInitializableSingleton
+public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 {
     public CharacterCustomizationOptions customizationOptions;
 
@@ -41,12 +41,14 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, IInitializableSi
 
 
     public void InitializeSingleton() {
+    }
 
+    public void AwakeSingleton() {
     }
 
 
-    // Returns the highest purchased level of the given broom upgrade
-    public int GetBroomUpgradeLevel(string upgradeName) {
+	// Returns the highest purchased level of the given broom upgrade
+	public int GetBroomUpgradeLevel(string upgradeName) {
         if (broomUpgradeLevels.ContainsKey(upgradeName))
             return broomUpgradeLevels[upgradeName];
         else
@@ -56,11 +58,6 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, IInitializableSi
     // Saves the given level as the highest purchased one for the given broom upgrade
     public void SetBroomUpgradeLevel(string upgradeName, int level) {
         broomUpgradeLevels[upgradeName] = level;
-    }
-
-    private void Awake() {
-        if (Instance != null && Instance != this)
-            Destroy(gameObject); // destroy redundant instance
     }
 
 }

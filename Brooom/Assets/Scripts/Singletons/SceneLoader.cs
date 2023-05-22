@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, IInitializableSingleton {
+public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 
 	[SerializeField] private Animator animator;
 
@@ -51,13 +51,13 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, IInitializableSi
 	}
 
 	public void InitializeSingleton() {
-
 	}
 
-	private void Awake() {
-		if (Instance != null && Instance != this) {
-			Destroy(gameObject); // Destroy redundant instances
-		}
+	public void AwakeSingleton() {
+	}
+
+	protected override void SetSingletonOptions() {
+		Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.LazyInitialization;
 	}
 }
 

@@ -67,7 +67,6 @@ public class CharacterAppearance : MonoBehaviour
         renderer.sharedMaterials = customization.assignedMaterials;
     }
 
-    // Start is called before the first frame update
     void Awake()
     {
         InitializeFromCustomizationData(PlayerState.Instance.CharacterCustomization);
