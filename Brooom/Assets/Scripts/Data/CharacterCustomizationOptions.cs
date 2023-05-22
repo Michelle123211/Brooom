@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Customization / Character Customization Options", fileName = "CharacterCustomizationOptions")]
@@ -43,11 +44,9 @@ public class MeshAndMaterialCustomization : Customization {
     public List<MeshAndMaterialVariant> meshVariants;
 
 	public override IEnumerable<CustomizationVariantData> EnumerateVariants() {
-        int i = 0;
         foreach (MeshAndMaterialVariant meshVariant in meshVariants) {
             foreach (MaterialCustomization materialsVariant in meshVariant.materialVariants) {
-                i++;
-                yield return new CustomizationVariantData(i, meshVariant.itemMesh, materialsVariant.materials);
+                yield return new CustomizationVariantData(meshVariant.displayName + "|" + materialsVariant.displayName, meshVariant.itemMesh, materialsVariant.materials);
             }
         }
 	}
@@ -77,32 +76,19 @@ public class MaterialCustomization {
 
 // All necessary data regarding a specific customization option (used to generate options in the UI]
 public class CustomizationVariantData {
-    public CustomizationType type;
     public Color assignedColor;
-    public int variantIndex;
+    public string variantName; // this name is used as identification in the save file
     public Mesh assignedMesh;
     public Material[] assignedMaterials;
 
     public CustomizationVariantData(Color color) {
-        type = CustomizationType.MaterialColor;
         assignedColor = color;
     }
 
-    public CustomizationVariantData(int index, Mesh mesh, Material[] materials) {
-        type = CustomizationType.MeshAndMaterials;
-        variantIndex = index;
+    public CustomizationVariantData(string name, Mesh mesh, Material[] materials) {
+        variantName = name;
         assignedMesh = mesh;
         assignedMaterials = materials;
-    }
-
-    // Applies this customization (changes the given material or renderer)
-    public void ApplyCustomization(Material changedMaterial, SkinnedMeshRenderer changedRenderer) {
-        if (type == CustomizationType.MaterialColor) { // Changing Color of a Material
-            changedMaterial.color = assignedColor;
-        } else if (type == CustomizationType.MeshAndMaterials) { // Changing Mesh and Materials
-            changedRenderer.sharedMesh = assignedMesh;
-            changedRenderer.sharedMaterials = assignedMaterials;
-        }
     }
 }
 
@@ -112,9 +98,87 @@ public enum CustomizationType {
 }
 
 
+// The description of appearance of the character
+public class CharacterCustomizationData {
+    public string name;
+    public CustomizationVariantData skinColor;
+    public CustomizationVariantData hairStyle;
+    public CustomizationVariantData hairColor;
+    public CustomizationVariantData outfit;
+    public CustomizationVariantData shoes;
 
+    public void InitializeToDefaultValues(CharacterCustomizationOptions customizationOptions) {
+        name = "";
+        // Take the first variant
+        skinColor = customizationOptions.skinTones.EnumerateVariants().First();
+        hairStyle = customizationOptions.hair.EnumerateVariants().First();
+        hairColor = customizationOptions.hairColor.EnumerateVariants().First();
+        outfit = customizationOptions.outfits.EnumerateVariants().First();
+        shoes = customizationOptions.shoes.EnumerateVariants().First();
+    }
+
+    public CharacterCustomizationSaveData GetSaveData() {
+        return new CharacterCustomizationSaveData {
+            name = name,
+            skinColor = skinColor.assignedColor,
+            hairStyleName = hairStyle.variantName,
+            hairColor = hairColor.assignedColor,
+            outfitName = outfit.variantName,
+            shoesName = shoes.variantName
+        };
+    }
+
+    public void LoadFromSaveData(CharacterCustomizationSaveData saveData, CharacterCustomizationOptions customizationOptions) {
+        // First load the primitive types
+        name = saveData.name;
+        skinColor = new CustomizationVariantData(saveData.skinColor);
+        hairColor = new CustomizationVariantData(saveData.hairColor);
+        // Then search for the variants according to their names among...
+        // ... hair styles
+        foreach (var variant in customizationOptions.hair.EnumerateVariants()) {
+            if (variant.variantName == saveData.hairStyleName) {
+                hairStyle = variant;
+                break;
+            }
+        }
+        // ... outfits
+        foreach (var variant in customizationOptions.outfits.EnumerateVariants()) {
+            if (variant.variantName == saveData.outfitName) {
+                outfit = variant;
+                break;
+            }
+        }
+        // ... shoes
+        foreach (var variant in customizationOptions.shoes.EnumerateVariants()) {
+            if (variant.variantName == saveData.shoesName) {
+                shoes = variant;
+                break;
+            }
+        }
+        // If anything was not found, use the default value instead
+        ReplaceNullsWithDefaults(customizationOptions);
+    }
+
+    private void ReplaceNullsWithDefaults(CharacterCustomizationOptions customizationOptions) {
+        Color newColor = new Color();
+        if (skinColor.assignedColor == newColor)
+            skinColor = customizationOptions.skinTones.EnumerateVariants().First();
+        if (hairColor.assignedColor == newColor)
+            hairColor = customizationOptions.hairColor.EnumerateVariants().First();
+        if (hairStyle == null)
+            hairStyle = customizationOptions.hair.EnumerateVariants().First();
+        if (outfit == null)
+            outfit = customizationOptions.outfits.EnumerateVariants().First();
+        if (shoes == null)
+            shoes = customizationOptions.shoes.EnumerateVariants().First();
+    }
+}
+
+
+// The smallest class describing the current appearance of the character
 [System.Serializable]
 public class CharacterCustomizationSaveData {
+    public string name;
     public Color skinColor;
     public string hairStyleName;
     public Color hairColor;

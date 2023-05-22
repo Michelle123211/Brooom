@@ -10,26 +10,26 @@ public class CustomizationOptionUI : MonoBehaviour
     [SerializeField] private Image colorImage;
 
     // Customization data
-    private Material changedMaterial;
-    private SkinnedMeshRenderer changedRenderer;
+    private CharacterAppearance changedcharacter;
+    private CustomizedPart changedPart;
     private CustomizationVariantData assignedData;
 
-    public void Initialize(Material material, CustomizationVariantData data) {
-        changedMaterial = material;
+    public void Initialize(CharacterAppearance character, CustomizedPart part, CustomizationVariantData data, int index) {
+        changedcharacter = character;
+        changedPart = part;
         assignedData = data;
-        colorImage.color = assignedData.assignedColor; // displaying the assigned color
-        numberLabel.gameObject.SetActive(false);
-    }
-    public void Initialize(SkinnedMeshRenderer renderer, CustomizationVariantData data) {
-        changedRenderer = renderer;
-        assignedData = data;
-        numberLabel.text = assignedData.variantIndex.ToString(); // numbers are displayed instead of color
+        if (part == CustomizedPart.SkinTone || part == CustomizedPart.HairColor) {
+            colorImage.color = assignedData.assignedColor; // displaying the assigned color
+            numberLabel.gameObject.SetActive(false);
+        } else {
+            numberLabel.text = index.ToString(); // numbers are displayed instead of color
+        }
     }
 
     public void OnActiveChanged(bool isActive) {
         if (isActive) {
             // Apply customization
-            assignedData.ApplyCustomization(changedMaterial, changedRenderer);
+            changedcharacter.ApplyCustomization(changedPart, assignedData);
             // TODO: Save the selected option
         }
     }

@@ -5,14 +5,8 @@ using UnityEngine.UI;
 
 public class CharacterCreatorUI : MonoBehaviour
 {
-    [Header("Character customization options")]
-    [SerializeField] CharacterCustomizationOptions customizationOptions;
-    [Header("Character model parts")]
-    [SerializeField] Material skinMaterial;
-    [SerializeField] Material hairMaterial;
-    [SerializeField] SkinnedMeshRenderer hairRenderer;
-    [SerializeField] SkinnedMeshRenderer outfitRenderer;
-    [SerializeField] SkinnedMeshRenderer shoesRenderer;
+    [Header("Character model")]
+    [SerializeField] CharacterAppearance character;
 
     [Header("UI elements")]
     [SerializeField] CustomizationOptionUI optionPrefab;
@@ -23,6 +17,9 @@ public class CharacterCreatorUI : MonoBehaviour
     [SerializeField] ToggleGroup shoesOptions;
     [SerializeField] Button continueButton;
 
+    private CharacterCustomizationOptions customizationOptions;
+    private CharacterCustomizationData customizationData = new CharacterCustomizationData();
+
     private string currentName;
 
     public void ReturnBack() {
@@ -30,7 +27,13 @@ public class CharacterCreatorUI : MonoBehaviour
     }
 
     public void StartGame() {
-        // TODO: Save all the choices (including the name)
+        // Reset the game state
+        PlayerState.Instance.ResetState();
+        // Save all the choices (including the name)
+        CharacterCustomizationData currentCustomization = character.GetCustomizationData();
+        currentCustomization.name = currentName;
+        PlayerState.Instance.CharacterCustomization = currentCustomization;
+        // Change scene
         SceneLoader.Instance.LoadScene(Scene.Tutorial);
     }
 
@@ -43,39 +46,38 @@ public class CharacterCreatorUI : MonoBehaviour
         }
     }
 
-	private void OnEnable() {
+	private void Start() {
+        customizationOptions = PlayerState.Instance.customizationOptions;
+
+        // Reset the character to defaults
+        customizationData.InitializeToDefaultValues(customizationOptions);
+        character.InitializeFromCustomizationData(customizationData);
+
         // List all the...
         // ... skin tone options
-        FillCustomizationOptions(customizationOptions.skinTones, skinTonesOptions, skinMaterial);
+        FillCustomizationOptions(customizationOptions.skinTones, skinTonesOptions, CustomizedPart.SkinTone);
         // ... hair style options
-        FillCustomizationOptions(customizationOptions.hair, hairStyleOptions, hairRenderer);
+        FillCustomizationOptions(customizationOptions.hair, hairStyleOptions, CustomizedPart.HairStyle);
         // ... hair color options
-        FillCustomizationOptions(customizationOptions.hairColor, hairColorOptions, hairMaterial);
+        FillCustomizationOptions(customizationOptions.hairColor, hairColorOptions, CustomizedPart.HairColor);
         // ... outfit options
-        FillCustomizationOptions(customizationOptions.outfits, outfitOptions, outfitRenderer);
+        FillCustomizationOptions(customizationOptions.outfits, outfitOptions, CustomizedPart.Outfit);
         // ... shoes options
-        FillCustomizationOptions(customizationOptions.shoes, shoesOptions, shoesRenderer);
+        FillCustomizationOptions(customizationOptions.shoes, shoesOptions, CustomizedPart.Shoes);
     }
 
-    private void FillCustomizationOptions(Customization customization, ToggleGroup parentGroup, Material changedMaterial) {
-        FillCustomizationOptions(customization, parentGroup, changedMaterial, null);
-    }
-    private void FillCustomizationOptions(Customization customization, ToggleGroup parentGroup, SkinnedMeshRenderer changedRenderer) {
-        FillCustomizationOptions(customization, parentGroup, null, changedRenderer);
-    }
-    private void FillCustomizationOptions(Customization customization, ToggleGroup parentGroup, Material changedMaterial, SkinnedMeshRenderer changedRenderer) {
+    private void FillCustomizationOptions(Customization customization, ToggleGroup parentGroup, CustomizedPart customizedPart) {
         Toggle defaultToggle = null;
+        int i = 1;
         foreach (var variant in customization.EnumerateVariants()) {
             CustomizationOptionUI option = Instantiate<CustomizationOptionUI>(optionPrefab, parentGroup.transform);
             Toggle toggle = option.GetComponent<Toggle>();
             toggle.group = parentGroup;
-            if (changedMaterial != null)
-                option.Initialize(changedMaterial, variant);
-            else
-                option.Initialize(changedRenderer, variant);
+            option.Initialize(character, customizedPart, variant, i);
             // TODO: Change to loading saved state
             if (defaultToggle == null)
                 defaultToggle = toggle;
+            ++i;
         }
         // Activate the button corresponding to the current outfit
         defaultToggle.isOn = true;

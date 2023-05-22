@@ -2199,7 +2199,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 650, y: 0}
+  m_AnchoredPosition: {x: 649.99994, y: 0}
   m_SizeDelta: {x: 0, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &928775940
@@ -2790,13 +2790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97347dc02a6e2594aaa263d855b69e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customizationOptions: {fileID: 11400000, guid: 4c8fe01a0dfa4184dbe86ca0cd1a5a1f,
-    type: 2}
-  skinMaterial: {fileID: 2100000, guid: bb03473978f67ce48a7ed1f13c50d080, type: 2}
-  hairMaterial: {fileID: 2100000, guid: 895ae046cf48de64aac65ac49122665d, type: 2}
-  hairRenderer: {fileID: 1400078334863853237}
-  outfitRenderer: {fileID: 6066606027935268587}
-  shoesRenderer: {fileID: 5128063987337019771}
+  character: {fileID: 8774670808926667094}
   optionPrefab: {fileID: 3472834923768045559, guid: 42a4cda85b1e7eb4990bbaa24bd21db0,
     type: 3}
   skinTonesOptions: {fileID: 1653257713}
@@ -3659,24 +3653,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32db911c424372842bb32dc030b26ca6, type: 3}
---- !u!137 &1400078334863853237 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 7686509110201124832, guid: 4c56282625b760d4ba57a8ca676f6d90,
-    type: 3}
-  m_PrefabInstance: {fileID: 8774670808926667093}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &5128063987337019771 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 4534966059511447598, guid: 4c56282625b760d4ba57a8ca676f6d90,
-    type: 3}
-  m_PrefabInstance: {fileID: 8774670808926667093}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &6066606027935268587 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 3311569138614501310, guid: 4c56282625b760d4ba57a8ca676f6d90,
-    type: 3}
-  m_PrefabInstance: {fileID: 8774670808926667093}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8774670808926667093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3684,21 +3660,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 140219513940838355, guid: 4c56282625b760d4ba57a8ca676f6d90,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: bb03473978f67ce48a7ed1f13c50d080, type: 2}
-    - target: {fileID: 4268877699730693344, guid: 4c56282625b760d4ba57a8ca676f6d90,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: bb03473978f67ce48a7ed1f13c50d080, type: 2}
-    - target: {fileID: 7686509110201124832, guid: 4c56282625b760d4ba57a8ca676f6d90,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 895ae046cf48de64aac65ac49122665d, type: 2}
     - target: {fileID: 8432019767846037502, guid: 4c56282625b760d4ba57a8ca676f6d90,
         type: 3}
       propertyPath: m_Name
@@ -3761,3 +3722,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c56282625b760d4ba57a8ca676f6d90, type: 3}
+--- !u!114 &8774670808926667094 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1275484982683560961, guid: 4c56282625b760d4ba57a8ca676f6d90,
+    type: 3}
+  m_PrefabInstance: {fileID: 8774670808926667093}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2367cb4d9769984b91d6f9364a3d1ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
