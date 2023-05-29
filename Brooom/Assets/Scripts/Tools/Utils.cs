@@ -27,6 +27,9 @@ public static class Utils
     public static Color WithB(this Color c, float b)
         => new Color(c.r, c.g, b, c.a);
 
+    public static Color ColorFromRBG256(int r, int g, int b)
+        => new Color(r / 256f, g / 256f, b / 256f);
+
 
     public static Vector3 WithX(this Vector3 v, float x)
         => new Vector3(x, v.y, v.z);
