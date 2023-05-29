@@ -270,10 +270,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dimensions: {x: 50, y: 50}
-  pointOffset: 1
+  pointOffset: 0.5
   minimumHeight: -5
   maximumHeight: 10
-  numberOfOctaves: 4
+  numberOfOctaves: 3
   initialFrequency: 0.05
   frequencyFactor: 2
   scaleFactor: 0.5
@@ -326,7 +326,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199197569}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 4300000, guid: dd9d2e65fe55c6345b178540f85ed720, type: 2}
 --- !u!4 &1199197573
 Transform:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class TerrainGenerator : MonoBehaviour
     [Tooltip("Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.")]
     public Vector2 dimensions = new Vector2(50, 50);
     [Tooltip("Distance between two adjacent points in the grid.")]
-    public float pointOffset = 1;
+    public float pointOffset = 0.5f;
 
     [Header("Height parameters")]
     [Tooltip("Minimum Y coordinate.")]
@@ -59,10 +59,26 @@ public class TerrainGenerator : MonoBehaviour
 
     [ContextMenu("Regenerate Terrain")]
     private void GenerateTerrain() {
+        if (mesh == null) return;
         ComputeParameters();
         GenerateTerrainPoints();
         CreateMeshData();
         UpdateMesh();
+    }
+
+    [ContextMenu("Save Mesh")]
+    private void SaveMesh() {
+        if (mesh == null) return;
+        // Get path from the user
+        string path = EditorUtility.SaveFilePanel("Save Mesh Asset", "Assets/Models/Terrain/", "GeneratedTerrainExample", "asset");
+        if (string.IsNullOrEmpty(path)) return;
+        // Convert the returned absolute path to project-relative to use with AssetDatabase
+        path = FileUtil.GetProjectRelativePath(path);
+        // Optimize the mesh (changes ordering of the geometry and vertices to improve vertex cache utilisation)
+        MeshUtility.Optimize(mesh);
+        // Save the asset
+        AssetDatabase.CreateAsset(mesh, path);
+        AssetDatabase.SaveAssets();
     }
 
     private void ComputeParameters() {
@@ -165,21 +181,6 @@ public class TerrainGenerator : MonoBehaviour
         mesh.colors = colors;
 
         mesh.RecalculateNormals();
-    }
-
-    [ContextMenu("Save Mesh")]
-    private void SaveMesh() {
-        if (mesh == null) return;
-        // Get path from the user
-        string path = EditorUtility.SaveFilePanel("Save Mesh Asset", "Assets/Models/Terrain/", "GeneratedTerrainExample", "asset");
-        if (string.IsNullOrEmpty(path)) return;
-        // Convert the returned absolute path to project-relative to use with AssetDatabase
-        path = FileUtil.GetProjectRelativePath(path);
-        // Optimize the mesh (changes ordering of the geometry and vertices to improve vertex cache utilisation)
-        MeshUtility.Optimize(mesh);
-        // Save the asset
-        AssetDatabase.CreateAsset(mesh, path);
-        AssetDatabase.SaveAssets();
     }
 
 	private void OnDrawGizmos() {
