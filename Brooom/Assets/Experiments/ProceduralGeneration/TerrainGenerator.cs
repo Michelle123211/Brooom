@@ -6,14 +6,27 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class TerrainGenerator : MonoBehaviour
 {
+    [Header("Dimensions and resolution")]
     [Tooltip("Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.")]
-    public Vector2 dimensions = new Vector2(100, 100);
+    public Vector2 dimensions = new Vector2(50, 50);
     [Tooltip("Distance between two adjacent points in the grid.")]
     public float pointOffset = 1;
+
+    [Header("Height parameters")]
     [Tooltip("Minimum Y coordinate.")]
     public float minimumHeight = -5;
     [Tooltip("Maximum Y coordinate.")]
     public float maximumHeight = 10;
+
+    [Header("Octaves (from Perlin noise)")]
+    [Tooltip("How many octaves (of different altitude and frequency) will be combined.")]
+    public int numberOfOctaves = 3;
+    [Tooltip("Frequency of the first octave.")]
+    public float initialFrequency = 0.05f;
+    [Tooltip("To switch to the next octave the frequency will be multiplied by this number.")]
+    public float frequencyFactor = 2f;
+    [Tooltip("To switch to the next octave the scale will be multiplied by this number.")]
+    public float scaleFactor = 0.5f;
 
     // Object-oriented representation
     TerrainPoint[,] points;
@@ -67,15 +80,41 @@ public class TerrainGenerator : MonoBehaviour
         float startX = -(float)(pointsCountX - 1) * pointOffset / 2;
         float startZ = -(float)(pointsCountZ - 1) * pointOffset / 2;
         points = new TerrainPoint[pointsCountX, pointsCountZ];
+        // Remember the minimum and maximum heights (for future use in remapping the range)
+        float currMinHeight = float.MaxValue;
+        float currMaxHeight = float.MinValue;
         for (int x = 0, i = 0; x < pointsCountX; x++) {
             for (int z = 0; z < pointsCountZ; z++) {
                 TerrainPoint point = new TerrainPoint();
                 point.vertexIndex = i;
-                // Determine height using Perlin noise
-                float height = Mathf.PerlinNoise((randOffsetX + x) * 0.05f, (randOffsetY + z) * 0.05f) * (maximumHeight - minimumHeight) + minimumHeight;
+                // Determine height using Perlin noise with octaves
+                float height = 0;
+                float scale = 1;
+                float frequency = initialFrequency;
+                // Add contributions from each octave
+                for (int octave = 0; octave < numberOfOctaves; octave++) {
+                    height += Mathf.PerlinNoise((randOffsetX + x * pointOffset) * frequency, (randOffsetY + z * pointOffset) * frequency) * scale; // multiplied by pointOffset to make the overall shape of terrain not dependent on pointOffset
+                    frequency *= frequencyFactor;
+                    scale *= scaleFactor;
+                }
+                // Update minimum and maximum heights
+                if (height < currMinHeight) currMinHeight = height;
+                if (height > currMaxHeight) currMaxHeight = height;
+                // Create a new point
                 point.position = new Vector3(startX + x * pointOffset, height, startZ + z * pointOffset);
                 points[x, z] = point;
                 i++;
+            }
+        }
+        // Remap the range from (currMinHeight, currMaxHeight) to (minimumHeight, maximumHeight)
+        for (int x = 0; x < pointsCountX; x++) {
+            for (int z = 0; z < pointsCountZ; z++) {
+                float newHeight = points[x, z].position.y;
+                // Remap from (currMinHeight, currMaxHeight) to (0,1)
+                newHeight = (newHeight - currMinHeight) / (currMaxHeight - currMinHeight);
+                // Remap from (0,1) to (minimumHeight, maximumHeight)
+                newHeight = newHeight * (maximumHeight - minimumHeight) + minimumHeight;
+                points[x, z].position.y = newHeight;
             }
         }
     }
