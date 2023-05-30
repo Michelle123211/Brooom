@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[System.Serializable]
-public abstract class MapRegion
+[CreateAssetMenu(fileName = "MapRegion", menuName = "Level/Map Region")]
+public class MapRegion : ScriptableObject
 {
+    public string displayName;
     public MapRegionType regionType;
     public Color color;
-    // TODO: Add environment features etc.
+    // TODO: Add environment features etc. (with some description how to place them - e.g. random rotation in which axis, lower density at the edges of the region, etc.)
 }
 
 public enum MapRegionType {
