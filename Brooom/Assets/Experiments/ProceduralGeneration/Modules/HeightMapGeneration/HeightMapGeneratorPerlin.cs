@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // Uses several octaves of Perlin noise to generate a height map
-public class TerrainGeneratorPerlin : LevelGeneratorModule
+public class HeightMapGeneratorPerlin : LevelGeneratorModule
 {
     [Header("Octaves (from Perlin noise)")]
     [Tooltip("How many octaves (of different altitude and frequency) will be combined.")]
