@@ -350,8 +350,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableDiagrams:
-  - {fileID: 11400000, guid: e9af3791db6fa29408a21f911f3efad9, type: 2}
-  - {fileID: 11400000, guid: 137e12241f2f0474099eca7b89c8dbdd, type: 2}
+  - {fileID: 11400000, guid: 9f2c9d4a446095c419cad844ffc15e77, type: 2}
+  - {fileID: 11400000, guid: 52154f815693f1b42a62e95f6de2f63f, type: 2}
   noiseXFrequency: 0.05
   noiseYFrequency: 0.05
 --- !u!114 &1199197576
@@ -394,7 +394,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1837a13c0d43a6e4fb590cf26480a092, type: 2}
   - {fileID: 11400000, guid: 6b0d335004efd114eadb5db31758338f, type: 2}
   - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
-  allowedRegions: 0100000065000000660000006700000068000000
+  allowedRegions: 01000000650000006600000002000000
 --- !u!1 &1960052955
 GameObject:
   m_ObjectHideFlags: 0

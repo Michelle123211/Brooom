@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   diagramRegions:
   - regionType: 1
-    rangeX: {x: 0, y: 1}
-    rangeY: {x: 0, y: 0.3}
+    minValues: {x: 0, y: 0}
+    maxValues: {x: 1, y: 0.3}
   - regionType: 101
-    rangeX: {x: 0.55, y: 1}
-    rangeY: {x: 0, y: 0.7}
+    minValues: {x: 0.55, y: 0}
+    maxValues: {x: 1, y: 0.7}
   - regionType: 102
-    rangeX: {x: 0.3, y: 0.55}
-    rangeY: {x: 0, y: 0.5}
+    minValues: {x: 0.3, y: 0}
+    maxValues: {x: 0.55, y: 0.5}
   - regionType: 103
-    rangeX: {x: 0, y: 0.3}
-    rangeY: {x: 0, y: 0.7}
+    minValues: {x: 0, y: 0}
+    maxValues: {x: 0.3, y: 0.7}
   - regionType: 104
-    rangeX: {x: 0.3, y: 0.55}
-    rangeY: {x: 0.5, y: 0.75}
+    minValues: {x: 0.3, y: 0.5}
+    maxValues: {x: 0.55, y: 0.75}
   - regionType: 2
-    rangeX: {x: 0, y: 1}
-    rangeY: {x: 0.5, y: 1}
+    minValues: {x: 0, y: 0.5}
+    maxValues: {x: 1, y: 1}
   notes: 'Works moderately well for all regions allowed:
 
     - Above Water

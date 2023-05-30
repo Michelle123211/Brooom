@@ -64,7 +64,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		MapRegionType regionType = MapRegionType.NONE;
 		// Get the region exactly on these coordinates
 		foreach (var region in diagram.diagramRegions) {
-			if (x >= region.rangeX.x && x <= region.rangeX.y && y >= region.rangeY.x && y <= region.rangeY.y) {
+			if (x >= region.minValues.x && x <= region.maxValues.x && y >= region.minValues.y && y <= region.maxValues.y) {
 				regionType = region.regionType;
 				break;
 			}
@@ -79,7 +79,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		MapRegionType regionType = MapRegionType.NONE;
 		foreach (var region in diagram.diagramRegions) {
 			if (IsRegionAllowed(region.regionType, regionsAvailability)) {
-				float distance = Mathf.Min(Mathf.Abs(x - region.rangeX.x), Mathf.Abs(x - region.rangeX.y)) + Mathf.Min(Mathf.Abs(y - region.rangeY.x), Mathf.Abs(y - region.rangeY.y));
+				float distance = Mathf.Min(Mathf.Abs(x - region.minValues.x), Mathf.Abs(x - region.maxValues.x)) + Mathf.Min(Mathf.Abs(y - region.minValues.y), Mathf.Abs(y - region.maxValues.y));
 				if (distance < minDistance) {
 					regionType = region.regionType;
 					minDistance = distance;

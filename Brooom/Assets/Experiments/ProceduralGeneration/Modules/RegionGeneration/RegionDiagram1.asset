@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   diagramRegions:
   - regionType: 1
-    rangeX: {x: 0, y: 1}
-    rangeY: {x: 0, y: 0.3}
+    minValues: {x: 0, y: 0}
+    maxValues: {x: 1, y: 0.3}
   - regionType: 101
-    rangeX: {x: 0.5, y: 1}
-    rangeY: {x: 0, y: 0.8}
+    minValues: {x: 0.5, y: 0}
+    maxValues: {x: 1, y: 0.8}
   - regionType: 102
-    rangeX: {x: 0, y: 0.5}
-    rangeY: {x: 0, y: 0.55}
+    minValues: {x: 0, y: 0}
+    maxValues: {x: 0.5, y: 0.55}
   - regionType: 2
-    rangeX: {x: 0, y: 1}
-    rangeY: {x: 0.55, y: 1}
+    minValues: {x: 0, y: 0.55}
+    maxValues: {x: 1, y: 1}
   notes: 'Works quite well for the following allowed regions:
 
     - Above Water
