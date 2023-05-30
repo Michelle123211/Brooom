@@ -26,9 +26,8 @@ public class HeightMapGeneratorPerlin : LevelGeneratorModule
         // Remember the minimum and maximum heights (for future use in remapping the range)
         float currMinHeight = float.MaxValue;
         float currMaxHeight = float.MinValue;
-        for (int x = 0, i = 0; x < level.pointCount.x; x++) {
+        for (int x = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
-                level.terrain[x, y].vertexIndex = i;
                 // Determine height using Perlin noise with octaves
                 float height = 0;
                 float scale = 1;
@@ -41,15 +40,10 @@ public class HeightMapGeneratorPerlin : LevelGeneratorModule
                     frequency *= frequencyFactor;
                     scale *= scaleFactor;
                 }
+                level.terrain[x, y].position.y = height;
                 // Update minimum and maximum heights
                 if (height < currMinHeight) currMinHeight = height;
                 if (height > currMaxHeight) currMaxHeight = height;
-                // Create a new point
-                level.terrain[x, y].position = new Vector3(
-                    level.startPosition.x + x * level.pointOffset, 
-                    height, 
-                    level.startPosition.y + y * level.pointOffset);
-                i++;
             }
         }
         // Remap the range from (currMinHeight, currMaxHeight) to (minimumHeight, maximumHeight)

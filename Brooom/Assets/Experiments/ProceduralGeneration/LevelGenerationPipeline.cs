@@ -75,7 +75,6 @@ public class LevelGenerationPipeline : MonoBehaviour
 		mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
 
-		Initialize();
 		GenerateLevel();
 	}
 
@@ -226,9 +225,10 @@ public class LevelRepresentation {
 
 	private void InitializeTerrain() {
 		terrain = new TerrainPoint[pointCount.x, pointCount.y];
-		for (int x = 0; x < pointCount.x; x++) {
+		for (int x = 0, i = 0; x < pointCount.x; x++) {
 			for (int y = 0; y < pointCount.y; y++) {
-				terrain[x, y] = new TerrainPoint();
+				terrain[x, y] = new TerrainPoint(new Vector3(startPosition.x + x * pointOffset, 0, startPosition.y + y * pointOffset), i);
+				i++;
 			}
 		}
 	}
@@ -241,13 +241,16 @@ public class TerrainPoint {
 	public Color color;
 	public MapRegionType region;
 
-	public TerrainPoint() {
+	private Vector3 origPosition;
+
+	public TerrainPoint(Vector3 position, int index) {
+		origPosition = position;
+		vertexIndex = index;
 		Reset();
 	}
 
 	public void Reset() {
-		vertexIndex = -1;
-		position = Vector3.zero;
+		position = origPosition;
 		color = Color.black;
 		region = MapRegionType.NONE;
 	}
