@@ -19,7 +19,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 	public float pointOffset = 0.5f;
 
 	[Header("Map regions")]
-	[Tooltip("Regions all regions available in the game.")]
+	[Tooltip("All regions available in the game.")]
 	public List<MapRegion> allRegions;
 	[Tooltip("Regions allowed in the generated level.")]
 	public List<MapRegionType> allowedRegions;
@@ -36,7 +36,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 	Color[] colors;
 
 	[ContextMenu("Regenerate")]
-	public void GenerateLevel() {
+	private void RegenerateLevel() { // Regenerates the level with previous parameters
 		if (modules == null) return;
 		level.ResetLevel();
 		foreach (var module in modules) {
@@ -61,12 +61,25 @@ public class LevelGenerationPipeline : MonoBehaviour
 		AssetDatabase.SaveAssets();
 	}
 
+	public void GenerateLevel() { // Generates the level with the current parameters
+		if (modules == null) return;
+		Initialize();
+		foreach (var module in modules) {
+			module.Generate(level);
+		}
+		CreateMeshData();
+		UpdateMesh();
+	}
+
 	private void Start() {
 		mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
 
-		// Initialize level representation
-		level = new LevelRepresentation(dimensions, heightRange, pointOffset);
+		Initialize();
+		GenerateLevel();
+	}
+
+	private void Initialize() {
 		// Initialize regions dictionary
 		regions = new Dictionary<MapRegionType, MapRegion>();
 		if (allRegions == null)
@@ -74,8 +87,8 @@ public class LevelGenerationPipeline : MonoBehaviour
 		foreach (var region in allRegions) {
 			regions.Add(region.regionType, region);
 		}
-
-		GenerateLevel();
+		// Initialize level representation
+		level = new LevelRepresentation(dimensions, heightRange, pointOffset, regions, allowedRegions);
 	}
 
 	private void CreateMeshData() {
@@ -102,14 +115,14 @@ public class LevelGenerationPipeline : MonoBehaviour
 		}
 		// Colors
 		colors = new Color[level.pointCount.x * level.pointCount.y];
-		for (int i = 0; i < vertices.Length; i++) {
-			// For now determined just by the height (fixed intervals, not adapting to the minimum and maximum heights)
-			if (vertices[i].y < 0) { // water
-				colors[i] = Color.blue;
-			} else if (vertices[i].y < 0.5) { // shore
-				colors[i] = Color.yellow;
-			} else { // grass
-				colors[i] = Color.green;
+		for (int x = 0; x < level.pointCount.x - 1; x++) {
+			for (int y = 0; y < level.pointCount.y - 1; y++) {
+				// Assign the color of the region
+				if (regions.TryGetValue(level.terrain[x, y].region, out MapRegion region)) {
+					colors[level.terrain[x, y].vertexIndex] = region.color;
+				} else {
+					colors[level.terrain[x, y].vertexIndex] = Color.black;
+				}
 			}
 		}
 	}
@@ -167,17 +180,18 @@ public class LevelRepresentation {
 
 	// Available regions
 	public Dictionary<MapRegionType, MapRegion> regions;
-	public List<MapRegionType> allowedRegions;
+	public Dictionary<MapRegionType, bool> regionsAvailability; // true if the region may be used in the level
 
 
-	public LevelRepresentation(Vector2 dimensions, Vector2 heightRange, float pointOffset) {
+	public LevelRepresentation(Vector2 dimensions, Vector2 heightRange, float pointOffset, Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
 		this.dimensions = dimensions;
 		this.heightRange = heightRange;
 		this.pointOffset = pointOffset;
 		// Compute other parameters
 		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions
 		this.startPosition = new Vector2(-(float)(pointCount.x - 1) * pointOffset / 2, -(float)(pointCount.y - 1) * pointOffset / 2); // centre is in zero, distance between adjacent points is pointOffset
-
+		InitializeRegionDictionaries(allRegions, allowedRegions);
+		
 		// TODO: track
 
 		InitializeTerrain();
@@ -187,6 +201,25 @@ public class LevelRepresentation {
 		for (int x = 0; x < pointCount.x; x++) {
 			for (int y = 0; y < pointCount.y; y++) {
 				terrain[x, y].Reset();
+			}
+		}
+	}
+
+	private void InitializeRegionDictionaries(Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
+		this.regions = allRegions;
+		if (this.regions == null) this.regions = new Dictionary<MapRegionType, MapRegion>();
+		this.regionsAvailability = new Dictionary<MapRegionType, bool>();
+		// Note all the allowed regions in the dictionary
+		if (allowedRegions != null) {
+			foreach (var allowedRegion in allowedRegions) {
+				this.regionsAvailability.Add(allowedRegion, true);
+			}
+		}
+		// Store all the regions in the dictionary
+		foreach (var region in allRegions) {
+			// If the region is not in the availability dictionary, it is not allowed
+			if (!regionsAvailability.ContainsKey(region.Key)) {
+				regionsAvailability.Add(region.Key, false);
 			}
 		}
 	}
