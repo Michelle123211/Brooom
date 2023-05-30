@@ -51,7 +51,7 @@ public class CharacterCreatorUI : MonoBehaviour
     public void RandomizeName() {
         // TODO: Select a name from a large list which will be used for the global leader board as well
         string[] names = new string[] { "Anna", "Ben", "Charlie", "Diana", "Emil", "Filip", "Gustav", "Hannah", "Iva" };
-        currentName = names[Random.Range(0, names.Length - 1)];
+        currentName = names[Random.Range(0, names.Length)];
         nameInputField.text = currentName;
     }
 
@@ -66,7 +66,7 @@ public class CharacterCreatorUI : MonoBehaviour
 
     private void ActivateRandomToggleInGroup(ToggleGroup group) {
         Toggle[] options = group.GetComponentsInChildren<Toggle>();
-        options[Random.Range(0, options.Length - 1)].isOn = true;
+        options[Random.Range(0, options.Length)].isOn = true;
     }
 
     private void Start() {
