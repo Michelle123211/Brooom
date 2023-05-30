@@ -28,8 +28,7 @@ public class TerrainGeneratorPerlin : LevelGeneratorModule
         float currMaxHeight = float.MinValue;
         for (int x = 0, i = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
-                TerrainPoint point = new TerrainPoint();
-                point.vertexIndex = i;
+                level.terrain[x, y].vertexIndex = i;
                 // Determine height using Perlin noise with octaves
                 float height = 0;
                 float scale = 1;
@@ -46,11 +45,10 @@ public class TerrainGeneratorPerlin : LevelGeneratorModule
                 if (height < currMinHeight) currMinHeight = height;
                 if (height > currMaxHeight) currMaxHeight = height;
                 // Create a new point
-                point.position = new Vector3(
+                level.terrain[x, y].position = new Vector3(
                     level.startPosition.x + x * level.pointOffset, 
                     height, 
                     level.startPosition.y + y * level.pointOffset);
-                level.terrain[x, y] = point;
                 i++;
             }
         }

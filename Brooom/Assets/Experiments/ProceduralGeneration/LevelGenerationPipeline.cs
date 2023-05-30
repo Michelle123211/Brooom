@@ -180,11 +180,24 @@ public class LevelRepresentation {
 
 		// TODO: track
 
-		ResetLevel();
+		InitializeTerrain();
 	}
 
 	public void ResetLevel() {
+		for (int x = 0; x < pointCount.x; x++) {
+			for (int y = 0; y < pointCount.y; y++) {
+				terrain[x, y].Reset();
+			}
+		}
+	}
+
+	private void InitializeTerrain() {
 		terrain = new TerrainPoint[pointCount.x, pointCount.y];
+		for (int x = 0; x < pointCount.x; x++) {
+			for (int y = 0; y < pointCount.y; y++) {
+				terrain[x, y] = new TerrainPoint();
+			}
+		}
 	}
 
 }
@@ -194,4 +207,15 @@ public class TerrainPoint {
 	public Vector3 position;
 	public Color color;
 	public MapRegionType region;
+
+	public TerrainPoint() {
+		Reset();
+	}
+
+	public void Reset() {
+		vertexIndex = -1;
+		position = Vector3.zero;
+		color = Color.black;
+		region = MapRegionType.NONE;
+	}
 }

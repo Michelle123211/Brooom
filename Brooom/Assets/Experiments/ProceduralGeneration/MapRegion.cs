@@ -12,6 +12,7 @@ public abstract class MapRegion
 }
 
 public enum MapRegionType {
+    NONE = 0,
     // Natural
     AboveWater = 1,
     SnowyMountain = 2,
