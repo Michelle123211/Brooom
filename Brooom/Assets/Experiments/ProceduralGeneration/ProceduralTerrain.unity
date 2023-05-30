@@ -337,6 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c67119827cd634db7d81af3e8a158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionSize: 20
 --- !u!114 &1199197575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modules:
-  - {fileID: 1199197575}
+  - {fileID: 1199197574}
   dimensions: {x: 50, y: 50}
   heightRange: {x: -5, y: 10}
   pointOffset: 0.5
@@ -394,7 +395,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1837a13c0d43a6e4fb590cf26480a092, type: 2}
   - {fileID: 11400000, guid: 6b0d335004efd114eadb5db31758338f, type: 2}
   - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
-  allowedRegions: 01000000650000006600000002000000
+  allowedRegions: 010000006500000066000000670000006800000002000000
 --- !u!1 &1960052955
 GameObject:
   m_ObjectHideFlags: 0
