@@ -280,7 +280,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0ae3bdff1240f794fa22cac8c39e98d8, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -349,6 +349,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d6f866cd6b51e40bd338dfbbc56460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  availableDiagrams:
+  - {fileID: 11400000, guid: e9af3791db6fa29408a21f911f3efad9, type: 2}
+  - {fileID: 11400000, guid: 137e12241f2f0474099eca7b89c8dbdd, type: 2}
+  noiseXFrequency: 0.05
+  noiseYFrequency: 0.05
 --- !u!114 &1199197576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,12 +383,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modules:
-  - {fileID: 1199197576}
-  - {fileID: 1199197574}
+  - {fileID: 1199197575}
   dimensions: {x: 50, y: 50}
   heightRange: {x: -5, y: 10}
   pointOffset: 0.5
-  allowedRegions: 
+  allRegions:
+  - {fileID: 11400000, guid: a8334b8766b020042b3977c1cd1437d7, type: 2}
+  - {fileID: 11400000, guid: a197e1e5e72143945b0a5bbaa5f399b2, type: 2}
+  - {fileID: 11400000, guid: a4cc202e6ea09b94490e5ebc1003391d, type: 2}
+  - {fileID: 11400000, guid: 1837a13c0d43a6e4fb590cf26480a092, type: 2}
+  - {fileID: 11400000, guid: 6b0d335004efd114eadb5db31758338f, type: 2}
+  - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
+  allowedRegions: 0100000065000000660000006700000068000000
 --- !u!1 &1960052955
 GameObject:
   m_ObjectHideFlags: 0
