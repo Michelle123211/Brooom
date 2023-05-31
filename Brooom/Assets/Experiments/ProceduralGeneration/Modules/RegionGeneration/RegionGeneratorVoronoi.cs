@@ -10,6 +10,8 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 
 	[Tooltip("The map is divided into a grid of squares. This number determines each square's width (how many terrain points).")]
 	public int regionSize = 20;
+	[Tooltip("Points whose distance to the second closest centre is smaller than this multiple of distance to the closest centre are considered border between regions.")]
+	public float borderTolerance = 2f;
 
 	private int regionCountX, regionCountY; // number of regions in each axis
 	private int regionSizeX, regionSizeY; // size of each grid tile
@@ -98,7 +100,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 			}
 		}
 		// Determine whether the point is on the border based on distance to other centres
-		if (secondMinDistance / minDistance < 2f)
+		if (secondMinDistance / minDistance < borderTolerance)
 			level.terrain[x, y].isOnBorder = true;
 	}
 

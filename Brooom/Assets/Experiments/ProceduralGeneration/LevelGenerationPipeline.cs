@@ -160,19 +160,32 @@ public class LevelGenerationPipeline : MonoBehaviour
 
 	private void OnDrawGizmos() {
 		// Vertices
-		Gizmos.color = Color.black;
-		if (vertices != null) {
-			for (int i = 0; i < vertices.Length; i++) {
-				Gizmos.DrawSphere(vertices[i], 0.05f);
-			}
-		}
+		//Gizmos.color = Color.black;
+		//if (vertices != null) {
+		//	for (int i = 0; i < vertices.Length; i++) {
+		//		Gizmos.DrawSphere(vertices[i], 0.05f);
+		//	}
+		//}
+
 		// Edges
-		Gizmos.color = Color.red;
-		if (triangles != null) {
-			for (int i = 0; i < triangles.Length; i += 3) {
-				Gizmos.DrawLine(vertices[triangles[i]], vertices[triangles[i + 1]]);
-				Gizmos.DrawLine(vertices[triangles[i + 1]], vertices[triangles[i + 2]]);
-				Gizmos.DrawLine(vertices[triangles[i + 2]], vertices[triangles[i]]);
+		//Gizmos.color = Color.red;
+		//if (triangles != null) {
+		//	for (int i = 0; i < triangles.Length; i += 3) {
+		//		Gizmos.DrawLine(vertices[triangles[i]], vertices[triangles[i + 1]]);
+		//		Gizmos.DrawLine(vertices[triangles[i + 1]], vertices[triangles[i + 2]]);
+		//		Gizmos.DrawLine(vertices[triangles[i + 2]], vertices[triangles[i]]);
+		//	}
+		//}
+
+		// Borders
+		Gizmos.color = Color.blue;
+		if (level != null) {
+			for (int x = 0; x < level.pointCount.x; x++) {
+				for (int y = 0; y < level.pointCount.y; y++) {
+					if (level.terrain[x, y].isOnBorder) {
+						Gizmos.DrawSphere(level.terrain[x, y].position, 0.1f);
+					}
+				}
 			}
 		}
 	}

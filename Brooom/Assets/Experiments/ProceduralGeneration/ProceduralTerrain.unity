@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 1199197576}
   - component: {fileID: 1199197575}
   - component: {fileID: 1199197574}
+  - component: {fileID: 1199197579}
   m_Layer: 0
   m_Name: TerrainGenerator
   m_TagString: Untagged
@@ -281,7 +282,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0ae3bdff1240f794fa22cac8c39e98d8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -338,7 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c67119827cd634db7d81af3e8a158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionSize: 20
+  regionSize: 30
 --- !u!114 &1199197575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,7 +387,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modules:
-  - {fileID: 1199197576}
+  - {fileID: 1199197574}
+  - {fileID: 1199197578}
+  - {fileID: 1199197579}
   dimensions: {x: 50, y: 50}
   heightRange: {x: -5, y: 10}
   pointOffset: 0.5
@@ -453,6 +456,19 @@ MonoBehaviour:
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0.1, y: 1}
+--- !u!114 &1199197579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199197569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0985180f48e5ecb46becb0413e663009, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interpolationWidth: 5
 --- !u!1 &1960052955
 GameObject:
   m_ObjectHideFlags: 0
