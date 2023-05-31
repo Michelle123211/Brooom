@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 1199197576}
   - component: {fileID: 1199197575}
   - component: {fileID: 1199197574}
+  - component: {fileID: 1199197580}
   - component: {fileID: 1199197579}
   m_Layer: 0
   m_Name: TerrainGenerator
@@ -340,7 +341,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   regionSize: 30
-  borderTolerance: 3
 --- !u!114 &1199197575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,6 +390,7 @@ MonoBehaviour:
   modules:
   - {fileID: 1199197574}
   - {fileID: 1199197578}
+  - {fileID: 1199197580}
   - {fileID: 1199197579}
   dimensions: {x: 50, y: 50}
   heightRange: {x: -5, y: 10}
@@ -469,6 +470,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0985180f48e5ecb46becb0413e663009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1199197580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199197569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7119fd3e282480a459a647004d9de24b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultBorderTolerance: 5
+  borderToleranceOverrides:
+  - region: 2
+    borderTolerance: 2
 --- !u!1 &1960052955
 GameObject:
   m_ObjectHideFlags: 0

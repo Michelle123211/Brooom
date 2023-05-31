@@ -10,8 +10,6 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 
 	[Tooltip("The map is divided into a grid of squares. This number determines each square's width (how many terrain points).")]
 	public int regionSize = 20;
-	[Tooltip("Points whose distance to other regions (in 8 directions) is less than or equal to this number are considered border between regions.")]
-	public float borderTolerance = 5f;
 
 	private int regionCountX, regionCountY; // number of regions in each axis
 	private int regionSizeX, regionSizeY; // size of each grid tile
@@ -37,9 +35,6 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 
 		// Go through all the terrain points and assign them region from the closest centre
 		AssignClosestRegionToAllPoints(level);
-
-		// Identify points on region borders
-		IdentifyBorders(level);
 	}
 
 	private Vector2[,] RandomlySelectCentres(LevelRepresentation level, List<MapRegionType> allowedRegions) {
@@ -98,35 +93,5 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 				}
 			}
 		}
-	}
-
-	private void IdentifyBorders(LevelRepresentation level) {
-		// For each point determine whether it is on the border based on distance to other regions
-		for (int x = 0; x < level.pointCount.x; x++) {
-			for (int y = 0; y < level.pointCount.y; y++) {
-				level.terrain[x, y].isOnBorder = IsPointOnBorder(level, x, y);
-			}
-		}
-	}
-
-	private bool IsPointOnBorder(LevelRepresentation level, int x, int y) {
-		// Determine whether the point is on the border based on distance to other regions
-		int step = 1;
-		while (step <= borderTolerance) {
-			for (int i = -1; i < 2; i++) {
-				int otherX = x + step * i;
-				if (otherX < 0 || otherX >= level.pointCount.x) continue; // out of bounds check
-				for (int j = -1; j < 2; j++) {
-					if (i == 0 && j == 0) continue;
-					int otherY = y + step * j;
-					if (otherY < 0 || otherY >= level.pointCount.y) continue; // out of bounds check
-					if (level.terrain[otherX, otherY].region != level.terrain[x, y].region) {
-						return true;
-					}
-				}
-			}
-			step++;
-		}
-		return false;
 	}
 }
