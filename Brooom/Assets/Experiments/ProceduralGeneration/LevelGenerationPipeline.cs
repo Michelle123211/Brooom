@@ -240,6 +240,7 @@ public class TerrainPoint {
 	public Vector3 position;
 	public Color color;
 	public MapRegionType region;
+	public bool isOnBorder;
 
 	private Vector3 origPosition;
 
@@ -253,5 +254,6 @@ public class TerrainPoint {
 		position = origPosition;
 		color = Color.black;
 		region = MapRegionType.NONE;
+		isOnBorder = false;
 	}
 }

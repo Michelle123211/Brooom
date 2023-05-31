@@ -35,6 +35,8 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 
 		// Go through all the terrain points and assign them region from the closest centre
 		AssignClosestRegionToAllPoints(level);
+
+		DebugBorder(level);
 	}
 
 	private Vector2[,] RandomlySelectCentres(LevelRepresentation level, List<MapRegionType> allowedRegions) {
@@ -68,24 +70,44 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 			for (int y = 0; y < level.pointCount.y; y++) {
 				// Skip points with already assigned region (e.g. centres)
 				if (level.terrain[x, y].region != MapRegionType.NONE) continue;
-				// Get coordinates of the tile the point belongs to
-				Vector2Int currentTile = new Vector2Int(x / regionSizeX, y / regionSizeY);
 				// Look to the tile and its neighbours and find centre with minimum distance
-				float minDistance = float.MaxValue;
-				Vector2 coords = new Vector2(x, y);
-				for (int offsetX = -1; offsetX < 2; offsetX++) {
-					for (int offsetY = -1; offsetY < 2; offsetY++) {
-						Vector2Int otherTile = currentTile + new Vector2Int(offsetX, offsetY);
-						if (otherTile.x >= 0 && otherTile.x < regionCountX && otherTile.y >= 0 && otherTile.y < regionCountY) { // out of bounds check
-							Vector2 centre = centres[otherTile.x, otherTile.y];
-							float dist = Vector2.Distance(coords, centre);
-							if (dist < minDistance) { // closer centre was found
-								minDistance = dist;
-								level.terrain[x, y].region = level.terrain[(int)centre.x, (int)centre.y].region;
-							}
-						}
+				FindAndAssignCentreWithMinimumDistance(level, x, y);
+			}
+		}
+	}
+
+	private void FindAndAssignCentreWithMinimumDistance(LevelRepresentation level, int x, int y) {
+		// Get coordinates of the tile the point belongs to
+		Vector2Int currentTile = new Vector2Int(x / regionSizeX, y / regionSizeY);
+		// Look to the tile and its neighbours and find centre with minimum distance
+		float minDistance = float.MaxValue;
+		float secondMinDistance = float.MaxValue;
+		Vector2 coords = new Vector2(x, y);
+		for (int offsetX = -1; offsetX < 2; offsetX++) {
+			for (int offsetY = -1; offsetY < 2; offsetY++) {
+				Vector2Int otherTile = currentTile + new Vector2Int(offsetX, offsetY);
+				if (otherTile.x >= 0 && otherTile.x < regionCountX && otherTile.y >= 0 && otherTile.y < regionCountY) { // out of bounds check
+					Vector2 centre = centres[otherTile.x, otherTile.y];
+					float dist = Vector2.Distance(coords, centre);
+					if (dist < minDistance) { // closer centre was found
+						secondMinDistance = minDistance;
+						minDistance = dist;
+						level.terrain[x, y].region = level.terrain[(int)centre.x, (int)centre.y].region;
 					}
 				}
+			}
+		}
+		// Determine whether the point is on the border based on distance to other centres
+		if (secondMinDistance / minDistance < 2f)
+			level.terrain[x, y].isOnBorder = true;
+	}
+
+	private void DebugBorder(LevelRepresentation level) {
+		// Just for debug purposes change all points on border to MapRegionType.NONE
+		for (int x = 0; x < level.pointCount.x; x++) {
+			for (int y = 0; y < level.pointCount.y; y++) {
+				if (level.terrain[x, y].isOnBorder)
+					level.terrain[x, y].region = MapRegionType.NONE;
 			}
 		}
 	}
