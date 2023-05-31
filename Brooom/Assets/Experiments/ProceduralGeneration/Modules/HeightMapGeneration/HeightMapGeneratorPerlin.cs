@@ -12,6 +12,7 @@ public class HeightMapGeneratorPerlin : LevelGeneratorModule
         // Random offset in the Perlin noise to make it different each time
         int randOffsetX = Random.Range(0, 1000);
         int randOffsetY = Random.Range(0, 1000);
+        OctavedPerlinNoise perlinNoise = new OctavedPerlinNoise(randOffsetX, randOffsetY, octaveParams);
         // Grid of points with heights determined by the Perlin noise
         //    - the centre is in (0,0,0)
         //    - distance between adjacent points is level.pointOffset
@@ -21,17 +22,7 @@ public class HeightMapGeneratorPerlin : LevelGeneratorModule
         for (int x = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
                 // Determine height using Perlin noise with octaves
-                float height = 0;
-                float scale = 1;
-                float frequency = octaveParams.initialFrequency;
-                // Add contributions from each octave
-                for (int octave = 0; octave < octaveParams.numberOfOctaves; octave++) {
-                    height += Mathf.PerlinNoise(
-                        (randOffsetX + x * level.pointOffset) * frequency, 
-                        (randOffsetY + y * level.pointOffset) * frequency) * scale; // multiplied by pointOffset to make the overall shape of terrain not dependent on pointOffset
-                    frequency *= octaveParams.frequencyFactor;
-                    scale *= octaveParams.scaleFactor;
-                }
+                float height = perlinNoise.GetValue(x * level.pointOffset, y * level.pointOffset); // multiplied by pointOffset to make the overall shape of terrain not dependent on pointOffset
                 level.terrain[x, y].position.y = height;
                 // Update minimum and maximum heights
                 if (height < currMinHeight) currMinHeight = height;
@@ -41,17 +32,11 @@ public class HeightMapGeneratorPerlin : LevelGeneratorModule
         // Remap the range from (currMinHeight, currMaxHeight) to (level.heightRange.x, level.heightRange.y)
         for (int x = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
-                float newHeight = level.terrain[x, y].position.y;
-                // Remap from (currMinHeight, currMaxHeight) to (0,1)
-                newHeight = (newHeight - currMinHeight) / (currMaxHeight - currMinHeight);
-                // Remap from (0,1) to (level.heightRange.x, level.heightRange.y)
-                newHeight = newHeight * (level.heightRange.y - level.heightRange.x) + level.heightRange.x;
-                level.terrain[x, y].position.y = newHeight;
+                level.terrain[x, y].position.y = Utils.RemapRange(level.terrain[x, y].position.y, currMinHeight, currMaxHeight, level.heightRange.x, level.heightRange.y);
             }
         }
     }
 }
-
 
 [System.Serializable]
 public class PerlinNoiseOctaveParameters {
@@ -63,4 +48,30 @@ public class PerlinNoiseOctaveParameters {
     public float frequencyFactor = 2f;
     [Tooltip("To switch to the next octave the scale will be multiplied by this number.")]
     public float scaleFactor = 0.5f;
+}
+
+public class OctavedPerlinNoise {
+
+    private float offsetX;
+    private float offsetY;
+    private PerlinNoiseOctaveParameters octaves;
+
+    public OctavedPerlinNoise(float offsetX, float offsetY, PerlinNoiseOctaveParameters octaves) {
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        this.octaves = octaves;
+    }
+
+    public float GetValue(float x, float y) {
+        float value = 0;
+        float scale = 1;
+        float frequency = octaves.initialFrequency;
+        // Add contributions from each octave
+        for (int octave = 0; octave < octaves.numberOfOctaves; octave++) {
+            value += Mathf.PerlinNoise((offsetX + x) * frequency, (offsetY + y) * frequency) * scale;
+            frequency *= octaves.frequencyFactor;
+            scale *= octaves.scaleFactor;
+        }
+        return value;
+    }
 }

@@ -386,8 +386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modules:
-  - {fileID: 1199197574}
-  - {fileID: 1199197578}
+  - {fileID: 1199197576}
   dimensions: {x: 50, y: 50}
   heightRange: {x: -5, y: 10}
   pointOffset: 0.5
@@ -442,7 +441,7 @@ MonoBehaviour:
     heightRange: {x: 0.1, y: 0.3}
   - region: 104
     octaveParams:
-      numberOfOctaves: 3
+      numberOfOctaves: 4
       initialFrequency: 0.05
       frequencyFactor: 2
       scaleFactor: 0.5

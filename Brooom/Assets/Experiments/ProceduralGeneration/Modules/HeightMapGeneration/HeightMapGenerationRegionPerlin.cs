@@ -8,13 +8,13 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 	[Tooltip("Different Parlin noise parameters for different regions.")]
 	public List<RegionHeightMapParameters> regionParameters;
 
-	private Dictionary<MapRegionType, RegionHeightMapParameters> regionParamsDict;
-	private Dictionary<MapRegionType, Vector2Int> regionRandomOffsets;
-	private RegionHeightMapParameters defaultParams;
-	private Vector2Int defaultrandomOffset;
+	private Dictionary<MapRegionType, OctavedPerlinNoise> regionPerlinNoise;
+	private Dictionary<MapRegionType, Vector2> regionHeightRange;
+	private OctavedPerlinNoise defaultPerlinNoise;
+	private Vector2 defaultHeightRange = Vector2.up;
 
 	public override void Generate(LevelRepresentation level) {
-		// Initialize Dictionaries of region parameters and random offsets for easier access
+		// Initialize Dictionaries of octaved perlin noises and region heights for easier access
 		// Select default values (used when the region assigned to the point does not have parameters specified)
 		InitializeValues();
 
@@ -24,25 +24,12 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 		// Determine height of each point using octaved Perlin noise with parameters specific for the region
 		for (int x = 0; x < level.pointCount.x; x++) {
 			for (int y = 0; y < level.pointCount.y; y++) {
-				// Look at the assigned region and get its parameters
-				RegionHeightMapParameters regionParams;
-				if (!regionParamsDict.TryGetValue(level.terrain[x, y].region, out regionParams))
-					regionParams = defaultParams;
-				Vector2Int offset;
-				if (!regionRandomOffsets.TryGetValue(level.terrain[x, y].region, out offset))
-					offset = defaultrandomOffset;
+				// Look at the assigned region and get its noise function
+				OctavedPerlinNoise noise;
+				if (!regionPerlinNoise.TryGetValue(level.terrain[x, y].region, out noise))
+					noise = defaultPerlinNoise;
 				// Determine height with the given parameters
-				float height = 0;
-				float scale = 1;
-				float frequency = regionParams.octaveParams.initialFrequency;
-				// Add contributions from each octave
-				for (int octave = 0; octave < regionParams.octaveParams.numberOfOctaves; octave++) {
-					height += Mathf.PerlinNoise(
-						(offset.x + x * level.pointOffset) * frequency,
-						(offset.y + y * level.pointOffset) * frequency) * scale; // multiplied by pointOffset to make the overall shape of terrain not dependent on pointOffset
-					frequency *= regionParams.octaveParams.frequencyFactor;
-					scale *= regionParams.octaveParams.scaleFactor;
-				}
+				float height = noise.GetValue(x * level.pointOffset, y * level.pointOffset); // multiplied by pointOffset to make the overall shape of terrain not dependent on pointOffset
 				level.terrain[x, y].position.y = height;
 				// Update minimum and maximum heights
 				if (height < currMinHeight) currMinHeight = height;
@@ -55,38 +42,34 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 	}
 
 	private void InitializeValues() {
-		// Initialize Dictionaries of region parameters and random offsets for easier access
-		regionParamsDict = new Dictionary<MapRegionType, RegionHeightMapParameters>();
-		regionRandomOffsets = new Dictionary<MapRegionType, Vector2Int>();
+		// Initialize Dictionaries of octaved perlin noises and region heights for easier access
+		regionPerlinNoise = new Dictionary<MapRegionType, OctavedPerlinNoise>();
+		regionHeightRange = new Dictionary<MapRegionType, Vector2>();
 		if (regionParameters != null) {
 			foreach (var regionParams in regionParameters) {
-				regionParamsDict.Add(regionParams.region, regionParams);
-				regionRandomOffsets.Add(regionParams.region, new Vector2Int(Random.Range(0, 1000), Random.Range(0, 1000)));
+				OctavedPerlinNoise noise = new OctavedPerlinNoise(Random.Range(0, 1000), Random.Range(0, 1000), regionParams.octaveParams);
+				regionPerlinNoise.Add(regionParams.region, noise);
+				regionHeightRange.Add(regionParams.region, regionParams.heightRange);
 			}
 		}
 		// Select default values (used when the region assigned to the point does not have parameters specified)
-		defaultParams = new RegionHeightMapParameters();
-		defaultrandomOffset = new Vector2Int(Random.Range(0, 1000), Random.Range(0, 1000));
+		defaultPerlinNoise = new OctavedPerlinNoise(Random.Range(0, 1000), Random.Range(0, 1000), new PerlinNoiseOctaveParameters());
+		defaultHeightRange = Vector2.up;
 	}
 
 	private void RemapHeightsInEachRegion(LevelRepresentation level, float currentMinHeight, float currentMaxHeight) {
 		// Remap the range to the one according to the parameters and current height range
-		float currHeightRange = currentMaxHeight - currentMinHeight;
-		float levelHeightRange = level.heightRange.y - level.heightRange.x;
 		for (int x = 0; x < level.pointCount.x; x++) {
 			for (int y = 0; y < level.pointCount.y; y++) {
-				float newHeight = level.terrain[x, y].position.y;
-				// Remap from (currMinHeight, currMaxHeight) to (0,1)
-				newHeight = (newHeight - currentMinHeight) / currHeightRange;
 				// Look at the assigned region and get its parameters
-				RegionHeightMapParameters regionParams;
-				if (!regionParamsDict.TryGetValue(level.terrain[x, y].region, out regionParams))
-					regionParams = defaultParams;
-				// Remap from (0, 1) to (regionParams.heightRange.x, regionParams.heightRange.y)
-				newHeight = newHeight * (regionParams.heightRange.y - regionParams.heightRange.x) + regionParams.heightRange.x;
-				// Remap from (0,1) to (minimumHeight, maximumHeight)
-				newHeight = newHeight * (levelHeightRange) + level.heightRange.x;
-				level.terrain[x, y].position.y = newHeight;
+				Vector2 heightRange;
+				if (!regionHeightRange.TryGetValue(level.terrain[x, y].region, out heightRange))
+					heightRange = defaultHeightRange;
+				float newHeight = level.terrain[x, y].position.y;
+				// Remap from (currMinHeight, currMaxHeight) to (regionParams.heightRange.x, regionParams.heightRange.y)
+				newHeight = Utils.RemapRange(newHeight, currentMinHeight, currentMaxHeight, heightRange.x, heightRange.y);
+				// Remap from (0,1) to (level.heightRange.x, level.heightRange.y)
+				level.terrain[x, y].position.y = Utils.RemapRange(newHeight, 0, 1, level.heightRange.x, level.heightRange.y);
 			}
 		}
 	}

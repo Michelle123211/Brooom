@@ -17,6 +17,13 @@ public static class Utils
         return value;
     }
 
+    // Remaps the value from one range to another
+    public static float RemapRange(float value, float fromMin, float fromMax, float toMin, float toMax) {
+        value = (value - fromMin) / (fromMax - fromMin); // from (fromMin, fromMax) to (0, 1)
+        value = value * (toMax - toMin) + toMin; // from (0, 1) to (toMin, toMax)
+        return value;
+    }
+
 
     public static Color WithA(this Color c, float a)
         => new Color(c.r, c.g, c.b, a);
