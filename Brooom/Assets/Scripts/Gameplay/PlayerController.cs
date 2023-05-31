@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             if (pitchInput == -1) pitchInput = 0;
         }
-        if (transform.position.y <= 4 && pitchInput == 1) // TODO: Change this later to distance from the terrain underneath (instead of y = 4)
+        if (transform.position.y <= 0.5 && pitchInput == 1) // TODO: Change this later to distance from the terrain underneath (instead of y = 4)
             pitchInput = 0;
 
         // Yaw

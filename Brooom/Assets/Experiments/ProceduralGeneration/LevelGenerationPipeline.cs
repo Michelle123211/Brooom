@@ -5,6 +5,7 @@ using UnityEditor;
 
 
 [RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshCollider))]
 public class LevelGenerationPipeline : MonoBehaviour
 {
 	[Tooltip("These generators will be used in the exact order.")]
@@ -34,6 +35,8 @@ public class LevelGenerationPipeline : MonoBehaviour
 	Vector3[] vertices;
 	int[] triangles;
 	Color[] colors;
+
+	MeshCollider meshCollider;
 
 	[ContextMenu("Regenerate")]
 	private void RegenerateLevel() { // Regenerates the level with previous parameters
@@ -76,6 +79,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 	private void Start() {
 		mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
+		meshCollider = GetComponent<MeshCollider>();
 
 		GenerateLevel();
 	}
@@ -156,6 +160,8 @@ public class LevelGenerationPipeline : MonoBehaviour
 
 		mesh.RecalculateBounds();
 		mesh.RecalculateNormals();
+
+		meshCollider.sharedMesh = mesh; // the Mesh needs to be assigned every time again
 	}
 
 	private void OnDrawGizmos() {
