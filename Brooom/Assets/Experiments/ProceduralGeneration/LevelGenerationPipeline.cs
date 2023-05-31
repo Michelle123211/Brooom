@@ -43,6 +43,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 			module.Generate(level);
 		}
 		CreateMeshData();
+		ConvertMeshFromSmoothToFlat();
 		UpdateMesh();
 	}
 
@@ -68,6 +69,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 			module.Generate(level);
 		}
 		CreateMeshData();
+		ConvertMeshFromSmoothToFlat();
 		UpdateMesh();
 	}
 
@@ -124,6 +126,22 @@ public class LevelGenerationPipeline : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private void ConvertMeshFromSmoothToFlat() { 
+		Vector3[] newVertices = new Vector3[triangles.Length];
+		int[] newTriangles = new int[triangles.Length];
+		Color[] newColors = new Color[triangles.Length];
+		// Duplicate vertices so that they are not shared between triangles and the normals are not smoothed out
+		for (int i = 0; i < triangles.Length; i++) {
+			newVertices[i] = vertices[triangles[i]];
+			newColors[i] = colors[triangles[i]];
+			newTriangles[i] = i;
+		}
+		// Replace the previous arrays with the new ones
+		vertices = newVertices;
+		triangles = newTriangles;
+		colors = newColors;
 	}
 
 	private void UpdateMesh() {
