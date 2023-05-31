@@ -340,6 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   regionSize: 30
+  borderTolerance: 3
 --- !u!114 &1199197575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,7 +469,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0985180f48e5ecb46becb0413e663009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolationWidth: 5
 --- !u!1 &1960052955
 GameObject:
   m_ObjectHideFlags: 0
