@@ -147,10 +147,14 @@ public class LevelGenerationPipeline : MonoBehaviour
 	private void UpdateMesh() {
 		mesh.Clear();
 
+		// Choose suitable size of index
+		mesh.indexFormat = triangles.Length > 65535 ? UnityEngine.Rendering.IndexFormat.UInt32 : UnityEngine.Rendering.IndexFormat.UInt16;
+
 		mesh.vertices = vertices;
 		mesh.triangles = triangles;
 		mesh.colors = colors;
 
+		mesh.RecalculateBounds();
 		mesh.RecalculateNormals();
 	}
 

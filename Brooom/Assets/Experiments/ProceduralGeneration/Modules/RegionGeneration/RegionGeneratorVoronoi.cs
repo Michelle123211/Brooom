@@ -36,7 +36,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		// Go through all the terrain points and assign them region from the closest centre
 		AssignClosestRegionToAllPoints(level);
 
-		DebugBorder(level);
+		//DebugBorder(level);
 	}
 
 	private Vector2[,] RandomlySelectCentres(LevelRepresentation level, List<MapRegionType> allowedRegions) {
