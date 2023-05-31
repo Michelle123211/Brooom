@@ -250,6 +250,7 @@ GameObject:
   - component: {fileID: 1199197572}
   - component: {fileID: 1199197571}
   - component: {fileID: 1199197577}
+  - component: {fileID: 1199197578}
   - component: {fileID: 1199197576}
   - component: {fileID: 1199197575}
   - component: {fileID: 1199197574}
@@ -367,10 +368,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc21825a1d99bb141919e95aa103a64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfOctaves: 3
-  initialFrequency: 0.05
-  frequencyFactor: 2
-  scaleFactor: 0.5
+  octaveParams:
+    numberOfOctaves: 3
+    initialFrequency: 0.05
+    frequencyFactor: 2
+    scaleFactor: 0.5
 --- !u!114 &1199197577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modules:
   - {fileID: 1199197574}
+  - {fileID: 1199197578}
   dimensions: {x: 50, y: 50}
   heightRange: {x: -5, y: 10}
   pointOffset: 0.5
@@ -396,6 +399,61 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b0d335004efd114eadb5db31758338f, type: 2}
   - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
   allowedRegions: 010000006500000066000000670000006800000002000000
+--- !u!114 &1199197578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199197569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6559d0af6ae6a547818fa357d49e8da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regionParameters:
+  - region: 1
+    octaveParams:
+      numberOfOctaves: 1
+      initialFrequency: 0.1
+      frequencyFactor: 2
+      scaleFactor: 0.5
+    heightRange: {x: 0, y: 0.1}
+  - region: 101
+    octaveParams:
+      numberOfOctaves: 3
+      initialFrequency: 0.1
+      frequencyFactor: 2
+      scaleFactor: 0.5
+    heightRange: {x: 0.1, y: 0.4}
+  - region: 102
+    octaveParams:
+      numberOfOctaves: 1
+      initialFrequency: 0.05
+      frequencyFactor: 2
+      scaleFactor: 0.5
+    heightRange: {x: 0.1, y: 0.2}
+  - region: 103
+    octaveParams:
+      numberOfOctaves: 2
+      initialFrequency: 0.05
+      frequencyFactor: 2
+      scaleFactor: 0.5
+    heightRange: {x: 0.1, y: 0.3}
+  - region: 104
+    octaveParams:
+      numberOfOctaves: 3
+      initialFrequency: 0.05
+      frequencyFactor: 2
+      scaleFactor: 0.5
+    heightRange: {x: 0.1, y: 0.7}
+  - region: 2
+    octaveParams:
+      numberOfOctaves: 5
+      initialFrequency: 0.15
+      frequencyFactor: 2
+      scaleFactor: 0.5
+    heightRange: {x: 0.1, y: 1}
 --- !u!1 &1960052955
 GameObject:
   m_ObjectHideFlags: 0
