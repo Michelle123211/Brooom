@@ -38,6 +38,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 
 	MeshCollider meshCollider;
 
+#if UNITY_EDITOR
 	[ContextMenu("Regenerate")]
 	private void RegenerateLevel() { // Regenerates the level with previous parameters
 		if (modules == null) return;
@@ -64,6 +65,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 		AssetDatabase.CreateAsset(mesh, path);
 		AssetDatabase.SaveAssets();
 	}
+#endif
 
 	public void GenerateLevel() { // Generates the level with the current parameters
 		if (modules == null) return;
