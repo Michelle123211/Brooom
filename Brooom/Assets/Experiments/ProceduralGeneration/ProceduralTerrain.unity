@@ -363,6 +363,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 132671347631147632, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9042582758647628369, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
@@ -418,10 +423,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628370, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: isModuleEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628371, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: isModuleEnabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9042582758647628373, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_Name
       value: TerrainGenerator
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628375, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628376, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: isModuleEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628377, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: isModuleEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628378, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: isModuleEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628380, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: isModuleEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628382, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: isModuleEnabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b87dd4f9d563c3499a0243e9f0a7f70, type: 3}
