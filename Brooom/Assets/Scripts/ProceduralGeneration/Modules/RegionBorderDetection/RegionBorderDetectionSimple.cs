@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Identifies points on region borders (of some given width)
-public class RegionBorderDetectionSimple : LevelGeneratorModule
-{
+public class RegionBorderDetectionSimple : LevelGeneratorModule {
+
+    [Header("Generator parameters")]
+
     [Tooltip("Points whose distance to other regions (in 8 directions) is less than or equal to this number are considered border between regions.")]
     public int defaultBorderTolerance = 5;
     [Tooltip("Some regions may prefer different border tolerance than the default one (e.g. smaller for mountains).")]

@@ -4,8 +4,10 @@ using UnityEngine;
 
 // Applies Gaussian kernel to blur heightmap of the level
 // Depending on parameters may apply the kernel only on region borders
-public class MapInterpolationGauss : LevelGeneratorModule
-{
+public class MapInterpolationGauss : LevelGeneratorModule {
+
+    [Header("Generator parameters")]
+
     public bool interpolateBordersOnly = true;
     public int numberOfIterations = 1;
     public GaussianKernelSize kernelSize = GaussianKernelSize.Kernel5x5;

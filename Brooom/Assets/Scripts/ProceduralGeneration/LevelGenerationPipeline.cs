@@ -44,7 +44,8 @@ public class LevelGenerationPipeline : MonoBehaviour
 		if (modules == null) return;
 		level.ResetLevel();
 		foreach (var module in modules) {
-			module.Generate(level);
+			if (module.isModuleEnabled)
+				module.Generate(level);
 		}
 		CreateMeshData();
 		ConvertMeshFromSmoothToFlat();
@@ -71,7 +72,8 @@ public class LevelGenerationPipeline : MonoBehaviour
 		if (modules == null) return;
 		Initialize();
 		foreach (var module in modules) {
-			module.Generate(level);
+			if (module.isModuleEnabled)
+				module.Generate(level);
 		}
 		CreateMeshData();
 		ConvertMeshFromSmoothToFlat();
@@ -202,6 +204,8 @@ public class LevelGenerationPipeline : MonoBehaviour
 }
 
 public abstract class LevelGeneratorModule : MonoBehaviour {
+	[Tooltip("Disabled module is not executed even when added to the pipeline.")]
+	public bool isModuleEnabled = true;
 	public abstract void Generate(LevelRepresentation level);
 }
 
@@ -212,6 +216,7 @@ public class LevelRepresentation {
 	// Terrain, track and level features
 	public TerrainPoint[,] terrain;
 	// TODO: track
+	public List<TrackPoint> track;
 
 	// Dimensions and resolution
 	public Vector2 dimensions = new Vector2(50, 50); // Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.
@@ -229,22 +234,53 @@ public class LevelRepresentation {
 		this.dimensions = dimensions;
 		this.heightRange = heightRange;
 		this.pointOffset = pointOffset;
-		// Compute other parameters
-		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions
-		this.startPosition = new Vector2(-(float)(pointCount.x - 1) * pointOffset / 2, -(float)(pointCount.y - 1) * pointOffset / 2); // centre is in zero, distance between adjacent points is pointOffset
+		ComputeDependentParameters(); // pointCount and startPosition
 		InitializeRegionDictionaries(allRegions, allowedRegions);
-		
-		// TODO: track
 
 		InitializeTerrain();
+
+		// TODO: track
+		track = new List<TrackPoint>();
 	}
 
 	public void ResetLevel() {
+		// Reset terrain points
 		for (int x = 0; x < pointCount.x; x++) {
 			for (int y = 0; y < pointCount.y; y++) {
 				terrain[x, y].Reset();
 			}
 		}
+		// Reset track
+		track.Clear();
+	}
+
+	// May be used to change dimensions during generation (e.g. to adapt terrain dimensions to the track dimensions)
+	public void ChangeDimensions(Vector2 dimensions) {
+		// Store old parameters
+		Vector2Int oldPointCount = this.pointCount;
+		Vector2 oldStartPosition = this.startPosition;
+		TerrainPoint[,] oldTerrain = this.terrain;
+
+		// Update parameters
+		this.dimensions = dimensions;
+		ComputeDependentParameters();
+
+		// Update terrain
+		InitializeTerrain();
+		for (int x = 0; x < Mathf.Min(oldPointCount.x, pointCount.x); x++) { // copy the upper-left corner of the old terrain
+			for (int y = 0; y < Mathf.Min(oldPointCount.y, pointCount.y); y++) {
+				terrain[x, y].position.y = oldTerrain[x, y].position.y;
+				terrain[x, y].region = oldTerrain[x, y].region;
+				terrain[x, y].isOnBorder = oldTerrain[x, y].isOnBorder;
+				terrain[x, y].color = oldTerrain[x, y].color;
+			}
+		}
+	}
+
+	private void ComputeDependentParameters() {
+		// Compute parameters which are not set from outside
+		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions
+		this.startPosition = new Vector2(-(float)(pointCount.x - 1) * pointOffset / 2, -(float)(pointCount.y - 1) * pointOffset / 2); // centre is in zero, distance between adjacent points is pointOffset
 	}
 
 	private void InitializeRegionDictionaries(Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
@@ -298,5 +334,24 @@ public class TerrainPoint {
 		color = Color.black;
 		region = MapRegionType.NONE;
 		isOnBorder = false;
+	}
+}
+
+public class TrackPoint {
+	public Vector2Int gridCoords;
+	public Vector3 position;
+	public bool isCheckpoint;
+	public GameObject assignedObject;
+
+	public TrackPoint() {
+		this.gridCoords = Vector2Int.zero;
+		this.position = Vector3.zero;
+		this.isCheckpoint = false;
+	}
+
+	public TrackPoint(Vector2Int gridCoords, Vector3 position, bool isCheckpoint) {
+		this.gridCoords = gridCoords;
+		this.position = position;
+		this.isCheckpoint = isCheckpoint;
 	}
 }
