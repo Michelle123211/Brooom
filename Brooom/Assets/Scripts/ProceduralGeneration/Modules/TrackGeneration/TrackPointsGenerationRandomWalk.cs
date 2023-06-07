@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 
-	[Header("Generator parameters")]
-
 	[Tooltip("How many points (hoops) should be generated.")]
 	public int numberOfPoints = 10;
 	[Tooltip("The approximate minimum and maximum distance between two points.")]
@@ -22,8 +20,6 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 	Vector2 minPosition;
 	Vector2 maxPosition;
 
-	// TODO: Snap the points to the underlying terrain grid
-	// TODO: Set grid coordinates of the points
 	// TODO: Make sure the points do not overlap
 	public override void Generate(LevelRepresentation level) {
 		levelDebug = level;
@@ -37,6 +33,8 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 
 		// Update level dimensions so that the track is not out of bounds
 		level.ChangeDimensions(new Vector2(2 * maxPosition.x + levelPadding, 2 * maxPosition.y + levelPadding)); // added some padding around
+
+		SnapPointsToGrid(level);
 	}
 
 	private void GenerateTrackPoints(LevelRepresentation level) {
@@ -54,7 +52,6 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		// Repeat until all the points are generated
 		for (int i = 0; i < numberOfPoints; i++) {
 			// Add the point to a list
-			point.position.y = 15;
 			level.track.Add(point);
 			// Update minimum and maximum positions
 			if (point.position.x < minPosition.x) minPosition.x = point.position.x;
@@ -98,6 +95,20 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		maxPosition.x = newMaxPositionX;
 		minPosition.y = -newMaxPositionZ;
 		maxPosition.y = newMaxPositionZ;
+	}
+
+	private void SnapPointsToGrid(LevelRepresentation level) {
+		int i, j;
+		Vector3 topleft = level.terrain[0, 0].position; // position of the top-left grid point
+		float offset = level.pointOffset; // distance between adjacent grid points
+		foreach (var trackPoint in level.track) {
+			// Snap the points to the underlying terrain grid (to the closest grid point)
+			i = Mathf.RoundToInt(Mathf.Abs(trackPoint.position.x - topleft.x) / offset);
+			j = Mathf.RoundToInt(Mathf.Abs(trackPoint.position.z - topleft.z) / offset);
+			trackPoint.position = level.terrain[i, j].position.WithY(0);
+			// Set grid coordinates of the points
+			trackPoint.gridCoords = new Vector2Int(i, j);
+		}
 	}
 
 	private void OnDrawGizmosSelected() {

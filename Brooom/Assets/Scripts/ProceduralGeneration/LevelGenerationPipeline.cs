@@ -168,7 +168,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 		meshCollider.sharedMesh = mesh; // the Mesh needs to be assigned every time again
 	}
 
-	private void OnDrawGizmos() {
+	private void OnDrawGizmosSelected() {
 		// Vertices
 		//Gizmos.color = Color.black;
 		//if (vertices != null) {
@@ -188,16 +188,16 @@ public class LevelGenerationPipeline : MonoBehaviour
 		//}
 
 		// Borders
-		Gizmos.color = Color.blue;
-		if (level != null) {
-			for (int x = 0; x < level.pointCount.x; x++) {
-				for (int y = 0; y < level.pointCount.y; y++) {
-					if (level.terrain[x, y].isOnBorder) {
-						Gizmos.DrawSphere(level.terrain[x, y].position, 0.1f);
-					}
-				}
-			}
-		}
+		//Gizmos.color = Color.blue;
+		//if (level != null) {
+		//	for (int x = 0; x < level.pointCount.x; x++) {
+		//		for (int y = 0; y < level.pointCount.y; y++) {
+		//			if (level.terrain[x, y].isOnBorder) {
+		//				Gizmos.DrawSphere(level.terrain[x, y].position, 0.1f);
+		//			}
+		//		}
+		//	}
+		//}
 	}
 
 
@@ -285,6 +285,8 @@ public class LevelRepresentation {
 		// Compute parameters which are not set from outside
 		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions
 		this.startPosition = new Vector2(-(float)(pointCount.x - 1) * pointOffset / 2, -(float)(pointCount.y - 1) * pointOffset / 2); // centre is in zero, distance between adjacent points is pointOffset
+		// Update dimensions to the final ones
+		dimensions = new Vector2((pointCount.x - 1) * pointOffset, (pointCount.y - 1) * pointOffset);
 	}
 
 	private void InitializeRegionDictionaries(Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
