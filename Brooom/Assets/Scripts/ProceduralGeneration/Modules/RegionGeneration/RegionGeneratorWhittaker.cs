@@ -6,8 +6,6 @@ using UnityEngine;
 // Uses a diagram with a function similar to Whittaker's biome diagram to divide map into regions
 public class RegionGeneratorWhittaker : LevelGeneratorModule {
 
-	[Header("Generator parameters")]
-
 	[Tooltip("Diagram describing different map regions with functionality similar to Whittaker's biome diagram")]
 	public List<RegionDiagram> availableDiagrams;
 

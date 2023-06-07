@@ -8,8 +8,6 @@ using UnityEngine;
 // Then creates a Voronoi diagram to determine regions
 public class RegionGeneratorVoronoi : LevelGeneratorModule {
 
-	[Header("Generator parameters")]
-
 	[Tooltip("The map is divided into a grid of squares. This number determines each square's width (how many terrain points).")]
 	public int regionSize = 20;
 

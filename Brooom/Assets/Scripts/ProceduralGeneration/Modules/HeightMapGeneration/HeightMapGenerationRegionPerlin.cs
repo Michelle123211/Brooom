@@ -5,8 +5,6 @@ using UnityEngine;
 // Generates height map using octaved Perlin noise with different parameters for different regions
 public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 
-	[Header("Generator parameters")]
-
 	[Tooltip("Different Parlin noise parameters for different regions.")]
 	public List<RegionHeightMapParameters> regionParameters;
 

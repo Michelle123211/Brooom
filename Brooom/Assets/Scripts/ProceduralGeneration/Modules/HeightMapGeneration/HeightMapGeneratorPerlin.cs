@@ -6,8 +6,6 @@ using UnityEngine;
 // Uses several octaves of Perlin noise to generate a height map
 public class HeightMapGeneratorPerlin : LevelGeneratorModule {
 
-    [Header("Generator parameters")]
-
     public PerlinNoiseOctaveParameters octaveParams = new PerlinNoiseOctaveParameters();
 
     public override void Generate(LevelRepresentation level) {

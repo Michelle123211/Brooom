@@ -7,8 +7,6 @@ using UnityEngine;
 // TODO: May start from regions already determined or determine them along the way
 public class HeightMapGeneratorDiamondSquare : MonoBehaviour {
 
-    //[Header("Generator parameters")]
-
     // Start is called before the first frame update
     void Start()
     {

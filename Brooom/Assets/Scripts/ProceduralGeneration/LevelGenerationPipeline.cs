@@ -8,8 +8,8 @@ using UnityEditor;
 [RequireComponent(typeof(MeshCollider))]
 public class LevelGenerationPipeline : MonoBehaviour
 {
-	[Tooltip("These generators will be used in the exact order.")]
-	public List<LevelGeneratorModule> modules;
+	[Tooltip("These generators/modules will be used in the exact order. Disabled module is not executed even if part of the pipeline.")]
+	public List<LevelGeneratorModuleSlot> modules;
 
 	[Header("Terrain parameters")]
 	[Tooltip("Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.")]
@@ -43,9 +43,9 @@ public class LevelGenerationPipeline : MonoBehaviour
 	private void RegenerateLevel() { // Regenerates the level with previous parameters
 		if (modules == null) return;
 		level.ResetLevel();
-		foreach (var module in modules) {
-			if (module.isModuleEnabled)
-				module.Generate(level);
+		foreach (var moduleSlot in modules) {
+			if (moduleSlot.isModuleEnabled)
+				moduleSlot.module.Generate(level);
 		}
 		CreateMeshData();
 		ConvertMeshFromSmoothToFlat();
@@ -71,9 +71,9 @@ public class LevelGenerationPipeline : MonoBehaviour
 	public void GenerateLevel() { // Generates the level with the current parameters
 		if (modules == null) return;
 		Initialize();
-		foreach (var module in modules) {
-			if (module.isModuleEnabled)
-				module.Generate(level);
+		foreach (var moduleSlot in modules) {
+			if (moduleSlot.isModuleEnabled)
+				moduleSlot.module.Generate(level);
 		}
 		CreateMeshData();
 		ConvertMeshFromSmoothToFlat();
@@ -204,9 +204,13 @@ public class LevelGenerationPipeline : MonoBehaviour
 }
 
 public abstract class LevelGeneratorModule : MonoBehaviour {
-	[Tooltip("Disabled module is not executed even when added to the pipeline.")]
-	public bool isModuleEnabled = true;
 	public abstract void Generate(LevelRepresentation level);
+}
+
+[System.Serializable]
+public class LevelGeneratorModuleSlot {
+	public LevelGeneratorModule module;
+	public bool isModuleEnabled = true;
 }
 
 // Holds all the important information necessary for the level generation

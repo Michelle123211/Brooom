@@ -6,10 +6,11 @@ using UnityEngine;
 // Depending on parameters may apply the kernel only on region borders
 public class MapInterpolationGauss : LevelGeneratorModule {
 
-    [Header("Generator parameters")]
-
+    [Tooltip("If true interpolates only heights along the region borders.")]
     public bool interpolateBordersOnly = true;
+    [Tooltip("How many times the interpolation is repeated.")]
     public int numberOfIterations = 1;
+    [Tooltip("Size of Gaussian kernel used to interpolate/blur terrain heights.")]
     public GaussianKernelSize kernelSize = GaussianKernelSize.Kernel5x5;
 
     #region Gaussian kernels
