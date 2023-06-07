@@ -152,12 +152,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modules:
+  - {fileID: 7011073760170370752}
   - {fileID: 9042582758647628370}
   - {fileID: 9042582758647628382}
   - {fileID: 9042582758647628376}
   - {fileID: 9042582758647628377}
   - {fileID: 9042582758647628378}
-  - {fileID: 7011073760170370752}
   dimensions: {x: 50, y: 50}
   heightRange: {x: -5, y: 10}
   pointOffset: 0.5
@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6559d0af6ae6a547818fa357d49e8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isModuleEnabled: 1
   regionParameters:
   - region: 1
     octaveParams:
@@ -236,6 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc21825a1d99bb141919e95aa103a64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isModuleEnabled: 1
   octaveParams:
     numberOfOctaves: 3
     initialFrequency: 0.05
@@ -253,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d6f866cd6b51e40bd338dfbbc56460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isModuleEnabled: 1
   availableDiagrams:
   - {fileID: 11400000, guid: 9f2c9d4a446095c419cad844ffc15e77, type: 2}
   - {fileID: 11400000, guid: 52154f815693f1b42a62e95f6de2f63f, type: 2}
@@ -270,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c67119827cd634db7d81af3e8a158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isModuleEnabled: 1
   regionSize: 30
 --- !u!114 &9042582758647628376
 MonoBehaviour:
@@ -283,6 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7119fd3e282480a459a647004d9de24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isModuleEnabled: 1
   defaultBorderTolerance: 5
   borderToleranceOverrides:
   - region: 2
@@ -299,6 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7d4282840515e4d9a556d172e16b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isModuleEnabled: 1
   interpolateBordersOnly: 1
   numberOfIterations: 5
   kernelSize: 1
@@ -314,6 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7d4282840515e4d9a556d172e16b61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isModuleEnabled: 1
   interpolateBordersOnly: 0
   numberOfIterations: 1
   kernelSize: 1
@@ -329,9 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463b8b52ae125204fa8c6896c6b49c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoopPrefab: {fileID: 8955490708990326914, guid: 2401e52c4a0f073469145858a53c9e0c,
-    type: 3}
-  hoopParent: {fileID: 1704416431875874871}
+  isModuleEnabled: 1
   numberOfPoints: 10
   distanceRange: {x: 4, y: 6}
   maxDirectionChangeAngle: {x: 45, y: 45}
