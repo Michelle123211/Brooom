@@ -54,6 +54,7 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		// Repeat until all the points are generated
 		for (int i = 0; i < numberOfPoints; i++) {
 			// Add the point to a list
+			point.position.y = 15;
 			level.track.Add(point);
 			// Update minimum and maximum positions
 			if (point.position.x < minPosition.x) minPosition.x = point.position.x;
@@ -102,9 +103,9 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 	private void OnDrawGizmosSelected() {
 		// Go through all the points and draw a cube in each of them
 		if (levelDebug != null) {
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.yellow;
 			foreach (var point in levelDebug.track) {
-				Gizmos.DrawCube(point.position, Vector3.one * 0.2f);
+				Gizmos.DrawCube(point.position, Vector3.one * 0.5f);
 			}
 		}
 	}
