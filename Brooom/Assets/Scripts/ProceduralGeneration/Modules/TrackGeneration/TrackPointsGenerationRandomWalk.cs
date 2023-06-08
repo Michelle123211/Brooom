@@ -42,8 +42,7 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		float rotationAngle = maxDirectionChangeAngle.y;
 		// Choose start point (in the middle)
 		point = new TrackPoint();
-		point.gridCoords = new Vector2Int(level.pointCount.x / 2, level.pointCount.y / 2);
-		point.position = level.terrain[point.gridCoords.x, point.gridCoords.y].position;
+		point.position = Vector3.zero;
 		// Choose first direction vector (forward)
 		Vector3 direction = Vector3.forward;
 		// Choose distance (random from reasonable interval)
@@ -62,17 +61,35 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 			nextPoint = new TrackPoint();
 			nextPoint.position = point.position + direction * distance;
 			point = nextPoint;
-			// Choose next distance vector (rotate the previous vector by a reasonably small amount)
+			// Choose next direction vector (rotate the previous vector by a reasonably small amount)
 			float randomValue = Random.value;
-			if (randomValue < 0.4f) // continue turning to the same side
-				rotationAngle = Random.Range(Mathf.Min((rotationAngle / rotationAngle) * maxDirectionChangeAngle.y, 0), Mathf.Max((rotationAngle / rotationAngle) * maxDirectionChangeAngle.y, 0));
-			else if (randomValue < 0.8f) { // prefer turning
+			if (randomValue < 0.4f) { // continue turning to the same side
+				float signedMax = (rotationAngle / Mathf.Abs(rotationAngle)) * maxDirectionChangeAngle.y; // extreme selected based on side
+				rotationAngle = Random.Range(Mathf.Min(signedMax, 0), Mathf.Max(signedMax, 0));
+			} else if (randomValue < 0.8f) { // prefer turning
 				rotationAngle = Random.Range(maxDirectionChangeAngle.y / 2, maxDirectionChangeAngle.y);
 				if (Random.value < 0.5f)
 					rotationAngle *= -1;
 			} else // completely random
 				rotationAngle = Random.Range(-maxDirectionChangeAngle.y, maxDirectionChangeAngle.y);
 			direction = Quaternion.Euler(0, rotationAngle, 0) * direction;
+			// Choose the up/down direction
+			float angleX;
+			if (point.position.y < 1) // only up possible
+				angleX = Random.Range(-maxDirectionChangeAngle.x, 0);
+			else if (point.position.y > level.heightRange.y - 1) // only down possible
+				angleX = Random.Range(0, maxDirectionChangeAngle.x);
+			else {
+				randomValue = Random.value;
+				if (randomValue < 0.4f) { // continue in the same direction
+					float signedMax = direction.y / Mathf.Abs(direction.y) * -maxDirectionChangeAngle.x; // extreme selected based on up/down
+					angleX = Random.Range(Mathf.Min(signedMax, 0), Mathf.Max(signedMax, 0));
+				}  else { // completely random
+					angleX = Random.Range(-maxDirectionChangeAngle.x, maxDirectionChangeAngle.x);
+				}
+			}
+			float newY = (Quaternion.Euler(angleX, 0, 0) * Vector3.forward).y; // rotate forward vector around X axis to get the Y coordinate
+			direction = direction.WithY(newY).normalized; // override Y make the rotation absolute not relative
 			// Choose next distance
 			distance = Random.Range(distanceRange.x, distanceRange.y);
 		}
@@ -105,7 +122,7 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 			// Snap the points to the underlying terrain grid (to the closest grid point)
 			i = Mathf.RoundToInt(Mathf.Abs(trackPoint.position.x - topleft.x) / offset);
 			j = Mathf.RoundToInt(Mathf.Abs(trackPoint.position.z - topleft.z) / offset);
-			trackPoint.position = level.terrain[i, j].position.WithY(0);
+			trackPoint.position = level.terrain[i, j].position.WithY(trackPoint.position.y);
 			// Set grid coordinates of the points
 			trackPoint.gridCoords = new Vector2Int(i, j);
 		}
