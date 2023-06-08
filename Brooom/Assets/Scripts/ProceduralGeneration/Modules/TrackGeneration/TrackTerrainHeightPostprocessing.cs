@@ -13,8 +13,12 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 	private void AdjustPointsHeightAboveTerrain(LevelRepresentation level) {
 		// TODO: Set Y coordinate of the points above terrain
 		foreach (var trackPoint in level.track) {
-			trackPoint.position.y += level.terrain[trackPoint.gridCoords.x, trackPoint.gridCoords.y].position.y + 1;
+			if (trackPoint.position.y < level.terrain[trackPoint.gridCoords.x, trackPoint.gridCoords.y].position.y + 2) {
+				trackPoint.position.y = level.terrain[trackPoint.gridCoords.x, trackPoint.gridCoords.y].position.y + 2;
+				// TODO: Look to some neighbourhood, if there is higher terrain very close, move the point up
+
+				// TODO: Distribute any change to 2 or 3 adjacent points in both sides as well to smooth it out
+			}
 		}
-		// TODO: Limit the Y coordinate according to the maximum altitude of the broom
 	}
 }

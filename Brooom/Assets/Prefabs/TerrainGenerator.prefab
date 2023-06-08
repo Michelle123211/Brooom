@@ -53,6 +53,7 @@ GameObject:
   - component: {fileID: 9042582758647628378}
   - component: {fileID: 7011073760170370752}
   - component: {fileID: 6151264501117884229}
+  - component: {fileID: 7590517373936672831}
   m_Layer: 0
   m_Name: TerrainGenerator
   m_TagString: Untagged
@@ -166,6 +167,8 @@ MonoBehaviour:
   - module: {fileID: 9042582758647628378}
     isModuleEnabled: 1
   - module: {fileID: 6151264501117884229}
+    isModuleEnabled: 1
+  - module: {fileID: 7590517373936672831}
     isModuleEnabled: 1
   dimensions: {x: 50, y: 50}
   heightRange: {x: -5, y: 10}
@@ -339,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfPoints: 10
-  distanceRange: {x: 4, y: 6}
+  distanceRange: {x: 15, y: 20}
   maxDirectionChangeAngle: {x: 30, y: 45}
   levelPadding: 50
 --- !u!114 &6151264501117884229
@@ -354,3 +357,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02076d2b7af6fcc4ba8041825486e48b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7590517373936672831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042582758647628373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d25da180237194084dc46978ab4bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoopPrefab: {fileID: 8955490708990326914, guid: 2401e52c4a0f073469145858a53c9e0c,
+    type: 3}
+  hoopsParent: {fileID: 1704416431875874871}
