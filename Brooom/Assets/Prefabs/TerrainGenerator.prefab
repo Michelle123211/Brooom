@@ -340,7 +340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfPoints: 10
   distanceRange: {x: 4, y: 6}
-  maxDirectionChangeAngle: {x: 45, y: 45}
+  maxDirectionChangeAngle: {x: 30, y: 45}
   levelPadding: 50
 --- !u!114 &6151264501117884229
 MonoBehaviour:

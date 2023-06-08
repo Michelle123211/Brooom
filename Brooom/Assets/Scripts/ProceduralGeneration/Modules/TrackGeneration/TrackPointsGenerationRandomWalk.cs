@@ -62,37 +62,45 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 			nextPoint.position = point.position + direction * distance;
 			point = nextPoint;
 			// Choose next direction vector (rotate the previous vector by a reasonably small amount)
-			float randomValue = Random.value;
-			if (randomValue < 0.4f) { // continue turning to the same side
-				float signedMax = (rotationAngle / Mathf.Abs(rotationAngle)) * maxDirectionChangeAngle.y; // extreme selected based on side
-				rotationAngle = Random.Range(Mathf.Min(signedMax, 0), Mathf.Max(signedMax, 0));
-			} else if (randomValue < 0.8f) { // prefer turning
-				rotationAngle = Random.Range(maxDirectionChangeAngle.y / 2, maxDirectionChangeAngle.y);
-				if (Random.value < 0.5f)
-					rotationAngle *= -1;
-			} else // completely random
-				rotationAngle = Random.Range(-maxDirectionChangeAngle.y, maxDirectionChangeAngle.y);
-			direction = Quaternion.Euler(0, rotationAngle, 0) * direction;
-			// Choose the up/down direction
-			float angleX;
-			if (point.position.y < 1) // only up possible
-				angleX = Random.Range(-maxDirectionChangeAngle.x, 0);
-			else if (point.position.y > level.heightRange.y - 1) // only down possible
-				angleX = Random.Range(0, maxDirectionChangeAngle.x);
-			else {
-				randomValue = Random.value;
-				if (randomValue < 0.4f) { // continue in the same direction
-					float signedMax = direction.y / Mathf.Abs(direction.y) * -maxDirectionChangeAngle.x; // extreme selected based on up/down
-					angleX = Random.Range(Mathf.Min(signedMax, 0), Mathf.Max(signedMax, 0));
-				}  else { // completely random
-					angleX = Random.Range(-maxDirectionChangeAngle.x, maxDirectionChangeAngle.x);
-				}
-			}
-			float newY = (Quaternion.Euler(angleX, 0, 0) * Vector3.forward).y; // rotate forward vector around X axis to get the Y coordinate
+			direction = Quaternion.Euler(0, SelectRotationAngleY(), 0) * direction; // left/right, rotation around the Y axis
+			float newY = (Quaternion.Euler(SelectRotationAngleX(level, point, direction), 0, 0) * Vector3.forward).y; // rotate forward vector around X axis to get the Y coordinate
 			direction = direction.WithY(newY).normalized; // override Y make the rotation absolute not relative
 			// Choose next distance
 			distance = Random.Range(distanceRange.x, distanceRange.y);
 		}
+	}
+
+	private float SelectRotationAngleY() {
+		float angle = 0;
+		float randomValue = Random.value;
+		if (randomValue < 0.4f) { // continue turning to the same side
+			float signedMax = (angle / Mathf.Abs(angle)) * maxDirectionChangeAngle.y; // extreme selected based on side
+			angle = Random.Range(Mathf.Min(signedMax, 0), Mathf.Max(signedMax, 0));
+		} else if (randomValue < 0.8f) { // prefer turning
+			angle = Random.Range(maxDirectionChangeAngle.y / 2, maxDirectionChangeAngle.y);
+			if (Random.value < 0.5f)
+				angle *= -1;
+		} else // completely random
+			angle = Random.Range(-maxDirectionChangeAngle.y, maxDirectionChangeAngle.y);
+		return angle;
+	}
+
+	private float SelectRotationAngleX(LevelRepresentation level, TrackPoint lastPoint, Vector2 lastDirection) {
+		float angle;
+		if (lastPoint.position.y < 1) // only up possible
+			angle = Random.Range(-maxDirectionChangeAngle.x, 0);
+		else if (lastPoint.position.y > level.heightRange.y - 1) // only down possible
+			angle = Random.Range(0, maxDirectionChangeAngle.x);
+		else {
+			float randomValue = Random.value;
+			if (randomValue < 0.4f) { // continue in the same direction
+				float signedMax = lastDirection.y / Mathf.Abs(lastDirection.y) * -maxDirectionChangeAngle.x; // extreme selected based on up/down
+				angle = Random.Range(Mathf.Min(signedMax, 0), Mathf.Max(signedMax, 0));
+			} else { // completely random
+				angle = Random.Range(-maxDirectionChangeAngle.x, maxDirectionChangeAngle.x);
+			}
+		}
+		return angle;
 	}
 
 	// Moves all the points so that the final track is centered around the world origin
