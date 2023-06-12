@@ -359,6 +359,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoopHeightAreaRadius: 10
+  defaultMinimumOffsetAboveGround: 1
+  minHeightOffsetOverrides:
+  - region: 101
+    minimumHeightAboveGround: 3
 --- !u!114 &7590517373936672831
 MonoBehaviour:
   m_ObjectHideFlags: 0
