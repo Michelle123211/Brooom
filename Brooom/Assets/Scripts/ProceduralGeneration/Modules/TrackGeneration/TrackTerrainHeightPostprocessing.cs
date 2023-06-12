@@ -29,7 +29,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 						maxHeight = level.terrain[x, y].position.y;
 				}
 			}
-			// Use this height (+1) for the hoop
+			// Use this height +1 for the hoop
 			trackPoint.position.y = maxHeight + 1;
 			// TODO: Distribute any change to 2 or 3 adjacent points in both sides as well to smooth it out if hoops are too close to each other
 		}

@@ -6,6 +6,8 @@ public class TrackHoopsPlacement : LevelGeneratorModule {
 
 	[Tooltip("Prefab of the hoop.")]
 	public GameObject hoopPrefab;
+	[Tooltip("Prefab of the checkpoint hoop.")]
+	public GameObject checkpointPrefab;
 	[Tooltip("An object which will be parent of all the hoops objects in the hierarchy.")]
 	public Transform hoopsParent;
 
@@ -14,17 +16,22 @@ public class TrackHoopsPlacement : LevelGeneratorModule {
 		for (int i = hoopsParent.childCount - 1; i >= 0; i--) {
 			Destroy(hoopsParent.GetChild(i).gameObject);
 		}
-		// Instantiate hoops in track points
+		// Instantiate hoops/checkpoints in track points
+		TrackPoint point;
 		for (int i = 0; i < level.track.Count; i++) {
-			GameObject hoop = Instantiate(hoopPrefab, level.track[i].position, Quaternion.identity, hoopsParent);
+			point = level.track[i];
+			GameObject prefab = hoopPrefab;
+			if (point.isCheckpoint)
+				prefab = checkpointPrefab;
 			// Orientation is given by the vector from the previous hoop to the next hoop
-			Vector3 previousPosition = hoop.transform.position, nextPosition = hoop.transform.position;
+			Vector3 previousPosition = point.position, nextPosition = point.position;
 			if (i > 0)
 				previousPosition = level.track[i - 1].position;
 			if (i < level.track.Count - 1)
 				nextPosition = level.track[i + 1].position;
-			float angle = Vector3.SignedAngle(Vector3.forward, nextPosition - previousPosition, Vector2.up);
-			hoop.transform.Rotate(Vector3.up, angle); // rotate to the direction between the previous and the next hoops
+			Vector3 direction = (nextPosition - previousPosition).WithY(0); // Y = 0 to rotate only around the Y axis
+			// Create instance
+			Instantiate(prefab, level.track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
 		}
 	}
 }

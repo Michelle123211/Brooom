@@ -17,7 +17,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 	[Tooltip("Distance between two adjacent points in the grid.")]
 	public float pointOffset = 0.5f;
 
-	[Header("Map regions")]
+	[Header("Map regions")] // TODO: Remove once they can be determined from PlayerState
 	[Tooltip("All regions available in the game.")]
 	public List<MapRegion> allRegions;
 	[Tooltip("Regions allowed in the generated level.")]
@@ -217,33 +217,32 @@ public class LevelRepresentation {
 
 	// Terrain, track and level features
 	public TerrainPoint[,] terrain;
-	// TODO: track
 	public List<TrackPoint> track;
 
 	// Dimensions and resolution
 	public Vector2 dimensions = new Vector2(50, 50); // Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.
 	public float pointOffset = 0.5f; // Distance between two adjacent points in the grid.
 	public Vector2Int pointCount; // Number of points on the grid in the X and Z axes
-	public Vector2 startPosition; // Position of the bottom left point of Mesh
-
-	// Player statistics - TODO: Remove once they can be obtained from the PlayerState
-	public float maxAltitude = 10; // Maximum Y coordinate the player can fly up to
+	public Vector2 terrainStartPosition; // Position of the bottom left point of Mesh
 
 	// Available regions
 	public Dictionary<MapRegionType, MapRegion> regions;
 	public Dictionary<MapRegionType, bool> regionsAvailability; // true if the region may be used in the level
 
+	// Player statistics - TODO: Remove once they can be obtained from the PlayerState
+	public float maxAltitude = 10; // Maximum Y coordinate the player can fly up to
+
 
 	public LevelRepresentation(Vector2 dimensions, float pointOffset, float maxAltitude, Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
+		// Terrain
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
 		this.maxAltitude = maxAltitude;
 		ComputeDependentParameters(); // pointCount and startPosition
 		InitializeRegionDictionaries(allRegions, allowedRegions);
-
 		InitializeTerrain();
 
-		// TODO: track
+		// Track
 		track = new List<TrackPoint>();
 	}
 
@@ -262,7 +261,6 @@ public class LevelRepresentation {
 	public void ChangeDimensions(Vector2 dimensions) {
 		// Store old parameters
 		Vector2Int oldPointCount = this.pointCount;
-		Vector2 oldStartPosition = this.startPosition;
 		TerrainPoint[,] oldTerrain = this.terrain;
 
 		// Update parameters
@@ -284,7 +282,7 @@ public class LevelRepresentation {
 	private void ComputeDependentParameters() {
 		// Compute parameters which are not set from outside
 		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions
-		this.startPosition = new Vector2(-(float)(pointCount.x - 1) * pointOffset / 2, -(float)(pointCount.y - 1) * pointOffset / 2); // centre is in zero, distance between adjacent points is pointOffset
+		this.terrainStartPosition = new Vector2(-(float)(pointCount.x - 1) * pointOffset / 2, -(float)(pointCount.y - 1) * pointOffset / 2); // centre is in zero, distance between adjacent points is pointOffset
 		// Update dimensions to the final ones
 		dimensions = new Vector2((pointCount.x - 1) * pointOffset, (pointCount.y - 1) * pointOffset);
 	}
@@ -312,7 +310,7 @@ public class LevelRepresentation {
 		terrain = new TerrainPoint[pointCount.x, pointCount.y];
 		for (int x = 0, i = 0; x < pointCount.x; x++) {
 			for (int y = 0; y < pointCount.y; y++) {
-				terrain[x, y] = new TerrainPoint(new Vector3(startPosition.x + x * pointOffset, 0, startPosition.y + y * pointOffset), i);
+				terrain[x, y] = new TerrainPoint(new Vector3(terrainStartPosition.x + x * pointOffset, 0, terrainStartPosition.y + y * pointOffset), i);
 				i++;
 			}
 		}
@@ -347,7 +345,6 @@ public class TrackPoint {
 	public Vector2Int gridCoords;
 	public Vector3 position;
 	public bool isCheckpoint;
-	public GameObject assignedObject;
 
 	public TrackPoint() {
 		this.gridCoords = Vector2Int.zero;

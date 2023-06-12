@@ -341,7 +341,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463b8b52ae125204fa8c6896c6b49c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfPoints: 10
+  numberOfCheckpoints: 4
+  numberOfHoopsBetween: 3
   distanceRange: {x: 20, y: 30}
   maxDirectionChangeAngle: {x: 30, y: 45}
   levelPadding: 50
@@ -370,6 +371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d25da180237194084dc46978ab4bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoopPrefab: {fileID: 8955490708990326914, guid: d769d81a60086cb499cf402c08071d6d,
+  hoopPrefab: {fileID: 8955490708990326914, guid: 2401e52c4a0f073469145858a53c9e0c,
+    type: 3}
+  checkpointPrefab: {fileID: 8707123838125681049, guid: e6b6f9aa7ad39e743ad1581008394724,
     type: 3}
   hoopsParent: {fileID: 1704416431875874871}

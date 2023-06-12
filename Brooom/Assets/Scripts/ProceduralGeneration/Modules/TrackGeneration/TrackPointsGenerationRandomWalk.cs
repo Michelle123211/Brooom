@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Generates points the track goes through (using random walk)
 public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
-
-	[Tooltip("How many points (hoops) should be generated.")]
-	public int numberOfPoints = 10;
+	[Tooltip("How many checkpoints should be generated.")]
+	public int numberOfCheckpoints = 4;
+	[Tooltip("How many hoops should be generated between two consecutive checkpoints.")]
+	public int numberOfHoopsBetween = 3;
 	[Tooltip("The approximate minimum and maximum distance between two points.")]
 	public Vector2 distanceRange = new Vector2(4f, 6f);
 	[Tooltip("Maximum angle between two consecutive points in the X (up/down) and Y (left/right) axis.")]
@@ -38,6 +40,9 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 	}
 
 	private void GenerateTrackPoints(LevelRepresentation level) {
+		// Compute total number of track points - after each checkpoint a specific number of hoops follows (except the last checkpoint)
+		int numberOfPoints = numberOfCheckpoints + numberOfHoopsBetween * (numberOfCheckpoints - 1);
+
 		TrackPoint point, nextPoint;
 		float rotationAngle = maxDirectionChangeAngle.y;
 		// Choose start point (in the middle)
@@ -57,6 +62,8 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 			if (point.position.x > maxPosition.x) maxPosition.x = point.position.x;
 			if (point.position.z < minPosition.y) minPosition.y = point.position.z;
 			if (point.position.z > maxPosition.y) maxPosition.y = point.position.z;
+			// Mark checkpoints
+			if (i % (numberOfHoopsBetween + 1) == 0) point.isCheckpoint = true;
 			// Move to the next point (given by the previous point, direction vector and distance)
 			nextPoint = new TrackPoint();
 			nextPoint.position = point.position + direction * distance;
