@@ -89,7 +89,7 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		float angle;
 		if (lastPoint.position.y < 1) // only up possible
 			angle = Random.Range(-maxDirectionChangeAngle.x, 0);
-		else if (lastPoint.position.y > level.heightRange.y - 1) // only down possible
+		else if (lastPoint.position.y > level.maxAltitude - 1) // only down possible
 			angle = Random.Range(0, maxDirectionChangeAngle.x);
 		else {
 			float randomValue = Random.value;

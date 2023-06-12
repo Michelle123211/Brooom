@@ -6,6 +6,9 @@ using UnityEngine;
 // Uses several octaves of Perlin noise to generate a height map
 public class HeightMapGeneratorPerlin : LevelGeneratorModule {
 
+    [Tooltip("What is the minimum and maximum heightof the terrain.")]
+    public Vector2 heightRange = new Vector2(-2, 12);
+
     public PerlinNoiseOctaveParameters octaveParams = new PerlinNoiseOctaveParameters();
 
     public override void Generate(LevelRepresentation level) {
@@ -29,10 +32,10 @@ public class HeightMapGeneratorPerlin : LevelGeneratorModule {
                 if (height > currMaxHeight) currMaxHeight = height;
             }
         }
-        // Remap the range from (currMinHeight, currMaxHeight) to (level.heightRange.x, level.heightRange.y)
+        // Remap the range from (currMinHeight, currMaxHeight) to (heightRange.x, heightRange.y)
         for (int x = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
-                level.terrain[x, y].position.y = Utils.RemapRange(level.terrain[x, y].position.y, currMinHeight, currMaxHeight, level.heightRange.x, level.heightRange.y);
+                level.terrain[x, y].position.y = Utils.RemapRange(level.terrain[x, y].position.y, currMinHeight, currMaxHeight, heightRange.x, heightRange.y);
             }
         }
     }

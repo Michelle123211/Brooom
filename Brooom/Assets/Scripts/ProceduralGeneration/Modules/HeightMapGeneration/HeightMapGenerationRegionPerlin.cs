@@ -54,7 +54,7 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 		}
 		// Select default values (used when the region assigned to the point does not have parameters specified)
 		defaultPerlinNoise = new OctavedPerlinNoise(Random.Range(0, 1000), Random.Range(0, 1000), new PerlinNoiseOctaveParameters());
-		defaultHeightRange = Vector2.up;
+		defaultHeightRange = new Vector2(0, 6);
 	}
 
 	private void RemapHeightsInEachRegion(LevelRepresentation level, float currentMinHeight, float currentMaxHeight) {
@@ -67,9 +67,7 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 					heightRange = defaultHeightRange;
 				float newHeight = level.terrain[x, y].position.y;
 				// Remap from (currMinHeight, currMaxHeight) to (regionParams.heightRange.x, regionParams.heightRange.y)
-				newHeight = Utils.RemapRange(newHeight, currentMinHeight, currentMaxHeight, heightRange.x, heightRange.y);
-				// Remap from (0,1) to (level.heightRange.x, level.heightRange.y)
-				level.terrain[x, y].position.y = Utils.RemapRange(newHeight, 0, 1, level.heightRange.x, level.heightRange.y);
+				level.terrain[x, y].position.y = Utils.RemapRange(newHeight, currentMinHeight, currentMaxHeight, heightRange.x, heightRange.y);
 			}
 		}
 	}
@@ -83,6 +81,6 @@ public class RegionHeightMapParameters {
 	public PerlinNoiseOctaveParameters octaveParams = new PerlinNoiseOctaveParameters();
 
 	//[Header("Height")]
-	[Tooltip("What interval of the global height range this lies in (between 0 and 1).")]
-	public Vector2 heightRange = new Vector2(0, 1);
+	[Tooltip("What is the minimum and maximum height in this region.")]
+	public Vector2 heightRange = new Vector2(0, 6);
 }

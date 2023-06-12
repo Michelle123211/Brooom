@@ -171,7 +171,6 @@ MonoBehaviour:
   - module: {fileID: 7590517373936672831}
     isModuleEnabled: 1
   dimensions: {x: 50, y: 50}
-  heightRange: {x: -5, y: 10}
   pointOffset: 0.5
   allRegions:
   - {fileID: 11400000, guid: a8334b8766b020042b3977c1cd1437d7, type: 2}
@@ -200,42 +199,42 @@ MonoBehaviour:
       initialFrequency: 0.1
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0, y: 0.1}
+    heightRange: {x: -2, y: 0}
   - region: 101
     octaveParams:
       numberOfOctaves: 3
       initialFrequency: 0.1
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0.1, y: 0.4}
+    heightRange: {x: 0, y: 4.5}
   - region: 102
     octaveParams:
       numberOfOctaves: 1
       initialFrequency: 0.05
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0.1, y: 0.2}
+    heightRange: {x: 0, y: 1.5}
   - region: 103
     octaveParams:
       numberOfOctaves: 2
       initialFrequency: 0.05
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0.1, y: 0.3}
+    heightRange: {x: 0, y: 3}
   - region: 104
     octaveParams:
       numberOfOctaves: 4
       initialFrequency: 0.05
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0.1, y: 0.7}
+    heightRange: {x: 0, y: 9}
   - region: 2
     octaveParams:
       numberOfOctaves: 5
       initialFrequency: 0.15
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0.1, y: 1}
+    heightRange: {x: 0, y: 13.5}
 --- !u!114 &9042582758647628380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc21825a1d99bb141919e95aa103a64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heightRange: {x: -2, y: 12}
   octaveParams:
     numberOfOctaves: 3
     initialFrequency: 0.05
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c67119827cd634db7d81af3e8a158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionSize: 30
+  regionSize: 100
 --- !u!114 &9042582758647628376
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,8 +14,6 @@ public class LevelGenerationPipeline : MonoBehaviour
 	[Header("Terrain parameters")]
 	[Tooltip("Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.")]
 	public Vector2 dimensions = new Vector2(50, 50);
-	[Tooltip("Minimum and maximum Y coordinate of the terrain.")]
-	public Vector2 heightRange = new Vector2(-5, 10);
 	[Tooltip("Distance between two adjacent points in the grid.")]
 	public float pointOffset = 0.5f;
 
@@ -97,7 +95,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 			regions.Add(region.regionType, region);
 		}
 		// Initialize level representation
-		level = new LevelRepresentation(dimensions, heightRange, pointOffset, regions, allowedRegions);
+		level = new LevelRepresentation(dimensions, pointOffset, 10, regions, allowedRegions);
 	}
 
 	private void CreateMeshData() {
@@ -224,20 +222,22 @@ public class LevelRepresentation {
 
 	// Dimensions and resolution
 	public Vector2 dimensions = new Vector2(50, 50); // Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.
-	public float pointOffset = 0.5f; // Distance between two adjacent points in the grid.											 
-	public Vector2 heightRange = new Vector2(-5, 10); // Minimum and maximum Y coordinate of the terrain.
+	public float pointOffset = 0.5f; // Distance between two adjacent points in the grid.
 	public Vector2Int pointCount; // Number of points on the grid in the X and Z axes
 	public Vector2 startPosition; // Position of the bottom left point of Mesh
+
+	// Player statistics - TODO: Remove once they can be obtained from the PlayerState
+	public float maxAltitude = 10; // Maximum Y coordinate the player can fly up to
 
 	// Available regions
 	public Dictionary<MapRegionType, MapRegion> regions;
 	public Dictionary<MapRegionType, bool> regionsAvailability; // true if the region may be used in the level
 
 
-	public LevelRepresentation(Vector2 dimensions, Vector2 heightRange, float pointOffset, Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
+	public LevelRepresentation(Vector2 dimensions, float pointOffset, float maxAltitude, Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
 		this.dimensions = dimensions;
-		this.heightRange = heightRange;
 		this.pointOffset = pointOffset;
+		this.maxAltitude = maxAltitude;
 		ComputeDependentParameters(); // pointCount and startPosition
 		InitializeRegionDictionaries(allRegions, allowedRegions);
 
