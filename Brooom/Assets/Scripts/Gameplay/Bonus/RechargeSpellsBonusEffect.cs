@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Immediately recharges all equipped spells
 public class RechargeSpellsBonusEffect : BonusEffect {
 	public override void ApplyBonusEffect(PlayerController player) {
-		Debug.Log("Recharged spells.");
+		PlayerState.Instance.raceState.RechargeAllSpells();
 	}
 }

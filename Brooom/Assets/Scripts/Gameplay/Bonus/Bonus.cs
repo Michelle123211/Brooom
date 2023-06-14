@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+
 // Common component of all the bonus objects (handles common functionality and triggering the specific effect)
 [RequireComponent(typeof(Collider))]
 public class Bonus : MonoBehaviour {

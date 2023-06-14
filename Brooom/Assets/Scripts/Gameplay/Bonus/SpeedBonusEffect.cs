@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Speed the player up for a short time
 public class SpeedBonusEffect : BonusEffect
 {
 	[Tooltip("How much speed is added on top of the normal speed.")]
@@ -10,7 +12,6 @@ public class SpeedBonusEffect : BonusEffect
 	public float duration = 8;
 
 	public override void ApplyBonusEffect(PlayerController player) {
-		Debug.Log("Increased speed.");
 		player.SetBonusSpeed(speedAdded, duration);
 	}
 }
