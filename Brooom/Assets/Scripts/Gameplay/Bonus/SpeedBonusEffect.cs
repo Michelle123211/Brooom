@@ -10,6 +10,7 @@ public class SpeedBonusEffect : BonusEffect
 	public float duration = 8;
 
 	public override void ApplyBonusEffect(PlayerController player) {
+		Debug.Log("Increased speed.");
 		player.SetBonusSpeed(speedAdded, duration);
 	}
 }

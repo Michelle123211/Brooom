@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &2805502679685993493
+--- !u!1001 &2701969950545615744
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 2377206856962384146, guid: f116e91b0f210bc40bda5231ad520bdb,
         type: 3}
       propertyPath: m_Name
-      value: SpeedBonus
+      value: RechargeSpellsBonus
       objectReference: {fileID: 0}
     - target: {fileID: 2377206856962384149, guid: f116e91b0f210bc40bda5231ad520bdb,
         type: 3}
@@ -71,31 +71,29 @@ PrefabInstance:
         type: 3}
       propertyPath: bonusMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 36400fbb6e1a9da4ca712e6dee36eaeb, type: 2}
+      objectReference: {fileID: 2100000, guid: f83f4b290d8a6aa4ab39e429c00c206d, type: 2}
     - target: {fileID: 2377206857928318123, guid: f116e91b0f210bc40bda5231ad520bdb,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 36400fbb6e1a9da4ca712e6dee36eaeb, type: 2}
+      objectReference: {fileID: 2100000, guid: f83f4b290d8a6aa4ab39e429c00c206d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f116e91b0f210bc40bda5231ad520bdb, type: 3}
---- !u!1 &437602158423749895 stripped
+--- !u!1 &397119754878368402 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2377206856962384146, guid: f116e91b0f210bc40bda5231ad520bdb,
     type: 3}
-  m_PrefabInstance: {fileID: 2805502679685993493}
+  m_PrefabInstance: {fileID: 2701969950545615744}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6338980877289811194
+--- !u!114 &4462264322127954380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 437602158423749895}
+  m_GameObject: {fileID: 397119754878368402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1293d09e9a4126f488eff16f7a0f6eef, type: 3}
+  m_Script: {fileID: 11500000, guid: c62de1cdaaff18945a182e3d97311b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedAdded: 50
-  duration: 8

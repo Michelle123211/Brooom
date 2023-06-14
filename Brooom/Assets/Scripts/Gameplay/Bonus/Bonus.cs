@@ -38,7 +38,6 @@ public class Bonus : MonoBehaviour {
             // Deactivate and start reactivation countdown
             Invoke(nameof(Activate), reactivationTime);
             Deactivate();
-            Debug.Log(other.name);
         }
 	}
     
@@ -48,7 +47,6 @@ public class Bonus : MonoBehaviour {
     }
 
     public void Deactivate() {
-        Debug.Log("Deactivating bonus.");
         if (!Utils.IsNullEvent(deactivationEvent))
             deactivationEvent.Invoke();
         // TODO: Wait until the event is done, in the meantime e.g. disable only the collider
@@ -57,7 +55,6 @@ public class Bonus : MonoBehaviour {
     }
 
     public void Activate() {
-        Debug.Log("Activating bonus.");
         // TODO: Add some tweening
         gameObject.SetActive(true);
         if (!Utils.IsNullEvent(activationEvent))
