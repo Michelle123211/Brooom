@@ -6,6 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class Spell {
     public Sprite icon;
+    public int coinsCost = 250;
     public bool isUnlocked = false;
     public int manaCost = 20;
     public float cooldown = 10; // how long it takes to recharge the spell
