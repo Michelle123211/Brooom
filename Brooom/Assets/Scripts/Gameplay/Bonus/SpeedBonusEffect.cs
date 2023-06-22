@@ -7,7 +7,7 @@ using UnityEngine;
 public class SpeedBonusEffect : BonusEffect
 {
 	[Tooltip("How much speed is added on top of the normal speed.")]
-	public float speedAdded = 50;
+	public float speedAdded = 10;
 	[Tooltip("Duration of the effect in seconds.")]
 	public float duration = 8;
 

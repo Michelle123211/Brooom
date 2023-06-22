@@ -218,6 +218,7 @@ public class LevelRepresentation {
 	// Terrain, track and level features
 	public TerrainPoint[,] terrain;
 	public List<TrackPoint> track;
+	public List<BonusSpot> bonuses;
 
 	// Dimensions and resolution
 	public Vector2 dimensions = new Vector2(50, 50); // Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.
@@ -356,5 +357,19 @@ public class TrackPoint {
 		this.gridCoords = gridCoords;
 		this.position = position;
 		this.isCheckpoint = isCheckpoint;
+	}
+}
+
+public class BonusSpot {
+	public Vector3 position;
+	public Vector2Int gridCoords; // closest terrain grid point
+	public bool isEmpty = true;
+	public int previousHoopIndex;
+	public float distanceFraction; // how far is the bonus spot between a pair of checkpoints (e.g. 1/4), used for linear interpolation of position
+
+	public BonusSpot(Vector3 position, int previousHoopIndex, float distanceFraction) {
+		this.position = position;
+		this.previousHoopIndex = previousHoopIndex;
+		this.distanceFraction = distanceFraction;
 	}
 }

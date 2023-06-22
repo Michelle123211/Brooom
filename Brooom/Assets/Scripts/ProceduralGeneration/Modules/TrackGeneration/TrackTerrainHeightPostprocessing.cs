@@ -19,12 +19,23 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 		// Change Y coordinate of each track point according to the terrain height in a close neighbourhood, ensure minimum height above ground
 		foreach (var trackPoint in level.track) {
-			float height = FindMaximumHeightInNeighbourhood(level, trackPoint);
+			float height = FindMaximumHeightInNeighbourhood(level, trackPoint.gridCoords);
 			if (trackPoint.position.y < height)
 				trackPoint.position.y = height;
 			// Limit the Y coordinate according to the maximum altitude of the broom
 			trackPoint.position.y = Mathf.Clamp(trackPoint.position.y, 0, level.maxAltitude);
 			// TODO: Distribute any change to 2 or 3 adjacent points in both sides as well to smooth it out - if hoops are too close to each other
+		}
+
+		// Change Y coordinate of each bonus spot according to the terrain height and adjacent hoops height
+		foreach (var bonus in level.bonuses) {
+			// Get height according to the terrain
+			float heightTerrain = FindMaximumHeightInNeighbourhood(level, bonus.gridCoords);
+			bonus.position.y = Mathf.Max(bonus.position.y, heightTerrain);
+			// Get height according to the adjacent hoops
+			float heightHoop = Mathf.Lerp(level.track[bonus.previousHoopIndex].position.y, level.track[bonus.previousHoopIndex + 1].position.y, bonus.distanceFraction);
+			// Take maximum and limit it according to the maximum altitude of the broom
+			bonus.position.y = Mathf.Clamp(Mathf.Max(bonus.position.y, heightHoop), 0, level.maxAltitude);
 		}
 	}
 
@@ -42,16 +53,16 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		}
 	}
 
-	private float FindMaximumHeightInNeighbourhood(LevelRepresentation level, TrackPoint trackPoint) {
+	private float FindMaximumHeightInNeighbourhood(LevelRepresentation level, Vector2Int gridCoords) {
 		// Get maximum height in some small neighbourhood
 		float maxHeight = float.MinValue;
 		float height;
 		int x, y;
 		for (int i = -hoopHeightAreaRadius; i <= hoopHeightAreaRadius; i++) {
-			x = trackPoint.gridCoords.x + i;
+			x = gridCoords.x + i;
 			if (x < 0 || x >= level.pointCount.x) continue; // out of bounds check
 			for (int j = -hoopHeightAreaRadius; j <= hoopHeightAreaRadius; j++) {
-				y = trackPoint.gridCoords.y + j;
+				y = gridCoords.y + j;
 				if (y < 0 || y >= level.pointCount.y) continue; // out of bounds check
 				// Get terrain height + minimum offset above ground
 				height = GetMinimumHeightAboveGround(level.terrain[x, y]);

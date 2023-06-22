@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3290991413137529981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2155503869580160128}
+  m_Layer: 0
+  m_Name: Bonus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2155503869580160128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3290991413137529981}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9042582758647628369}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7741677780549039676
 GameObject:
   m_ObjectHideFlags: 0
@@ -54,6 +85,8 @@ GameObject:
   - component: {fileID: 7011073760170370752}
   - component: {fileID: 6151264501117884229}
   - component: {fileID: 7590517373936672831}
+  - component: {fileID: 9121179430083006447}
+  - component: {fileID: 5708007630854056561}
   m_Layer: 0
   m_Name: TerrainGenerator
   m_TagString: Untagged
@@ -74,6 +107,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1704416431875874871}
+  - {fileID: 2155503869580160128}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -156,6 +190,8 @@ MonoBehaviour:
   modules:
   - module: {fileID: 7011073760170370752}
     isModuleEnabled: 1
+  - module: {fileID: 9121179430083006447}
+    isModuleEnabled: 1
   - module: {fileID: 9042582758647628370}
     isModuleEnabled: 1
   - module: {fileID: 9042582758647628382}
@@ -169,6 +205,8 @@ MonoBehaviour:
   - module: {fileID: 6151264501117884229}
     isModuleEnabled: 1
   - module: {fileID: 7590517373936672831}
+    isModuleEnabled: 1
+  - module: {fileID: 5708007630854056561}
     isModuleEnabled: 1
   dimensions: {x: 50, y: 50}
   pointOffset: 0.5
@@ -380,3 +418,50 @@ MonoBehaviour:
   checkpointPrefab: {fileID: 8707123838125681049, guid: e6b6f9aa7ad39e743ad1581008394724,
     type: 3}
   hoopsParent: {fileID: 1704416431875874871}
+--- !u!114 &9121179430083006447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042582758647628373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb29bba1e01d85140a638ed586ecdde1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countBetweenHoops: 3
+--- !u!114 &5708007630854056561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042582758647628373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25135369e7c9af948acb9c86f19201c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bonuses:
+  - visibleName: Trajectory Highlighting
+    bonusPrefab: {fileID: 2643362084468909627, guid: 15b3f24e6fafb5c4d985c8031d975995,
+      type: 3}
+    countRange: {x: 0, y: 0}
+    pattern: 000000010000
+  - visibleName: Spells Recharge
+    bonusPrefab: {fileID: 397119754878368407, guid: 6435721b611ee8e4ba150c7fcbcbf4c2,
+      type: 3}
+    countRange: {x: 0, y: 0}
+    pattern: 000001000000
+  - visibleName: Increased Speed
+    bonusPrefab: {fileID: 437602158423749890, guid: 7d2c33997b8894943b47343a8cefd947,
+      type: 3}
+    countRange: {x: 0, y: 0}
+    pattern: 000100
+  - visibleName: Increased Mana
+    bonusPrefab: {fileID: 1733204107641668944, guid: 956dcdd731ad493469f33fe153b7bfaf,
+      type: 3}
+    countRange: {x: 0, y: 0}
+    pattern: 010001
+  bonusParent: {fileID: 2155503869580160128}

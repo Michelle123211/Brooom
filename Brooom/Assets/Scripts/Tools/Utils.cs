@@ -47,6 +47,7 @@ public static class Utils
     public static Vector3 WithZ(this Vector3 v, float z)
         => new Vector3(v.x, v.y, z);
 
+
     public static List<T> FindObject<T>() where T : Component {
         List<T> result = new List<T>();
         foreach (GameObject root in SceneManager.GetActiveScene().GetRootGameObjects()) {
