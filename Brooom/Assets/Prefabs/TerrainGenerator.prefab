@@ -447,21 +447,22 @@ MonoBehaviour:
   - visibleName: Trajectory Highlighting
     bonusPrefab: {fileID: 2643362084468909627, guid: 15b3f24e6fafb5c4d985c8031d975995,
       type: 3}
-    countRange: {x: 0, y: 0}
+    countRange: {x: 1, y: 1}
     pattern: 000000010000
   - visibleName: Spells Recharge
     bonusPrefab: {fileID: 397119754878368407, guid: 6435721b611ee8e4ba150c7fcbcbf4c2,
       type: 3}
-    countRange: {x: 0, y: 0}
+    countRange: {x: 1, y: 2}
     pattern: 000001000000
   - visibleName: Increased Speed
     bonusPrefab: {fileID: 437602158423749890, guid: 7d2c33997b8894943b47343a8cefd947,
       type: 3}
-    countRange: {x: 0, y: 0}
+    countRange: {x: 1, y: 4}
     pattern: 000100
   - visibleName: Increased Mana
     bonusPrefab: {fileID: 1733204107641668944, guid: 956dcdd731ad493469f33fe153b7bfaf,
       type: 3}
-    countRange: {x: 0, y: 0}
+    countRange: {x: 1, y: 4}
     pattern: 010001
+  spacing: 1.5
   bonusParent: {fileID: 2155503869580160128}
