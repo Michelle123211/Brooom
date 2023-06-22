@@ -66,9 +66,9 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     }
 
 
-	#region Singleton
-	public void InitializeSingleton() {
-        raceState = new RaceState(100, new List<EquippedSpell>());
+    #region Singleton
+    public void InitializeSingleton() {
+        raceState = new RaceState(100, new EquippedSpell[4]);
     }
 
     public void AwakeSingleton() {

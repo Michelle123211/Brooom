@@ -9,4 +9,8 @@ public class NavigationBonusEffect : BonusEffect {
 		// TODO: Implement
 		Debug.Log("Navigation trail.");
 	}
+
+	public override bool IsAvailable() {
+		return true; // always available
+	}
 }

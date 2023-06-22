@@ -27,6 +27,7 @@ public class BonusPlacement : LevelGeneratorModule {
     private void FillTheBonusSpots(LevelRepresentation level) {
         // Fill the spots according to bonus patterns
         foreach (var bonus in bonuses) {
+            if (!bonus.bonusPrefab.IsAvailable()) continue; // skip bonuses which are not available (yet)
             for (int i = 0; i < level.bonuses.Count; i++) {
                 if (level.bonuses[i].isEmpty && bonus.pattern[i % bonus.pattern.Count]) {  // populate empty spots according to the pattern
                     CreateBonusInstances(level, level.bonuses[i], bonus);
@@ -47,7 +48,7 @@ public class BonusPlacement : LevelGeneratorModule {
         Vector3 leftPosition = spot.position - direction * spacing * ((count - 1) / 2f);
         // Create instances of the bonus
         for (int i = 0; i < count; i++) {
-            Instantiate<Bonus>(bonus.bonusPrefab, leftPosition + direction * spacing * i, Quaternion.identity, bonusParent);
+            Instantiate<BonusEffect>(bonus.bonusPrefab, leftPosition + direction * spacing * i, Quaternion.identity, bonusParent);
         }
         spot.isEmpty = false;
     }
@@ -66,7 +67,7 @@ public class BonusPlacement : LevelGeneratorModule {
 public class BonusPlacementParameters {
     public string visibleName;
     [Tooltip("Prefab of the bonus object.")]
-    public Bonus bonusPrefab;
+    public BonusEffect bonusPrefab;
     [Tooltip("How many instances should be next to each other in one spot (min and max, must be non-negative).")]
     public Vector2Int countRange;
     [Tooltip("Pattern describing frequency of occurences (e.g. [false, true] means every other, e.g. [true, false, true] means every first and third).")]

@@ -14,4 +14,8 @@ public class SpeedBonusEffect : BonusEffect
 	public override void ApplyBonusEffect(PlayerController player) {
 		player.SetBonusSpeed(speedAdded, duration);
 	}
+
+	public override bool IsAvailable() {
+		return true; // always available
+	}
 }

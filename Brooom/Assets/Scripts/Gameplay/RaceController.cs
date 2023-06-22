@@ -16,19 +16,18 @@ public class RaceController : MonoBehaviour
 	}
 }
 
-
 public class RaceState {
     // Mana
     public int currentMana;
     public int maxMana;
     // Spells
-    public List<EquippedSpell> spells;
+    public EquippedSpell[] spellSlots;
     public int selectedSpell; // index of currently selected spell
 
-    public RaceState(int manaAmount, List<EquippedSpell> equippedSpells) {
+    public RaceState(int manaAmount, EquippedSpell[] equippedSpells) {
         this.maxMana = manaAmount;
         this.currentMana = this.maxMana;
-        this.spells = equippedSpells;
+        this.spellSlots = equippedSpells;
         this.selectedSpell = 0;
     }
 
@@ -37,21 +36,24 @@ public class RaceState {
     }
 
     public void UpdateSpellsCharge(float timeDelta) {
-        foreach (var spell in spells) {
-            spell.UpdateCharge(timeDelta);
+        foreach (var spell in spellSlots) {
+            if (spell != null)
+                spell.UpdateCharge(timeDelta);
         }
     }
 
     public void RechargeAllSpells() {
-        foreach (var spell in spells) {
-            spell.Recharge();
+        foreach (var spell in spellSlots) {
+            if (spell != null)
+                spell.Recharge();
         }
     }
 
     public void Reset() {
         this.currentMana = this.maxMana;
-        foreach (var spell in spells) {
-            spell.Reset();
+        foreach (var spell in spellSlots) {
+            if (spell != null)
+                spell.Reset();
         }
         selectedSpell = 0;
     }
