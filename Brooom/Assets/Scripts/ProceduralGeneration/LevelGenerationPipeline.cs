@@ -346,6 +346,7 @@ public class TrackPoint {
 	public Vector2Int gridCoords;
 	public Vector3 position;
 	public bool isCheckpoint;
+	public GameObject assignedObject;
 
 	public TrackPoint() {
 		this.gridCoords = Vector2Int.zero;

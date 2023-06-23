@@ -31,7 +31,7 @@ public class TrackHoopsPlacement : LevelGeneratorModule {
 				nextPosition = level.track[i + 1].position;
 			Vector3 direction = (nextPosition - previousPosition).WithY(0); // Y = 0 to rotate only around the Y axis
 			// Create instance
-			Instantiate(prefab, level.track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
+			point.assignedObject = Instantiate(prefab, level.track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
 		}
 	}
 }
