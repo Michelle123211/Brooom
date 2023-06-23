@@ -23,7 +23,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 			if (trackPoint.position.y < height)
 				trackPoint.position.y = height;
 			// Limit the Y coordinate according to the maximum altitude of the broom
-			trackPoint.position.y = Mathf.Clamp(trackPoint.position.y, 0, level.maxAltitude);
+			trackPoint.position.y = Mathf.Clamp(trackPoint.position.y, 0, PlayerState.Instance.maxAltitude);
 			// TODO: Distribute any change to 2 or 3 adjacent points in both sides as well to smooth it out - if hoops are too close to each other
 		}
 
@@ -35,7 +35,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 			// Get height according to the adjacent hoops
 			float heightHoop = Mathf.Lerp(level.track[bonus.previousHoopIndex].position.y, level.track[bonus.previousHoopIndex + 1].position.y, bonus.distanceFraction);
 			// Take maximum and limit it according to the maximum altitude of the broom
-			bonus.position.y = Mathf.Clamp(Mathf.Max(bonus.position.y, heightHoop), 0, level.maxAltitude);
+			bonus.position.y = Mathf.Clamp(Mathf.Max(bonus.position.y, heightHoop), 0, PlayerState.Instance.maxAltitude);
 		}
 	}
 

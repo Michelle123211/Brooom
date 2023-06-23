@@ -230,15 +230,11 @@ public class LevelRepresentation {
 	public Dictionary<MapRegionType, MapRegion> regions;
 	public Dictionary<MapRegionType, bool> regionsAvailability; // true if the region may be used in the level
 
-	// Player statistics - TODO: Remove once they can be obtained from the PlayerState
-	public float maxAltitude = 10; // Maximum Y coordinate the player can fly up to
-
 
 	public LevelRepresentation(Vector2 dimensions, float pointOffset, float maxAltitude, Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
 		// Terrain
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
-		this.maxAltitude = maxAltitude;
 		ComputeDependentParameters(); // pointCount and startPosition
 		InitializeRegionDictionaries(allRegions, allowedRegions);
 		InitializeTerrain();

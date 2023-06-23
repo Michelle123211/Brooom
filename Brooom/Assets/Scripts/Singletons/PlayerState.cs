@@ -37,6 +37,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 
 
     #region Broom Upgrades
+    public float maxAltitude = 15f; // Maximum Y coordinate the player can fly up to
     private Dictionary<string, int> broomUpgradeLevels = new Dictionary<string, int>();
 
     // Returns the highest purchased level of the given broom upgrade

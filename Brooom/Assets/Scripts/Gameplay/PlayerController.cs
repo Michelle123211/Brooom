@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     [Header("Pitch")]
     public float maxPitchAngle = 35;
     public float pitchResponsiveness = 0.03f;
-    public float maxAltitude = 50;
 
     // Components
     Rigidbody rb;
@@ -44,7 +43,7 @@ public class PlayerController : MonoBehaviour
         this.maxSpeed = maxSpeed;
     }
     public void SetMaxAltitude(float maxAltitude) {
-        this.maxAltitude = maxAltitude;
+        PlayerState.Instance.maxAltitude = maxAltitude;
     }
     public void SetYawResponsiveness(float responsiveness) {
         this.yawResponsiveness = responsiveness;
@@ -68,7 +67,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity.magnitude, // current speed
             maxSpeed, //max speed
             transform.position.y, // current altitude
-            maxAltitude // max altitude
+            PlayerState.Instance.maxAltitude // max altitude
         };
         return result;
     }
@@ -110,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
         // Limiting the altitude
         pitchInput = InputManager.Instance.GetFloatValue("Pitch"); // -1 = up, 1 = down
-        if (transform.position.y >= maxAltitude && pitchInput < 1) {
+        if (transform.position.y >= PlayerState.Instance.maxAltitude && pitchInput < 1) {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             if (pitchInput == -1) pitchInput = 0;
         }
