@@ -53,8 +53,7 @@ public class PlayerController : MonoBehaviour
 
     // Used from the speed-up bonus
     public void SetBonusSpeed(float value, float duration) {
-        bonusSpeed = value;
-        bonusSpeedDuration += duration;
+        bonusSpeedDuration = Mathf.Max(bonusSpeedDuration, duration); // don't add it but override it so that the bonus does not accumulate for too long
         hasBonusSpeed = true;
         TweenBonusSpeed(value, 1f);
         cameraController?.ZoomIn(true); // zoom the camera in to make the effect stronger
@@ -83,7 +82,6 @@ public class PlayerController : MonoBehaviour
         bonusSpeedDuration -= Time.fixedDeltaTime;
         if (bonusSpeedDuration <= 0) { // bonus is no longer active
             bonusSpeedDuration = 0;
-            bonusSpeed = 0;
             hasBonusSpeed = false;
             TweenBonusSpeed(0f, 1f);
             cameraController?.ZoomIn(false);
