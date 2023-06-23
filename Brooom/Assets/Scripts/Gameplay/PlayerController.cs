@@ -24,15 +24,17 @@ public class PlayerController : MonoBehaviour
     // Other objects
     CameraController cameraController;
 
-    // Storing the input (and therefore direction of the movement, -1 or 1)
+    // Storing the input (and therefore direction of the movement, -1, 0 or 1)
     float forwardInput, yawInput, pitchInput;
+    float previousForwardInput;
 
     // Current values (for gradual change)
-    float currentForward = 0; // current speed
+    float currentForwardSpeed = 0; // current speed
     float currentYaw = 0, currentPitch = 0; // between -1 and 1
 
     // Bonus speed (added on top of the current speed)
     bool hasBonusSpeed = false;
+    float maxBonusSpeed = 0;
     float bonusSpeed = 0;
     float bonusSpeedDuration = 0;
     DG.Tweening.Core.TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> bonusSpeedTween;
@@ -53,9 +55,10 @@ public class PlayerController : MonoBehaviour
 
     // Used from the speed-up bonus
     public void SetBonusSpeed(float value, float duration) {
+        maxBonusSpeed = Mathf.Max(maxBonusSpeed, value);
         bonusSpeedDuration = Mathf.Max(bonusSpeedDuration, duration); // don't add it but override it so that the bonus does not accumulate for too long
         hasBonusSpeed = true;
-        TweenBonusSpeed(value, 1f);
+        TweenBonusSpeed(maxBonusSpeed, 1f);
         cameraController?.ZoomIn(true); // zoom the camera in to make the effect stronger
     }
 
@@ -81,23 +84,29 @@ public class PlayerController : MonoBehaviour
     private void UpdateBonusSpeed() {
         bonusSpeedDuration -= Time.fixedDeltaTime;
         if (bonusSpeedDuration <= 0) { // bonus is no longer active
+            maxBonusSpeed = 0;
             bonusSpeedDuration = 0;
             hasBonusSpeed = false;
-            TweenBonusSpeed(0f, 1f);
+            TweenBonusSpeed(maxBonusSpeed, 1f);
             cameraController?.ZoomIn(false);
+        } else if (previousForwardInput != forwardInput) { // change of direction, tween the bonus speed accordingly, TODO: Will not work with controllers, sign must be compared then
+            TweenBonusSpeed(Mathf.Clamp(forwardInput, 0, 1) * maxBonusSpeed, 1f); // tween to 0 if braking or stopping, tween to maxBonusSpeed if going forward
         }
     }
 
     private void FixedUpdate() {
+        // Forward input
+        previousForwardInput = forwardInput;
+        forwardInput = -InputManager.Instance.GetFloatValue("Forward"); // -1 = forward, 1 = brake, then invert
+
         // Resolve bonus speed (if any)
         if (hasBonusSpeed)
             UpdateBonusSpeed();
 
         // Forward
-        forwardInput = -InputManager.Instance.GetFloatValue("Forward"); // -1 = forward, 1 = brake, then invert
-        currentForward += ((forwardInput * maxSpeed) - currentForward) * forwardResponsiveness; // change slowly, not immediately
-        if (currentForward < 0) currentForward = 0; // not allowing reverse, only brake
-        rb.velocity = transform.forward * (currentForward + bonusSpeed); // add also the bonus speed, if any
+        currentForwardSpeed += ((forwardInput * maxSpeed) - currentForwardSpeed) * forwardResponsiveness; // change slowly, not immediately
+        if (currentForwardSpeed < 0) currentForwardSpeed = 0; // not allowing reverse, only brake
+        rb.velocity = transform.forward * (currentForwardSpeed + bonusSpeed); // add also the bonus speed, if any
 
         // Limiting the altitude
         pitchInput = InputManager.Instance.GetFloatValue("Pitch"); // -1 = up, 1 = down
