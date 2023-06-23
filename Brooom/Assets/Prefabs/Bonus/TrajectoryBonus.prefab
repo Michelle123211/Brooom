@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 2377206856962384146, guid: f116e91b0f210bc40bda5231ad520bdb,
         type: 3}
       propertyPath: m_Name
-      value: NavigationBonus
+      value: TrajectoryBonus
       objectReference: {fileID: 0}
     - target: {fileID: 2377206856962384149, guid: f116e91b0f210bc40bda5231ad520bdb,
         type: 3}
@@ -97,3 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4978f35f7b7e24a9f1e3498c399bee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberOfPoints: 3
+  trajectoryHighlighterPrefab: {fileID: 8799231899443269181, guid: ac830a555d955ec4091ad15ef6a70db6,
+    type: 3}
