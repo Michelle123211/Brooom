@@ -66,24 +66,24 @@ public class LevelGenerationPipeline : MonoBehaviour
 	}
 #endif
 
-	public void GenerateLevel() { // Generates the level with the current parameters
-		if (modules == null) return;
+	public LevelRepresentation GenerateLevel() { // Generates the level with the current parameters
 		Initialize();
-		foreach (var moduleSlot in modules) {
-			if (moduleSlot.isModuleEnabled)
-				moduleSlot.module.Generate(level);
+		if (modules != null) {
+			foreach (var moduleSlot in modules) {
+				if (moduleSlot.isModuleEnabled)
+					moduleSlot.module.Generate(level);
+			}
 		}
 		CreateMeshData();
 		ConvertMeshFromSmoothToFlat();
 		UpdateMesh();
+		return level;
 	}
 
-	private void Start() {
+	private void Awake() {
 		mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
 		meshCollider = GetComponent<MeshCollider>();
-
-		GenerateLevel();
 	}
 
 	private void Initialize() {

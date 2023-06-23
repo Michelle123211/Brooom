@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class RaceController : MonoBehaviour
 {
+    // Related objects
+    private LevelGenerationPipeline levelGenerator;
+    private PlayerController player;
+
     void Start()
     {
+        levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
+        player = FindObjectOfType<PlayerController>();
         // Initialize state at the beginning
         PlayerState.Instance.raceState.Reset();
+        // Generate level (terrain + track)
+        PlayerState.Instance.raceState.level = levelGenerator.GenerateLevel();
     }
 
 	private void Update() {
@@ -17,6 +25,9 @@ public class RaceController : MonoBehaviour
 }
 
 public class RaceState {
+    // Level - to get access to track points and record player's position within the track
+    public LevelRepresentation level;
+    public int previousTrackPointIndex; // position of the player within the track (index of the last hoop they passed)
     // Mana
     public int currentMana;
     public int maxMana;
