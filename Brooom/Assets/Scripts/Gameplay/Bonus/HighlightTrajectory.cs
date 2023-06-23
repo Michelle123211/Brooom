@@ -19,7 +19,7 @@ public class HighlightTrajectory : MonoBehaviour
         Sequence movementSequence = DOTween.Sequence();
         for (int i = 1; i < points.Count; i++) {
             float duration = Vector3.Distance(points[i - 1], points[i]) / speed;
-            movementSequence.Append(transform.DOMove(points[i], duration));
+            movementSequence.Append(transform.DOMove(points[i], duration)).SetEase(Ease.OutCubic);
         }
         // Destroy the object after some time
         movementSequence.OnComplete(() => Invoke(nameof(DestroySelf), 7f));
