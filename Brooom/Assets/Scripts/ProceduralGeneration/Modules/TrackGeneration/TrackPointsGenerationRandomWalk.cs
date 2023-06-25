@@ -32,9 +32,12 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		CenterTrackPoints(level);
 
 		// Update level dimensions so that the track is not out of bounds
-		level.ChangeDimensions(new Vector2(2 * maxPosition.x + levelPadding, 2 * maxPosition.y + levelPadding)); // added some padding around
+		level.ChangeDimensions(new Vector2(2 * (maxPosition.x + levelPadding), 2 * (maxPosition.y + levelPadding))); // added some padding around
 
 		SnapPointsToGrid(level);
+
+		// Select player's start position in front of the first point
+		level.playerStartPosition = level.track[0].position + Vector3.back * distanceRange.y;
 	}
 
 	private void GenerateTrackPoints(LevelRepresentation level) {
@@ -142,7 +145,7 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		if (level.track.Count < 3) return false;
 		for (int i = 0; i < level.track.Count - 1; i++) {
 			if (Vector3.Distance(level.track[i].position.WithY(0), level.track[level.track.Count - 1].position.WithY(0)) < distanceRange.x) {
-				Debug.Log($"Last point {level.track[level.track.Count - 1].position.WithY(0)} is too close to {level.track[i].position.WithY(0)}");
+				//Debug.Log($"Last point {level.track[level.track.Count - 1].position.WithY(0)} is too close to {level.track[i].position.WithY(0)}");
 				return true;
 			}
 		}
@@ -155,7 +158,7 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		for (int firstSegmentStart = 0; firstSegmentStart < lastSegmentStart; firstSegmentStart++) {
 			if (AreTwoSegmentsIntersecting(level.track[firstSegmentStart].position, level.track[firstSegmentStart + 1].position,
 										   level.track[lastSegmentStart].position, level.track[lastSegmentStart + 1].position)) {
-				Debug.Log($"Intersection found between [{level.track[firstSegmentStart].position}, {level.track[firstSegmentStart + 1].position}] and [{level.track[lastSegmentStart].position}, {level.track[lastSegmentStart + 1].position}].");
+				//Debug.Log($"Intersection found between [{level.track[firstSegmentStart].position}, {level.track[firstSegmentStart + 1].position}] and [{level.track[lastSegmentStart].position}, {level.track[lastSegmentStart + 1].position}].");
 				return true;
 			}
 		}

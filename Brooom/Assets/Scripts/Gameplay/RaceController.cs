@@ -16,6 +16,8 @@ public class RaceController : MonoBehaviour
         PlayerState.Instance.raceState.Reset();
         // Generate level (terrain + track)
         PlayerState.Instance.raceState.level = levelGenerator.GenerateLevel();
+        // Place the player
+        player.transform.position = PlayerState.Instance.raceState.level.playerStartPosition;
     }
 
 	private void Update() {

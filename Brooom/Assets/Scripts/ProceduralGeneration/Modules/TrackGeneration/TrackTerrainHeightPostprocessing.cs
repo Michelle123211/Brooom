@@ -37,6 +37,15 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 			// Take maximum and limit it according to the maximum altitude of the broom
 			bonus.position.y = Mathf.Clamp(Mathf.Max(bonus.position.y, heightHoop), 0, PlayerState.Instance.maxAltitude);
 		}
+
+		// Change Y coordinate of the player's start position according to the terrain height
+		Vector3 topleft = level.terrain[0, 0].position; // position of the top-left grid point
+		float offset = level.pointOffset; // distance between adjacent grid points
+		int x = Mathf.RoundToInt(Mathf.Abs(level.playerStartPosition.x - topleft.x) / offset); // closest terrain grid point coordinates
+		int z = Mathf.RoundToInt(Mathf.Abs(level.playerStartPosition.z - topleft.z) / offset);
+		float computedHeight = FindMaximumHeightInNeighbourhood(level, new Vector2Int(x, z));
+		// Take maximum and limit it according to the maximum altitude of the broom
+		level.playerStartPosition.y = Mathf.Clamp(Mathf.Max(level.playerStartPosition.y, computedHeight), 0, PlayerState.Instance.maxAltitude);
 	}
 
 	private void PrepareRegionHeightDictionary(LevelRepresentation level) {
