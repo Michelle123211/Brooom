@@ -17,6 +17,13 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 	private Vector2[,] centres; // centres if the regions (for each grid tile there is a randomly selected point)
 
 	public override void Generate(LevelRepresentation level) {
+		// Prepare list of available terrain regions
+		List<LevelRegionType> allowedTerrainRegions = new List<LevelRegionType>();
+		foreach (var region in level.terrainRegions) {
+			if (level.regionsAvailability.ContainsKey(region.Key) && level.regionsAvailability[region.Key])
+				allowedTerrainRegions.Add(region.Key);
+		}
+
 		// Compute number of regions in each axis
 		regionCountX = Mathf.FloorToInt(level.pointCount.x / (float)regionSize);
 		regionCountY = Mathf.FloorToInt(level.pointCount.y / (float)regionSize);
@@ -25,13 +32,13 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		regionSizeY = Mathf.CeilToInt(level.pointCount.y / (float)regionCountY);
 
 		// For each grid tile choose randomly a point within it as a region centre and assign it a region it represents
-		centres = RandomlySelectCentres(level, level.availableRegions);
+		centres = RandomlySelectCentres(level, allowedTerrainRegions);
 
 		// Go through all the terrain points and assign them region from the closest centre
 		AssignClosestRegionToAllPoints(level);
 	}
 
-	private Vector2[,] RandomlySelectCentres(LevelRepresentation level, List<MapRegionType> allowedRegions) {
+	private Vector2[,] RandomlySelectCentres(LevelRepresentation level, List<LevelRegionType> allowedTerrainRegions) {
 		Vector2[,] centres = new Vector2[regionCountX, regionCountY];
 		// For each grid tile choose randomly a point within it as a region centre and assign it a region it represents
 		for (int x = 0; x < regionCountX; x++) {
@@ -47,9 +54,9 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 				int centerX = startX + randIndex % sizeX;
 				int centerY = startY + randIndex / sizeX;
 				centres[x, y] = new Vector2(centerX, centerY);
-				// Then select randomly the corresponding region (from the allowed regions)
-				if (level.terrain[centerX, centerY].region == MapRegionType.NONE) {
-					level.terrain[centerX, centerY].region = allowedRegions[Random.Range(0, allowedRegions.Count)];
+				// Then select randomly the corresponding region (from the allowed terrain regions)
+				if (level.terrain[centerX, centerY].region == LevelRegionType.NONE) {
+					level.terrain[centerX, centerY].region = allowedTerrainRegions[Random.Range(0, allowedTerrainRegions.Count)];
 				}
 			}
 		}
@@ -61,7 +68,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		for (int x = 0; x < level.pointCount.x; x++) {
 			for (int y = 0; y < level.pointCount.y; y++) {
 				// Skip points with already assigned region (e.g. centres)
-				if (level.terrain[x, y].region != MapRegionType.NONE) continue;
+				if (level.terrain[x, y].region != LevelRegionType.NONE) continue;
 				// Look to the tile and its neighbours and find centre with minimum distance
 				FindAndAssignCentreWithMinimumDistance(level, x, y);
 			}

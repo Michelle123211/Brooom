@@ -12,7 +12,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 	public List<TrackInRegionHeight> minHeightOffsetOverrides;
 
 
-	private Dictionary<MapRegionType, float> minimumOffsetAboveGround;
+	private Dictionary<LevelRegionType, float> minimumOffsetAboveGround;
 
 	public override void Generate(LevelRepresentation level) {
 		PrepareRegionHeightDictionary(level);
@@ -50,7 +50,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	private void PrepareRegionHeightDictionary(LevelRepresentation level) {
 		// Prepare Dictionary of minimum height for each region type
-		minimumOffsetAboveGround = new Dictionary<MapRegionType, float>();
+		minimumOffsetAboveGround = new Dictionary<LevelRegionType, float>();
 		foreach (var region in level.terrainRegions) {
 			minimumOffsetAboveGround.Add(region.Key, defaultMinimumOffsetAboveGround);
 		}
@@ -97,6 +97,6 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 [System.Serializable]
 public class TrackInRegionHeight {
-	public MapRegionType region = MapRegionType.NONE;
+	public LevelRegionType region = LevelRegionType.NONE;
 	public float minimumHeightAboveGround = 1;
 }

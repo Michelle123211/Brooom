@@ -62,7 +62,7 @@ public class TrackRegionGenerator : LevelGeneratorModule
 // Describes parameters of track region occurrence
 [System.Serializable]
 public class TrackRegionParameters {
-    public MapRegionType trackRegion;
+    public LevelRegionType trackRegion;
     [Tooltip("Probability that the given region occurs in the track.")]
     public float probability;
     [Tooltip("Minimum and maximum possible length of the region (in number of track points).")]

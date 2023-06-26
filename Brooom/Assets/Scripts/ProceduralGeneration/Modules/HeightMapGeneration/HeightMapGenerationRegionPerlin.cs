@@ -8,8 +8,8 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 	[Tooltip("Different Parlin noise parameters for different regions.")]
 	public List<RegionHeightMapParameters> regionParameters;
 
-	private Dictionary<MapRegionType, OctavedPerlinNoise> regionPerlinNoise;
-	private Dictionary<MapRegionType, Vector2> regionHeightRange;
+	private Dictionary<LevelRegionType, OctavedPerlinNoise> regionPerlinNoise;
+	private Dictionary<LevelRegionType, Vector2> regionHeightRange;
 	private OctavedPerlinNoise defaultPerlinNoise;
 	private Vector2 defaultHeightRange = Vector2.up;
 
@@ -43,8 +43,8 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 
 	private void InitializeValues() {
 		// Initialize Dictionaries of octaved perlin noises and region heights for easier access
-		regionPerlinNoise = new Dictionary<MapRegionType, OctavedPerlinNoise>();
-		regionHeightRange = new Dictionary<MapRegionType, Vector2>();
+		regionPerlinNoise = new Dictionary<LevelRegionType, OctavedPerlinNoise>();
+		regionHeightRange = new Dictionary<LevelRegionType, Vector2>();
 		if (regionParameters != null) {
 			foreach (var regionParams in regionParameters) {
 				OctavedPerlinNoise noise = new OctavedPerlinNoise(Random.Range(0, 1000), Random.Range(0, 1000), regionParams.octaveParams);
@@ -76,7 +76,7 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 
 [System.Serializable]
 public class RegionHeightMapParameters {
-	public MapRegionType region;
+	public LevelRegionType region;
 
 	public PerlinNoiseOctaveParameters octaveParams = new PerlinNoiseOctaveParameters();
 

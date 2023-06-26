@@ -28,7 +28,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		for (int x = 0; x < level.pointCount.x; x++) {
 			for (int y = 0; y < level.pointCount.y; y++) {
 				// Skip points with already assigned region
-				if (level.terrain[x, y].region != MapRegionType.NONE) continue;
+				if (level.terrain[x, y].region != LevelRegionType.NONE) continue;
 				// Get coordinates in the diagram
 				float diagramX = Mathf.PerlinNoise((randOffsetX1 + x) * noiseXFrequency, (randOffsetX2 + y) * noiseXFrequency);
 				float diagramY = Mathf.PerlinNoise((randOffsetY1 + x) * noiseYFrequency, (randOffsetY2 + y) * noiseYFrequency);
@@ -42,7 +42,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 	}
 
 	// Selects an available RegionDiagram which supports the most allowed regions if possible
-	private void SelectRegionDiagram(Dictionary<MapRegionType, bool> regionsAvailability) {
+	private void SelectRegionDiagram(Dictionary<LevelRegionType, bool> regionsAvailability) {
 		// Use the first one as default
 		diagram = availableDiagrams[0];
 		// Find the one supporting the most allowed regions
@@ -60,8 +60,8 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		}
 	}
 
-	private MapRegionType GetRegionTypeFromDiagram(float x, float y) {
-		MapRegionType regionType = MapRegionType.NONE;
+	private LevelRegionType GetRegionTypeFromDiagram(float x, float y) {
+		LevelRegionType regionType = LevelRegionType.NONE;
 		// Get the region exactly on these coordinates
 		foreach (var region in diagram.diagramRegions) {
 			if (x >= region.minValues.x && x <= region.maxValues.x && y >= region.minValues.y && y <= region.maxValues.y) {
@@ -72,11 +72,11 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		return regionType;
 	}
 
-	private MapRegionType GetClosestAllowedRegion(float x, float y, Dictionary<MapRegionType, bool> regionsAvailability) {
+	private LevelRegionType GetClosestAllowedRegion(float x, float y, Dictionary<LevelRegionType, bool> regionsAvailability) {
 		// Get the allowed region on coordinates closest to the original ones (if none exists, return MapRegionType.NONE)
 		// ... using simple Manhattan distance
 		float minDistance = float.MaxValue;
-		MapRegionType regionType = MapRegionType.NONE;
+		LevelRegionType regionType = LevelRegionType.NONE;
 		foreach (var region in diagram.diagramRegions) {
 			if (IsRegionAllowed(region.regionType, regionsAvailability)) {
 				float distance = Mathf.Min(Mathf.Abs(x - region.minValues.x), Mathf.Abs(x - region.maxValues.x)) + Mathf.Min(Mathf.Abs(y - region.minValues.y), Mathf.Abs(y - region.maxValues.y));
@@ -89,7 +89,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		return regionType;
 	}
 
-	private bool IsRegionAllowed(MapRegionType regionType, Dictionary<MapRegionType, bool> regionsAvailability) {
+	private bool IsRegionAllowed(LevelRegionType regionType, Dictionary<LevelRegionType, bool> regionsAvailability) {
 		return regionsAvailability.TryGetValue(regionType, out bool isAllowed) && isAllowed;
 	}
 }

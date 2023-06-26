@@ -10,11 +10,11 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
     [Tooltip("Some regions may prefer different border tolerance than the default one (e.g. smaller for mountains).")]
     public List<RegionBorderTolerance> borderToleranceOverrides;
 
-    private Dictionary<MapRegionType, int> regionBorderTolerance;
+    private Dictionary<LevelRegionType, int> regionBorderTolerance;
 
 	public override void Generate(LevelRepresentation level) {
         // Prepare Dictionary of border tolerances for each region type
-        regionBorderTolerance = new Dictionary<MapRegionType, int>();
+        regionBorderTolerance = new Dictionary<LevelRegionType, int>();
         foreach (var region in level.terrainRegions) {
             regionBorderTolerance.Add(region.Key, defaultBorderTolerance);
         }
@@ -62,7 +62,7 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
 
 [System.Serializable]
 public class RegionBorderTolerance {
-    public MapRegionType region = MapRegionType.NONE;
+    public LevelRegionType region = LevelRegionType.NONE;
     [Tooltip("Points whose distance to other regions (in 8 directions) is less than or equal to this number are considered border between regions.")]
     public int borderTolerance = 3;
 }

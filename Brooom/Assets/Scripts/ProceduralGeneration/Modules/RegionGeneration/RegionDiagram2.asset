@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: RegionDiagram2
   m_EditorClassIdentifier: 
   diagramRegions:
-  - regionType: 1
+  - regionType: 101
     minValues: {x: 0, y: 0}
     maxValues: {x: 1, y: 0.3}
-  - regionType: 101
+  - regionType: 102
     minValues: {x: 0.55, y: 0}
     maxValues: {x: 1, y: 0.7}
-  - regionType: 102
+  - regionType: 111
     minValues: {x: 0.3, y: 0}
     maxValues: {x: 0.55, y: 0.5}
-  - regionType: 103
+  - regionType: 112
     minValues: {x: 0, y: 0}
     maxValues: {x: 0.3, y: 0.7}
-  - regionType: 104
+  - regionType: 113
     minValues: {x: 0.3, y: 0.5}
     maxValues: {x: 0.55, y: 0.75}
-  - regionType: 2
+  - regionType: 121
     minValues: {x: 0, y: 0.5}
     maxValues: {x: 1, y: 1}
   notes: 'Works moderately well for all regions allowed:

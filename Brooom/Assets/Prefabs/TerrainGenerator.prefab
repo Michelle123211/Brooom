@@ -222,7 +222,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
   trackRegions:
   - {fileID: 11400000, guid: a947588bc3cd91942a8aab910d71ba8d, type: 2}
-  allowedRegions: 01000000650000006600000067000000680000000200000003000000
+  allowedRegions: 65000000660000006f000000700000007100000079000000d3000000
 --- !u!114 &9042582758647628382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,42 +236,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   regionParameters:
-  - region: 1
+  - region: 101
     octaveParams:
       numberOfOctaves: 1
       initialFrequency: 0.1
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: -2, y: 0}
-  - region: 101
+  - region: 102
     octaveParams:
       numberOfOctaves: 3
       initialFrequency: 0.1
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0, y: 4.5}
-  - region: 102
+  - region: 111
     octaveParams:
       numberOfOctaves: 1
       initialFrequency: 0.05
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0, y: 1.5}
-  - region: 103
+  - region: 112
     octaveParams:
       numberOfOctaves: 2
       initialFrequency: 0.05
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0, y: 3}
-  - region: 104
+  - region: 113
     octaveParams:
       numberOfOctaves: 4
       initialFrequency: 0.05
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0, y: 9}
-  - region: 2
+  - region: 121
     octaveParams:
       numberOfOctaves: 5
       initialFrequency: 0.15
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultBorderTolerance: 5
   borderToleranceOverrides:
-  - region: 2
+  - region: 121
     borderTolerance: 2
 --- !u!114 &9042582758647628377
 MonoBehaviour:
@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackRegions:
-  - trackRegion: 3
+  - trackRegion: 211
     probability: 0.4
     lengthRange: {x: 4, y: 7}
     heightRange: {x: 15, y: 20}
@@ -422,7 +422,7 @@ MonoBehaviour:
   hoopHeightAreaRadius: 10
   defaultMinimumOffsetAboveGround: 1
   minHeightOffsetOverrides:
-  - region: 101
+  - region: 102
     minimumHeightAboveGround: 3
 --- !u!114 &7590517373936672831
 MonoBehaviour:

@@ -16,7 +16,7 @@ public class RegionDiagram : ScriptableObject
 [System.Serializable]
 public class WhittakerRegion {
     [Tooltip("Region whose parameters are described.")]
-    public MapRegionType regionType;
+    public LevelRegionType regionType;
     [Tooltip("Minimum values on the X and Y axes occupied by the region in the diagram (between 0 and 1).")]
     public Vector2 minValues;
     [Tooltip("Minimum values on the X and Y axes occupied by the region in the diagram (between 0 and 1).")]
