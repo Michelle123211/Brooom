@@ -83,6 +83,7 @@ GameObject:
   - component: {fileID: 9042582758647628377}
   - component: {fileID: 9042582758647628378}
   - component: {fileID: 7011073760170370752}
+  - component: {fileID: 4301535814927083996}
   - component: {fileID: 6151264501117884229}
   - component: {fileID: 7590517373936672831}
   - component: {fileID: 9121179430083006447}
@@ -198,6 +199,8 @@ MonoBehaviour:
     isModuleEnabled: 1
   - module: {fileID: 9042582758647628376}
     isModuleEnabled: 1
+  - module: {fileID: 4301535814927083996}
+    isModuleEnabled: 1
   - module: {fileID: 9042582758647628377}
     isModuleEnabled: 1
   - module: {fileID: 9042582758647628378}
@@ -210,14 +213,16 @@ MonoBehaviour:
     isModuleEnabled: 1
   dimensions: {x: 50, y: 50}
   pointOffset: 0.5
-  allRegions:
+  terrainRegions:
   - {fileID: 11400000, guid: a8334b8766b020042b3977c1cd1437d7, type: 2}
   - {fileID: 11400000, guid: a197e1e5e72143945b0a5bbaa5f399b2, type: 2}
   - {fileID: 11400000, guid: a4cc202e6ea09b94490e5ebc1003391d, type: 2}
   - {fileID: 11400000, guid: 1837a13c0d43a6e4fb590cf26480a092, type: 2}
   - {fileID: 11400000, guid: 6b0d335004efd114eadb5db31758338f, type: 2}
   - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
-  allowedRegions: 010000006500000066000000670000006800000002000000
+  trackRegions:
+  - {fileID: 11400000, guid: a947588bc3cd91942a8aab910d71ba8d, type: 2}
+  allowedRegions: 01000000650000006600000067000000680000000200000003000000
 --- !u!114 &9042582758647628382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,6 +389,24 @@ MonoBehaviour:
   distanceRange: {x: 20, y: 30}
   maxDirectionChangeAngle: {x: 30, y: 45}
   levelPadding: 50
+  backtrackDepth: 3
+--- !u!114 &4301535814927083996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042582758647628373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8087294761caf24f8e2e01aaffdb91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackRegions:
+  - trackRegion: 3
+    probability: 0.4
+    lengthRange: {x: 4, y: 7}
+    heightRange: {x: 15, y: 20}
 --- !u!114 &6151264501117884229
 MonoBehaviour:
   m_ObjectHideFlags: 0
