@@ -17,16 +17,19 @@ public class LevelGenerationPipeline : MonoBehaviour
 	[Tooltip("Distance between two adjacent points in the grid.")]
 	public float pointOffset = 0.5f;
 
-	[Header("Map regions")] // TODO: Remove once they can be determined from PlayerState
-	[Tooltip("All regions available in the game.")]
-	public List<MapRegion> allRegions;
-	[Tooltip("Regions allowed in the generated level.")]
-	public List<MapRegionType> allowedRegions;
+	[Header("Map regions")]
+	[Tooltip("All terrain regions in the game.")]
+	public List<MapRegion> terrainRegions;
+	[Tooltip("All track regions in the game.")]
+	public List<MapRegion> trackRegions;
+	[Tooltip("Regions allowed in the currently generated level.")]
+	public List<MapRegionType> allowedRegions; // TODO: Remove once they can be determined from PlayerState
 
 
 	// Object-oriented representation
 	private LevelRepresentation level;
-	private Dictionary<MapRegionType, MapRegion> regions;
+	private Dictionary<MapRegionType, MapRegion> terrainRegionsDict;
+	private Dictionary<MapRegionType, MapRegion> trackRegionsDict;
 
 	// Mesh and its data
 	Mesh mesh;
@@ -87,15 +90,19 @@ public class LevelGenerationPipeline : MonoBehaviour
 	}
 
 	private void Initialize() {
-		// Initialize regions dictionary
-		regions = new Dictionary<MapRegionType, MapRegion>();
-		if (allRegions == null)
-			allRegions = new List<MapRegion>();
-		foreach (var region in allRegions) {
-			regions.Add(region.regionType, region);
+		// Initialize regions dictionaries
+		terrainRegionsDict = new Dictionary<MapRegionType, MapRegion>();
+		if (terrainRegions == null)
+			terrainRegions = new List<MapRegion>();
+		foreach (var region in terrainRegions) {
+			terrainRegionsDict.Add(region.regionType, region);
+		}
+		trackRegionsDict = new Dictionary<MapRegionType, MapRegion>();
+		foreach (var region in trackRegions) {
+			trackRegionsDict.Add(region.regionType, region);
 		}
 		// Initialize level representation
-		level = new LevelRepresentation(dimensions, pointOffset, 10, regions, allowedRegions);
+		level = new LevelRepresentation(dimensions, pointOffset, 10, terrainRegionsDict, trackRegionsDict, allowedRegions);
 	}
 
 	private void CreateMeshData() {
@@ -125,7 +132,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 		for (int x = 0; x < level.pointCount.x - 1; x++) {
 			for (int y = 0; y < level.pointCount.y - 1; y++) {
 				// Assign the color of the region
-				if (regions.TryGetValue(level.terrain[x, y].region, out MapRegion region)) {
+				if (terrainRegionsDict.TryGetValue(level.terrain[x, y].region, out MapRegion region)) {
 					colors[level.terrain[x, y].vertexIndex] = region.color;
 				} else {
 					colors[level.terrain[x, y].vertexIndex] = Color.black;
@@ -228,16 +235,19 @@ public class LevelRepresentation {
 	public Vector2 terrainStartPosition; // Position of the bottom left point of Mesh
 
 	// Available regions
-	public Dictionary<MapRegionType, MapRegion> regions;
+	public Dictionary<MapRegionType, MapRegion> terrainRegions;
+	public Dictionary<MapRegionType, MapRegion> trackRegions;
+	public List<MapRegionType> availableRegions;
 	public Dictionary<MapRegionType, bool> regionsAvailability; // true if the region may be used in the level
 
 
-	public LevelRepresentation(Vector2 dimensions, float pointOffset, float maxAltitude, Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
+	public LevelRepresentation(Vector2 dimensions, float pointOffset, float maxAltitude, Dictionary<MapRegionType, MapRegion> terrainRegions, Dictionary<MapRegionType, MapRegion> trackRegions, List<MapRegionType> allowedRegions) {
 		// Terrain
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
 		ComputeDependentParameters(); // pointCount and startPosition
-		InitializeRegionDictionaries(allRegions, allowedRegions);
+		this.availableRegions = allowedRegions;
+		InitializeRegionDictionaries(terrainRegions, trackRegions, allowedRegions);
 		InitializeTerrain();
 
 		// Track
@@ -285,18 +295,26 @@ public class LevelRepresentation {
 		dimensions = new Vector2((pointCount.x - 1) * pointOffset, (pointCount.y - 1) * pointOffset);
 	}
 
-	private void InitializeRegionDictionaries(Dictionary<MapRegionType, MapRegion> allRegions, List<MapRegionType> allowedRegions) {
-		this.regions = allRegions;
-		if (this.regions == null) this.regions = new Dictionary<MapRegionType, MapRegion>();
-		this.regionsAvailability = new Dictionary<MapRegionType, bool>();
+	private void InitializeRegionDictionaries(Dictionary<MapRegionType, MapRegion> terrainRegions, Dictionary<MapRegionType, MapRegion> trackRegions, List<MapRegionType> allowedRegions) {
+		this.terrainRegions = terrainRegions;
+		if (this.terrainRegions == null) this.terrainRegions = new Dictionary<MapRegionType, MapRegion>();
+		this.trackRegions = trackRegions;
+		if (trackRegions == null) this.trackRegions = new Dictionary<MapRegionType, MapRegion>();
 		// Note all the allowed regions in the dictionary
+		this.regionsAvailability = new Dictionary<MapRegionType, bool>();
 		if (allowedRegions != null) {
 			foreach (var allowedRegion in allowedRegions) {
 				this.regionsAvailability.Add(allowedRegion, true);
 			}
 		}
 		// Store all the regions in the dictionary
-		foreach (var region in allRegions) {
+		foreach (var region in terrainRegions) {
+			// If the region is not in the availability dictionary, it is not allowed
+			if (!regionsAvailability.ContainsKey(region.Key)) {
+				regionsAvailability.Add(region.Key, false);
+			}
+		}
+		foreach (var region in trackRegions) {
 			// If the region is not in the availability dictionary, it is not allowed
 			if (!regionsAvailability.ContainsKey(region.Key)) {
 				regionsAvailability.Add(region.Key, false);
@@ -343,6 +361,7 @@ public class TrackPoint {
 	public Vector2Int gridCoords;
 	public Vector3 position;
 	public bool isCheckpoint;
+	public MapRegionType trackRegion;
 	public GameObject assignedObject;
 
 	public TrackPoint() {

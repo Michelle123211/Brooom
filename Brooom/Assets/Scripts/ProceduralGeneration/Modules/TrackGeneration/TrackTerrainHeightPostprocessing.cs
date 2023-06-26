@@ -51,7 +51,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 	private void PrepareRegionHeightDictionary(LevelRepresentation level) {
 		// Prepare Dictionary of minimum height for each region type
 		minimumOffsetAboveGround = new Dictionary<MapRegionType, float>();
-		foreach (var region in level.regions) {
+		foreach (var region in level.terrainRegions) {
 			minimumOffsetAboveGround.Add(region.Key, defaultMinimumOffsetAboveGround);
 		}
 		// Override minimum height for specific regions

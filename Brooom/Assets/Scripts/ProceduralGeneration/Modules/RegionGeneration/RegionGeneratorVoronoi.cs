@@ -17,12 +17,6 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 	private Vector2[,] centres; // centres if the regions (for each grid tile there is a randomly selected point)
 
 	public override void Generate(LevelRepresentation level) {
-		// Prepare list of available regions
-		List<MapRegionType> allowedRegions = new List<MapRegionType>();
-		foreach (var region in level.regionsAvailability) {
-			if (region.Value) allowedRegions.Add(region.Key);
-		}
-
 		// Compute number of regions in each axis
 		regionCountX = Mathf.FloorToInt(level.pointCount.x / (float)regionSize);
 		regionCountY = Mathf.FloorToInt(level.pointCount.y / (float)regionSize);
@@ -31,7 +25,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		regionSizeY = Mathf.CeilToInt(level.pointCount.y / (float)regionCountY);
 
 		// For each grid tile choose randomly a point within it as a region centre and assign it a region it represents
-		centres = RandomlySelectCentres(level, allowedRegions);
+		centres = RandomlySelectCentres(level, level.availableRegions);
 
 		// Go through all the terrain points and assign them region from the closest centre
 		AssignClosestRegionToAllPoints(level);

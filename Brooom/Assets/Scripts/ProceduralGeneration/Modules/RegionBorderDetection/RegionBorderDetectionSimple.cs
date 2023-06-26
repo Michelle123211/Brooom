@@ -15,7 +15,7 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
 	public override void Generate(LevelRepresentation level) {
         // Prepare Dictionary of border tolerances for each region type
         regionBorderTolerance = new Dictionary<MapRegionType, int>();
-        foreach (var region in level.regions) {
+        foreach (var region in level.terrainRegions) {
             regionBorderTolerance.Add(region.Key, defaultBorderTolerance);
         }
         // Override border tolerance for specific regions
