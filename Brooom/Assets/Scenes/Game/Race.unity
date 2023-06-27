@@ -378,6 +378,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6903560249657008998, guid: 06919aef3063231489d09d213cd3fc75,
         type: 3}
+      propertyPath: maxAltitude
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6903560249657008998, guid: 06919aef3063231489d09d213cd3fc75,
+        type: 3}
       propertyPath: raceState.spells.Array.size
       value: 3
       objectReference: {fileID: 0}

@@ -212,7 +212,7 @@ MonoBehaviour:
   - module: {fileID: 5708007630854056561}
     isModuleEnabled: 1
   dimensions: {x: 50, y: 50}
-  pointOffset: 0.5
+  pointOffset: 1
   terrainRegions:
   - {fileID: 11400000, guid: a8334b8766b020042b3977c1cd1437d7, type: 2}
   - {fileID: 11400000, guid: a197e1e5e72143945b0a5bbaa5f399b2, type: 2}
@@ -223,6 +223,9 @@ MonoBehaviour:
   trackRegions:
   - {fileID: 11400000, guid: a947588bc3cd91942a8aab910d71ba8d, type: 2}
   allowedRegions: 65000000660000006f000000700000007100000079000000d3000000
+  showVertices: 0
+  showEdges: 0
+  showBorders: 0
 --- !u!114 &9042582758647628382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,42 +245,42 @@ MonoBehaviour:
       initialFrequency: 0.1
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: -2, y: 0}
+    heightRange: {x: -5, y: 0}
   - region: 102
     octaveParams:
       numberOfOctaves: 3
-      initialFrequency: 0.1
+      initialFrequency: 0.03
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0, y: 4.5}
+    heightRange: {x: 0, y: 10}
   - region: 111
     octaveParams:
       numberOfOctaves: 1
-      initialFrequency: 0.05
+      initialFrequency: 0.025
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0, y: 1.5}
+    heightRange: {x: 0, y: 5}
   - region: 112
     octaveParams:
       numberOfOctaves: 2
-      initialFrequency: 0.05
+      initialFrequency: 0.03
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0, y: 3}
+    heightRange: {x: 0, y: 7}
   - region: 113
     octaveParams:
       numberOfOctaves: 4
-      initialFrequency: 0.05
+      initialFrequency: 0.02
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0, y: 9}
+    heightRange: {x: 0, y: 12}
   - region: 121
     octaveParams:
       numberOfOctaves: 5
-      initialFrequency: 0.15
+      initialFrequency: 0.05
       frequencyFactor: 2
       scaleFactor: 0.5
-    heightRange: {x: 0, y: 13.5}
+    heightRange: {x: 0, y: 25}
 --- !u!114 &9042582758647628380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,7 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c67119827cd634db7d81af3e8a158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionSize: 50
+  regionSize: 150
 --- !u!114 &9042582758647628376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,10 +341,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7119fd3e282480a459a647004d9de24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultBorderTolerance: 5
+  defaultBorderTolerance: 20
   borderToleranceOverrides:
   - region: 121
-    borderTolerance: 2
+    borderTolerance: 10
 --- !u!114 &9042582758647628377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,7 +359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interpolateBordersOnly: 1
   numberOfIterations: 5
-  kernelSize: 1
+  kernelSize: 2
 --- !u!114 &9042582758647628378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,7 +374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interpolateBordersOnly: 0
   numberOfIterations: 1
-  kernelSize: 1
+  kernelSize: 2
 --- !u!114 &7011073760170370752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,7 +409,7 @@ MonoBehaviour:
   - trackRegion: 211
     probability: 0.4
     lengthRange: {x: 4, y: 7}
-    heightRange: {x: 15, y: 20}
+    heightRange: {x: 25, y: 50}
 --- !u!114 &6151264501117884229
 MonoBehaviour:
   m_ObjectHideFlags: 0
