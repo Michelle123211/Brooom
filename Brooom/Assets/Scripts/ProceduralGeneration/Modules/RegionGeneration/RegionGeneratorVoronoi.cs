@@ -8,11 +8,11 @@ using UnityEngine;
 // Then creates a Voronoi diagram to determine regions
 public class RegionGeneratorVoronoi : LevelGeneratorModule {
 
-	[Tooltip("The map is divided into a grid of squares. This number determines each square's width (how many terrain points).")]
+	[Tooltip("The map is divided into a grid of squares. This number determines each square's width.")]
 	public int regionSize = 20;
 
 	private int regionCountX, regionCountY; // number of regions in each axis
-	private int regionSizeX, regionSizeY; // size of each grid tile
+	private int regionSizeX, regionSizeY; // size of each grid tile in the number of terrain points
 
 	private Vector2[,] centres; // centres if the regions (for each grid tile there is a randomly selected point)
 
@@ -25,9 +25,9 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		}
 
 		// Compute number of regions in each axis
-		regionCountX = Mathf.FloorToInt(level.pointCount.x / (float)regionSize);
-		regionCountY = Mathf.FloorToInt(level.pointCount.y / (float)regionSize);
-		// Compute the actual width and height of each grid tile (in fact rectangle)
+		regionCountX = Mathf.Max(Mathf.FloorToInt(level.dimensions.x / regionSize), 1); // ensure at least 1
+		regionCountY = Mathf.Max(Mathf.FloorToInt(level.dimensions.y / regionSize), 1);
+		// Compute the actual width and height of each grid tile (in fact rectangle) in the number of terrain points
 		regionSizeX = Mathf.CeilToInt(level.pointCount.x / (float)regionCountX);
 		regionSizeY = Mathf.CeilToInt(level.pointCount.y / (float)regionCountY);
 
