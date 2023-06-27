@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c67119827cd634db7d81af3e8a158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionSize: 100
+  regionSize: 50
 --- !u!114 &9042582758647628376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfCheckpoints: 4
   numberOfHoopsBetween: 3
-  distanceRange: {x: 20, y: 30}
+  distanceRange: {x: 30, y: 40}
   maxDirectionChangeAngle: {x: 30, y: 45}
   levelPadding: 50
   backtrackDepth: 3
