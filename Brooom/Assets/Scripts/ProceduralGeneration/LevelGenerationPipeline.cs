@@ -25,6 +25,11 @@ public class LevelGenerationPipeline : MonoBehaviour
 	[Tooltip("Regions allowed in the currently generated level.")]
 	public List<LevelRegionType> allowedRegions; // TODO: Remove once they can be determined from PlayerState
 
+	[Header("Debug")]
+	public bool showVertices = false;
+	public bool showEdges = false;
+	public bool showBorders = false;
+
 
 	// Object-oriented representation
 	private LevelRepresentation level;
@@ -43,7 +48,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 	[ContextMenu("Regenerate")]
 	private void RegenerateLevel() { // Regenerates the level with previous parameters
 		if (modules == null) return;
-		level.ResetLevel();
+		level.ResetLevelWithDimensions(dimensions, pointOffset);
 		foreach (var moduleSlot in modules) {
 			if (moduleSlot.isModuleEnabled)
 				moduleSlot.module.Generate(level);
@@ -102,7 +107,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 			trackRegionsDict.Add(region.regionType, region);
 		}
 		// Initialize level representation
-		level = new LevelRepresentation(dimensions, pointOffset, 10, terrainRegionsDict, trackRegionsDict, allowedRegions);
+		level = new LevelRepresentation(dimensions, pointOffset, terrainRegionsDict, trackRegionsDict, allowedRegions);
 	}
 
 	private void CreateMeshData() {
@@ -176,34 +181,40 @@ public class LevelGenerationPipeline : MonoBehaviour
 
 	private void OnDrawGizmosSelected() {
 		// Vertices
-		//Gizmos.color = Color.black;
-		//if (vertices != null) {
-		//	for (int i = 0; i < vertices.Length; i++) {
-		//		Gizmos.DrawSphere(vertices[i], 0.05f);
-		//	}
-		//}
+		if (showVertices) {
+			Gizmos.color = Color.black;
+			if (vertices != null) {
+				for (int i = 0; i < vertices.Length; i++) {
+					Gizmos.DrawSphere(vertices[i], 0.05f);
+				}
+			}
+		}
 
 		// Edges
-		//Gizmos.color = Color.red;
-		//if (triangles != null) {
-		//	for (int i = 0; i < triangles.Length; i += 3) {
-		//		Gizmos.DrawLine(vertices[triangles[i]], vertices[triangles[i + 1]]);
-		//		Gizmos.DrawLine(vertices[triangles[i + 1]], vertices[triangles[i + 2]]);
-		//		Gizmos.DrawLine(vertices[triangles[i + 2]], vertices[triangles[i]]);
-		//	}
-		//}
+		if (showEdges) {
+			Gizmos.color = Color.red;
+			if (triangles != null) {
+				for (int i = 0; i < triangles.Length; i += 3) {
+					Gizmos.DrawLine(vertices[triangles[i]], vertices[triangles[i + 1]]);
+					Gizmos.DrawLine(vertices[triangles[i + 1]], vertices[triangles[i + 2]]);
+					Gizmos.DrawLine(vertices[triangles[i + 2]], vertices[triangles[i]]);
+				}
+			}
+		}
 
 		// Borders
-		//Gizmos.color = Color.blue;
-		//if (level != null) {
-		//	for (int x = 0; x < level.pointCount.x; x++) {
-		//		for (int y = 0; y < level.pointCount.y; y++) {
-		//			if (level.terrain[x, y].isOnBorder) {
-		//				Gizmos.DrawSphere(level.terrain[x, y].position, 0.1f);
-		//			}
-		//		}
-		//	}
-		//}
+		if (showBorders) {
+			Gizmos.color = Color.blue;
+			if (level != null) {
+				for (int x = 0; x < level.pointCount.x; x++) {
+					for (int y = 0; y < level.pointCount.y; y++) {
+						if (level.terrain[x, y].isOnBorder) {
+							Gizmos.DrawSphere(level.terrain[x, y].position, 0.1f);
+						}
+					}
+				}
+			}
+		}
 	}
 
 
@@ -242,7 +253,7 @@ public class LevelRepresentation {
 	public Dictionary<LevelRegionType, bool> regionsAvailability; // true if the region may be used in the level
 
 
-	public LevelRepresentation(Vector2 dimensions, float pointOffset, float maxAltitude, Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions, List<LevelRegionType> allowedRegions) {
+	public LevelRepresentation(Vector2 dimensions, float pointOffset, Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions, List<LevelRegionType> allowedRegions) {
 		// Terrain
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
@@ -262,6 +273,16 @@ public class LevelRepresentation {
 				terrain[x, y].Reset();
 			}
 		}
+		// Reset track
+		track.Clear();
+	}
+
+	public void ResetLevelWithDimensions(Vector2 dimensions, float pointOffset) {
+		this.dimensions = dimensions;
+		this.pointOffset = pointOffset;
+		ComputeDependentParameters(); // pointCount and startPosition
+		// Initialize terrain
+		InitializeTerrain();
 		// Reset track
 		track.Clear();
 	}
