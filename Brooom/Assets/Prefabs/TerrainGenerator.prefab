@@ -211,8 +211,8 @@ MonoBehaviour:
     isModuleEnabled: 1
   - module: {fileID: 5708007630854056561}
     isModuleEnabled: 1
-  dimensions: {x: 50, y: 50}
-  pointOffset: 1
+  dimensions: {x: 100, y: 100}
+  pointOffset: 2
   terrainRegions:
   - {fileID: 11400000, guid: a8334b8766b020042b3977c1cd1437d7, type: 2}
   - {fileID: 11400000, guid: a197e1e5e72143945b0a5bbaa5f399b2, type: 2}
@@ -341,10 +341,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7119fd3e282480a459a647004d9de24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultBorderTolerance: 20
+  defaultBorderTolerance: 7
   borderToleranceOverrides:
   - region: 121
-    borderTolerance: 10
+    borderTolerance: 4
 --- !u!114 &9042582758647628377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,9 +389,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfCheckpoints: 4
   numberOfHoopsBetween: 3
-  distanceRange: {x: 30, y: 40}
+  distanceRange: {x: 50, y: 70}
   maxDirectionChangeAngle: {x: 30, y: 45}
-  levelPadding: 50
+  levelPadding: 150
   backtrackDepth: 3
 --- !u!114 &4301535814927083996
 MonoBehaviour:
@@ -423,10 +423,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoopHeightAreaRadius: 10
-  defaultMinimumOffsetAboveGround: 1
+  defaultMinimumOffsetAboveGround: 2
   minHeightOffsetOverrides:
   - region: 102
-    minimumHeightAboveGround: 3
+    minimumHeightAboveGround: 4
 --- !u!114 &7590517373936672831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,5 +490,5 @@ MonoBehaviour:
       type: 3}
     countRange: {x: 1, y: 4}
     pattern: 010001
-  spacing: 1.5
+  spacing: 2
   bonusParent: {fileID: 2155503869580160128}
