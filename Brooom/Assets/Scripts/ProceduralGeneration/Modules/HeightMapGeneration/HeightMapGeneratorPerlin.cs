@@ -6,8 +6,8 @@ using UnityEngine;
 // Uses several octaves of Perlin noise to generate a height map
 public class HeightMapGeneratorPerlin : LevelGeneratorModule {
 
-    [Tooltip("What is the minimum and maximum heightof the terrain.")]
-    public Vector2 heightRange = new Vector2(-2, 12);
+    [Tooltip("What is the minimum and maximum height of the terrain.")]
+    public Vector2 heightRange = new Vector2(-5, 25);
 
     public PerlinNoiseOctaveParameters octaveParams = new PerlinNoiseOctaveParameters();
 

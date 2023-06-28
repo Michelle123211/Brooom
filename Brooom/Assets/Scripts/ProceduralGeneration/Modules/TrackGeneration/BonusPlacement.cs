@@ -8,7 +8,7 @@ public class BonusPlacement : LevelGeneratorModule {
     public List<BonusPlacementParameters> bonuses;
 
     [Tooltip("The spacing between bonuses in a single row.")]
-    public float spacing = 1.5f;
+    public float spacing = 2f;
 
     [Tooltip("An object which will be parent of all the bonus objects in the hierarchy.")]
     public Transform bonusParent;

@@ -222,7 +222,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
   trackRegions:
   - {fileID: 11400000, guid: a947588bc3cd91942a8aab910d71ba8d, type: 2}
-  allowedRegions: 65000000660000006f000000700000007100000079000000d3000000
+  allowedRegions: 6500000066000000
   showVertices: 0
   showEdges: 0
   showBorders: 0
@@ -389,8 +389,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfCheckpoints: 4
   numberOfHoopsBetween: 3
-  distanceRange: {x: 50, y: 70}
-  maxDirectionChangeAngle: {x: 30, y: 45}
+  distanceRange: {x: 40, y: 50}
+  maxDirectionChangeAngle: {x: 10, y: 20}
   levelPadding: 150
   backtrackDepth: 3
 --- !u!114 &4301535814927083996
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02076d2b7af6fcc4ba8041825486e48b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoopHeightAreaRadius: 10
+  hoopHeightAreaRadius: 5
   defaultMinimumOffsetAboveGround: 2
   minHeightOffsetOverrides:
   - region: 102

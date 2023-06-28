@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	[Tooltip("Each hoop's Y coordinate is adjusted according to the maximum terrain height in a close neighbourhood of the given radius.")]
-	public int hoopHeightAreaRadius = 10;
+	public int hoopHeightAreaRadius = 5;
 	[Tooltip("Hoops and checkpoints should be placed in this minimum height above ground..")]
 	public float defaultMinimumOffsetAboveGround = 1;
 	[Tooltip("Some regions may prefer different minimum height above ground than the default one (e.g. larger for forest).")]
@@ -20,8 +20,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		// Change Y coordinate of each track point according to the terrain height in a close neighbourhood, ensure minimum height above ground
 		foreach (var trackPoint in level.track) {
 			float height = FindMaximumHeightInNeighbourhood(level, trackPoint.gridCoords);
-			if (trackPoint.position.y < height)
-				trackPoint.position.y = height;
+			if (trackPoint.position.y < height) trackPoint.position.y = height;
 			// Limit the Y coordinate according to the maximum altitude of the broom
 			trackPoint.position.y = Mathf.Clamp(trackPoint.position.y, 0, PlayerState.Instance.maxAltitude);
 			// TODO: Distribute any change to 2 or 3 adjacent points in both sides as well to smooth it out - if hoops are too close to each other
@@ -29,13 +28,13 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 		// Change Y coordinate of each bonus spot according to the terrain height and adjacent hoops height
 		foreach (var bonus in level.bonuses) {
+			// Get height according to the adjacent hoops
+			bonus.position.y = Mathf.Lerp(level.track[bonus.previousHoopIndex].position.y, level.track[bonus.previousHoopIndex + 1].position.y, bonus.distanceFraction);
 			// Get height according to the terrain
 			float heightTerrain = FindMaximumHeightInNeighbourhood(level, bonus.gridCoords);
-			bonus.position.y = Mathf.Max(bonus.position.y, heightTerrain);
-			// Get height according to the adjacent hoops
-			float heightHoop = Mathf.Lerp(level.track[bonus.previousHoopIndex].position.y, level.track[bonus.previousHoopIndex + 1].position.y, bonus.distanceFraction);
-			// Take maximum and limit it according to the maximum altitude of the broom
-			bonus.position.y = Mathf.Clamp(Mathf.Max(bonus.position.y, heightHoop), 0, PlayerState.Instance.maxAltitude);
+			if (bonus.position.y < heightTerrain) bonus.position.y = heightTerrain;
+			// Limit it according to the maximum altitude of the broom
+			bonus.position.y = Mathf.Clamp(bonus.position.y, 0, PlayerState.Instance.maxAltitude);
 		}
 
 		// Change Y coordinate of the player's start position according to the terrain height
@@ -84,8 +83,8 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	// Returns the minimum height a track point can be at (considering the terrain heigth and the minimum offset above ground)
 	private float GetMinimumHeightAboveGround(TerrainPoint terrainPoint) {
-		// Get the terrain height
-		float minHeight = terrainPoint.position.y;
+		// Get the terrain height but make it non-negative (water level is at 0)
+		float minHeight = Mathf.Max(terrainPoint.position.y, 0);
 		// Add minimum offset above ground
 		if (minimumOffsetAboveGround.TryGetValue(terrainPoint.region, out float minHeightOffset))
 			minHeight += minHeightOffset;

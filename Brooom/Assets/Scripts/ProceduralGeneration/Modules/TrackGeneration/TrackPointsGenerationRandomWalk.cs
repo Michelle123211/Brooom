@@ -10,11 +10,11 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 	[Tooltip("How many hoops should be generated between two consecutive checkpoints.")]
 	public int numberOfHoopsBetween = 3;
 	[Tooltip("The approximate minimum and maximum distance between two points.")]
-	public Vector2 distanceRange = new Vector2(4f, 6f);
+	public Vector2 distanceRange = new Vector2(40f, 50f);
 	[Tooltip("Maximum angle between two consecutive points in the X (up/down) and Y (left/right) axis.")]
-	public Vector2 maxDirectionChangeAngle = new Vector2(45f, 45f);
+	public Vector2 maxDirectionChangeAngle = new Vector2(10f, 20f);
 	[Tooltip("Dimensions of the level are adjusted according to the generated track dimensions with some padding around.")]
-	public int levelPadding = 50;
+	public int levelPadding = 150;
 	[Tooltip("How many track points are removed during backtracking when the last generated segment intersects with the already generated track.")]
 	public int backtrackDepth = 3;
 

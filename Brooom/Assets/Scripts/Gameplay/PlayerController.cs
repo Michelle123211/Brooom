@@ -10,12 +10,12 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 10;
     public float forwardResponsiveness = 0.01f;
     [Header("Yaw and Roll")]
-    public float turnSpeed = 3;
-    public float yawResponsiveness = 0.03f;
+    public float turnSpeed = 2;
+    public float yawResponsiveness = 0.01f;
     public float maxRollAngle = 30;
     [Header("Pitch")]
     public float maxPitchAngle = 35;
-    public float pitchResponsiveness = 0.03f;
+    public float pitchResponsiveness = 0.01f;
 
     // Components
     Rigidbody rb;
