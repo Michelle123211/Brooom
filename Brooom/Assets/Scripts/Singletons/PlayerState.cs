@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 {
+    public PlayerStats stats = new PlayerStats();
+
 	#region Character Customization
 	public CharacterCustomizationOptions customizationOptions;
 
@@ -76,4 +78,18 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     }
 	#endregion
 
+}
+
+[System.Serializable]
+public struct PlayerStats {
+    [Range(0, 100)]
+    public int endurance;
+    [Range(0, 100)]
+    public int speed;
+    [Range(0, 100)]
+    public int dexterity;
+    [Range(0, 100)]
+    public int precision;
+    [Range(0, 100)]
+    public int magic;
 }

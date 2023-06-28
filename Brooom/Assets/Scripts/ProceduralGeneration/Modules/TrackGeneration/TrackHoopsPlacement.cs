@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TrackHoopsPlacement : LevelGeneratorModule {
-
 	[Tooltip("Prefab of the hoop.")]
 	public GameObject hoopPrefab;
+	[Tooltip("Scale of the hoop.")]
+	public float hoopScale = 1f;
 	[Tooltip("Prefab of the checkpoint hoop.")]
 	public GameObject checkpointPrefab;
 	[Tooltip("An object which will be parent of all the hoops objects in the hierarchy.")]
@@ -32,6 +33,9 @@ public class TrackHoopsPlacement : LevelGeneratorModule {
 			Vector3 direction = (nextPosition - previousPosition).WithY(0); // Y = 0 to rotate only around the Y axis
 			// Create instance
 			point.assignedObject = Instantiate(prefab, level.track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
+			// Set scale of the hoops
+			if (!point.isCheckpoint)
+				point.assignedObject.transform.localScale = Vector3.one * hoopScale;
 		}
 	}
 }

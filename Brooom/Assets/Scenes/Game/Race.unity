@@ -380,11 +380,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6903560249657008998, guid: 06919aef3063231489d09d213cd3fc75,
         type: 3}
-      propertyPath: maxAltitude
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6903560249657008998, guid: 06919aef3063231489d09d213cd3fc75,
-        type: 3}
       propertyPath: raceState.spells.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -1048,7 +1043,7 @@ GameObject:
   - component: {fileID: 1820478787}
   - component: {fileID: 1820478786}
   m_Layer: 0
-  m_Name: RaceInitialization
+  m_Name: RaceController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1066,6 +1061,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9403a7c45cf903742a52c1ed9895cd8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialNumberOfCheckpoints: 4
+  finalNumberOfCheckpoints: 20
+  initialDirectionChange: {x: 10, y: 20}
+  finalDirectionChange: {x: 30, y: 45}
+  initialHoopScale: 1
+  finalHoopScale: 0.4
+  initialHoopDistanceRange: {x: 40, y: 50}
+  finalHoopDistanceRange: {x: 80, y: 100}
 --- !u!4 &1820478787
 Transform:
   m_ObjectHideFlags: 0

@@ -2,19 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RaceController : MonoBehaviour
-{
+public class RaceController : MonoBehaviour {
+    [Header("Level generator parameters")]
+    [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 0.")]
+    public int initialNumberOfCheckpoints = 4;
+    [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 100.")]
+    public int finalNumberOfCheckpoints = 20;
+    [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 0.")]
+    public Vector2 initialDirectionChange = new Vector2(10, 20);
+    [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 100.")]
+    public Vector2 finalDirectionChange = new Vector2(30, 45);
+    [Tooltip("Scale of hoops when the player's Precision stat is 0.")]
+    public float initialHoopScale = 1f;
+    [Tooltip("Scale of hoops when the player's Precision stat is 100.")]
+    public float finalHoopScale = 0.4f;
+    [Tooltip("The approximate minimum and maximum distance between two hoops when the player's Speed stat is 0.")]
+    public Vector2 initialHoopDistanceRange = new Vector2(40, 50);
+    [Tooltip("The approximate minimum and maximum distance between two hoops when the player's Speed stat is 100.")]
+    public Vector2 finalHoopDistanceRange = new Vector2(80, 100);
+
     // Related objects
     private LevelGenerationPipeline levelGenerator;
+    private TrackPointsGenerationRandomWalk trackGenerator;
+    private TrackHoopsPlacement hoopsPlacement;
     private PlayerController player;
 
     void Start()
     {
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
+        trackGenerator = FindObjectOfType<TrackPointsGenerationRandomWalk>();
+        hoopsPlacement = FindObjectOfType<TrackHoopsPlacement>();
         player = FindObjectOfType<PlayerController>();
         // Initialize state at the beginning
         PlayerState.Instance.raceState.Reset();
         // Generate level (terrain + track)
+        SetLevelGeneratorParameters();
         PlayerState.Instance.raceState.level = levelGenerator.GenerateLevel();
         // Place the player
         player.transform.position = PlayerState.Instance.raceState.level.playerStartPosition;
@@ -43,6 +65,26 @@ public class RaceController : MonoBehaviour
             }
         }
         // - otherwise the player is still between the same pair of hoops
+    }
+
+    private void SetLevelGeneratorParameters() {
+        // Compute parameters based on player's stats
+        // ... number of checkpoints from Endurance
+        int numOfCheckpoints = Mathf.RoundToInt(Mathf.Lerp(initialNumberOfCheckpoints, finalNumberOfCheckpoints, PlayerState.Instance.stats.endurance / 100f));
+        // ... maximum direction change from Dexterity
+        Vector2 directionChange = Vector2.Lerp(initialDirectionChange, finalDirectionChange, PlayerState.Instance.stats.dexterity / 100f);
+        // ... hoop scale from Precision
+        float hoopScale = Mathf.Lerp(initialHoopScale, finalHoopScale, PlayerState.Instance.stats.precision / 100f);
+        // ... distance between adjacent hoops from Speed
+        Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.stats.speed / 100f);
+        // And set them
+        if (trackGenerator != null) {
+            trackGenerator.numberOfCheckpoints = numOfCheckpoints;
+            trackGenerator.maxDirectionChangeAngle = directionChange;
+            trackGenerator.distanceRange = distanceRange;
+        }
+        if (hoopsPlacement != null)
+            hoopsPlacement.hoopScale = hoopScale;
     }
 
     private enum HoopRelativePosition { 
