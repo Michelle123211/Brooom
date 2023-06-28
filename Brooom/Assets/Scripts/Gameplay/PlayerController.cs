@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     // Parameters
     [Header("Forward movement")]
-    public float maxSpeed = 40;
+    public float maxSpeed = 10;
     public float forwardResponsiveness = 0.01f;
     [Header("Yaw and Roll")]
     public float turnSpeed = 3;
@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour
     }
     public void SetMaxAltitude(float maxAltitude) {
         PlayerState.Instance.maxAltitude = maxAltitude;
+    }
+
+    public void SetForwardResponsiveness(float responsiveness) {
+        this.forwardResponsiveness = responsiveness;
     }
     public void SetYawResponsiveness(float responsiveness) {
         this.yawResponsiveness = responsiveness;
