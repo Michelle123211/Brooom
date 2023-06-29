@@ -66,6 +66,20 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    public void ResetPosition(Vector3 position) {
+        transform.position = position;
+        transform.rotation = Quaternion.identity;
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+        
+        currentForwardSpeed = 0;
+        currentYaw = 0;
+        currentPitch = 0;
+
+        previousForwardInput = 0;
+    }
+
+
     public float[] GetValuesForDisplay() {
         float[] result = new float[] {
             rb.velocity.magnitude, // current speed

@@ -38,6 +38,9 @@ public class RaceController : MonoBehaviour {
     private TrackPointsGenerationRandomWalk trackGenerator;
     private TrackHoopsPlacement hoopsPlacement;
     private PlayerController player;
+    private Rigidbody playerRigidbody;
+
+    private bool raceStarted = false; // distinguish between training and race
 
     void Start()
     {
@@ -45,38 +48,46 @@ public class RaceController : MonoBehaviour {
         trackGenerator = FindObjectOfType<TrackPointsGenerationRandomWalk>();
         hoopsPlacement = FindObjectOfType<TrackHoopsPlacement>();
         player = FindObjectOfType<PlayerController>();
+        playerRigidbody = player.GetComponent<Rigidbody>();
         // Initialize state at the beginning
         PlayerState.Instance.raceState.Reset();
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
         PlayerState.Instance.raceState.level = levelGenerator.GenerateLevel();
         // Place the player
-        player.transform.position = PlayerState.Instance.raceState.level.playerStartPosition;
+        player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
     }
 
 	private void Update() {
-        // Update charge of equipped spells
-        PlayerState.Instance.raceState.UpdateSpellsCharge(Time.deltaTime);
+        if (raceStarted) { // during race
+            // Update charge of equipped spells
+            PlayerState.Instance.raceState.UpdateSpellsCharge(Time.deltaTime);
 
-        // Update player's position relatively to the hoops
-        // - check whether the player is after the next hoop
-        int nextHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex + 1;
-        if (nextHoopIndex < PlayerState.Instance.raceState.level.track.Count) {
-            HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
-            if (relativePosition == HoopRelativePosition.After) {
-                PlayerState.Instance.raceState.previousTrackPointIndex = nextHoopIndex;
-                // TODO: Higlight the next hoop
+            // Update player's position relatively to the hoops
+            // - check whether the player is after the next hoop
+            int nextHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex + 1;
+            if (nextHoopIndex < PlayerState.Instance.raceState.level.track.Count) {
+                HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
+                if (relativePosition == HoopRelativePosition.After) {
+                    PlayerState.Instance.raceState.previousTrackPointIndex = nextHoopIndex;
+                    // TODO: Higlight the next hoop
+                }
+            }
+            // - check whether the player is before the previous hoop
+            int previousHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex;
+            if (previousHoopIndex >= 0) {
+                HoopRelativePosition relativePosition = GetHoopRelativePosition(previousHoopIndex);
+                if (relativePosition == HoopRelativePosition.Before) {
+                    PlayerState.Instance.raceState.previousTrackPointIndex = previousHoopIndex - 1;
+                }
+            }
+            // - otherwise the player is still between the same pair of hoops
+        } else { // during training
+            if (InputManager.Instance.GetBoolValue("Restart")) {
+                player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
             }
         }
-        // - check whether the player is before the previous hoop
-        int previousHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex;
-        if (previousHoopIndex >= 0) {
-            HoopRelativePosition relativePosition = GetHoopRelativePosition(previousHoopIndex);
-            if (relativePosition == HoopRelativePosition.Before) {
-                PlayerState.Instance.raceState.previousTrackPointIndex = previousHoopIndex - 1;
-            }
-        }
-        // - otherwise the player is still between the same pair of hoops
+        
     }
 
     private void SetLevelGeneratorParameters() {
