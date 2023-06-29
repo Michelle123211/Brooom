@@ -1069,6 +1069,19 @@ MonoBehaviour:
   finalHoopScale: 0.4
   initialHoopDistanceRange: {x: 40, y: 50}
   finalHoopDistanceRange: {x: 80, y: 100}
+  defaultRegions: 6500000066000000
+  regionsUnlockedByEndurance:
+  - region: 111
+    minValue: 25
+  - region: 112
+    minValue: 50
+  - region: 113
+    minValue: 75
+  regionsUnlockedByAltitude:
+  - region: 121
+    minValue: 30
+  - region: 211
+    minValue: 50
 --- !u!4 &1820478787
 Transform:
   m_ObjectHideFlags: 0

@@ -3,23 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RaceController : MonoBehaviour {
-    [Header("Level generator parameters")]
+    [Header("Level length (Endurance)")]
     [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 0.")]
     public int initialNumberOfCheckpoints = 4;
     [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 100.")]
     public int finalNumberOfCheckpoints = 20;
+
+    [Header("Direction change (Dexterity)")]
     [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 0.")]
     public Vector2 initialDirectionChange = new Vector2(10, 20);
     [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 100.")]
     public Vector2 finalDirectionChange = new Vector2(30, 45);
+
+    [Header("Hoop scale (Precision)")]
     [Tooltip("Scale of hoops when the player's Precision stat is 0.")]
     public float initialHoopScale = 1f;
     [Tooltip("Scale of hoops when the player's Precision stat is 100.")]
     public float finalHoopScale = 0.4f;
+
+    [Header("Hoop distance (Speed)")]
     [Tooltip("The approximate minimum and maximum distance between two hoops when the player's Speed stat is 0.")]
     public Vector2 initialHoopDistanceRange = new Vector2(40, 50);
     [Tooltip("The approximate minimum and maximum distance between two hoops when the player's Speed stat is 100.")]
     public Vector2 finalHoopDistanceRange = new Vector2(80, 100);
+
+    [Header("Regions")]
+    public List<LevelRegionType> defaultRegions;
+    public List<RegionUnlockValue> regionsUnlockedByEndurance;
+    public List<RegionUnlockValue> regionsUnlockedByAltitude;
+
 
     // Related objects
     private LevelGenerationPipeline levelGenerator;
@@ -77,7 +89,18 @@ public class RaceController : MonoBehaviour {
         float hoopScale = Mathf.Lerp(initialHoopScale, finalHoopScale, PlayerState.Instance.stats.precision / 100f);
         // ... distance between adjacent hoops from Speed
         Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.stats.speed / 100f);
+        // ... available regions from Endurance
+        foreach (var region in defaultRegions)
+            PlayerState.Instance.raceState.regionsAvailability[region] = true;
+        foreach (var regionWithValue in regionsUnlockedByEndurance)
+            PlayerState.Instance.raceState.regionsAvailability[regionWithValue.region] =
+                PlayerState.Instance.stats.endurance >= regionWithValue.minValue ? true : false;
+        // ... available regions from max altitude
+        foreach (var regionWithValue in regionsUnlockedByAltitude)
+            PlayerState.Instance.raceState.regionsAvailability[regionWithValue.region] =
+                PlayerState.Instance.maxAltitude >= regionWithValue.minValue ? true : false;
         // And set them
+        levelGenerator.regionsAvailability = PlayerState.Instance.raceState.regionsAvailability;
         if (trackGenerator != null) {
             trackGenerator.numberOfCheckpoints = numOfCheckpoints;
             trackGenerator.maxDirectionChangeAngle = directionChange;
@@ -104,10 +127,20 @@ public class RaceController : MonoBehaviour {
     }
 }
 
+[System.Serializable]
+public class RegionUnlockValue {
+    [Tooltip("Region unlocked by a specific value of some stat (e.g. max altitude, endurance).")]
+    public LevelRegionType region;
+    [Tooltip("If the stat is greater then this value, the region becomes available.")]
+    public int minValue;
+}
+
 public class RaceState {
     // Level - to get access to track points and record player's position within the track
     public LevelRepresentation level;
     public int previousTrackPointIndex = -1; // position of the player within the track (index of the last hoop they passed)
+    // Regions
+    public Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>();
     // Mana
     public int currentMana;
     public int maxMana;
