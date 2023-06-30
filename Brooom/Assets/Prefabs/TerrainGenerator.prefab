@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 7011073760170370752}
   - component: {fileID: 4301535814927083996}
   - component: {fileID: 6151264501117884229}
+  - component: {fileID: 6727678963712564295}
   - component: {fileID: 7590517373936672831}
   - component: {fileID: 9121179430083006447}
   - component: {fileID: 5708007630854056561}
@@ -207,6 +208,8 @@ MonoBehaviour:
     isModuleEnabled: 1
   - module: {fileID: 6151264501117884229}
     isModuleEnabled: 1
+  - module: {fileID: 6727678963712564295}
+    isModuleEnabled: 1
   - module: {fileID: 7590517373936672831}
     isModuleEnabled: 1
   - module: {fileID: 5708007630854056561}
@@ -222,7 +225,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
   trackRegions:
   - {fileID: 11400000, guid: a947588bc3cd91942a8aab910d71ba8d, type: 2}
-  allowedRegions: 6500000066000000
   showVertices: 0
   showEdges: 0
   showBorders: 0
@@ -427,6 +429,19 @@ MonoBehaviour:
   minHeightOffsetOverrides:
   - region: 102
     minimumHeightAboveGround: 4
+--- !u!114 &6727678963712564295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042582758647628373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a73ec1f901f9d984ab92e7b584dd472d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAngle: 10
 --- !u!114 &7590517373936672831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,6 +456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoopPrefab: {fileID: 8955490708990326914, guid: 2401e52c4a0f073469145858a53c9e0c,
     type: 3}
+  hoopScale: 1
   checkpointPrefab: {fileID: 8707123838125681049, guid: e6b6f9aa7ad39e743ad1581008394724,
     type: 3}
   hoopsParent: {fileID: 1704416431875874871}

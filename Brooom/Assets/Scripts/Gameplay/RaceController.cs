@@ -37,6 +37,7 @@ public class RaceController : MonoBehaviour {
     private LevelGenerationPipeline levelGenerator;
     private TrackPointsGenerationRandomWalk trackGenerator;
     private TrackHoopsPlacement hoopsPlacement;
+    private MaximumAngleCorrection angleCorrection;
     private PlayerController player;
     private Rigidbody playerRigidbody;
 
@@ -47,6 +48,7 @@ public class RaceController : MonoBehaviour {
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
         trackGenerator = FindObjectOfType<TrackPointsGenerationRandomWalk>();
         hoopsPlacement = FindObjectOfType<TrackHoopsPlacement>();
+        angleCorrection = FindObjectOfType<MaximumAngleCorrection>();
         player = FindObjectOfType<PlayerController>();
         playerRigidbody = player.GetComponent<Rigidbody>();
         // Initialize state at the beginning
@@ -119,6 +121,8 @@ public class RaceController : MonoBehaviour {
         }
         if (hoopsPlacement != null)
             hoopsPlacement.hoopScale = hoopScale;
+        if (angleCorrection != null)
+            angleCorrection.maxAngle = directionChange.x;
     }
 
     private enum HoopRelativePosition { 
