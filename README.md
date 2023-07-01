@@ -17,3 +17,12 @@
 - Save system - persistently storing selected language, key bindings and character appearance
 - Customizable pipeline for procedural terrain generation (different regions with different parameters, interpolation between them)
 - Updated GDD
+
+**Milestone 3** (June 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone3.zip)):
+
+- Procedural track generation (random walk + intersection prevention + height postprocessing + hoops/checkpoints placement)
+- Implementation and placement of bonus items (increased speed, increased mana, spells charging up, trajectory highlighting)
+- Track properties based on player's stats
+- Region selection based on player's stats and broom upgrades
+- Restart of the track
+- Updated GDD (+ added section with several similar games)
