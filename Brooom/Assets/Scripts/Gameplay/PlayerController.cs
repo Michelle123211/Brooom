@@ -148,9 +148,12 @@ public class PlayerController : MonoBehaviour
         transform.localEulerAngles = eulerAngles;
     }
 
+	private void Awake() {
+        rb = GetComponent<Rigidbody>();
+    }
+
 	// Start is called before the first frame update
 	void Start() {
-        rb = GetComponent<Rigidbody>();
         cameraController = FindObjectOfType<CameraController>();
     }
 }

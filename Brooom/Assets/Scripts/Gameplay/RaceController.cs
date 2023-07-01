@@ -39,7 +39,6 @@ public class RaceController : MonoBehaviour {
     private TrackHoopsPlacement hoopsPlacement;
     private MaximumAngleCorrection angleCorrection;
     private PlayerController player;
-    private Rigidbody playerRigidbody;
 
     private bool raceStarted = false; // distinguish between training and race
 
@@ -50,7 +49,6 @@ public class RaceController : MonoBehaviour {
         hoopsPlacement = FindObjectOfType<TrackHoopsPlacement>();
         angleCorrection = FindObjectOfType<MaximumAngleCorrection>();
         player = FindObjectOfType<PlayerController>();
-        playerRigidbody = player.GetComponent<Rigidbody>();
         // Initialize state at the beginning
         PlayerState.Instance.raceState.Reset();
         // Generate level (terrain + track)
@@ -61,32 +59,33 @@ public class RaceController : MonoBehaviour {
     }
 
 	private void Update() {
+        // Update player's position relatively to the hoops
+        // - check whether the player is after the next hoop
+        int nextHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex + 1;
+        if (nextHoopIndex < PlayerState.Instance.raceState.level.track.Count) {
+            HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
+            if (relativePosition == HoopRelativePosition.After) {
+                PlayerState.Instance.raceState.previousTrackPointIndex = nextHoopIndex;
+                // TODO: Higlight the next hoop
+            }
+        }
+        // - check whether the player is before the previous hoop
+        int previousHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex;
+        if (previousHoopIndex >= 0) {
+            HoopRelativePosition relativePosition = GetHoopRelativePosition(previousHoopIndex);
+            if (relativePosition == HoopRelativePosition.Before) {
+                PlayerState.Instance.raceState.previousTrackPointIndex = previousHoopIndex - 1;
+            }
+        }
+        // - otherwise the player is still between the same pair of hoops
+
         if (raceStarted) { // during race
             // Update charge of equipped spells
             PlayerState.Instance.raceState.UpdateSpellsCharge(Time.deltaTime);
-
-            // Update player's position relatively to the hoops
-            // - check whether the player is after the next hoop
-            int nextHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex + 1;
-            if (nextHoopIndex < PlayerState.Instance.raceState.level.track.Count) {
-                HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
-                if (relativePosition == HoopRelativePosition.After) {
-                    PlayerState.Instance.raceState.previousTrackPointIndex = nextHoopIndex;
-                    // TODO: Higlight the next hoop
-                }
-            }
-            // - check whether the player is before the previous hoop
-            int previousHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex;
-            if (previousHoopIndex >= 0) {
-                HoopRelativePosition relativePosition = GetHoopRelativePosition(previousHoopIndex);
-                if (relativePosition == HoopRelativePosition.Before) {
-                    PlayerState.Instance.raceState.previousTrackPointIndex = previousHoopIndex - 1;
-                }
-            }
-            // - otherwise the player is still between the same pair of hoops
         } else { // during training
             if (InputManager.Instance.GetBoolValue("Restart")) {
                 player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+                PlayerState.Instance.raceState.previousTrackPointIndex = -1;
             }
         }
         
