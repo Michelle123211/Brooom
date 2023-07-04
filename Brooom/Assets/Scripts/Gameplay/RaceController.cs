@@ -43,6 +43,8 @@ public class RaceController : MonoBehaviour {
 
     private bool raceStarted = false; // distinguish between training and race
     private float raceTime = 0;
+    private int checkpointsPassed = 0;
+    private int hoopsPassed = 0;
 
     void Start()
     {
@@ -59,6 +61,13 @@ public class RaceController : MonoBehaviour {
         PlayerState.Instance.raceState.level = levelGenerator.GenerateLevel();
         // Place the player
         player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+        // Initialize HUD
+        int checkpointsTotal = 0, hoopsTotal = 0;
+        foreach (var trackPoint in PlayerState.Instance.raceState.level.track) {
+            if (trackPoint.isCheckpoint) checkpointsTotal++;
+            else hoopsTotal++;
+        }
+        raceHUD.InitializeCheckpointsAndHoops(checkpointsTotal, hoopsTotal);
     }
 
 	private void Update() {
@@ -69,6 +78,12 @@ public class RaceController : MonoBehaviour {
             HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
             if (relativePosition == HoopRelativePosition.After) {
                 PlayerState.Instance.raceState.previousTrackPointIndex = nextHoopIndex;
+                // TODO: Remove after debugging (now even missed checkpoints/hoops are counted)
+                if (PlayerState.Instance.raceState.level.track[nextHoopIndex].isCheckpoint)
+                    checkpointsPassed++;
+                else
+                    hoopsPassed++;
+                raceHUD.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed);
                 // TODO: Higlight the next hoop
             }
         }
@@ -78,6 +93,12 @@ public class RaceController : MonoBehaviour {
             HoopRelativePosition relativePosition = GetHoopRelativePosition(previousHoopIndex);
             if (relativePosition == HoopRelativePosition.Before) {
                 PlayerState.Instance.raceState.previousTrackPointIndex = previousHoopIndex - 1;
+                // TODO: Remove after debugging (now even missed checkpoints/hoops are counted)
+                if (PlayerState.Instance.raceState.level.track[previousHoopIndex].isCheckpoint)
+                    checkpointsPassed--;
+                else
+                    hoopsPassed--;
+                raceHUD.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed);
             }
         }
         // - otherwise the player is still between the same pair of hoops

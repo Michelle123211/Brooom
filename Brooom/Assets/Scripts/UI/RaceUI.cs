@@ -41,13 +41,27 @@ public class RaceUI : MonoBehaviour {
     public void UpdateTime(float timeInSeconds) {
         timeText.text = Utils.FormatTime(timeInSeconds);
     }
-    public void UpdateTimePenalization(int penalizationInSeconds) {
-        timePenalizationText.text = $"(+{penalizationInSeconds} s)";
-        timePenalizationText.gameObject.SetActive(true);
-    }
     public void UpdatePlayerState(float speed, float altitude) {
         speedText.text = Math.Round(speed, 1).ToString();
         altitudeText.text = Math.Round(altitude, 1).ToString();
+    }
+    #endregion
+
+    #region Race state
+    public void InitializeCheckpointsAndHoops(int checkpointsTotal, int hoopsTotal) {
+        checkpointsPassedText.text = "0";
+        checkpointsTotalText.text = checkpointsTotal.ToString();
+        hoopsPassedText.text = "0";
+        hoopsTotalText.text = hoopsTotal.ToString();
+        hoopsMissedText.text = "";
+    }
+    public void UpdatePlayerPositionWithinRace(int checkpointsPassed, int hoopsPassed) {
+        checkpointsPassedText.text = checkpointsPassed.ToString();
+        hoopsPassedText.text = hoopsPassed.ToString();
+    }
+    public void UpdateTimePenalization(int penalizationInSeconds, int missedHoops) {
+        timePenalizationText.text = $"(+{penalizationInSeconds} s)";
+        hoopsMissedText.text = missedHoops.ToString();
     }
     #endregion
 
@@ -62,8 +76,14 @@ public class RaceUI : MonoBehaviour {
     public void UpdateEnteringRaceCountdown(float value) {
         enteringRaceCountdownText.text = string.Format(enteringRaceString, value.ToString());
     }
-	#endregion
+    #endregion
 
+    private void ResetRaceState() {
+        checkpointsPassedText.text = "0";
+        hoopsPassedText.text = "0";
+        hoopsMissedText.text = "";
+        timePenalizationText.text = "";
+    }
 
 	public void StartRace() {
         // TODO: Hide all elements which are visible only during the training
@@ -72,15 +92,19 @@ public class RaceUI : MonoBehaviour {
         //startRaceText.gameObject.SetActive(false);
         // ...
         // TODO: Initialize all elements
+        ResetRaceState();
         // TODO: Show elements visible only during the race
     }
 
-	private void Start() {
+    private void Start() {
         enteringRaceString = LocalizationManager.Instance.GetLocalizedString("RaceLabelEntering");
         // TODO: Hide all elements which should not visible during training
         // TODO: Uncomment when finished debugging
+        timePenalizationText.gameObject.SetActive(false);
         //timeObject.SetActive(false);
         //placeObject.SetActive(false);
         // ...
+        // Initialize everything
+        ResetRaceState();
     }
 }
