@@ -25,6 +25,18 @@ public static class Utils
     }
 
 
+    // Takes time in seconds and returns it formatted as minutes:seconds.miliseconds in a string
+    public static string FormatTime(float timeInSeconds) {
+        int minutes = (int)(timeInSeconds / 60);
+        int seconds = (int)(timeInSeconds % 60);
+        int miliseconds = (int)((timeInSeconds - (minutes * 60) - seconds) * 1000);
+        if (minutes > 0)
+            return $"{minutes}:{seconds.ToString("D2")}.{miliseconds}";
+        else
+            return $"{seconds}.{miliseconds}";
+    } 
+
+
     public static Color WithA(this Color c, float a)
         => new Color(c.r, c.g, c.b, a);
     public static Color WithR(this Color c, float r)

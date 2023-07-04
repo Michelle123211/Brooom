@@ -90,6 +90,14 @@ public class PlayerController : MonoBehaviour
         return result;
     }
 
+    public float GetCurrentSpeed() {
+        return rb.velocity.magnitude;
+    }
+
+    public float GetCurrentAltitude() {
+        return transform.position.y;
+    }
+
     // Changes the bonus speed value gradually over time
     private void TweenBonusSpeed(float targetValue, float duration) {
         if (bonusSpeedTween != null && bonusSpeedTween.IsActive() && bonusSpeedTween.IsPlaying())

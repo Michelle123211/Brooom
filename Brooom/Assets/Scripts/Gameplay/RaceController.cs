@@ -34,6 +34,7 @@ public class RaceController : MonoBehaviour {
 
 
     // Related objects
+    private RaceUI raceHUD;
     private LevelGenerationPipeline levelGenerator;
     private TrackPointsGenerationRandomWalk trackGenerator;
     private TrackHoopsPlacement hoopsPlacement;
@@ -41,9 +42,11 @@ public class RaceController : MonoBehaviour {
     private PlayerController player;
 
     private bool raceStarted = false; // distinguish between training and race
+    private float raceTime = 0;
 
     void Start()
     {
+        raceHUD = FindObjectOfType<RaceUI>();
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
         trackGenerator = FindObjectOfType<TrackPointsGenerationRandomWalk>();
         hoopsPlacement = FindObjectOfType<TrackHoopsPlacement>();
@@ -88,7 +91,14 @@ public class RaceController : MonoBehaviour {
                 PlayerState.Instance.raceState.previousTrackPointIndex = -1;
             }
         }
-        
+
+        // Update UI
+        if (raceHUD != null) {
+            raceHUD.UpdatePlayerState(player.GetCurrentSpeed(), player.GetCurrentAltitude());
+            // TODO: Change to the actual time from the start of the race (not including training)
+            raceTime += Time.deltaTime;
+            raceHUD.UpdateTime(raceTime);
+        }
     }
 
     private void SetLevelGeneratorParameters() {
