@@ -35,7 +35,7 @@ public class TrackHoopsPlacement : LevelGeneratorModule {
 			point.assignedObject = Instantiate(prefab, level.track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
 			// Set scale of the hoops
 			if (!point.isCheckpoint)
-				point.assignedObject.transform.localScale = Vector3.one * hoopScale;
+				point.assignedObject.GetComponent<Hoop>()?.SetScale(Vector3.one * hoopScale);
 		}
 	}
 }
