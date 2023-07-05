@@ -102,9 +102,6 @@ public class RaceUI : MonoBehaviour {
 
     private void Start() {
         enteringRaceString = LocalizationManager.Instance.GetLocalizedString("RaceLabelEntering");
-        // Rebuild layout - to adjust Layout Group's width according to the new width given by Content Size Fitter on a child
-        LayoutRebuilder.ForceRebuildLayoutImmediate(checkpointsLayout);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(hoopsLayout);
         // TODO: Hide all elements which should not visible during training
         // TODO: Uncomment when finished debugging
         timePenalizationText.gameObject.SetActive(false);
