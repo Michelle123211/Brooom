@@ -17,8 +17,12 @@ public class RaceUI : MonoBehaviour {
     [SerializeField] TextMeshProUGUI altitudeText;
 
     [Header("Race state")]
+    [Tooltip("A RectTransform which is a parent of all the checkpoints labels.")]
+    [SerializeField] RectTransform checkpointsLayout;
     [SerializeField] TextMeshProUGUI checkpointsPassedText;
     [SerializeField] TextMeshProUGUI checkpointsTotalText;
+    [Tooltip("A RectTransform which is a parent of all the hoops labels.")]
+    [SerializeField] RectTransform hoopsLayout;
     [SerializeField] TextMeshProUGUI hoopsPassedText;
     [SerializeField] TextMeshProUGUI hoopsTotalText;
     [SerializeField] TextMeshProUGUI hoopsMissedText;
@@ -98,6 +102,9 @@ public class RaceUI : MonoBehaviour {
 
     private void Start() {
         enteringRaceString = LocalizationManager.Instance.GetLocalizedString("RaceLabelEntering");
+        // Rebuild layout - to adjust Layout Group's width according to the new width given by Content Size Fitter on a child
+        LayoutRebuilder.ForceRebuildLayoutImmediate(checkpointsLayout);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(hoopsLayout);
         // TODO: Hide all elements which should not visible during training
         // TODO: Uncomment when finished debugging
         timePenalizationText.gameObject.SetActive(false);
