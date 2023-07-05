@@ -13,6 +13,6 @@ public class MinimapCameraController : MonoBehaviour
 	private void LateUpdate() {
 		Vector3 position = objectToFollow.position;
 		transform.position = position.WithY(position.y + heightAboveObject);
-		transform.localEulerAngles = (Vector3.right * 90).WithY(objectToFollow.localEulerAngles.y); // rotate 90 degrees around X to look down
+		transform.rotation = Quaternion.Euler(90, objectToFollow.eulerAngles.y, 0); // rotate 90 degrees around X to look down
 	}
 }
