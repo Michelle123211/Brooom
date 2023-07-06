@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 using TMPro;
 
 public class RaceUI : MonoBehaviour {
@@ -28,10 +27,11 @@ public class RaceUI : MonoBehaviour {
     [SerializeField] TextMeshProUGUI hoopsMissedText;
     [Tooltip("A GameObject containing all parts of the place UI element which will be hidden during training.")]
     [SerializeField] GameObject placeObject;
+    [SerializeField] UnityEngine.UI.Image placeBackground;
     [SerializeField] TextMeshProUGUI placeText;
 
     [Header("Spells")]
-    [SerializeField] ProgressBar manaBar;
+    [SerializeField] UnityEngine.UIElements.ProgressBar manaBar;
     [SerializeField] VerticalLayoutGroup spellSlotsGroup;
     [SerializeField] HorizontalLayoutGroup effectsGroup;
 
@@ -40,6 +40,11 @@ public class RaceUI : MonoBehaviour {
     [SerializeField] TextMeshProUGUI enteringRaceCountdownText;
 
 	string enteringRaceString;
+    Color[] placeColors = new Color[] { // TODO: Move to a separate color palette
+        Utils.ColorFromRBG256(243, 217, 81), // gold
+        Utils.ColorFromRBG256(164, 164, 164), // silver
+        Utils.ColorFromRBG256(203, 128, 83), // bronz
+        Utils.ColorFromRBG256(126, 92, 80) };
 
     #region Basic information
     public void UpdateTime(float timeInSeconds) {
@@ -68,8 +73,11 @@ public class RaceUI : MonoBehaviour {
         hoopsMissedText.text = missedHoops.ToString();
     }
     public void UpdatePlace(int place) {
-        placeText.text = LocalizationManager.Instance.GetLocalizedString($"RaceLabelPlace{place}");
-        // TODO: Change color of the text according to the place
+        placeText.text = place.ToString();
+        // Change color according to the place
+        int colorIndex = place - 1;
+        if (colorIndex >= placeColors.Length) colorIndex = placeColors.Length - 1;
+        placeBackground.color = placeColors[colorIndex];
     }
     #endregion
 
