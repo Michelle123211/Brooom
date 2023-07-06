@@ -95,7 +95,7 @@ public class RaceUI : MonoBehaviour {
     #endregion
 
     private void ResetRaceState() {
-        placeText.text = LocalizationManager.Instance.GetLocalizedString($"RaceLabelPlace1");
+        placeText.text = "1";
         checkpointsPassedText.text = "0";
         hoopsPassedText.text = "0";
         hoopsMissedText.text = "";
