@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class RaceController : MonoBehaviour {
     [Header("Level length (Endurance)")]
@@ -83,7 +84,7 @@ public class RaceController : MonoBehaviour {
                     checkpointsPassed++;
                 else
                     hoopsPassed++;
-                raceHUD.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed);
+                PlayerState.Instance.raceState.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed);
                 // TODO: Higlight the next hoop
             }
         }
@@ -98,12 +99,15 @@ public class RaceController : MonoBehaviour {
                     checkpointsPassed--;
                 else
                     hoopsPassed--;
-                raceHUD.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed);
+                PlayerState.Instance.raceState.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed);
             }
         }
         // - otherwise the player is still between the same pair of hoops
 
         if (raceStarted) { // during race
+            // TODO: Update player's place
+            // Compare player's previous hoop with other racers, then compare distance to the next hoop
+
             // Update charge of equipped spells
             PlayerState.Instance.raceState.UpdateSpellsCharge(Time.deltaTime);
         } else { // during training
@@ -184,6 +188,11 @@ public class RaceState {
     // Level - to get access to track points and record player's position within the track
     public LevelRepresentation level;
     public int previousTrackPointIndex = -1; // position of the player within the track (index of the last hoop they passed)
+    // Race position
+    public int place;
+    public int hoopsPassed;
+    public int hoopsMissed;
+    public int checkpointsPassed;
     // Regions
     public Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>();
     // Mana
@@ -193,15 +202,38 @@ public class RaceState {
     public EquippedSpell[] spellSlots;
     public int selectedSpell; // index of currently selected spell
 
+    // Callbacks
+    public Action<int> onPlayerPlaceChanged;
+    public Action<int, int> onPlayerPositionWithinRaceChanged;
+    public Action<int> onManaAmountChanged;
+
     public RaceState(int manaAmount, EquippedSpell[] equippedSpells) {
         this.maxMana = manaAmount;
-        this.currentMana = this.maxMana;
+        this.currentMana = 0;
         this.spellSlots = equippedSpells;
         this.selectedSpell = 0;
     }
 
+    public void UpdatePlayerPlace(int place) {
+        bool valueChanged = this.place != place;
+        this.place = place;
+        if (valueChanged)
+            onPlayerPlaceChanged?.Invoke(place);
+    }
+
+    public void UpdatePlayerPositionWithinRace(int checkpointsPassed, int hoopsPassed) {
+        bool valuesChanged = false;
+        if (this.checkpointsPassed != checkpointsPassed || this.hoopsPassed != hoopsPassed) valuesChanged = true;
+        this.checkpointsPassed = checkpointsPassed;
+        this.hoopsPassed = hoopsPassed;
+        if (valuesChanged)
+            onPlayerPositionWithinRaceChanged?.Invoke(checkpointsPassed, hoopsPassed);
+
+    }
+
     public void ChangeManaAmount(int delta) {
         currentMana = Mathf.Clamp(currentMana + delta, 0, maxMana);
+        onManaAmountChanged?.Invoke(currentMana);
     }
 
     public void UpdateSpellsCharge(float timeDelta) {
@@ -221,7 +253,7 @@ public class RaceState {
     public void Reset() {
         level = null;
         previousTrackPointIndex = -1;
-        this.currentMana = this.maxMana;
+        this.currentMana = 0;
         foreach (var spell in spellSlots) {
             if (spell != null)
                 spell.Reset();

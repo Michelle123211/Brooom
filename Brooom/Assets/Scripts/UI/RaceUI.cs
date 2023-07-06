@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class RaceUI : MonoBehaviour {
 
@@ -27,11 +28,13 @@ public class RaceUI : MonoBehaviour {
     [SerializeField] TextMeshProUGUI hoopsMissedText;
     [Tooltip("A GameObject containing all parts of the place UI element which will be hidden during training.")]
     [SerializeField] GameObject placeObject;
-    [SerializeField] UnityEngine.UI.Image placeBackground;
+    [SerializeField] Image placeBackground;
     [SerializeField] TextMeshProUGUI placeText;
 
     [Header("Spells")]
-    [SerializeField] UnityEngine.UIElements.ProgressBar manaBar;
+    [SerializeField] GameObject spellsObject;
+    [SerializeField] Slider manaBar;
+    [SerializeField] TextMeshProUGUI manaText;
     [SerializeField] VerticalLayoutGroup spellSlotsGroup;
     [SerializeField] HorizontalLayoutGroup effectsGroup;
 
@@ -94,12 +97,27 @@ public class RaceUI : MonoBehaviour {
     }
     #endregion
 
-    private void ResetRaceState() {
-        placeText.text = "1";
+    #region Spells
+    public void UpdateManaAmount(int amount) {
+        manaBar.DOKill();
+        manaBar.DOValue(amount, 0.75f, true);
+    }
+    public void UpdateManaAmountText(float amount) {
+        manaText.text = amount.ToString();
+    }
+	#endregion
+
+	private void ResetRaceState() {
+        UpdatePlace(1);
+
         checkpointsPassedText.text = "0";
         hoopsPassedText.text = "0";
         hoopsMissedText.text = "";
         timePenalizationText.text = "";
+
+        manaBar.maxValue = PlayerState.Instance.maxManaAmount;
+        manaBar.value = 0;
+        manaText.text = manaBar.value.ToString();
     }
 
 	public void StartRace() {
@@ -111,7 +129,20 @@ public class RaceUI : MonoBehaviour {
         // TODO: Initialize all elements
         ResetRaceState();
         // TODO: Show elements visible only during the race
+        //timeObject.SetActive(true);
         //placeObject.SetActive(true);
+        //spellsObject.SetActive(true);
+    }
+
+    private void RegisterCallbacks() {
+        // Register necessary callbacks
+        PlayerState.Instance.raceState.onPlayerPlaceChanged += UpdatePlace;
+        PlayerState.Instance.raceState.onPlayerPositionWithinRaceChanged += UpdatePlayerPositionWithinRace;
+        PlayerState.Instance.raceState.onManaAmountChanged += UpdateManaAmount;
+    }
+
+    private void UnregisterCallbacks() { 
+        
     }
 
     private void Start() {
@@ -122,8 +153,15 @@ public class RaceUI : MonoBehaviour {
         timePenalizationText.gameObject.SetActive(false);
         //timeObject.SetActive(false);
         //placeObject.SetActive(false);
+        //spellsObject.SetActive(false);
         // ...
         // Initialize everything
         ResetRaceState();
+        // Register necessary callbacks
+        RegisterCallbacks();
     }
+
+	private void OnDestroy() {
+        UnregisterCallbacks();
+	}
 }
