@@ -67,6 +67,10 @@ public class RaceUI : MonoBehaviour {
         timePenalizationText.text = $"(+{penalizationInSeconds} s)";
         hoopsMissedText.text = missedHoops.ToString();
     }
+    public void UpdatePlace(int place) {
+        placeText.text = LocalizationManager.Instance.GetLocalizedString($"RaceLabelPlace{place}");
+        // TODO: Change color of the text according to the place
+    }
     #endregion
 
     #region Entering race countdown
@@ -83,6 +87,7 @@ public class RaceUI : MonoBehaviour {
     #endregion
 
     private void ResetRaceState() {
+        placeText.text = LocalizationManager.Instance.GetLocalizedString($"RaceLabelPlace1");
         checkpointsPassedText.text = "0";
         hoopsPassedText.text = "0";
         hoopsMissedText.text = "";
@@ -98,9 +103,11 @@ public class RaceUI : MonoBehaviour {
         // TODO: Initialize all elements
         ResetRaceState();
         // TODO: Show elements visible only during the race
+        //placeObject.SetActive(true);
     }
 
     private void Start() {
+        // Cache localized strings
         enteringRaceString = LocalizationManager.Instance.GetLocalizedString("RaceLabelEntering");
         // TODO: Hide all elements which should not visible during training
         // TODO: Uncomment when finished debugging
