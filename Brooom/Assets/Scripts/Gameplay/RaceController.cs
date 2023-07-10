@@ -41,6 +41,7 @@ public class RaceController : MonoBehaviour {
     private TrackHoopsPlacement hoopsPlacement;
     private MaximumAngleCorrection angleCorrection;
     private PlayerController player;
+    private SpellController spellController;
 
     private bool raceStarted = false; // distinguish between training and race
     private float raceTime = 0;
@@ -55,6 +56,8 @@ public class RaceController : MonoBehaviour {
         hoopsPlacement = FindObjectOfType<TrackHoopsPlacement>();
         angleCorrection = FindObjectOfType<MaximumAngleCorrection>();
         player = FindObjectOfType<PlayerController>();
+        spellController = GetComponentInChildren<SpellController>();
+        spellController.enabled = false;
         // Initialize state at the beginning
         PlayerState.Instance.raceState.Reset();
         // Generate level (terrain + track)
@@ -72,6 +75,11 @@ public class RaceController : MonoBehaviour {
     }
 
 	private void Update() {
+        // TODO: DEBUG only, remove
+        if (!raceStarted && Input.GetMouseButtonDown(1)) {
+            StartRace();
+        }
+
         // Update player's position relatively to the hoops
         // - check whether the player is after the next hoop
         int nextHoopIndex = PlayerState.Instance.raceState.previousTrackPointIndex + 1;
@@ -107,9 +115,6 @@ public class RaceController : MonoBehaviour {
         if (raceStarted) { // during race
             // TODO: Update player's place
             // Compare player's previous hoop with other racers, then compare distance to the next hoop
-
-            // Update charge of equipped spells
-            PlayerState.Instance.raceState.UpdateSpellsCharge(Time.deltaTime);
         } else { // during training
             if (InputManager.Instance.GetBoolValue("Restart")) {
                 player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
@@ -124,6 +129,13 @@ public class RaceController : MonoBehaviour {
             raceTime += Time.deltaTime;
             raceHUD.UpdateTime(raceTime);
         }
+    }
+
+    // TODO: Call when entering the race
+    private void StartRace() {
+        // TODO: Add everything related to the start of the race
+        raceStarted = true;
+        spellController.enabled = true;
     }
 
     private void SetLevelGeneratorParameters() {
@@ -212,6 +224,12 @@ public class RaceState {
         this.currentMana = 0;
         this.spellSlots = equippedSpells;
         this.selectedSpell = 0;
+
+        // TODO: DEBUG only, remove
+        spellSlots[0] = new EquippedSpell(new Spell());
+        spellSlots[1] = new EquippedSpell(new Spell());
+        spellSlots[2] = new EquippedSpell(new Spell());
+        spellSlots[3] = new EquippedSpell(new Spell());
     }
 
     public void UpdatePlayerPlace(int place) {

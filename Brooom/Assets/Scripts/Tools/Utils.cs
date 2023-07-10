@@ -4,8 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
+
+public enum IterationDirection { 
+    Decreasing = -1,
+    Increasing = 1
+}
+
 public static class Utils
 {
+
     // Returns the value wrapped into the given interval
     public static int Wrap(int value, int minInclusive, int maxInclusive) {
         while (value < minInclusive || value > maxInclusive) {
