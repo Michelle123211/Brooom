@@ -59,9 +59,6 @@ public class SpellController : MonoBehaviour {
     }
 
 	private void Update() {
-        // Update charge of equipped spells
-        PlayerState.Instance.raceState.UpdateSpellsCharge(Time.deltaTime);
-
         // Detect mouse click and cast the currently selected spell
         if (Input.GetMouseButtonDown(0)) {
             spellSlots[selectedSpell].assignedSpell.CastSpell();

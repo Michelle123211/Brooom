@@ -480,6 +480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9170241710682177901}
   - component: {fileID: 9170241710682177890}
+  - component: {fileID: 2265899719492813329}
   m_Layer: 5
   m_Name: EffectSlotUI
   m_TagString: Untagged
@@ -527,7 +528,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 0
+  m_Spacing: 3
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
@@ -535,3 +536,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2265899719492813329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9170241710682177900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417f02652f0f897428570c94e24e7cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectImage: {fileID: 9170241709932195259}
+  effectDurationText: {fileID: 9170241709743574786}

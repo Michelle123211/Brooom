@@ -1139,7 +1139,7 @@ PrefabInstance:
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 70
+      value: 73
       objectReference: {fileID: 0}
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
@@ -1218,6 +1218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 252140362}
+  - component: {fileID: 252140365}
   - component: {fileID: 252140363}
   - component: {fileID: 252140364}
   m_Layer: 5
@@ -1292,6 +1293,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &252140365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252140361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e7ffac81700d9499b3247792672d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectSlotPrefab: {fileID: 2265899719492813329, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
+    type: 3}
+  effectSlotsParent: {fileID: 252140362}
 --- !u!1 &279551178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1918,36 +1934,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1572334340}
     m_Modifications:
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136624861519, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136980736635, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_FillAmount
-      value: 0.591
-      objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1992,21 +1978,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
@@ -2068,20 +2039,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726887, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
       propertyPath: m_Name
       value: EquippedSpellSlot (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137490913394, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0327d3a528a30334b9db2d44e35cf6b8, type: 3}
@@ -3538,7 +3499,7 @@ PrefabInstance:
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 70
+      value: 73
       objectReference: {fileID: 0}
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
@@ -4248,36 +4209,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1572334340}
     m_Modifications:
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136624861519, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136980736635, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_FillAmount
-      value: 0.267
-      objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4322,21 +4253,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
@@ -4398,20 +4314,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726887, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
       propertyPath: m_Name
       value: EquippedSpellSlot (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137490913394, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0327d3a528a30334b9db2d44e35cf6b8, type: 3}
@@ -4690,36 +4596,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1572334340}
     m_Modifications:
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136172940361, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136624861519, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136980736635, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_FillAmount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4764,21 +4640,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
@@ -4840,20 +4701,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726887, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
       propertyPath: m_Name
       value: EquippedSpellSlot (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396137490913394, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0327d3a528a30334b9db2d44e35cf6b8, type: 3}
@@ -5517,7 +5368,7 @@ PrefabInstance:
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 70
+      value: 73
       objectReference: {fileID: 0}
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
@@ -6652,7 +6503,7 @@ PrefabInstance:
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 70
+      value: 73
       objectReference: {fileID: 0}
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
@@ -7672,16 +7523,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1572334340}
     m_Modifications:
-    - target: {fileID: 795509527778381685, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5903396136624861519, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5903396137201726886, guid: 0327d3a528a30334b9db2d44e35cf6b8,
         type: 3}
       propertyPath: m_Pivot.x
@@ -7792,11 +7633,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EquippedSpellSlot
       objectReference: {fileID: 0}
-    - target: {fileID: 8517091794515743980, guid: 0327d3a528a30334b9db2d44e35cf6b8,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0327d3a528a30334b9db2d44e35cf6b8, type: 3}
 --- !u!1001 &9170241709137397274
@@ -7904,7 +7740,7 @@ PrefabInstance:
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 70
+      value: 73
       objectReference: {fileID: 0}
     - target: {fileID: 9170241710682177901, guid: 7b87c2242babbfb4d95bb58a6cdcbe00,
         type: 3}

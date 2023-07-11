@@ -10,9 +10,12 @@ public class SpeedBonusEffect : BonusEffect
 	public float speedAdded = 10;
 	[Tooltip("Duration of the effect in seconds.")]
 	public float duration = 8;
+	[Tooltip("An icon which will be used in the UI of effects affecting the player.")]
+	[SerializeField] Sprite speedIcon;
 
 	public override void ApplyBonusEffect(PlayerController player) {
 		player.SetBonusSpeed(speedAdded, duration);
+		PlayerState.Instance.raceState.AddEffect(new PlayerEffect(speedIcon, duration));
 	}
 
 	public override bool IsAvailable() {
