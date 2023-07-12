@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class EquippedSpellSlotUI : MonoBehaviour {
+public class RaceSpellSlotUI : MonoBehaviour {
 
 	[Header("Parameters")]
 	[Tooltip("When the spell is unavailable (not charged, not enough mana) the slot becomes smaller.")]

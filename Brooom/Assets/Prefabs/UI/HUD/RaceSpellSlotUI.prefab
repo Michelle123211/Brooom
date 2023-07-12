@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 5903396137201726886}
   - component: {fileID: 6493063722912797827}
   m_Layer: 5
-  m_Name: EquippedSpellSlotUI
+  m_Name: RaceSpellSlotUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -291,7 +291,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5903396137201726887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 799e7af43c836794790be110242284e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 84e3b185ab701c645bc11c99321259bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unavailableScale: 0.75
@@ -300,7 +300,7 @@ MonoBehaviour:
   backgroundImage: {fileID: 795509527778381685}
   unavailableOverlay: {fileID: 5903396137490913392}
   emptySlotSprite: {fileID: 21300000, guid: 1ab890b536a567248a23ecc6f86b823d, type: 3}
-  missingIconSprite: {fileID: 21300000, guid: 2c411b42662f82c4d9038f23952a537b, type: 3}
+  missingIconSprite: {fileID: 21300000, guid: 3e6493ab6534de04fbf37929ace50d44, type: 3}
   isEmpty: 0
 --- !u!1 &5903396137490913394
 GameObject:

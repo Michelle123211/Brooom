@@ -8,11 +8,11 @@ public class SpellController : MonoBehaviour {
     [Tooltip("A parent object of all the spell slots.")]
     [SerializeField] Transform spellSlotsParent;
     [Tooltip("A prefab of a spell slot which is instantiated several times.")]
-    [SerializeField] EquippedSpellSlotUI spellSlotPrefab;
+    [SerializeField] RaceSpellSlotUI spellSlotPrefab;
     [Tooltip("An image used as a border highlighting the selected spell.")]
     [SerializeField] Transform highlightBorder;
 
-    private EquippedSpellSlotUI[] spellSlots;
+    private RaceSpellSlotUI[] spellSlots;
     private int selectedSpell = -1;
     private int highlightedSpell = -1;
 
@@ -22,9 +22,9 @@ public class SpellController : MonoBehaviour {
             Destroy(spellSlotsParent.GetChild(i).gameObject);
         }
         // Instantiate new slots
-        spellSlots = new EquippedSpellSlotUI[PlayerState.Instance.raceState.spellSlots.Length];
+        spellSlots = new RaceSpellSlotUI[PlayerState.Instance.raceState.spellSlots.Length];
         for (int i = 0; i < spellSlots.Length; i++) {
-            spellSlots[i] = Instantiate<EquippedSpellSlotUI>(spellSlotPrefab, spellSlotsParent);
+            spellSlots[i] = Instantiate<RaceSpellSlotUI>(spellSlotPrefab, spellSlotsParent);
             spellSlots[i].Initialize(PlayerState.Instance.raceState.spellSlots[i]);
         }
     }
