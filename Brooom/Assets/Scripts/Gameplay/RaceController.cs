@@ -218,10 +218,10 @@ public class RaceState {
     public List<PlayerEffect> effects = new List<PlayerEffect>();
 
     // Callbacks
-    public Action<int> onPlayerPlaceChanged;
-    public Action<int, int> onPlayerPositionWithinRaceChanged;
-    public Action<int> onManaAmountChanged;
-    public Action<PlayerEffect> onNewEffectAdded;
+    public Action<int> onPlayerPlaceChanged; // parameter: new place
+    public Action<int, int> onPlayerPositionWithinRaceChanged; // parameters: checkpoints passed, hoops passed
+    public Action<int> onManaAmountChanged; // parameter: new value
+    public Action<PlayerEffect> onNewEffectAdded; // parameter: the added effect
 
     public RaceState(int manaAmount, EquippedSpell[] equippedSpells) {
         this.maxMana = manaAmount;
