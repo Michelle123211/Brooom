@@ -104,6 +104,7 @@ public static class Utils
             go.SetActive(false);
     }
 
+
     public static bool IsNullEvent(UnityEvent unityEvent) {
         if (unityEvent == null) return true;
         for (int i = 0; i < unityEvent.GetPersistentEventCount(); i++) {

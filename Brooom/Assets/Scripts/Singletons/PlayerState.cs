@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 {
@@ -33,8 +34,17 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     }
     #endregion
 
-    #region Money
-    public int money = 0;
+    #region Coins
+    public int coins = 0; // TODO: Change to property when debugging is done (with private setter, public getter)
+    public Action<int, int> onCoinsAmountChanged; // callback invoked whenever the amount of coins changes, parameters are old amount and new amount
+    // Returns true if the transaction could be performed (there was enough coins)
+    public bool ChangeCoinsAmount(int delta) {
+        int newAmount = coins + delta;
+        if (newAmount < 0) return false;
+        onCoinsAmountChanged(coins, newAmount);
+        coins = newAmount;
+        return true;
+    }
     #endregion
 
     #region Spells

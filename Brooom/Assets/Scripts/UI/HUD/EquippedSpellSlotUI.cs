@@ -29,8 +29,6 @@ public class EquippedSpellSlotUI : MonoBehaviour {
 
 	private bool isInitialized = false;
 
-	DG.Tweening.Core.TweenerCore<Vector3, Vector3, DG.Tweening.Plugins.Options.VectorOptions> pulseTween;
-
 	public void Initialize(EquippedSpell spell) {
 		assignedSpell = spell;
 		isEmpty = (spell == null || spell.spell == null);
