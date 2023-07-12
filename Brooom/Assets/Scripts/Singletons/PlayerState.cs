@@ -33,6 +33,9 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     }
     #endregion
 
+    #region Money
+    public int money = 0;
+    #endregion
 
     #region Spells
     #endregion
