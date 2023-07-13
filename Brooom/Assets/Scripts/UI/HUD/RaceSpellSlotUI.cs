@@ -19,13 +19,11 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	[SerializeField] Image backgroundImage;
 	[Tooltip("An Image used as an overlay when the spell is unavailable.")]
 	[SerializeField] Image unavailableOverlay;
-	[Tooltip("A Sprite which is used in an ampty slot instead of a spell icon.")]
-	[SerializeField] Sprite emptySlotSprite;
-	[Tooltip("A Sprite which is used when the spell does not have assigned icon.")]
-	[SerializeField] Sprite missingIconSprite;
 
 	[HideInInspector] public EquippedSpell assignedSpell;
 	[HideInInspector] public bool isEmpty = false;
+
+	private SpellSlotUI spellSlotUI;
 
 	private bool isInitialized = false;
 
@@ -37,7 +35,10 @@ public class RaceSpellSlotUI : MonoBehaviour {
 			assignedSpell.onBecomesAvailable += ChangeToAvailable;
 			assignedSpell.onBecomesUnavailable += ChangeToUnavailable;
 		}
-		// Change icon, initialize image fill, scale and alpha of the overlay
+		// Change icon
+		spellSlotUI.Initialize(spell == null ? null : spell.spell);
+		fillImage.sprite = backgroundImage.sprite;
+		// Initialize image fill, scale and alpha of the overlay
 		if (isEmpty) InitializeEmptySlot();
 		else InitializeSpellSlot();
 		isInitialized = true;
@@ -54,19 +55,14 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	}
 
 	private void InitializeEmptySlot() {
-		// Change icon, initialize image fill, scale and alpha of the overlay
-		backgroundImage.sprite = emptySlotSprite;
-		fillImage.sprite = emptySlotSprite;
+		// Initialize image fill, scale and alpha of the overlay
 		fillImage.fillAmount = 1;
 		transform.localScale = Vector3.one;
 		unavailableOverlay.color = unavailableOverlay.color.WithA(0);
 	}
 
 	private void InitializeSpellSlot() {
-		// Change icon, initialize image fill, scale and alpha of the overlay
-		Sprite icon = assignedSpell.spell.icon != null ? assignedSpell.spell.icon : missingIconSprite;
-		backgroundImage.sprite = icon;
-		fillImage.sprite = icon;
+		// Initialize image fill, scale and alpha of the overlay
 		fillImage.fillAmount = 0;
 		transform.localScale = Vector3.one * unavailableScale;
 		unavailableOverlay.color = unavailableOverlay.color.WithA(unavailableOverlayAlpha);
@@ -94,6 +90,10 @@ public class RaceSpellSlotUI : MonoBehaviour {
 			// Change image fill based on charge
 			fillImage.fillAmount = assignedSpell.charge;
 		}
+	}
+
+	private void Awake() {
+		spellSlotUI = GetComponentInChildren<SpellSlotUI>();
 	}
 
 	private void OnDestroy() {

@@ -7,8 +7,6 @@ using TMPro;
 public class ShopSpellSlotUI : MonoBehaviour
 {
     [Header("UI Elements")]
-    [Tooltip("An Image used to display icon of the spell.")]
-    [SerializeField] Image spellImage;
     [Tooltip("An object containing all UI elements for the spell price. Will be hidden if the spell has been already purchased.")]
     [SerializeField] GameObject priceParent;
     [Tooltip("A label used to display price of the spell.")]
@@ -16,12 +14,14 @@ public class ShopSpellSlotUI : MonoBehaviour
     [Tooltip("An overlay object used to change visuals when the spell has not been purchased yet.")]
     [SerializeField] GameObject unavailableOverlay;
 
+    private SpellSlotUI spellSlotUI;
+
     private Spell assignedSpell;
 
     public void Initialize(Spell spell) {
         assignedSpell = spell;
         // Set icon
-        spellImage.sprite = spell.icon;
+        spellSlotUI?.Initialize(spell);
         if (spell.isUnlocked) {
             ChangeToUnlockedd();
         } else {
@@ -51,5 +51,9 @@ public class ShopSpellSlotUI : MonoBehaviour
         if (PlayerState.Instance.coins < assignedSpell.coinsCost) // change to red if not enough coins
             priceText.color = Color.red; // TODO: Change to using a different color (not so aggressive, e.g. from a color palette)
         unavailableOverlay.SetActive(true);
+    }
+
+    private void Awake() {
+        spellSlotUI = GetComponentInChildren<SpellSlotUI>();
     }
 }

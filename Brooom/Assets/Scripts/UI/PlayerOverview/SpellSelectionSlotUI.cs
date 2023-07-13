@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpellSelectionSlotUI : MonoBehaviour
 {
+    private SpellSlotUI spellSlotUI;
+
     private Spell assignedSpell;
     private SpellSelectionUI spellSelection;
 
@@ -11,12 +13,16 @@ public class SpellSelectionSlotUI : MonoBehaviour
     public void Initialize(Spell spell, SpellSelectionUI parent) {
         this.assignedSpell = spell;
         this.spellSelection = parent;
-
-        // TODO: Update spell icon
+        // Update spell icon
+        spellSlotUI?.Initialize(spell);
     }
 
     public void AssignSpellToSlot() {
         // After clicking on any spell, assign it to a slot (including empty slot, assignedSpell = null)
         spellSelection.AssignSpellAndHide(assignedSpell);
     }
+
+	private void Awake() {
+        spellSlotUI = GetComponentInChildren<SpellSlotUI>();
+	}
 }
