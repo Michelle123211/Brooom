@@ -30,7 +30,13 @@ public class SpellSelectionUI : MonoBehaviour {
 	}
 
 	private void OnEnable() {
+		// Delete all existing slots from the grid
+		for (int i = spellSelectionParent.childCount - 1; i >= 0; i--) {
+			Destroy(spellSelectionParent.GetChild(i).gameObject);
+		}
+		// Add an empty slot (Initialize with null) so that it can be chosen as well
+		SpellSelectionSlotUI slot = Instantiate<SpellSelectionSlotUI>(spellSelectionSlotPrefab, spellSelectionParent);
+		slot.Initialize(null, this);
 		// TODO: Fill the grid with all unlocked spells
-		// TODO: Add an empty slot (Initialize with null) so that it can be chosen as well
 	}
 }
