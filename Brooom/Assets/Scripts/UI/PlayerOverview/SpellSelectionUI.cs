@@ -31,6 +31,6 @@ public class SpellSelectionUI : MonoBehaviour {
 
 	private void OnEnable() {
 		// TODO: Fill the grid with all unlocked spells
-		// TODO: Add an empty slot so that it can be chosen as well
+		// TODO: Add an empty slot (Initialize with null) so that it can be chosen as well
 	}
 }
