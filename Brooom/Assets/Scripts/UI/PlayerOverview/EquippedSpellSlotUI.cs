@@ -13,14 +13,21 @@ public class EquippedSpellSlotUI : MonoBehaviour
 	[SerializeField] Sprite missingIconSprite;
 
 	[HideInInspector] public Spell assignedSpell;
+	private SpellSelectionUI spellSelection;
 
-	public void Initialize(Spell spell) {
-		assignedSpell = spell;
+	public void Initialize(Spell spell, SpellSelectionUI spellSelection) {
+		this.spellSelection = spellSelection;
+
+		this.assignedSpell = spell;
 		if (spell == null)
 			spellImage.sprite = emptySlotSprite;
 		else if (spell.icon == null)
 			spellImage.sprite = missingIconSprite;
 		else
 			spellImage.sprite = spell.icon;
+	}
+
+	public void ShowSpellSelection() {
+		spellSelection.ShowSelectionForSlot(this);
 	}
 }

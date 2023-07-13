@@ -9,19 +9,13 @@ public class ShopUI : MonoBehaviour
 	[Tooltip("A label displaying current number of coins the player has.")]
 	[SerializeField] TextMeshProUGUI coinsText;
 
-	[Header("Spells for sell")]
+	[Header("Spells")]
 	[Tooltip("A prefab of a spell slot which is instantiated multiple times.")]
 	[SerializeField] ShopSpellSlotUI spellSlotPrefab;
 	[Tooltip("A Transform which is a parent of all the spell slots.")]
 	[SerializeField] Transform spellsParent;
 
-	[Header("Equipped spells")]
-	[Tooltip("A prefab of an equipped spell slot which is instantiated multiple times.")]
-	[SerializeField] EquippedSpellSlotUI equippedSpellSlotPrefab;
-	[Tooltip("A Transform which is a parent of all the equipped spell slots.")]
-	[SerializeField] Transform equippedSpellsParent;
-
-	[Header("Broom upgrades for sell")]
+	[Header("Broom upgrades")]
 	[Tooltip("A Transform which is a parent of all the broom upgrades.")]
 	[SerializeField] Transform broomUpgradesParent;
 
@@ -49,8 +43,6 @@ public class ShopUI : MonoBehaviour
 			Destroy(spellsParent.GetChild(i).gameObject);
 		}
 		// TODO: Instantiate new spell slots
-		// Remove all existing equipped spell slots
-		// TODO: Instantiate new equipped spell slots
 	}
 
 	private void InitializeBroomUpgrades() {
