@@ -27,7 +27,6 @@ public class ShopSpellSlotUI : MonoBehaviour
         } else {
             ChangeToLocked();
         }
-        // TODO: Set contents of a tooltip
     }
 
     public void PurchaseSpell() {

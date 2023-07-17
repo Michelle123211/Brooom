@@ -6,7 +6,9 @@ using System;
 
 [System.Serializable]
 public class Spell {
+    public string identifier = "Test"; // usually spell name without spaces
     public Sprite icon;
+
     public int coinsCost = 250;
     public bool isUnlocked = false; // if the player has purchased the spell
     public int manaCost = 20;

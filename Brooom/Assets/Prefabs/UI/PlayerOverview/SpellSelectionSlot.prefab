@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 509605473957548516}
   - component: {fileID: 1792052516284579551}
   - component: {fileID: 1336405856949310432}
-  - component: {fileID: 1418224729012497172}
   m_Layer: 5
   m_Name: SpellSelectionSlot
   m_TagString: Untagged
@@ -162,21 +161,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1418224729012497172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 234412395304270299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa6932706fa8f6f40a96f4a312924274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delay: 0.5
-  isLocalized: 1
-  text: OverviewTooltipEmptySlot
 --- !u!1001 &1959204435786595097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -188,6 +172,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SpellSlotUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 680144722619779567, guid: 90bc248a1221ec844942df494afc42e2,
+        type: 3}
+      propertyPath: isLocalized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 680144722619779567, guid: 90bc248a1221ec844942df494afc42e2,
+        type: 3}
+      propertyPath: texts.mainTop
+      value: OverviewTooltipEmptySlot
       objectReference: {fileID: 0}
     - target: {fileID: 6322242208087148756, guid: 90bc248a1221ec844942df494afc42e2,
         type: 3}
