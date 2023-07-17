@@ -8,6 +8,8 @@ public class TooltipPanel : MonoBehaviour
 {
 	[Tooltip("Text fields of individual sections.")]
 	public TooltipSectionsTextFields textFields;
+    [Tooltip("RectTransform of the Canvas in which the tooltip panel is located.")]
+    public RectTransform canvasRectTransform;
 
 	private Image background;
 	private RectTransform rectTransform;
@@ -62,14 +64,15 @@ public class TooltipPanel : MonoBehaviour
 
     private void Update() {
         // Follow the mouse cursor
-        Vector2 mousePosition = Input.mousePosition;
-        transform.position = mousePosition;
-        // Set pivot relative to it(to not leave the screen)
-        //float pivotX = mousePosition.x / Screen.width;
-        //float pivotY = mousePosition.y / Screen.height;
-        //rectTransform.pivot = new Vector2(pivotX, pivotY);
+        transform.position = Input.mousePosition;
+        // Adjust position according to screen borders
+        Vector2 anchoredPosition = rectTransform.anchoredPosition;
+        if (anchoredPosition.x + rectTransform.rect.width > canvasRectTransform.rect.width)
+            anchoredPosition.x = canvasRectTransform.rect.width - rectTransform.rect.width;
+        if (anchoredPosition.y + rectTransform.rect.height > canvasRectTransform.rect.height)
+            anchoredPosition.y = canvasRectTransform.rect.height - rectTransform.rect.height;
+        rectTransform.anchoredPosition = anchoredPosition;
 
-        // TODO: Adjust position according to screen borders
     }
 }
 
