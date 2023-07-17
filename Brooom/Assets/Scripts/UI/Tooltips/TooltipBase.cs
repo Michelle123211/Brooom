@@ -26,7 +26,7 @@ public abstract class TooltipBase : MonoBehaviour, IPointerEnterHandler, IPointe
 	public void OnPointerExit(PointerEventData eventData) {
 		pointerHasEntered = false;
 		// Hide tooltip
-		TooltipController.Instance?.HideTooltip();
+		TooltipController.Instance.HideTooltip();
 	}
 
 
@@ -36,7 +36,7 @@ public abstract class TooltipBase : MonoBehaviour, IPointerEnterHandler, IPointe
 			countdown -= Time.deltaTime;
 			if (countdown < 0) {
 				// Show tooltip
-				TooltipController.Instance?.SetIsLocalized(isLocalized);
+				TooltipController.Instance.SetIsLocalized(isLocalized);
 				PassTextToTooltipController();
 				TooltipController.Instance.ShowTooltip();
 			}

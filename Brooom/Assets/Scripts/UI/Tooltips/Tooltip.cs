@@ -8,6 +8,6 @@ public class Tooltip : TooltipBase {
 	public TooltipSectionsText texts;
 
 	protected override void PassTextToTooltipController() {
-		TooltipController.Instance?.SetTooltipContent(texts);
+		TooltipController.Instance.SetTooltipContent(texts);
 	}
 }

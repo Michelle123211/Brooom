@@ -9,6 +9,6 @@ public class SimpleTooltip : TooltipBase {
 	public string text;
 
 	protected override void PassTextToTooltipController() {
-		TooltipController.Instance?.SetTooltipContent(text);
+		TooltipController.Instance.SetTooltipContent(text);
 	}
 }

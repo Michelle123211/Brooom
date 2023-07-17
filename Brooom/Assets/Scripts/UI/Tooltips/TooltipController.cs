@@ -172,7 +172,6 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
     }
 
 	public void AwakeSingleton() {
-        gameObject.SetActive(false);
 	}
 
 	public void InitializeSingleton() {
