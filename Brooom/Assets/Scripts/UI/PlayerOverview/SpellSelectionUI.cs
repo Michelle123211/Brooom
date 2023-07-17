@@ -23,7 +23,7 @@ public class SpellSelectionUI : MonoBehaviour {
 		HideSelection();
 	}
 
-	// TODO: After clicking outside or on a Cancel button, hide the spell selection
+	// Invoked after clicking outside of the grid
 	public void HideSelection() {
 		lastTargetSlot = null;
 		gameObject.TweenAwareDisable();

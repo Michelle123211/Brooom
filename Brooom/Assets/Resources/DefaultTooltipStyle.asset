@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cb2e8010c6653d499fe7ed7e1033907, type: 3}
+  m_Name: DefaultTooltipStyle
+  m_EditorClassIdentifier: 
+  backgroundSprite: {fileID: 21300000, guid: 6a0793bb3b624a542abc7e5cd8872985, type: 3}
+  backgroundColor: {r: 0.16862746, g: 0.16862746, b: 0.16862746, a: 0.92941177}
+  textColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
+  font: {fileID: 0}
+  minMaxWidth: {x: 200, y: 500}
+  minMaxHeight: {x: -1, y: -1}
+  customTags:
+  - tag: ~~
+    changeColor: 1
+    textColor: {r: 1, g: 0.94274926, b: 0, a: 0}
+    bold: 1
+    italics: 0
+    underline: 0
+    uppercase: 0
+  - tag: '**'
+    changeColor: 0
+    textColor: {r: 0, g: 0, b: 0, a: 0}
+    bold: 1
+    italics: 0
+    underline: 0
+    uppercase: 0
+  - tag: '&mana'
+    changeColor: 1
+    textColor: {r: 0, g: 1, b: 0.99999976, a: 0}
+    bold: 1
+    italics: 0
+    underline: 0
+    uppercase: 0
+  - tag: '&cooldown'
+    changeColor: 1
+    textColor: {r: 1, g: 1, b: 1, a: 0}
+    bold: 1
+    italics: 0
+    underline: 0
+    uppercase: 0

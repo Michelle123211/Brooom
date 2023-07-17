@@ -56,6 +56,15 @@ public static class Utils
     public static Color ColorFromRBG256(int r, int g, int b)
         => new Color(r / 256f, g / 256f, b / 256f);
 
+    public static string ToHex(this Color c) {
+        // Convert from 0..1 to 0..255
+        int r = (int)(c.r * 255);
+        int g = (int)(c.g * 255);
+        int b = (int)(c.b * 255);
+        // Convert to hex
+        return "#" + r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
+    }
+
 
     public static Vector3 WithX(this Vector3 v, float x)
         => new Vector3(x, v.y, v.z);
