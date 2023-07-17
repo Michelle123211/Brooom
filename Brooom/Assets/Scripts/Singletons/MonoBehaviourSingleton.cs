@@ -6,14 +6,15 @@ using UnityEngine;
 public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, ISingleton {
 
     // Describes the chosen behaviour of the singleton using SingletonOptions enum values
-    public static int Options { get; protected set; }
+    public static int Options { get; protected set; } = (int)SingletonOptions.LazyInitialization;
 
+    private static bool isInitialized = false;
 
     private static T _Instance;
     public static T Instance {
         get {
             // Lazy initialization
-            if ((Options & (int)SingletonOptions.LazyInitialization) != 0) {
+            if (!isInitialized || (Options & (int)SingletonOptions.LazyInitialization) != 0) {
                 InitializeSingletonInstance();
             }
             return _Instance;
@@ -22,7 +23,12 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
 
     private static void InitializeSingletonInstance() {
         if (_Instance != null) return;
-        _Instance = FindObjectOfType<T>();
+        // Find it in the scene (even hidden)
+        List<T> objectsFound = Utils.FindObject<T>();
+        if (objectsFound.Count > 0) {
+            _Instance = objectsFound[0];
+        }
+
         if (_Instance == null) {
             // Create a new GameObject representing the singleton if there is none in the scene
             if ((Options & (int)SingletonOptions.CreateNewGameObject) != 0) {
@@ -39,6 +45,7 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
         if ((Options & (int)SingletonOptions.PersistentBetweenScenes) != 0) {
             GameObject.DontDestroyOnLoad(_Instance);
         }
+        isInitialized = true;
     }
 
     // A method used to set different singleton options flags (SingletonOptions enum) other than the default ones
