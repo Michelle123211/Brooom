@@ -451,7 +451,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 5
+  m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
@@ -4576,8 +4576,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5085,6 +5085,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1148189243}
+  - component: {fileID: 1148189248}
   - component: {fileID: 1148189245}
   - component: {fileID: 1148189244}
   - component: {fileID: 1148189246}
@@ -5195,8 +5196,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
+  m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &1148189248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148189242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87d433602e7d824b9241a98ec5bc99d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textFields:
+    topSection:
+    - {fileID: 1105617571}
+    - {fileID: 1059047069}
+    - {fileID: 144149497}
+    mainSection:
+    - {fileID: 2027998463}
+    - {fileID: 727948175}
+    bottomSection:
+    - {fileID: 19532039}
+    - {fileID: 1883533984}
+    - {fileID: 1410706985}
 --- !u!1 &1171348828
 GameObject:
   m_ObjectHideFlags: 0
@@ -5565,7 +5590,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 5
+  m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
@@ -6713,16 +6738,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tooltipStyle: {fileID: 0}
-  tooltipPanel: {fileID: 1148189242}
-  textFields:
-  - {fileID: 1105617571}
-  - {fileID: 1059047069}
-  - {fileID: 144149497}
-  - {fileID: 2027998463}
-  - {fileID: 727948175}
-  - {fileID: 19532039}
-  - {fileID: 1883533984}
-  - {fileID: 1410706985}
 --- !u!114 &1859586022
 MonoBehaviour:
   m_ObjectHideFlags: 0

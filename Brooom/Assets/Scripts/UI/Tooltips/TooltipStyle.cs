@@ -18,10 +18,8 @@ public class TooltipStyle : ScriptableObject {
     public TMP_FontAsset font;
 
     [Header("Size")]
-    [Tooltip("Minimum and maximum width of the tooltip (use -1 where it is unlimited).")]
-    public Vector2Int minMaxWidth = new Vector2Int(0, 200);
-    [Tooltip("Minimum and maximum height of the tooltip (use -1 where it is unlimited).")]
-    public Vector2Int minMaxHeight = new Vector2Int(-1, -1);
+    [Tooltip("Maximum width of the tooltip (use -1 if it is unlimited].")]
+    public int maxWidth = 500;
 
     [Tooltip("User-defined tags which may be used in the tooltip text to change style of specific substrings.")]
     public List<TooltipStyleTag> customTags;

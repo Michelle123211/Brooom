@@ -11,30 +11,21 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
     [Tooltip("A tooltip style specifying e.g. background, font color, custom tags etc.")]
     public TooltipStyle tooltipStyle;
 
-    [Header("Tooltip panel")]
-    [Tooltip("A GameObject representing the tooltip panel containing text fields.")]
-    [SerializeField] GameObject tooltipPanel;
-    private RectTransform rectTransform;
-    private Image background;
 
-    [Header("Text fields")]
-    [Tooltip("Text fields ordered from left to right and from top to bottom.")]
-    public List<TextMeshProUGUI> textFields;
-
+    private TooltipPanel tooltipPanel;
 
     private Dictionary<string, string> openingTags = new Dictionary<string, string>(); // TMPro tags corresponding to the user-defined tags
     private Dictionary<string, string> closingTags = new Dictionary<string, string>();
     private bool isLocalized = false; // if the tooltip is localized, given texts will be used as keys for localization
 
     public void SetTooltipContent(TooltipSectionsText content) {
-        // Set text of each section individually
-        int i = 0;
+        // Parse and format text of each section individually
+        List<string> formattedText = new List<string>();
         foreach (var text in content.Enumerate()) {
-            textFields[i].text = GetFormattedText(text);
-            i++;
+            formattedText.Add(GetFormattedText(text));
         }
-
-        AdjustTooltipSize();
+        // Then set it in the tooltip
+        tooltipPanel.SetContent(formattedText);
     }
 
     public void SetTooltipContent(string content) {
@@ -51,16 +42,6 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
 
     public void HideTooltip() {
         gameObject.TweenAwareDisable();
-    }
-
-    private void EmptyAllTextFields() {
-        foreach (var textField in textFields) {
-            textField.text = string.Empty;
-        }
-    }
-
-    private void AdjustTooltipSize() {
-        // TODO: Adjust size of the tooltip according to its content
     }
 
     // Localizes the string and replaces user-defined tags with those supported by TMPro
@@ -152,37 +133,15 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
         }
     }
 
-    private void ChangePropertiesOfTextFields(TMP_FontAsset font, Color textColor) {
-        foreach (var textField in textFields) {
-            textField.font = font;
-            textField.color = textColor;
-        }
-    }
-
-	private void Update() {
-        // Follow the mouse cursor
-        Vector2 mousePosition = Input.mousePosition;
-        tooltipPanel.transform.position = mousePosition;
-        // Set pivot relative to it(to not leave the screen)
-        //float pivotX = mousePosition.x / Screen.width;
-        //float pivotY = mousePosition.y / Screen.height;
-        //rectTransform.pivot = new Vector2(pivotX, pivotY);
-
-        // TODO: Adjust position according to screen borders
-    }
-
 	public void AwakeSingleton() {
 	}
 
 	public void InitializeSingleton() {
-        rectTransform = tooltipPanel.GetComponent<RectTransform>();
-        background = tooltipPanel.GetComponent<Image>();
+        tooltipPanel = GetComponentInChildren<TooltipPanel>();
         if (tooltipStyle == null)
             tooltipStyle = Resources.Load<TooltipStyle>("DefaultTooltipStyle");
         // Apply the style (change background, font)
-        background.sprite = tooltipStyle.backgroundSprite;
-        background.color = tooltipStyle.backgroundColor;
-        ChangePropertiesOfTextFields(tooltipStyle.font, tooltipStyle.textColor);
+        tooltipPanel.ChangeAppearance(tooltipStyle);
         // For each custom tag compose its TMPro-supported start and end tag, store them in Dictionaries
         ConvertTagsToTMProTags();
     }
@@ -191,7 +150,6 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
         Options = (int)SingletonOptions.LazyInitialization | (int)SingletonOptions.RemoveRedundantInstances;
 	}
 }
-
 
 [System.Serializable]
 public struct TooltipSectionsText {

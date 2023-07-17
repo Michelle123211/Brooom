@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 509605473957548516}
   - component: {fileID: 1792052516284579551}
   - component: {fileID: 1336405856949310432}
-  - component: {fileID: 1603083644756647578}
   - component: {fileID: 1418224729012497172}
   m_Layer: 5
   m_Name: SpellSelectionSlot
@@ -163,29 +162,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1603083644756647578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 234412395304270299}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a118b47cc27041e41aa1596412711f6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delay: 0.5
-  isLocalized: 0
-  texts:
-    topLeft: ~~Spell name~~
-    topCenter: 
-    topRight: '&mana50 mana&mana'
-    mainTop: This will ~~empty~~ the slot.
-    mainBottom: '**Target:** Nothing.'
-    bottomLeft: 
-    bottomCenter: 
-    bottomRight: '&cooldownCooldown 3 s&cooldown'
 --- !u!114 &1418224729012497172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,8 +175,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0.5
-  isLocalized: 0
-  text: This will ~~empty~~ the slot.
+  isLocalized: 1
+  text: OverviewTooltipEmptySlot
 --- !u!1001 &1959204435786595097
 PrefabInstance:
   m_ObjectHideFlags: 0
