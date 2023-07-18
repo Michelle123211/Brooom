@@ -22,11 +22,7 @@ public class ShopSpellSlotUI : MonoBehaviour
         assignedSpell = spell;
         // Set icon
         spellSlotUI?.Initialize(spell);
-        if (spell.isUnlocked) {
-            ChangeToUnlockedd();
-        } else {
-            ChangeToLocked();
-        }
+        UpdateUI();
     }
 
     public void PurchaseSpell() {
@@ -38,7 +34,15 @@ public class ShopSpellSlotUI : MonoBehaviour
         // TODO: If it is the first purchased spell, start a tutorial
     }
 
-    private void ChangeToUnlockedd() {
+	public void UpdateUI() {
+        if (assignedSpell.isUnlocked) {
+            ChangeToUnlockedd();
+        } else {
+            ChangeToLocked();
+        }
+    }
+
+	private void ChangeToUnlockedd() {
         // Hide price + overlay
         priceParent.SetActive(false);
         unavailableOverlay.SetActive(false);

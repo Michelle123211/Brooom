@@ -12,6 +12,9 @@ public class BroomUpgrade : MonoBehaviour {
     public string Name { get; private set; }
 
     [field: SerializeField]
+    public List<int> CoinsCostOfEachLevel { get; private set; }
+
+    [field: SerializeField]
     public int MaxLevel { get; private set; } = 3;
 
     public int CurrentLevel { get; private set; } = 0;
@@ -29,6 +32,7 @@ public class BroomUpgrade : MonoBehaviour {
                     effectsForEachLevel[CurrentLevel].Invoke();
             }
             CurrentLevel++;
+            PlayerState.Instance.SetBroomUpgradeLevel(Name, CurrentLevel);
         } 
     }
 }

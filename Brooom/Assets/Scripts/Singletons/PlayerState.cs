@@ -41,8 +41,9 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     public bool ChangeCoinsAmount(int delta) {
         int newAmount = coins + delta;
         if (newAmount < 0) return false;
-        onCoinsAmountChanged(coins, newAmount);
+        int oldAmount = coins;
         coins = newAmount;
+        onCoinsAmountChanged(oldAmount, newAmount);
         return true;
     }
     #endregion
