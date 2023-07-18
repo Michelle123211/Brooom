@@ -72,11 +72,11 @@ public class ShopUI : MonoBehaviour
 	private void UpdateCoinsAmount(int oldValue, int newValue) {
 		// TODO: Tween the value
 		coinsText.text = newValue.ToString();
-		// TODO: Update spell slots
+		// Update spell slots
 		foreach (var spell in spells) {
 			spell.UpdateUI();
 		}
-		// TODO: Update broom upgrades
+		// Update broom upgrades
 		broom.UpdateState();
 		foreach (var upgrade in broomUpgrades) {
 			upgrade.UpdateUI();
