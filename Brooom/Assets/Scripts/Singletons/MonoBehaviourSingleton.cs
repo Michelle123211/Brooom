@@ -54,6 +54,12 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
         Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances;
     }
 
+    // May be used e.g. from OnDestroy
+    protected void ResetInstance() {
+        _Instance = null;
+        isInitialized = false;
+    }
+
     private void Awake() {
         SetSingletonOptions();
         // Remove redundant instances from the scene

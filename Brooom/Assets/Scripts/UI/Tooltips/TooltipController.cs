@@ -149,6 +149,11 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
 	protected override void SetSingletonOptions() {
         Options = (int)SingletonOptions.LazyInitialization | (int)SingletonOptions.RemoveRedundantInstances;
 	}
+
+	private void OnDestroy() {
+        if (Instance == this)
+            ResetInstance();
+	}
 }
 
 [System.Serializable]
