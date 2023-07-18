@@ -18,6 +18,10 @@ public class BroomUpgradeRowUI : MonoBehaviour
     [Tooltip("A label for displaying the cost.")]
     [SerializeField] TextMeshProUGUI priceText;
 
+    [Header("Components")]
+    [Tooltip("The tooltip component displaying additional information about the broom upgrade.")]
+    [SerializeField] SimpleTooltip tooltip;
+
     [Header("Prefabs")]
     [Tooltip("A prefab of a level indicator which is instantiated multiple times.")]
     [SerializeField] Image levelIndicatorPrefab;
@@ -37,6 +41,8 @@ public class BroomUpgradeRowUI : MonoBehaviour
         nameText.text = broomUpgrade.Name;
         // ...level, price and buy button
         InitializeCurrentLevel();
+        // ...tooltip
+        tooltip.text = "BroomUpgradeTooltip" + assignedUpgrade.Name;
     }
 
     public void PurchaseUpgrade() {
