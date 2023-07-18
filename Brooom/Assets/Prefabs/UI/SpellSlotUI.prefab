@@ -130,12 +130,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0.5
-  isLocalized: 0
+  isLocalized: 1
   texts:
     topLeft: 
     topCenter: 
     topRight: 
-    mainTop: This is just an ~~empty slot~~.
+    mainTop: OverviewTooltipEmptySlot
     mainBottom: 
     bottomLeft: 
     bottomCenter: 

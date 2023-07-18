@@ -14,8 +14,17 @@ public class SpellSlotUI : MonoBehaviour
 
 	[Tooltip("A Tooltip component displaying information about the assigned spell after hovering the mouse.")]
 	[SerializeField] Tooltip tooltip;
+	TooltipSectionsText defaultText;
+	bool defaultIsLocalized;
+
 
 	[HideInInspector] public Spell assignedSpell;
+
+	private void Awake() {
+		// Store default tooltip values (so they can be used later when null is assigned)
+		defaultText = tooltip.texts;
+		defaultIsLocalized = tooltip.isLocalized;
+	}
 
 	public void Initialize(Spell spell) {
 		this.assignedSpell = spell;
@@ -26,7 +35,7 @@ public class SpellSlotUI : MonoBehaviour
 			spellImage.sprite = missingIconSprite;
 		else
 			spellImage.sprite = spell.icon;
-		// Set tooltip contents (if the spell is null, default values are kept; may be used for empty slots)
+		// Set tooltip contents
 		if (spell != null) {
 			string keyPrefix = "Spell" + spell.identifier;
 			tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString(keyPrefix + "Name") + "~~";
@@ -34,6 +43,10 @@ public class SpellSlotUI : MonoBehaviour
 			tooltip.texts.mainTop = LocalizationManager.Instance.GetLocalizedString(keyPrefix + "Description");
 			tooltip.texts.mainBottom = "**" + LocalizationManager.Instance.GetLocalizedString("SpellInfoTarget") + ":** " + LocalizationManager.Instance.GetLocalizedString(keyPrefix + "Target");
 			tooltip.texts.bottomRight = "&cooldown" + LocalizationManager.Instance.GetLocalizedString("SpellInfoCooldown") + " " + spell.cooldown.ToString() + " s&cooldown";
+			tooltip.isLocalized = false;
+		} else { // if the spell is null, use default values
+			tooltip.texts = defaultText;
+			tooltip.isLocalized = defaultIsLocalized;
 		}
 
 	}
