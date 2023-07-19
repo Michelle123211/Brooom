@@ -38,7 +38,7 @@ public class BroomUpgradeRowUI : MonoBehaviour
         this.assignedUpgrade = broomUpgrade;
         // Update UI
         // ...name
-        nameText.text = broomUpgrade.Name;
+        nameText.text = LocalizationManager.Instance.GetLocalizedString("BroomUpgrade" + broomUpgrade.Name);
         // ...level, price and buy button
         InitializeCurrentLevel();
         // ...tooltip
