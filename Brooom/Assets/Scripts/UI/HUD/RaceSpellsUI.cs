@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class SpellController : MonoBehaviour {
+public class RaceSpellsUI : MonoBehaviour {
 
     [Tooltip("A parent object of all the spell slots.")]
     [SerializeField] Transform spellSlotsParent;

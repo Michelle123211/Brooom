@@ -124,4 +124,11 @@ public class RaceState {
             effects.RemoveAt(i);
         }
     }
+
+    public void StartRace() {
+        // Reset all spells
+        for (int i = 0; i < spellSlots.Length; i++) {
+            if (spellSlots[i] != null) spellSlots[i].Reset();
+        }
+    }
 }

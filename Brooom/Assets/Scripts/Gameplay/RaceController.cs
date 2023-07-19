@@ -41,7 +41,7 @@ public class RaceController : MonoBehaviour {
     private TrackHoopsPlacement hoopsPlacement;
     private MaximumAngleCorrection angleCorrection;
     private PlayerController player;
-    private SpellController spellController;
+    private RaceSpellsUI spellsUI;
 
     private bool raceStarted = false; // distinguish between training and race
     private float raceTime = 0;
@@ -56,8 +56,8 @@ public class RaceController : MonoBehaviour {
         hoopsPlacement = FindObjectOfType<TrackHoopsPlacement>();
         angleCorrection = FindObjectOfType<MaximumAngleCorrection>();
         player = FindObjectOfType<PlayerController>();
-        spellController = GetComponentInChildren<SpellController>();
-        spellController.enabled = false;
+        spellsUI = GetComponentInChildren<RaceSpellsUI>();
+        spellsUI.enabled = false;
         // Initialize state at the beginning
         PlayerState.Instance.raceState.Reset();
         // Generate level (terrain + track)
@@ -78,7 +78,6 @@ public class RaceController : MonoBehaviour {
         // TODO: DEBUG only, remove
         if (!raceStarted && Input.GetMouseButtonDown(1)) {
             StartRace();
-            raceHUD.StartRace();
         }
 
         PlayerState.Instance.raceState.UpdateRaceState();
@@ -137,8 +136,10 @@ public class RaceController : MonoBehaviour {
     private void StartRace() {
         // TODO: Add everything related to the start of the race
         raceStarted = true;
-        spellController.Initialize();
-        spellController.enabled = true;
+        PlayerState.Instance.raceState.StartRace();
+        raceHUD.StartRace();
+        spellsUI.Initialize();
+        spellsUI.enabled = true;
     }
 
     private void SetLevelGeneratorParameters() {
