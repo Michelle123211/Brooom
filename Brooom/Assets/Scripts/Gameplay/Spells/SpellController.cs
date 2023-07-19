@@ -16,6 +16,12 @@ public class SpellController : MonoBehaviour {
     private int selectedSpell = -1;
     private int highlightedSpell = -1;
 
+
+    public void Initialize() {
+        InitializeSpellSlots();
+        InitializeSelectedSpell();
+    }
+
     private void InitializeSpellSlots() {
         // Remove all existing slots
         for (int i = spellSlotsParent.childCount - 1; i >= 0; i--) {
@@ -54,8 +60,7 @@ public class SpellController : MonoBehaviour {
     // TODO: Tween the scale of the selected spell slot (pulse)
 
     private void Start() {
-        InitializeSpellSlots();
-        InitializeSelectedSpell();
+        Initialize();
     }
 
 	private void Update() {

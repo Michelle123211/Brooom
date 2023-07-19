@@ -20,27 +20,29 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	[Tooltip("An Image used as an overlay when the spell is unavailable.")]
 	[SerializeField] Image unavailableOverlay;
 
-	[HideInInspector] public EquippedSpell assignedSpell;
+	[HideInInspector] public SpellInRace assignedSpell;
 	[HideInInspector] public bool isEmpty = false;
 
 	private SpellSlotUI spellSlotUI;
 
 	private bool isInitialized = false;
 
-	public void Initialize(EquippedSpell spell) {
+	public void Initialize(SpellInRace spell) {
 		assignedSpell = spell;
-		isEmpty = (spell == null || spell.spell == null);
+		isEmpty = (spell == null || spell.spell == null || string.IsNullOrEmpty(spell.spell.identifier));
 		// Register callbacks
 		if (!isEmpty) {
 			assignedSpell.onBecomesAvailable += ChangeToAvailable;
 			assignedSpell.onBecomesUnavailable += ChangeToUnavailable;
 		}
 		// Change icon
-		spellSlotUI.Initialize(spell == null ? null : spell.spell);
+		spellSlotUI.Initialize(isEmpty ? null : spell.spell);
 		fillImage.sprite = backgroundImage.sprite;
 		// Initialize image fill, scale and alpha of the overlay
-		if (isEmpty) InitializeEmptySlot();
-		else InitializeSpellSlot();
+		fillImage.fillAmount = 0;
+		transform.localScale = Vector3.one * unavailableScale;
+		unavailableOverlay.color = unavailableOverlay.color.WithA(unavailableOverlayAlpha);
+
 		isInitialized = true;
 	}
 
@@ -52,20 +54,6 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	}
 
 	public void Deselect() {
-	}
-
-	private void InitializeEmptySlot() {
-		// Initialize image fill, scale and alpha of the overlay
-		fillImage.fillAmount = 1;
-		transform.localScale = Vector3.one;
-		unavailableOverlay.color = unavailableOverlay.color.WithA(0);
-	}
-
-	private void InitializeSpellSlot() {
-		// Initialize image fill, scale and alpha of the overlay
-		fillImage.fillAmount = 0;
-		transform.localScale = Vector3.one * unavailableScale;
-		unavailableOverlay.color = unavailableOverlay.color.WithA(unavailableOverlayAlpha);
 	}
 
 	private void ChangeToAvailable() {

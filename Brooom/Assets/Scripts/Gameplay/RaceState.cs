@@ -8,8 +8,8 @@ using UnityEngine;
 public class RaceState {
     // Level - to get access to track points and record player's position within the track
     public LevelRepresentation level;
-    public int previousTrackPointIndex = -1; // position of the player within the track (index of the last hoop they passed)
     // Race position
+    public int previousTrackPointIndex = -1; // position of the player within the track (index of the last hoop they passed)
     public int place;
     public int hoopsPassed;
     public int hoopsMissed;
@@ -20,7 +20,7 @@ public class RaceState {
     public int currentMana;
     public int maxMana;
     // Spells
-    public EquippedSpell[] spellSlots;
+    public SpellInRace[] spellSlots;
     public int selectedSpell; // index of currently selected spell
     // Effects
     public List<PlayerEffect> effects = new List<PlayerEffect>();
@@ -31,20 +31,14 @@ public class RaceState {
     public Action<int> onManaAmountChanged; // parameter: new value
     public Action<PlayerEffect> onNewEffectAdded; // parameter: the added effect
 
-    public RaceState(int manaAmount, EquippedSpell[] equippedSpells) {
-        this.maxMana = manaAmount;
+    public RaceState() {
+        this.maxMana = PlayerState.Instance.maxManaAmount;
         this.currentMana = 0;
-        this.spellSlots = equippedSpells;
+        this.spellSlots = new SpellInRace[PlayerState.Instance.equippedSpells.Length];
         this.selectedSpell = 0;
-
-        // TODO: DEBUG only, remove
-        spellSlots[0] = new EquippedSpell(new Spell());
-        spellSlots[1] = new EquippedSpell(new Spell());
-        spellSlots[2] = new EquippedSpell(new Spell());
-        spellSlots[3] = new EquippedSpell(new Spell());
     }
 
-    public void Update() {
+    public void UpdateRaceState() {
         UpdateSpellsCharge(Time.deltaTime);
         UpdateEffects(Time.deltaTime);
     }
@@ -109,14 +103,19 @@ public class RaceState {
         }
     }
 
+    // The RaceState is reset at the beginning of a new race
     public void Reset() {
         level = null;
         previousTrackPointIndex = -1;
         this.currentMana = 0;
-        // Reset all spells
-        foreach (var spell in spellSlots) {
-            if (spell != null)
-                spell.Reset();
+        // Initialize all spells
+        for (int i = 0; i < spellSlots.Length; i++) {
+            if (PlayerState.Instance.equippedSpells[i] == null || string.IsNullOrEmpty(PlayerState.Instance.equippedSpells[i].identifier)) {
+                spellSlots[i] = null;
+            } else {
+                spellSlots[i] = new SpellInRace(PlayerState.Instance.equippedSpells[i]);
+                spellSlots[i].Reset();
+            }
         }
         selectedSpell = 0;
         // Reset all effects

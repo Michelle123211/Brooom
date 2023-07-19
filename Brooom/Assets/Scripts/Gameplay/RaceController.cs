@@ -78,9 +78,10 @@ public class RaceController : MonoBehaviour {
         // TODO: DEBUG only, remove
         if (!raceStarted && Input.GetMouseButtonDown(1)) {
             StartRace();
+            raceHUD.StartRace();
         }
 
-        PlayerState.Instance.raceState.Update();
+        PlayerState.Instance.raceState.UpdateRaceState();
 
         // Update player's position relatively to the hoops
         // - check whether the player is after the next hoop
@@ -136,6 +137,7 @@ public class RaceController : MonoBehaviour {
     private void StartRace() {
         // TODO: Add everything related to the start of the race
         raceStarted = true;
+        spellController.Initialize();
         spellController.enabled = true;
     }
 

@@ -6,7 +6,7 @@ using System;
 
 [System.Serializable]
 public class Spell {
-    public string identifier = "Test"; // usually spell name without spaces
+    public string identifier = string.Empty; // usually spell name without spaces
     public Sprite icon;
 
     public int coinsCost = 250;
@@ -18,7 +18,7 @@ public class Spell {
 }
 
 // Spell assigned to a slot and used in a race
-public class EquippedSpell {
+public class SpellInRace {
     public Spell spell;
     public float charge = 1; // percentage but between 0 and 1
 
@@ -28,12 +28,13 @@ public class EquippedSpell {
 
     private bool isAvailable = false; // is fully charged and there is enough mana
 
-    public EquippedSpell(Spell spell, float charge = 1) {
+    public SpellInRace(Spell spell, float charge = 1) {
         this.spell = spell;
         this.charge = charge;
     }
 
     public void CastSpell() {
+        if (spell == null) return;
         if (charge >= 1 && PlayerState.Instance.raceState.currentMana >= spell.manaCost) {
             PlayerState.Instance.raceState.ChangeManaAmount(-spell.manaCost);
             // TODO: Invoke effect of the spell
@@ -51,6 +52,7 @@ public class EquippedSpell {
     }
 
     public void UpdateCharge(float timeDelta) {
+        if (spell == null) return;
         this.charge = Mathf.Clamp(this.charge + (timeDelta / spell.cooldown), 0, 1);
         UpdateAvailability();
     }
@@ -61,6 +63,7 @@ public class EquippedSpell {
     }
 
     public bool IsSpellAvailable() {
+        if (spell == null || string.IsNullOrEmpty(spell.identifier)) return false;
         return this.charge >= 1 && PlayerState.Instance.raceState.currentMana >= spell.manaCost; // fully charged and enough mana
     }
 

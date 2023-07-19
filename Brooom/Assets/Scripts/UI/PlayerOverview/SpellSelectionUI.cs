@@ -18,8 +18,10 @@ public class SpellSelectionUI : MonoBehaviour {
 
 	// Called from a spell selection slot
 	public void AssignSpellAndHide(Spell spell) {
-		if (lastTargetSlot != null)
-			lastTargetSlot.Initialize(spell, this);
+		if (lastTargetSlot != null) {
+			lastTargetSlot.AssignSpell(spell);
+			PlayerState.Instance.equippedSpells[lastTargetSlot.slotIndex] = spell;
+		}
 		HideSelection();
 	}
 

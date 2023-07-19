@@ -16,10 +16,9 @@ public class EquippedSpellsUI : MonoBehaviour {
 			Destroy(equippedSpellsParent.GetChild(i).gameObject);
 		}
 		// Instantiate new equipped spell slots
-		for (int i = 0; i < PlayerState.Instance.raceState.spellSlots.Length; i++) {
+		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
 			EquippedSpellSlotUI slot = Instantiate<EquippedSpellSlotUI>(equippedSpellSlotPrefab, equippedSpellsParent);
-			EquippedSpell spell = PlayerState.Instance.raceState.spellSlots[i];
-			slot.Initialize(spell == null ? null : spell.spell, spellSelection);
+			slot.Initialize(PlayerState.Instance.equippedSpells[i], i, spellSelection);
 		}
 	}
 }

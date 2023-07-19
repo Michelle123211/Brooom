@@ -148,17 +148,17 @@ public class RaceUI : MonoBehaviour {
     private void Start() {
         // Cache localized strings
         enteringRaceString = LocalizationManager.Instance.GetLocalizedString("RaceLabelEntering");
+        // ...
+        // Initialize everything
+        ResetRaceState();
+        // Register necessary callbacks
+        RegisterCallbacks();
         // TODO: Hide all elements which should not visible during training
         // TODO: Uncomment when finished debugging
         timePenalizationText.gameObject.SetActive(false);
         //timeObject.SetActive(false);
         //placeObject.SetActive(false);
         //spellsObject.SetActive(false);
-        // ...
-        // Initialize everything
-        ResetRaceState();
-        // Register necessary callbacks
-        RegisterCallbacks();
     }
 
 	private void OnDestroy() {

@@ -51,6 +51,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     #endregion
 
     #region Spells
+    [HideInInspector] public Spell[] equippedSpells; // spells assigned to slots
     #endregion
 
 
@@ -87,7 +88,16 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 
     #region Singleton
     public void InitializeSingleton() {
-        raceState = new RaceState(100, new EquippedSpell[4]);
+        equippedSpells = new Spell[4];
+        raceState = new RaceState();
+
+        // TODO: DEBUG only, remove
+        equippedSpells[0] = new Spell();
+        equippedSpells[0].identifier = "Test";
+        equippedSpells[1] = new Spell();
+        equippedSpells[1].identifier = "Test";
+        equippedSpells[3] = new Spell();
+        equippedSpells[3].identifier = "Test";
     }
 
     public void AwakeSingleton() {

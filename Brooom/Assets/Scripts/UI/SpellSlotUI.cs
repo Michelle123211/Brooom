@@ -28,15 +28,16 @@ public class SpellSlotUI : MonoBehaviour
 
 	public void Initialize(Spell spell) {
 		this.assignedSpell = spell;
+		bool isEmpty = spell == null || string.IsNullOrEmpty(spell.identifier);
 		// Set icon
-		if (spell == null)
+		if (isEmpty)
 			spellImage.sprite = emptySlotSprite;
 		else if (spell.icon == null)
 			spellImage.sprite = missingIconSprite;
 		else
 			spellImage.sprite = spell.icon;
 		// Set tooltip contents
-		if (spell != null) {
+		if (!isEmpty) {
 			string keyPrefix = "Spell" + spell.identifier;
 			tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString(keyPrefix + "Name") + "~~";
 			tooltip.texts.topRight = "&mana" + LocalizationManager.Instance.GetLocalizedString("SpellInfoMana") + ": " + spell.manaCost.ToString() + "&mana";
