@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using DG.Tweening;
 
 public class RaceSpellsUI : MonoBehaviour {
 
+    [Header("Spells")]
     [Tooltip("A parent object of all the spell slots.")]
     [SerializeField] Transform spellSlotsParent;
     [Tooltip("A prefab of a spell slot which is instantiated several times.")]
@@ -12,17 +15,32 @@ public class RaceSpellsUI : MonoBehaviour {
     [Tooltip("An image used as a border highlighting the selected spell.")]
     [SerializeField] Transform highlightBorder;
 
+    [Header("Mana")]
+    [SerializeField] Slider manaBar;
+    [SerializeField] TextMeshProUGUI manaText;
+
+
     private RaceSpellSlotUI[] spellSlots;
     private int selectedSpell = -1;
     private int highlightedSpell = -1;
 
 
-    public void Initialize() {
+    public void ResetState() {
         InitializeSpellSlots();
         InitializeSelectedSpell();
+        InitializeMana();
+        gameObject.SetActive(true);
     }
 
-    private void InitializeSpellSlots() {
+    public void UpdateManaAmount(int amount) {
+        manaBar.DOKill();
+        manaBar.DOValue(amount, 0.75f, true);
+    }
+    public void UpdateManaAmountText(float amount) {
+        manaText.text = amount.ToString();
+    }
+
+	private void InitializeSpellSlots() {
         // Remove all existing slots
         for (int i = spellSlotsParent.childCount - 1; i >= 0; i--) {
             Destroy(spellSlotsParent.GetChild(i).gameObject);
@@ -47,6 +65,12 @@ public class RaceSpellsUI : MonoBehaviour {
         highlightBorder.gameObject.SetActive(selectedSpell >= 0);
     }
 
+    private void InitializeMana() {
+        manaBar.maxValue = PlayerState.Instance.maxManaAmount;
+        manaBar.value = PlayerState.Instance.raceState.currentMana;
+        manaText.text = manaBar.value.ToString();
+    }
+
     // direction ... Decreasing = lower index, Increasing = higher index
     private int ChangeSelectedSpell(IterationDirection direction) {
         // Choose the first non-empty slot in the given direction
@@ -60,7 +84,8 @@ public class RaceSpellsUI : MonoBehaviour {
     // TODO: Tween the scale of the selected spell slot (pulse)
 
     private void Start() {
-        Initialize();
+        PlayerState.Instance.raceState.onManaAmountChanged += UpdateManaAmount;
+        gameObject.SetActive(false);
     }
 
 	private void Update() {
@@ -86,5 +111,12 @@ public class RaceSpellsUI : MonoBehaviour {
                 spellSlots[highlightedSpell].Select();
             }
         }
+
+        // Update mana bar
+        UpdateManaAmountText(manaBar.value);
+    }
+
+	private void OnDestroy() {
+        PlayerState.Instance.raceState.onManaAmountChanged -= UpdateManaAmount;
     }
 }

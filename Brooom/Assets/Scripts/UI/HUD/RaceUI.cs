@@ -32,11 +32,7 @@ public class RaceUI : MonoBehaviour {
     [SerializeField] TextMeshProUGUI placeText;
 
     [Header("Spells")]
-    [SerializeField] GameObject spellsObject;
-    [SerializeField] Slider manaBar;
-    [SerializeField] TextMeshProUGUI manaText;
-    [SerializeField] VerticalLayoutGroup spellSlotsGroup;
-    [SerializeField] HorizontalLayoutGroup effectsGroup;
+    [SerializeField] RaceSpellsUI spellsUI;
 
     [Header("Temporary text fields")]
     [SerializeField] TextMeshProUGUI startRaceText;
@@ -97,16 +93,6 @@ public class RaceUI : MonoBehaviour {
     }
     #endregion
 
-    #region Spells
-    public void UpdateManaAmount(int amount) {
-        manaBar.DOKill();
-        manaBar.DOValue(amount, 0.75f, true);
-    }
-    public void UpdateManaAmountText(float amount) {
-        manaText.text = amount.ToString();
-    }
-	#endregion
-
 	private void ResetRaceState() {
         UpdatePlace(1);
 
@@ -114,10 +100,6 @@ public class RaceUI : MonoBehaviour {
         hoopsPassedText.text = "0";
         hoopsMissedText.text = "";
         timePenalizationText.text = "";
-
-        manaBar.maxValue = PlayerState.Instance.maxManaAmount;
-        manaBar.value = 0;
-        manaText.text = manaBar.value.ToString();
     }
 
 	public void StartRace() {
@@ -128,6 +110,7 @@ public class RaceUI : MonoBehaviour {
         // ...
         // TODO: Initialize all elements
         ResetRaceState();
+        spellsUI.ResetState();
         // TODO: Show elements visible only during the race
         //timeObject.SetActive(true);
         //placeObject.SetActive(true);
@@ -138,11 +121,11 @@ public class RaceUI : MonoBehaviour {
         // Register necessary callbacks
         PlayerState.Instance.raceState.onPlayerPlaceChanged += UpdatePlace;
         PlayerState.Instance.raceState.onPlayerPositionWithinRaceChanged += UpdatePlayerPositionWithinRace;
-        PlayerState.Instance.raceState.onManaAmountChanged += UpdateManaAmount;
     }
 
-    private void UnregisterCallbacks() { 
-        
+    private void UnregisterCallbacks() {
+        PlayerState.Instance.raceState.onPlayerPlaceChanged -= UpdatePlace;
+        PlayerState.Instance.raceState.onPlayerPositionWithinRaceChanged -= UpdatePlayerPositionWithinRace;
     }
 
     private void Start() {

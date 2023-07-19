@@ -20,10 +20,11 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	[Tooltip("An Image used as an overlay when the spell is unavailable.")]
 	[SerializeField] Image unavailableOverlay;
 
+	[Header("Related objects")]
+	[SerializeField] SpellSlotUI spellSlotUI;
+
 	[HideInInspector] public SpellInRace assignedSpell;
 	[HideInInspector] public bool isEmpty = false;
-
-	private SpellSlotUI spellSlotUI;
 
 	private bool isInitialized = false;
 
@@ -78,10 +79,6 @@ public class RaceSpellSlotUI : MonoBehaviour {
 			// Change image fill based on charge
 			fillImage.fillAmount = assignedSpell.charge;
 		}
-	}
-
-	private void Awake() {
-		spellSlotUI = GetComponentInChildren<SpellSlotUI>();
 	}
 
 	private void OnDestroy() {
