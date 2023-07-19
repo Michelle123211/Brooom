@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
+// A class representing state throughout the whole gameplay
 public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 {
     public PlayerStats stats = new PlayerStats();
