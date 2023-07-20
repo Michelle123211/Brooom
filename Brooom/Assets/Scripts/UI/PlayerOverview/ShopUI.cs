@@ -6,8 +6,6 @@ using DG.Tweening;
 
 public class ShopUI : MonoBehaviour
 {
-	[Tooltip("A label displaying current number of coins the player has.")]
-	[SerializeField] TextMeshProUGUI coinsText;
 
 	[Header("Spells")]
 	[Tooltip("A prefab of a spell slot which is instantiated multiple times.")]
@@ -32,16 +30,16 @@ public class ShopUI : MonoBehaviour
 
 	private void OnEnable() {
 		// Register callbacks
-		PlayerState.Instance.onCoinsAmountChanged += UpdateCoinsAmount;
+		PlayerState.Instance.onCoinsAmountChanged += UpdateUI; // some spell/upgrade may have been purchased
 		// Initialize
-		UpdateCoinsAmount(0, PlayerState.Instance.coins);
 		InitializeSpells();
 		InitializeBroomUpgrades();
+		UpdateUI(0, PlayerState.Instance.coins);
 	}
 
 	private void OnDisable() {
 		// Unregister callbacks
-		PlayerState.Instance.onCoinsAmountChanged -= UpdateCoinsAmount;
+		PlayerState.Instance.onCoinsAmountChanged -= UpdateUI;
 	}
 
 	private void InitializeSpells() {
@@ -69,9 +67,7 @@ public class ShopUI : MonoBehaviour
 		}
 	}
 
-	private void UpdateCoinsAmount(int oldValue, int newValue) {
-		// TODO: Tween the value
-		coinsText.text = newValue.ToString();
+	private void UpdateUI(int oldValue, int newValue) {
 		// Update spell slots
 		foreach (var spell in spells) {
 			spell.UpdateUI();

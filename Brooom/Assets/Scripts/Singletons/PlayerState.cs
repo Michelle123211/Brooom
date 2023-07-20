@@ -43,6 +43,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     public bool ChangeCoinsAmount(int delta) {
         int newAmount = coins + delta;
         if (newAmount < 0) return false;
+        if (newAmount > 999_999) newAmount = 999_999; // cannot go over 999 999
         int oldAmount = coins;
         coins = newAmount;
         onCoinsAmountChanged(oldAmount, newAmount);
