@@ -27,7 +27,7 @@ public class LeaderboardUI : MonoBehaviour {
 		// TODO: Compute place change
 		// TODO: Compute average change
 		return new PlayerLeaderboardData {
-			name = "Player",
+			name = PlayerState.Instance.CharacterCustomization.playerName,
 			average = 92.4f,
 			place = 158,
 			averageChange = -2.3f,
@@ -111,14 +111,16 @@ public class LeaderboardRepresentation {
 	public int opponentsCount = 157;
 	[Tooltip("Animation Curve which is used to map opponent's place to their average.")]
 	public AnimationCurve placeToAverageCurve;
-	[Tooltip("The average of the top opponent.")]
+	[Tooltip("The average of the weakest opponent.")]
+	public float minOpponentAverage = 0.4f;
+	[Tooltip("The average of the strongest opponent.")]
 	public float maxOpponentAverage = 97.2f;
 
 	// Maps the opponent's place to their average
 	public float GetOpponentAverage(int place) {
 		// Use the given place to get average from the AnimationCurve
 		float t = 1 - Utils.RemapRange(place, 1f, opponentsCount, 0, 1); // curve has higher places in the lower values
-		return placeToAverageCurve.Evaluate(t) * maxOpponentAverage;
+		return Utils.RemapRange(placeToAverageCurve.Evaluate(t), 0, 1, minOpponentAverage, maxOpponentAverage);
 	}
 
 	public string GetOpponentName(int place) {

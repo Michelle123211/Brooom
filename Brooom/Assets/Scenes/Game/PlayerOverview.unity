@@ -9576,7 +9576,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.004
+        value: 0
         inSlope: 0.3434471
         outSlope: 0.3434471
         tangentMode: 0
@@ -9622,6 +9622,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+    minOpponentAverage: 0.4
     maxOpponentAverage: 97.2
   leaderboardRowPrefab: {fileID: 7041650329088703490, guid: 57cea2bd83eb9c8469745875c6bf7813,
     type: 3}

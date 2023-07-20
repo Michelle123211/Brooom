@@ -33,7 +33,7 @@ public class CharacterCreatorUI : MonoBehaviour
         PlayerState.Instance.ResetState();
         // Save all the choices (including the name)
         CharacterCustomizationData currentCustomization = character.GetCustomizationData();
-        currentCustomization.name = currentName;
+        currentCustomization.playerName = currentName;
         PlayerState.Instance.CharacterCustomization = currentCustomization;
         // Change scene
         SceneLoader.Instance.LoadScene(Scene.Tutorial);
