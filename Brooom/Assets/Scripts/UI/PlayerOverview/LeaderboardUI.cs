@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class LeaderboardUI : MonoBehaviour {
@@ -109,12 +111,16 @@ public class LeaderboardUI : MonoBehaviour {
 public class LeaderboardRepresentation {
 	[Tooltip("Total number of opponents.")]
 	public int opponentsCount = 157;
+	[Tooltip("Name of the file in the StreamingAssets folder containing possible names for the opponents.")]
+	public string namesFilename = "names.txt";
 	[Tooltip("Animation Curve which is used to map opponent's place to their average.")]
 	public AnimationCurve placeToAverageCurve;
 	[Tooltip("The average of the weakest opponent.")]
 	public float minOpponentAverage = 0.4f;
 	[Tooltip("The average of the strongest opponent.")]
 	public float maxOpponentAverage = 97.2f;
+
+	private List<string> possibleNames;
 
 	// Maps the opponent's place to their average
 	public float GetOpponentAverage(int place) {
@@ -124,12 +130,52 @@ public class LeaderboardRepresentation {
 	}
 
 	public string GetOpponentName(int place) {
-		// TODO: Use the given place to get the opponent's name
-		// TODO: Take into consideration already known names (from PlayerState.knownOpponents)
-		// TODO: Otherwise load a list of possible names (if it is not loaded already)...
-		// TODO: ...and choose a new one randomly
-		// TODO: Store the name among the already known ones (in PlayerState.knownOpponents dictionary)
-		return "Test";
+		// Use the given place to get the opponent's name
+		if (PlayerState.Instance.knownOpponents != null && PlayerState.Instance.knownOpponents.ContainsKey(place))
+			return PlayerState.Instance.knownOpponents[place]; // opponent on this place has been seen before
+		if (possibleNames == null || possibleNames.Count == 0)
+			LoadPossibleNames();
+		string name = possibleNames[UnityEngine.Random.Range(0, possibleNames.Count)]; // a new random name
+		PlayerState.Instance.knownOpponents[place] = name; // store the name among the already known ones
+		return name;
+	}
+
+	private void LoadPossibleNames() {
+		possibleNames = new List<string>();
+		// Load list of names from a file
+		if (string.IsNullOrEmpty(namesFilename)) { // empty filename
+			Debug.LogError($"An empty filename was given for the file containing a list of names.");
+		} else {
+			string path = Path.Combine(Application.streamingAssetsPath, namesFilename);
+			try {
+				if (!File.Exists(path)) { // file does not exist
+					Debug.LogError($"The file '{namesFilename}' does not exist in the StreamingAssets.");
+				} else using (StreamReader reader = new StreamReader(path)) { // reading the file
+					ParseNamesFromReader(reader);
+				}
+			} catch (IOException ex) { // exception while reading
+				Debug.LogError($"An exception occurred while reading the file '{namesFilename}': {ex.Message}");
+			}
+		}
+		// Make sure there is at least one name
+		if (possibleNames.Count == 0)
+			UseDefaultNames();
+	}
+
+	private void ParseNamesFromReader(StreamReader reader) {
+		string line;
+		while ((line = reader.ReadLine()) != null) {
+			if (string.IsNullOrEmpty(line)) continue; // skip empty rows
+			if (line[0] == '#') continue; // skip lines beginning with # (denotes names sections)
+			string name = line.Trim();
+			// Take only first 20 characters if the name is longer than that
+			if (name.Length > 20) name = name.Substring(0, 20);
+			possibleNames.Add(name);
+		}
+	}
+
+	private void UseDefaultNames() {
+		possibleNames.Add("Emil");
 	}
 }
 

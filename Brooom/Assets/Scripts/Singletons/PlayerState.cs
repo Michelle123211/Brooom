@@ -74,8 +74,12 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     }
     #endregion
 
-    #region Race State
-    [Tooltip("The maximum amount of mana the player can have at once.")]
+    #region Opponents
+    public Dictionary<int, string> knownOpponents; // stored names of opponents already visible in the leaderboard (according to their place)
+	#endregion
+
+	#region Race State
+	[Tooltip("The maximum amount of mana the player can have at once.")]
     public int maxManaAmount = 100;
     [HideInInspector]
     public RaceState raceState;
@@ -90,6 +94,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     #region Singleton
     public void InitializeSingleton() {
         equippedSpells = new Spell[4];
+        knownOpponents = new Dictionary<int, string>();
         raceState = new RaceState();
 
         // TODO: DEBUG only, remove
