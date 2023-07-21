@@ -19,19 +19,21 @@ public class LeaderboardUI : MonoBehaviour {
 	[SerializeField] Transform leaderboardRowsParent;
 
 	private PlayerLeaderboardData ComputePlayerData() {
-		// TODO: Get name
-		// TODO: Compute current average
-		// TODO: Compute player's place from average and a curve
+		// Name, average, place
+		string name = PlayerState.Instance.CharacterCustomization.playerName;
+		float average = PlayerState.Instance.stats.GetWeightedAverage();
+		int place = leaderboard.GetPlayerPlace(average);
 
+		// Chenge - from previous average and place
 		// TODO: Compute previous average
 		// TODO: Compute previous player's place from previous average and a curve
 
 		// TODO: Compute place change
 		// TODO: Compute average change
 		return new PlayerLeaderboardData {
-			name = PlayerState.Instance.CharacterCustomization.playerName,
-			average = 92.4f,
-			place = 158,
+			name = name,
+			average = average,
+			place = place,
 			averageChange = -2.3f,
 			placeChange = 5
 		};
@@ -121,6 +123,28 @@ public class LeaderboardRepresentation {
 	public float maxOpponentAverage = 97.2f;
 
 	private List<string> possibleNames;
+
+	// Finds the player's place among the opponents according to their average
+	public int GetPlayerPlace(float average) {
+		// Handle corner cases
+		if (average > GetOpponentAverage(1)) return 1;
+		if (average < GetOpponentAverage(opponentsCount)) return opponentsCount + 1;
+		// Binary search to find the two opponents between whom the player belongs
+		int min = 1, max = opponentsCount; // min and max of the place interval we are searching
+		int middle;
+		float opponentAverage;
+		while (max - min > 1) {
+			middle = (max + min) / 2;
+			opponentAverage = GetOpponentAverage(middle);
+			if (average >= opponentAverage) { // player is better (move to the lower numbers)
+				max = middle;
+			} else { // player is worse (move to the higher numbers)
+				min = middle;
+			}
+		}
+		// We found the two
+		return max; // player is between min and max, so on the (min + 1 = max)-th place
+	}
 
 	// Maps the opponent's place to their average
 	public float GetOpponentAverage(int place) {

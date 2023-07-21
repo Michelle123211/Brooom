@@ -7,7 +7,9 @@ using System;
 // A class representing state throughout the whole gameplay
 public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 {
-    public PlayerStats stats = new PlayerStats();
+	#region Statistics
+	public PlayerStats stats = new PlayerStats();
+	#endregion
 
 	#region Character Customization
 	public CharacterCustomizationOptions customizationOptions;
@@ -124,4 +126,12 @@ public struct PlayerStats {
     public int precision;
     [Range(0, 100)]
     public int magic;
+
+    // Computes weighted average of the stats
+    // weight 3: precision, speed (more important and objective)
+    // weight 2: endurance (artificially lowering the score at the beginning)
+    // weight 1: magic (artificially lowering the score at the beginning), dexterity (not precise)
+    public float GetWeightedAverage() {
+        return (3 * (precision + speed) + 2 * (endurance) + 1 * (magic + dexterity)) / 10f;
+    }
 }
