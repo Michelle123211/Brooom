@@ -9502,6 +9502,7 @@ GameObject:
   - component: {fileID: 1415490835}
   - component: {fileID: 1415490837}
   - component: {fileID: 1415490836}
+  - component: {fileID: 1415490838}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -9630,6 +9631,21 @@ MonoBehaviour:
   leaderboardGapPrefab: {fileID: 8145475391184354531, guid: aa5f9615ac8fcb647a2518d22a0f94c9,
     type: 3}
   leaderboardRowsParent: {fileID: 2082619687}
+--- !u!114 &1415490838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415490834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6932706fa8f6f40a96f4a312924274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.5
+  isLocalized: 1
+  text: OverviewTooltipLeaderboard
 --- !u!1 &1421168319
 GameObject:
   m_ObjectHideFlags: 0
