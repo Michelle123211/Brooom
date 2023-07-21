@@ -21,21 +21,19 @@ public class LeaderboardUI : MonoBehaviour {
 	private PlayerLeaderboardData ComputePlayerData() {
 		// Name, average, place
 		string name = PlayerState.Instance.CharacterCustomization.playerName;
-		float average = PlayerState.Instance.stats.GetWeightedAverage();
+		float average = PlayerState.Instance.CurrentStats.GetWeightedAverage();
 		int place = leaderboard.GetPlayerPlace(average);
 
-		// Chenge - from previous average and place
-		// TODO: Compute previous average
-		// TODO: Compute previous player's place from previous average and a curve
+		// Previous average and place
+		float previousAverage = PlayerState.Instance.PreviousStats.GetWeightedAverage();
+		int previousPlace = leaderboard.GetPlayerPlace(previousAverage);
 
-		// TODO: Compute place change
-		// TODO: Compute average change
 		return new PlayerLeaderboardData {
 			name = name,
 			average = average,
 			place = place,
-			averageChange = -2.3f,
-			placeChange = 5
+			averageChange = average - previousAverage,
+			placeChange = place - previousPlace
 		};
 	}
 

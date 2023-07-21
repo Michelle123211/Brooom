@@ -140,19 +140,19 @@ public class RaceController : MonoBehaviour {
     private void SetLevelGeneratorParameters() {
         // Compute parameters based on player's stats
         // ... number of checkpoints from Endurance
-        int numOfCheckpoints = Mathf.RoundToInt(Mathf.Lerp(initialNumberOfCheckpoints, finalNumberOfCheckpoints, PlayerState.Instance.stats.endurance / 100f));
+        int numOfCheckpoints = Mathf.RoundToInt(Mathf.Lerp(initialNumberOfCheckpoints, finalNumberOfCheckpoints, PlayerState.Instance.CurrentStats.endurance / 100f));
         // ... maximum direction change from Dexterity
-        Vector2 directionChange = Vector2.Lerp(initialDirectionChange, finalDirectionChange, PlayerState.Instance.stats.dexterity / 100f);
+        Vector2 directionChange = Vector2.Lerp(initialDirectionChange, finalDirectionChange, PlayerState.Instance.CurrentStats.dexterity / 100f);
         // ... hoop scale from Precision
-        float hoopScale = Mathf.Lerp(initialHoopScale, finalHoopScale, PlayerState.Instance.stats.precision / 100f);
+        float hoopScale = Mathf.Lerp(initialHoopScale, finalHoopScale, PlayerState.Instance.CurrentStats.precision / 100f);
         // ... distance between adjacent hoops from Speed
-        Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.stats.speed / 100f);
+        Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.CurrentStats.speed / 100f);
         // ... available regions from Endurance
         foreach (var region in defaultRegions)
             PlayerState.Instance.raceState.regionsAvailability[region] = true;
         foreach (var regionWithValue in regionsUnlockedByEndurance)
             PlayerState.Instance.raceState.regionsAvailability[regionWithValue.region] =
-                PlayerState.Instance.stats.endurance >= regionWithValue.minValue ? true : false;
+                PlayerState.Instance.CurrentStats.endurance >= regionWithValue.minValue ? true : false;
         // ... available regions from max altitude
         foreach (var regionWithValue in regionsUnlockedByAltitude)
             PlayerState.Instance.raceState.regionsAvailability[regionWithValue.region] =

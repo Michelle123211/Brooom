@@ -7,12 +7,21 @@ using System;
 // A class representing state throughout the whole gameplay
 public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 {
-	#region Statistics
-	public PlayerStats stats = new PlayerStats();
-	#endregion
+    #region Statistics
+    public PlayerStats PreviousStats { get; set; } = new PlayerStats();
 
-	#region Character Customization
-	public CharacterCustomizationOptions customizationOptions;
+    private PlayerStats currentStats = new PlayerStats();
+    public PlayerStats CurrentStats {
+        get => currentStats;
+        set { // Automatically store the previous stats when assigning new ones
+            PreviousStats = currentStats;
+            currentStats = value;
+        }
+    }
+    #endregion
+
+    #region Character Customization
+    public CharacterCustomizationOptions customizationOptions;
 
     private CharacterCustomizationData characterCustomization = null;
     public CharacterCustomizationData CharacterCustomization {
