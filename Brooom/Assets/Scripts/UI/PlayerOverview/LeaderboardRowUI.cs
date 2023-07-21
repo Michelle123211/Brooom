@@ -36,7 +36,7 @@ public class LeaderboardRowUI : MonoBehaviour {
 			placeChangeText.text = "+" + placeChange.ToString();
 			placeChangeText.color = Color.red; // TODO: Take color from a color palette
 		}
-		placeChangeText.gameObject.SetActive(true);
+		if (placeChange != 0) placeChangeText.gameObject.SetActive(true);
 		// Change in average
 		if (averageChange > 0) {
 			averageChangeText.text = "+" + averageChange.ToString("N1");
@@ -45,7 +45,7 @@ public class LeaderboardRowUI : MonoBehaviour {
 			averageChangeText.text = averageChange.ToString("N1");
 			averageChangeText.color = Color.red; // TODO: Take color from a color palette
 		}
-		averageChangeText.gameObject.SetActive(true);
+		if (averageChange != 0) averageChangeText.gameObject.SetActive(true);
 		// Highlight
 		background.color = highlightColor;
 		nameText.text = "<b>" + nameText.text + "</b>";

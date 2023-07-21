@@ -19,10 +19,16 @@ public class CharacterCreatorUI : MonoBehaviour
     [SerializeField] ToggleGroup shoesOptions;
     [SerializeField] Button continueButton;
 
+    [Header("Parameters")]
+    [Tooltip("Name of the file in the StreamingAssets folder containing possible names for the randomization.")]
+    public string namesFilename = "names.txt";
+
     private CharacterCustomizationOptions customizationOptions;
     private CharacterCustomizationData customizationData = new CharacterCustomizationData();
 
     private string currentName;
+
+    private List<string> possibleNames;
 
     public void ReturnBack() {
         SceneLoader.Instance.LoadScene(Scene.MainMenu);
@@ -49,9 +55,10 @@ public class CharacterCreatorUI : MonoBehaviour
     }
 
     public void RandomizeName() {
-        // TODO: Select a name from a large list which will be used for the global leader board as well
-        string[] names = new string[] { "Anna", "Ben", "Charlie", "Diana", "Emil", "Filip", "Gustav", "Hannah", "Iva" };
-        currentName = names[Random.Range(0, names.Length)];
+        // Select a random name from a large list
+        if (possibleNames == null || possibleNames.Count == 0)
+            possibleNames = NamesManagement.LoadNames(namesFilename);
+        currentName = possibleNames[Random.Range(0, possibleNames.Count)];
         nameInputField.text = currentName;
     }
 
