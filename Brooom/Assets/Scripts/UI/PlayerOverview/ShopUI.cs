@@ -44,9 +44,7 @@ public class ShopUI : MonoBehaviour
 
 	private void InitializeSpells() {
 		// Remove all existing spell slots
-		for (int i = spellsParent.childCount - 1; i >= 0; i--) {
-			Destroy(spellsParent.GetChild(i).gameObject);
-		}
+		UtilsMonoBehaviour.RemoveAllChildren(spellsParent);
 		// TODO: Instantiate new spell slots
 		spells.Clear();
 	}
@@ -54,9 +52,7 @@ public class ShopUI : MonoBehaviour
 	private void InitializeBroomUpgrades() {
 		broom.UpdateState();
 		// Remove all existing broom upgrade rows
-		for (int i = broomUpgradesParent.childCount - 1; i >= 0; i--) {
-			Destroy(broomUpgradesParent.GetChild(i).gameObject);
-		}
+		UtilsMonoBehaviour.RemoveAllChildren(broomUpgradesParent);
 		// Instantiate new broom upgrade rows
 		broomUpgrades.Clear();
 		BroomUpgrade[] upgrades = broom.GetAvailableUpgrades();

@@ -59,9 +59,7 @@ public class BroomUpgradeRowUI : MonoBehaviour
 
 	private void InitializeCurrentLevel() {
         // Remove all previous indicators
-        for (int i = levelIndicatorParent.childCount - 1; i >= 0; i--) {
-            Destroy(levelIndicatorParent.GetChild(i).gameObject);
-        }
+        UtilsMonoBehaviour.RemoveAllChildren(levelIndicatorParent);
         // Instantiate new ones
         levelIndicators = new Image[assignedUpgrade.MaxLevel];
         for (int i = 0; i < assignedUpgrade.MaxLevel; i++) {

@@ -37,12 +37,6 @@ public class LeaderboardUI : MonoBehaviour {
 		};
 	}
 
-	private void RemoveAllRows() {
-		for (int i = leaderboardRowsParent.childCount - 1; i >= 0; i--) {
-			Destroy(leaderboardRowsParent.GetChild(i).gameObject);
-		}
-	}
-
 	// Adds rows for the opponents placed between the given range (inclusive)
 	// ... LeaderboardRepresentation stores only ordered opponents, so isAfterPlayer is needed to adjust the places
 	private void AddOpponentsRange(int from, int to, bool isAfterPlayer = false) {
@@ -90,7 +84,9 @@ public class LeaderboardUI : MonoBehaviour {
 	}
 
 	private void OnEnable() {
-		RemoveAllRows();
+		// Remove all existing rows
+		UtilsMonoBehaviour.RemoveAllChildren(leaderboardRowsParent);
+
 		PlayerLeaderboardData playerData = ComputePlayerData();
 		// According to the place fill the table with rows and values
 		if (playerData.place < 9) {

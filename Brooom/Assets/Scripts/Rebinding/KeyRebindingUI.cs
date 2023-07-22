@@ -35,13 +35,6 @@ public class KeyRebindingUI : MonoBehaviour {
         }
     }
 
-    // Removes all currently displayed KeyBindingUIs
-    private void RemoveAllRebindingUIs() {
-        for (int i = keyBindingParent.childCount - 1; i >= 0; i--) {
-            Destroy(keyBindingParent.GetChild(i).gameObject);
-        }
-    }
-
     // Adds a new KeyBindingUI for all the actions
     private void CreateRebindingUIsForAllActions() {
         PlayerInput playerInput = InputManager.Instance.GetPlayerInput();
@@ -88,7 +81,7 @@ public class KeyRebindingUI : MonoBehaviour {
 
 	private void OnEnable() {
         // Refresh the list of the bindings
-        RemoveAllRebindingUIs();
+        UtilsMonoBehaviour.RemoveAllChildren(keyBindingParent); // remove all currently displayed
         CreateRebindingUIsForAllActions();
 	}
 

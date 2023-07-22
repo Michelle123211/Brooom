@@ -42,9 +42,7 @@ public class RaceSpellsUI : MonoBehaviour {
 
 	private void InitializeSpellSlots() {
         // Remove all existing slots
-        for (int i = spellSlotsParent.childCount - 1; i >= 0; i--) {
-            Destroy(spellSlotsParent.GetChild(i).gameObject);
-        }
+        UtilsMonoBehaviour.RemoveAllChildren(spellSlotsParent);
         // Instantiate new slots
         spellSlots = new RaceSpellSlotUI[PlayerState.Instance.raceState.spellSlots.Length];
         for (int i = 0; i < spellSlots.Length; i++) {

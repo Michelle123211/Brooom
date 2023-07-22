@@ -16,9 +16,7 @@ public class EffectsUI : MonoBehaviour {
     void Start()
     {
         // Remove all existing slots
-        for (int i = effectSlotsParent.childCount - 1; i >= 0; i--) {
-            Destroy(effectSlotsParent.GetChild(i).gameObject);
-        }
+        UtilsMonoBehaviour.RemoveAllChildren(effectSlotsParent);
         // Register callback
         PlayerState.Instance.raceState.onNewEffectAdded += CreateNewEffectSlot;
     }

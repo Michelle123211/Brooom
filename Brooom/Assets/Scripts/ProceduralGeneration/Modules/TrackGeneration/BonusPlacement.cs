@@ -16,9 +16,7 @@ public class BonusPlacement : LevelGeneratorModule {
 
     public override void Generate(LevelRepresentation level) {
         // Remove any previously instantiated bonuses
-        for (int i = bonusParent.childCount - 1; i >= 0; i--) {
-            Destroy(bonusParent.GetChild(i).gameObject);
-        }
+        UtilsMonoBehaviour.RemoveAllChildren(bonusParent);
         // Place bonus objects
         FillTheBonusSpots(level);
         RemoveEmptySpots(level);

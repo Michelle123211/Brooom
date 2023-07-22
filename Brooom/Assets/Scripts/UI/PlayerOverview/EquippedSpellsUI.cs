@@ -12,9 +12,7 @@ public class EquippedSpellsUI : MonoBehaviour {
 
 	private void Start() {
 		// Remove all existing equipped spell slots
-		for (int i = equippedSpellsParent.childCount - 1; i >= 0; i--) {
-			Destroy(equippedSpellsParent.GetChild(i).gameObject);
-		}
+		UtilsMonoBehaviour.RemoveAllChildren(equippedSpellsParent);
 		// Instantiate new equipped spell slots
 		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
 			EquippedSpellSlotUI slot = Instantiate<EquippedSpellSlotUI>(equippedSpellSlotPrefab, equippedSpellsParent);

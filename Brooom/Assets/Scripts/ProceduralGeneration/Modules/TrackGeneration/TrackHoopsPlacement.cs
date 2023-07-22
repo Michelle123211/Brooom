@@ -14,9 +14,7 @@ public class TrackHoopsPlacement : LevelGeneratorModule {
 
 	public override void Generate(LevelRepresentation level) {
 		// Remove any previously instantiated hoops
-		for (int i = hoopsParent.childCount - 1; i >= 0; i--) {
-			Destroy(hoopsParent.GetChild(i).gameObject);
-		}
+		UtilsMonoBehaviour.RemoveAllChildren(hoopsParent);
 		// Instantiate hoops/checkpoints in track points
 		TrackPoint point;
 		for (int i = 0; i < level.track.Count; i++) {
