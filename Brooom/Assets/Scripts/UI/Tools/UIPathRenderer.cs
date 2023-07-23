@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class UIPathRenderer : Graphic
 {
 	[Tooltip("Default thickness of all the lines/paths drawn by this component.")]
-	public float defaultLineThickness = 2f;
+	[SerializeField] float defaultLineThickness = 2f;
 
 	private List<PathData> paths;
 

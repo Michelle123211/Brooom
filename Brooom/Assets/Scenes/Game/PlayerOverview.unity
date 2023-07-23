@@ -6557,6 +6557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4154ef03831b24291a4d106b3d2874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsGraph: {fileID: 1787257481}
 --- !u!1001 &1021231679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10583,8 +10584,10 @@ MonoBehaviour:
   mainColor: {r: 0, g: 0, b: 0, a: 1}
   mainThickness: 4
   secondaryLinesCount: 3
-  secondaryColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
+  secondaryColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
   secondaryThickness: 2
+  polygonPrefab: {fileID: 1808446224723638860, guid: 1a0eac5f14b0209498d20b26e7b7724b,
+    type: 3}
 --- !u!1001 &1854778646
 PrefabInstance:
   m_ObjectHideFlags: 0
