@@ -6558,6 +6558,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statsGraph: {fileID: 1787257481}
+  oldStatsColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 0.5019608}
+  newStatsColor: {r: 0, g: 0.47646856, b: 1, a: 0.5019608}
 --- !u!1001 &1021231679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10588,6 +10590,7 @@ MonoBehaviour:
   secondaryThickness: 2
   polygonPrefab: {fileID: 1808446224723638860, guid: 1a0eac5f14b0209498d20b26e7b7724b,
     type: 3}
+  polygonTweenDuration: 0.7
 --- !u!1001 &1854778646
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -19,6 +19,11 @@ public class UIGraphPolygonRenderer : Graphic {
 		AddPolygonData(points, fillColor);
 	}
 
+	public void ResetAll() {
+		polygons.Clear();
+		SetVerticesDirty();
+	}
+
 	protected override void OnPopulateMesh(VertexHelper vh) {
 		vh.Clear();
 
