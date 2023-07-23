@@ -147,7 +147,7 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
     }
 
 	protected override void SetSingletonOptions() {
-        Options = (int)SingletonOptions.LazyInitialization | (int)SingletonOptions.RemoveRedundantInstances;
+        Options = (int)SingletonOptions.LazyInitialization | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.PersistentBetweenScenes;
 	}
 
 	private void OnDestroy() {
