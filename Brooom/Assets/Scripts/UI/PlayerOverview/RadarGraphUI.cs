@@ -10,6 +10,10 @@ public class RadarGraphUI : MonoBehaviour
     [SerializeField] float radius = 145f;
     [Tooltip("Number of parameters depicted by the graph.")]
     public int parametersCount = 5;
+    [Tooltip("Maximum value on all axes.")]
+    [SerializeField] float maxValue = 1;
+    [Tooltip("Labels of the graph axes.")]
+    [SerializeField] List<string> graphAxisLabels = new List<string>();
     [Tooltip("Color used for the main lines in the graph.")]
     [SerializeField] Color mainColor = Color.black;
     [Tooltip("Thickness of the main lines in the graph.")]
@@ -23,7 +27,17 @@ public class RadarGraphUI : MonoBehaviour
     [Tooltip("Thickness of the secondary lines in the graph.")]
     [SerializeField] float secondaryThickness = 2f;
 
+    [Header("Labels")]
+    [Tooltip("A Transform which is a parent of all the radar graph labels.")]
+    [SerializeField] Transform graphLabelsParent;
+    [Tooltip("A prefab of a radar graph label placed at the end of each axis.")]
+    [SerializeField] RadarGraphLabelUI graphLabelPrefab;
+    [Tooltip("The offset (percents in interval [0, 1]) denotes how much further along the axis tha label is placed.")]
+    [SerializeField] float labelsOffset = 0.15f;
+
     [Header("Polygons")]
+    [Tooltip("A Transform which is a parent of all the radar graph polygons.")]
+    [SerializeField] Transform polygonsParent;
     [Tooltip("A prefab of a radar graph polygon which is instantiated for each polygon added to the graph.")]
     [SerializeField] RadarGraphPolygonUI polygonPrefab;
     [Tooltip("A polygon may be tweened to grow into its final size. This parameter set duration of such tween.")]
@@ -31,6 +45,7 @@ public class RadarGraphUI : MonoBehaviour
 
     private List<Vector3> axes = new List<Vector3>();
     private List<RadarGraphPolygonUI> polygons = new List<RadarGraphPolygonUI>();
+    private List<RadarGraphLabelUI> labels = new List<RadarGraphLabelUI>();
 
     private bool isInitialized = false;
 
@@ -61,20 +76,52 @@ public class RadarGraphUI : MonoBehaviour
     }
 
     // Will be tweened from zero if initial values are not provided
-    public void DrawGraphValuesTweened(List<float> values, List<float> initialValues = null) {
+    public void DrawGraphValuesTweened(List<float> values, List<float> initialValues = null, bool showChangeInLabels = false) {
         List<Vector3> points = GetPolygonPointsFromValues(values);
         List<Vector3> initialPoints = GetPolygonPointsFromValues(initialValues);
+        if (showChangeInLabels) {
+            for (int i = 0; i < parametersCount; i++) labels[i].SetValueChange(values[i] - initialValues[i]);
+        }
         InstantiatePolygon(points, true, initialPoints);
     }
 
-    public void Initialize() {
+    public void Initialize(int parametersCount = -1, float maxValue = -1, List<string> axisLabels = null, List<string> axisTooltipDescriptions = null) {
+        // Set parameters
+        if (parametersCount > 0) this.parametersCount = parametersCount;
+        if (maxValue > 0) this.maxValue = maxValue;
+        if (axisLabels != null) this.graphAxisLabels = axisLabels;
+        if (this.graphAxisLabels == null) this.graphAxisLabels = new List<string>();
+        while (this.graphAxisLabels.Count < this.parametersCount) this.graphAxisLabels.Add(string.Empty);
         // Compute axes
-        float angleIncrement = -360f / parametersCount; // clockwise with minus
-        for (int i = 0; i < parametersCount; i++) {
+        float angleIncrement = -360f / this.parametersCount; // clockwise with minus
+        for (int i = 0; i < this.parametersCount; i++) {
             float angle = i * angleIncrement;
-            axes.Add(Quaternion.Euler(0, 0, angle) * Vector2.up * radius);
+			axes.Add(Quaternion.Euler(0, 0, angle) * Vector2.up * radius);
         }
+        // Draw background lines
+        DrawBackgroundLines();
+        // Add labels
+        AddGraphAxisLabels(axisTooltipDescriptions);
 
+        isInitialized = true;
+    }
+
+    public void ResetGraph() {
+        // Delete background lines
+        UIPathRenderer lineRenderer = GetComponent<UIPathRenderer>();
+        lineRenderer.ResetAll();
+        // Delete labels
+        UtilsMonoBehaviour.RemoveAllChildrenOfType<RadarGraphLabelUI>(graphLabelsParent);
+        // Delete polygons
+        ResetValues();
+    }
+
+    public void ResetValues() {
+        // Delete all polygons
+        UtilsMonoBehaviour.RemoveAllChildrenOfType<RadarGraphPolygonUI>(polygonsParent);
+    }
+
+    private void DrawBackgroundLines() {
         UIPathRenderer lineRenderer = GetComponent<UIPathRenderer>();
         // Draw secondary lines
         for (int i = 1; i <= secondaryLinesCount; i++) {
@@ -88,21 +135,31 @@ public class RadarGraphUI : MonoBehaviour
             lineRenderer.AddPath(new List<Vector3> { Vector3.zero, axis }, mainColor, mainThickness);
         // Draw main line
         lineRenderer.AddPath(axes, mainColor, mainThickness, true);
-
-        isInitialized = true;
     }
 
-    public void ResetGraph() {
-        // Delete all polygons
-        for (int i = polygons.Count - 1; i >= 0; i--) {
-            Destroy(polygons[i].gameObject);
+    private void AddGraphAxisLabels(List<string> axisDescriptions) {
+        if (graphLabelsParent == null) {
+            Debug.LogWarning("Parent Transform for the radar graph labels was not set. The graph's Transform is used instead.");
+            graphLabelsParent = transform;
+        }
+        for (int i = 0; i < parametersCount; i++) {
+            RadarGraphLabelUI label = Instantiate<RadarGraphLabelUI>(graphLabelPrefab, graphLabelsParent);
+            label.GetComponent<RectTransform>().anchoredPosition = axes[i] * (1f + labelsOffset);
+            if (axisDescriptions == null || i >= axisDescriptions.Count)
+                label.Initialize(graphAxisLabels[i]);
+            else
+                label.Initialize(graphAxisLabels[i], axisDescriptions[i]); // Add axis description into a tooltip
+            labels.Add(label);
         }
     }
 
     // Instantiates a new polygon
     private void InstantiatePolygon(List<Vector3> points, bool isTweened = false, List<Vector3> initialPoints = null) {
-        // TODO: Set colors and border thickness
-        RadarGraphPolygonUI polygon = Instantiate<RadarGraphPolygonUI>(polygonPrefab, transform);
+        if (polygonsParent == null) {
+            Debug.LogWarning("Parent Transform for the radar graph polygons was not set. The graph's Transform is used instead.");
+            polygonsParent = transform;
+        }
+        RadarGraphPolygonUI polygon = Instantiate<RadarGraphPolygonUI>(polygonPrefab, polygonsParent);
         polygons.Add(polygon);
         if (!isTweened) {
             if (colorChanged) polygon.DrawPolygon(points, fillColor, hasBorder, borderColor, borderThickness);
@@ -142,7 +199,7 @@ public class RadarGraphUI : MonoBehaviour
         // Compute actual points from values and radius
         List<Vector3> points = new List<Vector3>();
         for (int i = 0; i < parametersCount; i++) {
-            points.Add(axes[i] * Mathf.Clamp(values[i], 0, 1));
+            points.Add(axes[i] * Mathf.Clamp(values[i], 0, maxValue) / maxValue);
         }
         return points;
     }

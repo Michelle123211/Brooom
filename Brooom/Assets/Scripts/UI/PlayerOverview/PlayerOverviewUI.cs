@@ -18,27 +18,40 @@ public class PlayerOverviewUI : MonoBehaviour
 
 	private void OnEnable() {
         // Display player stats in a graph (after a short delay so that the scene fade in does not hide it)
-        statsGraph.Initialize();
+        List<float> oldValues = PlayerState.Instance.PreviousStats.GetListOfValues();
+        // ... with localized graph labels
+        statsGraph.Initialize(oldValues.Count, 100, GetLocalizedStatsGraphLabels(), GetLocalizedStatsDescription());
         // ... old values immediately (in grey)
         statsGraph.SetPolygonColor(oldStatsColor);
         statsGraph.SetPolygonBorder(true, oldStatsColor.WithA(1), 2);
-        statsGraph.DrawGraphValues(new List<float> { 0.2f, 0.5f, 1f, 0.1f, 0.3f });
+        statsGraph.DrawGraphValues(oldValues);
         // ... new values tweened with a delay (in blue)
-        Invoke(nameof(ShowPlayerStats), 1f);
+        Invoke(nameof(ShowCurrentPlayerStats), 1f);
     }
 
-    private void ShowPlayerStats() {
+    private void ShowCurrentPlayerStats() {
         statsGraph.SetPolygonColor(newStatsColor);
         statsGraph.SetPolygonBorder(true, newStatsColor.WithA(1), 4);
-        //statsGraph.DrawGraphValues(new List<float> {
-        //    PlayerState.Instance.CurrentStats.endurance / 100f,
-        //    PlayerState.Instance.CurrentStats.speed / 100f,
-        //    PlayerState.Instance.CurrentStats.dexterity / 100f,
-        //    PlayerState.Instance.CurrentStats.precision / 100f,
-        //    PlayerState.Instance.CurrentStats.magic / 100f
-        //    });
-        //statsGraph.DrawGraphValues(new List<float> { 0.2f, 0.5f, 1f, 0.1f, 0.3f });
-        statsGraph.DrawGraphValuesTweened(new List<float> { 1f, 0.8f, 1f, 1f, 0.9f }, new List<float> { 0.2f, 0.5f, 1f, 0.1f, 0.3f });
-        //statsGraph.DrawGraphValuesTweened(new List<float> { 0.2f, 0.5f, 1f, 0.1f, 0.3f }, new List<float> { 0f, 0f, 0f, 0f, 0f });
+        statsGraph.DrawGraphValuesTweened(PlayerState.Instance.CurrentStats.GetListOfValues(), PlayerState.Instance.PreviousStats.GetListOfValues(), true);
     }
+
+    private List<string> GetLocalizedStatsGraphLabels() {
+        List<string> statNames = PlayerStats.GetListOfStatNames();
+        List<string> labels = new List<string>();
+        foreach (var name in statNames) {
+            // Take only the first letter
+            labels.Add(LocalizationManager.Instance.GetLocalizedString("PlayerStat" + name)[0].ToString());
+        }
+        return labels;
+    }
+
+    private List<string> GetLocalizedStatsDescription() {
+        List<string> statNames = PlayerStats.GetListOfStatNames();
+        List<string> descriptions = new List<string>();
+        foreach (var name in statNames) {
+            descriptions.Add(LocalizationManager.Instance.GetLocalizedString("PlayerStatTooltip" + name));
+        }
+        return descriptions;
+    }
+
 }

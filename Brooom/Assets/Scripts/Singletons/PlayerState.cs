@@ -143,4 +143,14 @@ public struct PlayerStats {
     public float GetWeightedAverage() {
         return (3 * (precision + speed) + 2 * (endurance) + 1 * (magic + dexterity)) / 10f;
     }
+
+    // Returns the values in a specific order
+    public List<float> GetListOfValues() {
+        return new List<float> { endurance, speed, dexterity, precision, magic };
+    }
+
+    // Returns stats names in a specific order
+    public static List<string> GetListOfStatNames() {
+        return new List<string> { "Endurance", "Speed", "Dexterity", "Precision", "Magic" };
+    }
 }

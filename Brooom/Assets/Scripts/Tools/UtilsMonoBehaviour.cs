@@ -10,4 +10,10 @@ public class UtilsMonoBehaviour : MonoBehaviour
             Destroy(parent.GetChild(i).gameObject);
         }
     }
+
+    public static void RemoveAllChildrenOfType<T>(Transform parent) where T : MonoBehaviour {
+        T[] children = parent.GetComponentsInChildren<T>();
+        for (int i = children.Length; i >= 0; i--)
+            Destroy(children[i].gameObject);
+    }
 }
