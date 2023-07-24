@@ -6559,7 +6559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statsGraph: {fileID: 1787257481}
   oldStatsColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 0.5019608}
-  newStatsColor: {r: 0, g: 0.47646856, b: 1, a: 0.5019608}
+  newStatsColor: {r: 0, g: 0.47646856, b: 1, a: 0.6}
 --- !u!1001 &1021231679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10621,6 +10621,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 145
   parametersCount: 5
+  maxValue: 1
   graphAxisLabels: []
   mainColor: {r: 0, g: 0, b: 0, a: 1}
   mainThickness: 4

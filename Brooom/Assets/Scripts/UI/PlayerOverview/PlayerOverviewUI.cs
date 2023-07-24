@@ -17,6 +17,14 @@ public class PlayerOverviewUI : MonoBehaviour
     }
 
 	private void OnEnable() {
+        // DEBUG
+        PlayerState.Instance.CurrentStats = new PlayerStats {
+            endurance = 55, dexterity = 43, magic = 13, precision = 63, speed = 32
+        };
+        PlayerState.Instance.CurrentStats = new PlayerStats {
+            endurance = 34, dexterity = 54, magic = 64, precision = 34, speed = 74
+        };
+
         // Display player stats in a graph (after a short delay so that the scene fade in does not hide it)
         List<float> oldValues = PlayerState.Instance.PreviousStats.GetListOfValues();
         // ... with localized graph labels
@@ -32,7 +40,7 @@ public class PlayerOverviewUI : MonoBehaviour
     private void ShowCurrentPlayerStats() {
         statsGraph.SetPolygonColor(newStatsColor);
         statsGraph.SetPolygonBorder(true, newStatsColor.WithA(1), 4);
-        statsGraph.DrawGraphValuesTweened(PlayerState.Instance.CurrentStats.GetListOfValues(), PlayerState.Instance.PreviousStats.GetListOfValues(), true);
+        statsGraph.DrawGraphValuesTweened(PlayerState.Instance.CurrentStats.GetListOfValues(), PlayerState.Instance.PreviousStats.GetListOfValues(), true, "N0");
     }
 
     private List<string> GetLocalizedStatsGraphLabels() {

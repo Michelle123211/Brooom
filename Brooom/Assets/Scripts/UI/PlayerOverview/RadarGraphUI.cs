@@ -76,11 +76,11 @@ public class RadarGraphUI : MonoBehaviour
     }
 
     // Will be tweened from zero if initial values are not provided
-    public void DrawGraphValuesTweened(List<float> values, List<float> initialValues = null, bool showChangeInLabels = false) {
+    public void DrawGraphValuesTweened(List<float> values, List<float> initialValues = null, bool showChangeInLabels = false, string numberFormat = "N1") {
         List<Vector3> points = GetPolygonPointsFromValues(values);
         List<Vector3> initialPoints = GetPolygonPointsFromValues(initialValues);
         if (showChangeInLabels) {
-            for (int i = 0; i < parametersCount; i++) labels[i].SetValueChange(values[i] - initialValues[i]);
+            for (int i = 0; i < parametersCount; i++) labels[i].SetValueChange(values[i] - initialValues[i], polygonTweenDuration, numberFormat);
         }
         InstantiatePolygon(points, true, initialPoints);
     }
