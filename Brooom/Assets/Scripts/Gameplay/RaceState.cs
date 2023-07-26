@@ -38,6 +38,14 @@ public class RaceState {
         this.selectedSpell = 0;
     }
 
+    public void SetRegionAvailability(LevelRegionType region, bool availability) {
+        if (regionsAvailability.ContainsKey(region) && !regionsAvailability[region] && availability) { // a new region became available
+            // Notify anyone interested that a new region has been unlocked
+            Messaging.SendMessage("NewRegionAvailable");
+        }
+        regionsAvailability[region] = availability;
+    }
+
     public void UpdateRaceState() {
         UpdateSpellsCharge(Time.deltaTime);
         UpdateEffects(Time.deltaTime);

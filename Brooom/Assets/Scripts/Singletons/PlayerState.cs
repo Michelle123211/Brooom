@@ -69,19 +69,29 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
 
     #region Broom Upgrades
     public float maxAltitude = 15f; // Maximum Y coordinate the player can fly up to
-    private Dictionary<string, int> broomUpgradeLevels = new Dictionary<string, int>();
+    private Dictionary<string, Tuple<int, int>> broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>(); // current and maximum level for each upgrade
 
     // Returns the highest purchased level of the given broom upgrade
     public int GetBroomUpgradeLevel(string upgradeName) {
         if (broomUpgradeLevels.ContainsKey(upgradeName))
-            return broomUpgradeLevels[upgradeName];
+            return broomUpgradeLevels[upgradeName].Item1;
         else
             return 0;
     }
 
     // Saves the given level as the highest purchased one for the given broom upgrade
-    public void SetBroomUpgradeLevel(string upgradeName, int level) {
-        broomUpgradeLevels[upgradeName] = level;
+    public void SetBroomUpgradeLevel(string upgradeName, int level, int maxLevel) {
+        broomUpgradeLevels[upgradeName] = new Tuple<int, int>(level, maxLevel);
+        // Check if all upgrades are purchased
+        bool allMax = true;
+        foreach (var upgrade in broomUpgradeLevels) {
+            if (upgrade.Value.Item1 != upgrade.Value.Item2) {
+                allMax = false;
+                break;
+            }
+        }
+        // Notify anyone interested that the broom has been upgraded maximally
+        if (allMax) Messaging.SendMessage("AllBroomUpgrades");
     }
     #endregion
 
