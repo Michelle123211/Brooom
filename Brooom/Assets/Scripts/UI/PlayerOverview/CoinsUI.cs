@@ -9,8 +9,15 @@ public class CoinsUI : MonoBehaviour
 	[Tooltip("A label displaying current number of coins the player has.")]
 	[SerializeField] TextMeshProUGUI coinsText;
 
+	private int lastValue = 0;
+
+	public void RefreshCoinsAmount() {
+		UpdateCoinsAmount(lastValue, PlayerState.Instance.coins);
+	}
+
 	private void UpdateCoinsAmount(int oldValue, int newValue) {
 		// TODO: Tween the value
+		lastValue = newValue;
 		coinsText.text = newValue.ToString();
 	}
 

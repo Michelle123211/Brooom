@@ -8941,11 +8941,16 @@ PrefabInstance:
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
@@ -8957,10 +8962,20 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
+      objectReference: {fileID: 1858052904}
+    - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
       objectReference: {fileID: 8289849256692613498}
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
@@ -8971,6 +8986,11 @@ PrefabInstance:
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: RefreshCoinsAmount
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: HidePanel
       objectReference: {fileID: 0}
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
@@ -8981,6 +9001,11 @@ PrefabInstance:
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: CoinsUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: ShowHidePanelUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
@@ -8991,6 +9016,11 @@ PrefabInstance:
     - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181937709622012504, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4410258611597380279, guid: 8e18f0453978d8a4288bb2cd198d1902,
@@ -11009,6 +11039,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa5f9615ac8fcb647a2518d22a0f94c9, type: 3}
+--- !u!114 &1858052904 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2585401148699018826, guid: 8901025903bd7cf4dbd028a5378fd08d,
+    type: 3}
+  m_PrefabInstance: {fileID: 412143933}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d759eb0b2402944a97bb86d3a1f357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1886332451
 GameObject:
   m_ObjectHideFlags: 0
