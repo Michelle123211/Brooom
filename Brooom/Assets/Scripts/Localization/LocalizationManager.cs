@@ -136,6 +136,7 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 		// Store all the phrases in all of the languages into the dictionary
 		foreach (JToken line in lines) {
 			JObject lineObject = (JObject)line;
+			if (lineObject.Count == 0) continue; // empty row
 			string key = (string)lineObject["Key"];
 			foreach (var lang in availableLanguages) {
 				string phrase = (string)lineObject[lang];

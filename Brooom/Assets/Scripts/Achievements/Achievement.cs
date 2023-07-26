@@ -16,7 +16,4 @@ public class Achievement : ScriptableObject {
 
 	[Tooltip("What are the values necessary for each achievement level.")]
 	public List<float> valuesForLevels;
-
-	[Tooltip("Localization key for the achievement description (displayed in a tooltip).")]
-	public string descriptionLocKey = "Default";
 }
