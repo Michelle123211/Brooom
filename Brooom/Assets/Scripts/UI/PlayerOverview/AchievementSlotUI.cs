@@ -36,7 +36,7 @@ public class AchievementSlotUI : MonoBehaviour {
 			int colorIndex = Mathf.Clamp(achievement.maximumLevel - achievement.currentLevel, 0, levelColors.Length);
 			backgroundImage.color = levelColors[colorIndex];
 			// Set tooltip content
-			tooltip.text = "Achievement" + achievement.achievement.name;
+			tooltip.text = "Achievement" + achievement.achievement.name + achievement.currentLevel.ToString();
 		} else {
 			// Achievement which is not known
 			iconImage.sprite = unknownAchievementIcon;
@@ -54,6 +54,6 @@ public class AchievementSlotUI : MonoBehaviour {
 	private void HighlightNewAchievement() {
 		newAchievementLabel.SetActive(true);
 		// A short tween changing scale
-		slotTransform.DOScale(1.3f, 0.2f).OnComplete(() => slotTransform.DOScale(1f, 0.4f).SetEase(Ease.OutBounce));
+		slotTransform.DOScale(1.3f, 0.2f).SetDelay(1f).OnComplete(() => slotTransform.DOScale(1f, 0.4f).SetEase(Ease.OutBounce));
 	}
 }

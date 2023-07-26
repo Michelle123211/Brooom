@@ -14,7 +14,12 @@ public class AchievementsUI : MonoBehaviour
         UtilsMonoBehaviour.RemoveAllChildren(achievementParent);
         // Get current achievements progress
         List<AchievementProgress> achievements = AchievementManager.Instance.GetAllAchievementsProgress();
-        // TODO: Sort the achievements according to their level
+        // Sort the achievements according to their level (first are the complete ones, then those having only one more level etc., unknown achievements are at the end)
+        achievements.Sort((x, y) => {
+            if (x.currentLevel == 0) return 1; // x is unknown, y should be first
+            if (y.currentLevel == 0) return -1; // y is unknown, x should be first
+            return (x.maximumLevel - x.currentLevel) - (y.maximumLevel - y.currentLevel); // the one with less levels remaining should be first
+        });
         // Display the achievements
         foreach (var achievement in achievements) {
             AchievementSlotUI slot = Instantiate<AchievementSlotUI>(achievementSlotPrefab, achievementParent);

@@ -36,6 +36,8 @@ public class Bonus : MonoBehaviour {
             // Invoke the common events (e.g. particles, destroying self)
             if (!Utils.IsNullEvent(pickUpEvent))
                 pickUpEvent.Invoke();
+            // Let anyone interested know that a bonus was picked up
+            Messaging.SendMessage("BonusPickedUp");
             // Deactivate and start reactivation countdown
             Invoke(nameof(Activate), reactivationTime);
             Deactivate();
