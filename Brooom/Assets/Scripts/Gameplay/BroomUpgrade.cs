@@ -35,8 +35,4 @@ public class BroomUpgrade : MonoBehaviour {
             PlayerState.Instance.SetBroomUpgradeLevel(Name, CurrentLevel, MaxLevel);
         } 
     }
-
-	private void Start() {
-        PlayerState.Instance.SetBroomUpgradeLevel(Name, 0, MaxLevel);
-	}
 }
