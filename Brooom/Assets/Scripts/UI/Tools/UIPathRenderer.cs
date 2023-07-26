@@ -26,7 +26,7 @@ public class UIPathRenderer : Graphic
 	}
 
 	public void ResetAll() {
-		paths.Clear();
+		paths?.Clear();
 		SetVerticesDirty();
 	}
 

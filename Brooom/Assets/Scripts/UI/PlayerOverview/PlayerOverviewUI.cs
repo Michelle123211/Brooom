@@ -16,7 +16,7 @@ public class PlayerOverviewUI : MonoBehaviour
         SceneLoader.Instance.LoadScene(Scene.Race);
     }
 
-	private void OnEnable() {
+    public void UpdateUI() {
         // DEBUG
         PlayerState.Instance.CurrentStats = new PlayerStats {
             endurance = 55, dexterity = 43, magic = 13, precision = 63, speed = 32
@@ -25,7 +25,22 @@ public class PlayerOverviewUI : MonoBehaviour
             endurance = 34, dexterity = 54, magic = 64, precision = 34, speed = 74
         };
 
+        UpdateGraph();
+        UpdateAchievements();
+    }
+
+	private void OnEnable() {
+        UpdateUI();
+    }
+
+    private void UpdateAchievements() {
+        AchievementManager.Instance.GetAllAchievementsProgress();
+        // TODO: Sort the achievements and display them
+    }
+
+    private void UpdateGraph() {
         // Display player stats in a graph (after a short delay so that the scene fade in does not hide it)
+        statsGraph.ResetValues();
         List<float> oldValues = PlayerState.Instance.PreviousStats.GetListOfValues();
         // ... with localized graph labels
         statsGraph.Initialize(oldValues.Count, 100, GetLocalizedStatsGraphLabels(), GetLocalizedStatsDescription());

@@ -20,7 +20,7 @@ public class UIGraphPolygonRenderer : Graphic {
 	}
 
 	public void ResetAll() {
-		polygons.Clear();
+		polygons?.Clear();
 		SetVerticesDirty();
 	}
 
