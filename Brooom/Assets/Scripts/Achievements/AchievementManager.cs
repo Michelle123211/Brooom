@@ -16,19 +16,18 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 
 	private List<AchievementProgress> achievementsProgress;
 
-	public List<AchievementProgress> LoadAllAchievements() {
+	public void LoadAllAchievements() {
 		// Get all achievements' ScriptableObjects
 		Achievement[] achievements = Resources.LoadAll<Achievement>("Achievements/");
-		List<AchievementProgress> progress = new List<AchievementProgress>();
+		achievementsProgress = new List<AchievementProgress>();
 		foreach (var achievement in achievements) {
 			if (achievement.type == AchievementType.None) continue; // invalid achievement
-			AchievementProgress achievementProgress = new AchievementProgress(achievement);
-			if (achievementProgress.maximumLevel > 0) // it is valid
-				progress.Add(achievementProgress);
+			AchievementProgress progress = new AchievementProgress(achievement);
+			if (progress.maximumLevel > 0) // it is valid
+				achievementsProgress.Add(progress);
 		}
 		// TODO: Load the achievements (all tracked data) from a file
 		UpdateAchievementsProgress();
-		return progress;
 	}
 
 	// Returns a list of all achievements with their current progress (level)
@@ -82,7 +81,7 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 		foreach (var data in achievementData)
 			data.RegisterCallbacks();
 		// Load all achievements
-		achievementsProgress = LoadAllAchievements();
+		LoadAllAchievements();
 	}
 }
 

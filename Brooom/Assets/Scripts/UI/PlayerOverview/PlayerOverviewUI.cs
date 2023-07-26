@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerOverviewUI : MonoBehaviour
 {
+    [SerializeField] LeaderboardUI leaderboard;
     [SerializeField] RadarGraphUI statsGraph;
+    [SerializeField] AchievementsUI achievements;
     [SerializeField] Color oldStatsColor;
     [SerializeField] Color newStatsColor;
 
@@ -25,17 +27,13 @@ public class PlayerOverviewUI : MonoBehaviour
             endurance = 34, dexterity = 54, magic = 64, precision = 34, speed = 74
         };
 
+        leaderboard.UpdateUI();
         UpdateGraph();
-        UpdateAchievements();
+        achievements.UpdateUI();
     }
 
 	private void OnEnable() {
         UpdateUI();
-    }
-
-    private void UpdateAchievements() {
-        AchievementManager.Instance.GetAllAchievementsProgress();
-        // TODO: Sort the achievements and display them
     }
 
     private void UpdateGraph() {

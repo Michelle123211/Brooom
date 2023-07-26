@@ -34,7 +34,6 @@ public class LeaderboardRowUI : MonoBehaviour {
 
 	// Shows the change in place and average, changes appearance to highlight the row
 	public void SetPlayerData(int placeChange, float averageChange) {
-		// TODO: Tween the values
 		// Initialize values
 		currentPlaceChange = 0;
 		SetPlaceChange(currentPlaceChange);

@@ -18,6 +18,25 @@ public class LeaderboardUI : MonoBehaviour {
 	[Tooltip("A Transform which is a parent of all the leaderboard rows.")]
 	[SerializeField] Transform leaderboardRowsParent;
 
+	public void UpdateUI() {
+		// Remove all existing rows
+		UtilsMonoBehaviour.RemoveAllChildren(leaderboardRowsParent);
+
+		PlayerLeaderboardData playerData = ComputePlayerData();
+		// According to the place fill the table with rows and values
+		if (playerData.place < 9) {
+			AddOpponentsRange(1, playerData.place - 1);
+			AddPlayer(playerData);
+			AddOpponentsRange(playerData.place + 1, 9, true);
+		} else {
+			AddOpponentsRange(1, 6); // place >= 9 ==> show the first 6, then gap, player with the neighbours
+			CreateGap();
+			AddPlayerWithNeighbours(playerData);
+		}
+		// If the player is not the last one, add gap to the end
+		if (playerData.place < leaderboard.opponentsCount) CreateGap();
+	}
+
 	private PlayerLeaderboardData ComputePlayerData() {
 		// Name, average, place
 		string name = PlayerState.Instance.CharacterCustomization.playerName;
@@ -81,25 +100,6 @@ public class LeaderboardUI : MonoBehaviour {
 	// Instantiates a gap
 	private void CreateGap() {
 		Instantiate(leaderboardGapPrefab, leaderboardRowsParent);
-	}
-
-	private void OnEnable() {
-		// Remove all existing rows
-		UtilsMonoBehaviour.RemoveAllChildren(leaderboardRowsParent);
-
-		PlayerLeaderboardData playerData = ComputePlayerData();
-		// According to the place fill the table with rows and values
-		if (playerData.place < 9) {
-			AddOpponentsRange(1, playerData.place - 1);
-			AddPlayer(playerData);
-			AddOpponentsRange(playerData.place + 1, 9, true);
-		} else {
-			AddOpponentsRange(1, 6); // place >= 9 ==> show the first 6, then gap, player with the neighbours
-			CreateGap();
-			AddPlayerWithNeighbours(playerData);
-		}
-		// If the player is not the last one, add gap to the end
-		if (playerData.place < leaderboard.opponentsCount) CreateGap();
 	}
 }
 
