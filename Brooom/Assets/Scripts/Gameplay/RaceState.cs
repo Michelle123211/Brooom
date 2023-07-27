@@ -39,7 +39,7 @@ public class RaceState {
     }
 
     public void SetRegionAvailability(LevelRegionType region, bool availability) {
-        if (regionsAvailability.ContainsKey(region) && !regionsAvailability[region] && availability) { // a new region became available
+        if (regionsAvailability.ContainsKey(region) && availability && !regionsAvailability[region] && availability) { // a new region became available
             // Notify anyone interested that a new region has been unlocked
             Messaging.SendMessage("NewRegionAvailable");
         }

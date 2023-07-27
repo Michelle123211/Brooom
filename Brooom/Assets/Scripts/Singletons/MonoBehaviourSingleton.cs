@@ -14,7 +14,7 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
     public static T Instance {
         get {
             // Lazy initialization
-            if (!isInitialized || (Options & (int)SingletonOptions.LazyInitialization) != 0) {
+            if (_Instance == null || !isInitialized || (Options & (int)SingletonOptions.LazyInitialization) != 0) {
                 InitializeSingletonInstance();
             }
             return _Instance;

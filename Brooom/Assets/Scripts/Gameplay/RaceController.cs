@@ -159,7 +159,7 @@ public class RaceController : MonoBehaviour {
         foreach (var regionWithValue in regionsUnlockedByAltitude)
             PlayerState.Instance.raceState.SetRegionAvailability(
                 regionWithValue.region,
-                PlayerState.Instance.CurrentStats.endurance >= regionWithValue.minValue ? true : false
+                PlayerState.Instance.maxAltitude >= regionWithValue.minValue ? true : false
             );
         // And set them
         levelGenerator.regionsAvailability = PlayerState.Instance.raceState.regionsAvailability;
