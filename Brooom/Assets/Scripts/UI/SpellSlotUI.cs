@@ -40,10 +40,10 @@ public class SpellSlotUI : MonoBehaviour
 		if (!isEmpty) {
 			string keyPrefix = "Spell" + spell.identifier;
 			tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString(keyPrefix + "Name") + "~~";
-			tooltip.texts.topRight = "&mana" + LocalizationManager.Instance.GetLocalizedString("SpellInfoMana") + ": " + spell.manaCost.ToString() + "&mana";
+			tooltip.texts.topRight = "==" + LocalizationManager.Instance.GetLocalizedString("SpellInfoMana") + ": " + spell.manaCost.ToString() + "==";
 			tooltip.texts.mainTop = LocalizationManager.Instance.GetLocalizedString(keyPrefix + "Description");
 			tooltip.texts.mainBottom = "**" + LocalizationManager.Instance.GetLocalizedString("SpellInfoTarget") + ":** " + LocalizationManager.Instance.GetLocalizedString(keyPrefix + "Target");
-			tooltip.texts.bottomRight = "&cooldown" + LocalizationManager.Instance.GetLocalizedString("SpellInfoCooldown") + " " + spell.cooldown.ToString() + " s&cooldown";
+			tooltip.texts.bottomRight = "&&" + LocalizationManager.Instance.GetLocalizedString("SpellInfoCooldown") + " " + spell.cooldown.ToString() + " s&&";
 			tooltip.isLocalized = false;
 		} else { // if the spell is null, use default values
 			tooltip.texts = defaultText;

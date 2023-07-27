@@ -96,12 +96,12 @@ public enum AchievementType {
 	AllSpells,
 	// Race
 	RacesFinished = 201,
+	RacesGivenUp,
 	FirstPlaces,
 	LastPlaces,
-	RacesGivenUp,
 	LongestLoseStreak,
 	LongestWinStreak,
-	MaximumTrials,
+	TrackTrials,
 	// Level
 	ObstacleCollisions = 301,
 	BonusesPickedUp,
@@ -110,8 +110,8 @@ public enum AchievementType {
 	AllRegionsAvailable,
 	AllRegionsVisited,
 	// Coins
-	TotalCoinsEarned = 401,
-	MaximumCoinsAmount,
+	CoinsEarned = 401,
+	CoinsAmount,
 	// Broom
 	AllBroomUpgrades = 501
 }
@@ -163,12 +163,12 @@ class ScoreData : AchievementData {
 
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("RankChanged", OnRankChanged);
-		Messaging.RegisterForMessage("StatChanged", OnStatChanged);
+		Messaging.RegisterForMessage("StatsChanged", OnStatsChanged);
 	}
 
 	public override void UnregisterCallbacks() {
 		Messaging.UnregisterFromMessage("RankChanged", OnRankChanged);
-		Messaging.UnregisterFromMessage("StatChanged", OnStatChanged);
+		Messaging.UnregisterFromMessage("StatsChanged", OnStatsChanged);
 	}
 
 	public override int GetAchievementLevel(Achievement achievement) {
@@ -186,8 +186,10 @@ class ScoreData : AchievementData {
 		if (rank < highestRank) highestRank = rank;
 	}
 
-	private void OnStatChanged(int statValue) {
-		if (maxStatValue < statValue) maxStatValue = statValue;
+	private void OnStatsChanged() {
+		// Get maximum
+		foreach (var stat in PlayerState.Instance.CurrentStats.GetListOfValues())
+			if (maxStatValue < stat) maxStatValue = (int)stat;
 	}
 }
 
@@ -248,7 +250,7 @@ class RaceData : AchievementData {
 	public int currentWinStreak = 0;
 	public int longestWinStreak = 0;
 	// Maximum number of trials in a single level
-	public int maxTrials = 0;
+	public int trackTrials = 0;
 
 	private int currentNumberOfRacers = 0;
 
@@ -280,8 +282,8 @@ class RaceData : AchievementData {
 				return GetAchievementLevelFromValues(achievement, longestLoseStreak);
 			case AchievementType.LongestWinStreak:
 				return GetAchievementLevelFromValues(achievement, longestWinStreak);
-			case AchievementType.MaximumTrials:
-				return GetAchievementLevelFromValues(achievement, maxTrials);
+			case AchievementType.TrackTrials:
+				return GetAchievementLevelFromValues(achievement, trackTrials);
 			default: // Unknown type
 				return -1;
 		}
@@ -314,7 +316,7 @@ class RaceData : AchievementData {
 	}
 
 	private void OnTrainingEnded(int numTrials) {
-		if (numTrials > maxTrials) maxTrials = numTrials;
+		if (numTrials > trackTrials) trackTrials = numTrials;
 	}
 }
 
@@ -409,10 +411,10 @@ class CoinsData : AchievementData {
 
 	public override int GetAchievementLevel(Achievement achievement) {
 		switch (achievement.type) {
-			case AchievementType.TotalCoinsEarned:
-				return -1;
-			case AchievementType.MaximumCoinsAmount:
-				return -1;
+			case AchievementType.CoinsEarned:
+				return GetAchievementLevelFromValues(achievement, totalCoinsGain);
+			case AchievementType.CoinsAmount:
+				return GetAchievementLevelFromValues(achievement, maxCoins);
 			default: // Unknown type
 				return -1;
 		}

@@ -13,6 +13,8 @@ public static class Messaging {
 	private static Dictionary<string, Action<float>> messageFloatParameter = new();
 	private static Dictionary<string, Action<bool>> messageBoolParameter = new();
 
+	private static bool debugLogs = false;
+
 	#region Register for message
 	// Methods for registering a callback on a message of the given name
 	public static void RegisterForMessage(string messageName, Action messageCallback) { // No parameters 
@@ -74,22 +76,32 @@ public static class Messaging {
 	#region Send message
 	//  Methods for sending a message (of the given name, with the given parameter)
 	public static void SendMessage(string messageName) { // No parameters
+		if (debugLogs)
+			Debug.Log($"Message {messageName} sent.");
 		if (messageNoParameters.ContainsKey(messageName))
 			messageNoParameters[messageName]?.Invoke();
 	}
 	public static void SendMessage(string messageName, string messageParameter) { // String parameter
+		if (debugLogs)
+			Debug.Log($"Message {messageName} sent with parameter {messageParameter}.");
 		if (messageStringParameter.ContainsKey(messageName))
 			messageStringParameter[messageName]?.Invoke(messageParameter);
 	}
 	public static void SendMessage(string messageName, int messageParameter) { // Int parameter
+		if (debugLogs)
+			Debug.Log($"Message {messageName} sent with parameter {messageParameter}.");
 		if (messageIntParameter.ContainsKey(messageName))
 			messageIntParameter[messageName]?.Invoke(messageParameter);
 	}
 	public static void SendMessage(string messageName, float messageParameter) { // Float parameter
+		if (debugLogs)
+			Debug.Log($"Message {messageName} sent with parameter {messageParameter}.");
 		if (messageFloatParameter.ContainsKey(messageName))
 			messageFloatParameter[messageName]?.Invoke(messageParameter);
 	}
 	public static void SendMessage(string messageName, bool messageParameter) { // Bool parameter
+		if (debugLogs)
+			Debug.Log($"Message {messageName} sent with parameter {messageParameter}.");
 		if (messageBoolParameter.ContainsKey(messageName))
 			messageBoolParameter[messageName]?.Invoke(messageParameter);
 	}

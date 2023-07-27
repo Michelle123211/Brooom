@@ -16,8 +16,7 @@ MonoBehaviour:
   backgroundColor: {r: 0.16862746, g: 0.16862746, b: 0.16862746, a: 0.92941177}
   textColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
   font: {fileID: 0}
-  minMaxWidth: {x: 200, y: 500}
-  minMaxHeight: {x: -1, y: -1}
+  maxWidth: 500
   customTags:
   - tag: ~~
     changeColor: 1
@@ -33,14 +32,14 @@ MonoBehaviour:
     italics: 0
     underline: 0
     uppercase: 0
-  - tag: '&mana'
+  - tag: ==
     changeColor: 1
     textColor: {r: 0, g: 1, b: 0.99999976, a: 0}
     bold: 1
     italics: 0
     underline: 0
     uppercase: 0
-  - tag: '&cooldown'
+  - tag: '&&'
     changeColor: 1
     textColor: {r: 1, g: 1, b: 1, a: 0}
     bold: 1

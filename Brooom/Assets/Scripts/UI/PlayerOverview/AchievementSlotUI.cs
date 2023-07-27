@@ -10,8 +10,8 @@ public class AchievementSlotUI : MonoBehaviour {
 	[SerializeField] Sprite unknownAchievementIcon;
 	[Tooltip("Color which will be used for an uknown achievement.")]
 	[SerializeField] Color unknownAchievementColor;
-	[Tooltip("Localization key with description of unknown achievement (is displayed in a tooltip).")]
-	[SerializeField] string unknownAchievementLocKey;
+	[Tooltip("Sprite which will be used for a known achievement which has no icon assigned.")]
+	[SerializeField] Sprite missingAchievementIcon;
 
 	[Header("UI elements")]
 	[SerializeField] Transform slotTransform;
@@ -19,7 +19,7 @@ public class AchievementSlotUI : MonoBehaviour {
 	[SerializeField] Image backgroundImage;
 	[SerializeField] GameObject newAchievementLabel;
 
-	private SimpleTooltip tooltip;
+	private Tooltip tooltip;
 
 	Color[] levelColors = new Color[] { // TODO: Use colors from a color palette (the same colors as for the place in HUD)
         Utils.ColorFromRBG256(243, 217, 81), // gold
@@ -28,27 +28,41 @@ public class AchievementSlotUI : MonoBehaviour {
         Utils.ColorFromRBG256(126, 92, 80) };
 
 	public void Initialize(AchievementProgress achievement) {
-		if (tooltip == null) tooltip = GetComponent<SimpleTooltip>();
-		if (achievement.currentLevel > 0) {
-			// Set icon
-			iconImage.sprite = achievement.achievement.icon;
-			// Set background color according to the level
-			int colorIndex = Mathf.Clamp(achievement.maximumLevel - achievement.currentLevel, 0, levelColors.Length);
-			backgroundImage.color = levelColors[colorIndex];
-			// Set tooltip content
-			tooltip.text = "Achievement" + achievement.achievement.name + achievement.currentLevel.ToString();
-		} else {
-			// Achievement which is not known
-			iconImage.sprite = unknownAchievementIcon;
-			backgroundImage.color = unknownAchievementColor;
-			tooltip.text = unknownAchievementLocKey;
-		}
+		if (tooltip == null) tooltip = GetComponent<Tooltip>();
+		// Set icon, background color, tooltip content
+		if (achievement.currentLevel > 0) InitializeKnownAchievement(achievement);
+		else InitializeUnknownAchievement(achievement);
 		// Highlight new achievement
 		if (achievement.levelChanged) {
 			HighlightNewAchievement();
 		} else {
 			newAchievementLabel.SetActive(false);
 		}
+	}
+
+	private void InitializeKnownAchievement(AchievementProgress achievement) {
+		// Set icon
+		if (achievement.achievement.icon != null)
+			iconImage.sprite = achievement.achievement.icon;
+		else iconImage.sprite = missingAchievementIcon;
+		// Set background color according to the level
+		int colorIndex = Mathf.Clamp(achievement.maximumLevel - achievement.currentLevel, 0, levelColors.Length);
+		backgroundImage.color = levelColors[colorIndex];
+		// Set tooltip content
+		string achievementID = achievement.achievement.type.ToString();
+		tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString("Achievement" + achievementID) + "~~";
+		string description = LocalizationManager.Instance.GetLocalizedString("AchievementTooltip" + achievement.achievement.type.ToString());
+		if (achievement.achievement.valuesForLevels != null && achievement.achievement.valuesForLevels.Count > 0)
+			tooltip.texts.mainTop = string.Format(description, achievement.achievement.valuesForLevels[achievement.currentLevel - 1]);
+		else
+			tooltip.texts.mainTop = description;
+	}
+
+	private void InitializeUnknownAchievement(AchievementProgress achievement) {
+		iconImage.sprite = unknownAchievementIcon;
+		backgroundImage.color = unknownAchievementColor;
+		tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString("AchievementUnknown") + "~~";
+		tooltip.texts.mainTop = LocalizationManager.Instance.GetLocalizedString("AchievementTooltipUnknown");
 	}
 
 	private void HighlightNewAchievement() {

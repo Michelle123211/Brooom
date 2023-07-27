@@ -19,13 +19,14 @@ public class PlayerOverviewUI : MonoBehaviour
     }
 
     public void UpdateUI() {
-        // DEBUG
+        // DEBUG, remove once not necessary
         PlayerState.Instance.CurrentStats = new PlayerStats {
             endurance = 55, dexterity = 43, magic = 13, precision = 63, speed = 32
         };
         PlayerState.Instance.CurrentStats = new PlayerStats {
             endurance = 34, dexterity = 54, magic = 64, precision = 34, speed = 74
         };
+        PlayerState.Instance.ChangeCoinsAmount(5_000);
 
         leaderboard.UpdateUI();
         UpdateGraph();
