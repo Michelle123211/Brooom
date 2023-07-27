@@ -47,6 +47,10 @@ public class LeaderboardUI : MonoBehaviour {
 		float previousAverage = PlayerState.Instance.PreviousStats.GetWeightedAverage();
 		int previousPlace = leaderboard.GetPlayerPlace(previousAverage);
 
+		// Notify anyone interested that the current place changed
+		if (place != previousPlace)
+			Messaging.SendMessage("RankChanged", place);
+
 		return new PlayerLeaderboardData {
 			name = name,
 			average = average,

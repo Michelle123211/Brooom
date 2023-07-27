@@ -16,6 +16,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
         set { // Automatically store the previous stats when assigning new ones
             PreviousStats = currentStats;
             currentStats = value;
+            // Notify anyone interested that the current stats are different
+            Messaging.SendMessage("StatsChanged");
         }
     }
     #endregion
@@ -57,7 +59,9 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
         if (newAmount > 999_999) newAmount = 999_999; // cannot go over 999 999
         int oldAmount = coins;
         coins = newAmount;
-        onCoinsAmountChanged(oldAmount, newAmount);
+        onCoinsAmountChanged?.Invoke(oldAmount, newAmount);
+        // Notify anyone interested that the coins amount changed
+        Messaging.SendMessage("CoinsChanged", newAmount - oldAmount);
         return true;
     }
     #endregion

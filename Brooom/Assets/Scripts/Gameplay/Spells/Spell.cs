@@ -39,9 +39,10 @@ public class SpellInRace {
             PlayerState.Instance.raceState.ChangeManaAmount(-spell.manaCost);
             // TODO: Invoke effect of the spell
             // TODO: Tween the charge value so that the decrease is animated
-            Debug.Log("Spell cast.");
             charge = 0;
             UpdateAvailability();
+            // Notify anyone interested that a spell has been casted
+            Messaging.SendMessage("SpellCasted");
         }
     }
 
