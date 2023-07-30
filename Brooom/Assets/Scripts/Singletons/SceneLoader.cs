@@ -23,6 +23,9 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	}
 
 	private IEnumerator LoadSceneAsync(string sceneName, bool fade = true, bool showLoading = true) {
+		// Enable cursor
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
 		// It does not make sense to display loading without the fade
 		if (!fade && showLoading)
 			showLoading = false;
