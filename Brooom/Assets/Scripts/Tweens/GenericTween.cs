@@ -6,6 +6,8 @@ using UnityEngine.Events;
 public class GenericTween : MonoBehaviour {
     [Header("Parameters")]
     public float duration = 0.5f;
+    [Tooltip("The tween will start with the given delay (not applied to the reverse).")]
+    public float delay = 0f;
     [Tooltip("If the object should be destroyed when the tween is complete.")]
     public bool destroy;
     [Tooltip("If the object should be enabled at the start and disabled when the untween is complete.")]
@@ -49,19 +51,19 @@ public class GenericTween : MonoBehaviour {
     private float time = 0;
 
     public void DoTween() {
-        tweenIsRunning = true;
         reversed = false;
-        InitializeTween();
+        if (delay == 0) InitializeTween();
+        else Invoke(nameof(InitializeTween), delay);
     }
 
     public void UndoTween() {
-        tweenIsRunning = true;
         reversed = true;
         InitializeTween();
     }
 
     private void InitializeTween() {
         // Set initial values
+        tweenIsRunning = true;
         time = 0;
         float t = reversed ? 1 : 0;
         if (enable && !reversed)

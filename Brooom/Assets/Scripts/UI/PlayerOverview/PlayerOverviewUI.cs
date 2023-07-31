@@ -26,11 +26,20 @@ public class PlayerOverviewUI : MonoBehaviour
         PlayerState.Instance.CurrentStats = new PlayerStats {
             endurance = 34, dexterity = 54, magic = 64, precision = 34, speed = 74
         };
+        PlayerState.Instance.CurrentStats = new PlayerStats {
+            endurance = 100, dexterity = 100, magic = 100, precision = 100, speed = 100
+        };
         PlayerState.Instance.ChangeCoinsAmount(5_000);
 
-        leaderboard.UpdateUI();
+        int place = leaderboard.GetPlayerPlaceAndUpdateUI();
         UpdateGraph();
         achievements.UpdateUI();
+
+        // Show game ending (with a short delay) if the player is on the first place
+        if (place == 1 && !PlayerState.Instance.gameComplete) {
+            PlayerState.Instance.gameComplete = true;
+            Invoke(nameof(ShowGameEnding), 3);
+        }
     }
 
 	private void OnEnable() {
@@ -75,5 +84,9 @@ public class PlayerOverviewUI : MonoBehaviour
         }
         return descriptions;
     }
+
+    private void ShowGameEnding() {
+        SceneLoader.Instance.LoadScene(Scene.Ending);
+	}
 
 }

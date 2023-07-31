@@ -5,10 +5,14 @@ using System;
 
 
 // A class representing state throughout the whole gameplay
-public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
-{
-    #region Statistics
-    public PlayerStats PreviousStats { get; set; } = new PlayerStats();
+public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
+
+    #region Progress
+    public bool gameComplete = false;
+	#endregion
+
+	#region Statistics
+	public PlayerStats PreviousStats { get; set; } = new PlayerStats();
 
     private PlayerStats currentStats = new PlayerStats();
     public PlayerStats CurrentStats {

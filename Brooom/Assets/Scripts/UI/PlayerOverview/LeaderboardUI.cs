@@ -18,7 +18,7 @@ public class LeaderboardUI : MonoBehaviour {
 	[Tooltip("A Transform which is a parent of all the leaderboard rows.")]
 	[SerializeField] Transform leaderboardRowsParent;
 
-	public void UpdateUI() {
+	public int GetPlayerPlaceAndUpdateUI() {
 		// Remove all existing rows
 		UtilsMonoBehaviour.RemoveAllChildren(leaderboardRowsParent);
 
@@ -35,6 +35,9 @@ public class LeaderboardUI : MonoBehaviour {
 		}
 		// If the player is not the last one, add gap to the end
 		if (playerData.place < leaderboard.opponentsCount) CreateGap();
+
+		// Return the current place
+		return playerData.place;
 	}
 
 	private PlayerLeaderboardData ComputePlayerData() {
