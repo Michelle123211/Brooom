@@ -45,7 +45,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 	MeshCollider meshCollider;
 
 #if UNITY_EDITOR
-	[ContextMenu("Regenerate")]
+	[ContextMenu("Regenerate level")]
 	private void RegenerateLevel() { // Regenerates the level with previous parameters
 		if (modules == null) return;
 		level.ResetLevelWithDimensions(dimensions, pointOffset);
