@@ -136,7 +136,7 @@ public class RaceUI : MonoBehaviour {
         ResetRaceState();
         // Register necessary callbacks
         RegisterCallbacks();
-        // TODO: Hide all elements which should not visible during training
+        // TODO: Hide all elements which should not be visible during training
         // TODO: Uncomment when finished debugging
         timePenalizationText.gameObject.SetActive(false);
         //timeObject.SetActive(false);
