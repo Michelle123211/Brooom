@@ -26,7 +26,7 @@ public class SpellInRace {
     public Action onBecomesAvailable;
     public Action onBecomesUnavailable;
 
-    private bool isAvailable = false; // is fully charged and there is enough mana
+    public bool isAvailable = false; // is fully charged and there is enough mana
 
     public SpellInRace(Spell spell, float charge = 1) {
         this.spell = spell;

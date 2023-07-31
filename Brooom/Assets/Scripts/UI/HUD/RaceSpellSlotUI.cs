@@ -43,6 +43,9 @@ public class RaceSpellSlotUI : MonoBehaviour {
 		fillImage.fillAmount = 0;
 		transform.localScale = Vector3.one * unavailableScale;
 		unavailableOverlay.color = unavailableOverlay.color.WithA(unavailableOverlayAlpha);
+		// Change to available if necessary
+		if (!isEmpty && assignedSpell.isAvailable)
+			ChangeToAvailable();
 
 		isInitialized = true;
 	}
