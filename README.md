@@ -26,3 +26,12 @@
 - Region selection based on player's stats and broom upgrades
 - Restart of the track
 - Updated GDD (+ added section with several similar games)
+
+**Milestone 4** (July 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone4.zip)):
+
+- Basic (but functional) UI - HUD, player overview, shop, race results, game ending
+- Tooltips implementation
+- Achievements implementation
+- System for sending messages between objects (used by achievement, in the future by analytics)
+- Placement of environment elements (trees, bushes, plants, ...)
+- Updated GDD
