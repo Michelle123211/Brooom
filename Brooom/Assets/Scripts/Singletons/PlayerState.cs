@@ -76,11 +76,13 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton
     private Dictionary<string, Tuple<int, int>> broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>(); // current and maximum level for each upgrade
 
     // Returns the highest purchased level of the given broom upgrade
+    // Or -1 if the given broom upgrade is not known
     public int GetBroomUpgradeLevel(string upgradeName) {
         if (broomUpgradeLevels.ContainsKey(upgradeName))
             return broomUpgradeLevels[upgradeName].Item1;
-        else
-            return 0;
+        else {
+            return -1;
+        }
     }
 
     // Saves the given level as the highest purchased one for the given broom upgrade
