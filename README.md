@@ -33,5 +33,5 @@
 - Tooltips implementation
 - Achievements implementation
 - System for sending messages between objects (used by achievement, in the future by analytics)
-- Placement of environment elements (trees, bushes, plants, ...)
+- Placement of environment elements (trees, bushes, plants, cacti) - https://youtu.be/EDBznaUGtIY
 - Updated GDD
