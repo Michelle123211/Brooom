@@ -1,4 +1,4 @@
-# BroomRacing
+# Brooom: Race your way up!
 
 ## Milestones
 
