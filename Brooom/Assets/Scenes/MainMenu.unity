@@ -1600,6 +1600,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 8432019767846037502, guid: 4c56282625b760d4ba57a8ca676f6d90,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9101596594015878468, guid: 4c56282625b760d4ba57a8ca676f6d90,
         type: 3}
       propertyPath: m_RootOrder
@@ -5877,6 +5882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.1
+  delay: 0
   destroy: 0
   enable: 1
   loop: 0
