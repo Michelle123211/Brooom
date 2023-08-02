@@ -6,6 +6,12 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	[Tooltip("The level is divided into a grid of tiles and within each tile a spot for environment element is randomly selected.")]
 	public int gridTileSize = 5;
 
+	[Tooltip("Edges of the level (of this width in number of terrain points) will be kept empty.")]
+	public int levelBorderWidth = 5;
+
+	[Tooltip("Probability of placing elements on the borders of regions. May be used to make it sparse there.")]
+	public float regionBorderProbability = 0.5f;
+
 	[Tooltip("An object which will be parent of all the environment objects in the hierarchy.")]
 	public Transform environmentParent;
 
@@ -52,9 +58,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 				// According to the number, select element type
 				foreach (var element in region.elements) {
 					if (randomNumber <= element.probability) { // this is the selected element
-						// Select random variant of the element type
-						if (element.elementPrefabs != null && element.elementPrefabs.Count > 0)
-							CreateElementInstance(level, spotX, spotY, element.elementPrefabs[Random.Range(0, element.elementPrefabs.Count)]);
+						CreateElementInstance(level, spotX, spotY, element);
 						break;
 					} else {
 						randomNumber -= element.probability;
@@ -65,8 +69,24 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		}
 	}
 
-	private void CreateElementInstance(LevelRepresentation level, int spotX, int spotY, GameObject element) {
-		Instantiate(element, level.terrain[spotX, spotY].position, Quaternion.Euler(0, Random.Range(0, 360), 0), environmentParent);
+	private void CreateElementInstance(LevelRepresentation level, int spotX, int spotY, EnvironmentElement element) {
+		// Check for available variants
+		if (element.elementPrefabs == null || element.elementPrefabs.Count == 0) return;
+		// Prevent placing object at the edge of the level
+		if (spotX < levelBorderWidth || spotX >= level.pointCount.x - levelBorderWidth ||
+			spotY < levelBorderWidth || spotY >= level.pointCount.y - levelBorderWidth)
+			return;
+		// Select random variant of the element type
+		int variantIndex = Random.Range(0, element.elementPrefabs.Count);
+		// Compute parameters
+		Quaternion rotation = element.randomRotation ? Quaternion.Euler(0, Random.Range(0, 360), 0) : Quaternion.identity;
+		float scale = Random.Range(element.scaleRange.x, element.scaleRange.y);
+		// Placement on region borders is even less probable
+		if (level.terrain[spotX, spotY].isOnBorder && Random.value > regionBorderProbability)
+			return;
+		// Instantiate with parameters
+		GameObject instance = Instantiate(element.elementPrefabs[variantIndex], level.terrain[spotX, spotY].position, rotation, environmentParent);
+		instance.transform.localScale *= scale;
 	}
 }
 
@@ -83,4 +103,8 @@ public class EnvironmentElement {
 	public List<GameObject> elementPrefabs;
 	[Tooltip("Number between 0 and 1 determining probability of placing any variant of this element on a generated spot.")]
 	public float probability;
+	[Tooltip("Whether the objects should use random rotation around Y axis when instantiated.")]
+	public bool randomRotation = true;
+	[Tooltip("The instance will be scaled according to a random number from the interval (in all 3 axes).")]
+	public Vector2 scaleRange = Vector2.one;
 }
