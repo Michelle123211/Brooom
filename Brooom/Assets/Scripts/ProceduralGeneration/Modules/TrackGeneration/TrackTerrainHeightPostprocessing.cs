@@ -6,13 +6,15 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	[Tooltip("Each hoop's Y coordinate is adjusted according to the maximum terrain height in a close neighbourhood of the given radius.")]
 	public int hoopHeightAreaRadius = 5;
-	[Tooltip("Hoops and checkpoints should be placed in this minimum height above ground..")]
+	[Tooltip("Hoops and checkpoints should be placed in this minimum height above ground.")]
 	public float defaultMinimumOffsetAboveGround = 1;
 	[Tooltip("Some regions may prefer different minimum height above ground than the default one (e.g. larger for forest).")]
 	public List<TrackInRegionHeight> minHeightOffsetOverrides;
 
-
+	// Minimum height relatively to the ground for each region
 	private Dictionary<LevelRegionType, float> minimumOffsetAboveGround;
+	// Minimum absolute height for each region
+	private Dictionary<LevelRegionType, float> minimumAbsoluteHeight;
 
 	public override void Generate(LevelRepresentation level) {
 		PrepareRegionHeightDictionary(level);
@@ -50,13 +52,17 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 	private void PrepareRegionHeightDictionary(LevelRepresentation level) {
 		// Prepare Dictionary of minimum height for each region type
 		minimumOffsetAboveGround = new Dictionary<LevelRegionType, float>();
+		minimumAbsoluteHeight = new Dictionary<LevelRegionType, float>();
 		foreach (var region in level.terrainRegions) {
 			minimumOffsetAboveGround.Add(region.Key, defaultMinimumOffsetAboveGround);
 		}
 		// Override minimum height for specific regions
 		if (minHeightOffsetOverrides != null) {
 			foreach (var heightOverride in minHeightOffsetOverrides) {
-				minimumOffsetAboveGround[heightOverride.region] = heightOverride.minimumHeightAboveGround;
+				if (heightOverride.isRelativeToGround)
+					minimumOffsetAboveGround[heightOverride.region] = heightOverride.minimumHeight;
+				else
+					minimumAbsoluteHeight[heightOverride.region] = heightOverride.minimumHeight;
 			}
 		}
 	}
@@ -72,8 +78,8 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 			for (int j = -hoopHeightAreaRadius; j <= hoopHeightAreaRadius; j++) {
 				y = gridCoords.y + j;
 				if (y < 0 || y >= level.pointCount.y) continue; // out of bounds check
-				// Get terrain height + minimum offset above ground
-				height = GetMinimumHeightAboveGround(level.terrain[x, y]);
+				// Get minimum height (either terrain height + minimum offset above ground, or minimun absolute height)
+				height = GetMinimumHeightInPoint(level.terrain[x, y]);
 				if (height > maxHeight)
 					maxHeight = height;
 			}
@@ -82,14 +88,19 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 	}
 
 	// Returns the minimum height a track point can be at (considering the terrain heigth and the minimum offset above ground)
-	private float GetMinimumHeightAboveGround(TerrainPoint terrainPoint) {
-		// Get the terrain height but make it non-negative (water level is at 0)
-		float minHeight = Mathf.Max(terrainPoint.position.y, 0);
-		// Add minimum offset above ground
-		if (minimumOffsetAboveGround.TryGetValue(terrainPoint.region, out float minHeightOffset))
-			minHeight += minHeightOffset;
-		else
-			minHeight += defaultMinimumOffsetAboveGround;
+	private float GetMinimumHeightInPoint(TerrainPoint terrainPoint) {
+		// Get the terrain height
+		float minHeight = terrainPoint.position.y;
+		// Take into consideration any absolute minimum height first
+		if (minimumAbsoluteHeight.TryGetValue(terrainPoint.region, out float minAbsHeight))
+			minHeight = minAbsHeight;
+		// Otherwise add minimum offset above ground
+		else {
+			if (minimumOffsetAboveGround.TryGetValue(terrainPoint.region, out float minHeightOffset))
+				minHeight += minHeightOffset;
+			else
+				minHeight += defaultMinimumOffsetAboveGround;
+		}
 		return minHeight;
 	}
 }
@@ -97,5 +108,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 [System.Serializable]
 public class TrackInRegionHeight {
 	public LevelRegionType region = LevelRegionType.NONE;
-	public float minimumHeightAboveGround = 1;
+	public float minimumHeight = 1;
+	[Tooltip("The 'minimumHeight' mey be either relative to the ground (i.e. at least this high above ground) or absolute (i.e. at least in this global height).")]
+	public bool isRelativeToGround = true;
 }

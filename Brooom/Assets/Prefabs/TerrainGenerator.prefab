@@ -463,7 +463,11 @@ MonoBehaviour:
   defaultMinimumOffsetAboveGround: 2
   minHeightOffsetOverrides:
   - region: 102
-    minimumHeightAboveGround: 5
+    minimumHeight: 1
+    isRelativeToGround: 1
+  - region: 101
+    minimumHeight: 2
+    isRelativeToGround: 0
 --- !u!114 &6727678963712564295
 MonoBehaviour:
   m_ObjectHideFlags: 0
