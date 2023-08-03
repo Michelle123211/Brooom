@@ -123,7 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7380596193040418889}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Environment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -550,7 +550,7 @@ MonoBehaviour:
   defaultMinimumOffsetAboveGround: 2
   minHeightOffsetOverrides:
   - region: 102
-    minimumHeight: 1
+    minimumHeight: 4
     isRelativeToGround: 1
   - region: 101
     minimumHeight: 2
