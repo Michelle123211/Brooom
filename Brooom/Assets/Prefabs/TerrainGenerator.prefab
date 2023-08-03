@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 1713751934342667410}
   - component: {fileID: 5110766991422399114}
   - component: {fileID: 8743806189246212178}
-  - component: {fileID: 2890939436245212130}
   m_Layer: 6
   m_Name: Water
   m_TagString: Untagged
@@ -115,20 +114,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2890939436245212130
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4567424725544566138}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &5364786589768350219
 GameObject:
   m_ObjectHideFlags: 0
