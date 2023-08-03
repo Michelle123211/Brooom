@@ -86,9 +86,10 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		}
 		Quaternion rotation = element.randomRotation ? Quaternion.Euler(0, Random.Range(0, 360), 0) : Quaternion.identity;
 		float scale = Random.Range(element.scaleRange.x, element.scaleRange.y);
-		// Placement on region borders is even less probable
-		if (level.terrain[spotX, spotY].isOnBorder && Random.value > regionBorderProbability)
-			return;
+		// Placement on region borders is even less probable (or even impossible for some elements)
+		if (level.terrain[spotX, spotY].isOnBorder) {
+			if (!element.canBeOnRegionBorder || Random.value > regionBorderProbability) return;
+		}
 		// Instantiate with parameters
 		GameObject instance = Instantiate(element.elementPrefabs[variantIndex], position, rotation, environmentParent);
 		instance.transform.localScale *= scale;
@@ -112,6 +113,8 @@ public class EnvironmentElement {
 	public bool randomRotation = true;
 	[Tooltip("The instance will be scaled according to a random number from the interval (in all 3 axes).")]
 	public Vector2 scaleRange = Vector2.one;
+	[Tooltip("Some objects may not be fitting very well on region borders.")]
+	public bool canBeOnRegionBorder = true;
 	[Tooltip("If false, the objects will be placed on the ground. If true, objects will be placed at random height from the range given below.")]
 	public bool specificHeightRange = false;
 	[Tooltip("Objects will be placed to a random height from this interval if the 'specificHeightRange' is set to true.")]
