@@ -743,7 +743,33 @@ MonoBehaviour:
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
   - region: 112
-    elements: []
+    elements:
+    - elementPrefabs:
+      - {fileID: 863225567617393651, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -7951949854746000894, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 6035983006537194263, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 9149768802887447310, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -7409457383725905548, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -7486898416770077898, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 5748380128701146646, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 7502448014957085781, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5668338914603401396, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 7558504793997859739, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.2
+      randomRotation: 1
+      scaleRange: {x: 0.8, y: 1.2}
+      canBeOnRegionBorder: 1
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
+    - elementPrefabs:
+      - {fileID: 8423178519194253117, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 918409824207420171, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.05
+      randomRotation: 1
+      scaleRange: {x: 2, y: 5}
+      canBeOnRegionBorder: 1
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
   - region: 113
     elements: []
   - region: 121
