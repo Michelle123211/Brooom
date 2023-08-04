@@ -771,7 +771,17 @@ MonoBehaviour:
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
   - region: 113
-    elements: []
+    elements:
+    - elementPrefabs:
+      - {fileID: -468577308539393690, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -3585289010535396646, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -9040548031557970894, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.2
+      randomRotation: 1
+      scaleRange: {x: 0.8, y: 1.5}
+      canBeOnRegionBorder: 1
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
   - region: 121
     elements:
     - elementPrefabs:

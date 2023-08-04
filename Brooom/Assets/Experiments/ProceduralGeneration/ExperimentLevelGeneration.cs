@@ -12,6 +12,7 @@ public class ExperimentLevelGeneration : MonoBehaviour {
         regionsAvailability[LevelRegionType.AridDesert] = true;
         regionsAvailability[LevelRegionType.SnowyMountain] = true;
         regionsAvailability[LevelRegionType.BloomingMeadow] = true;
+        regionsAvailability[LevelRegionType.StormyArea] = true;
         levelGenerator.regionsAvailability = regionsAvailability;
         // Generate level
         levelGenerator.GenerateLevel();
