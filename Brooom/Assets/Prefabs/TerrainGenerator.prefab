@@ -807,6 +807,20 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+    - elementPrefabs:
+      - {fileID: -3278178293119773410, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 8155765225251790599, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4386539498256038399, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5913035438266574676, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 7766123605829996996, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -6655747385252933842, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -6855274301575753210, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.05
+      randomRotation: 1
+      scaleRange: {x: 0.8, y: 1.2}
+      canBeOnRegionBorder: 0
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
   - region: 201
     elements: []
   - region: 211
