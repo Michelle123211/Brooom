@@ -779,9 +779,19 @@ MonoBehaviour:
       - {fileID: -9103713527202669635, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 2309654498312428335, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -184015175637843356, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
-      probability: 0.2
+      probability: 0.15
       randomRotation: 1
-      scaleRange: {x: 0.8, y: 1.5}
+      scaleRange: {x: 1, y: 2}
+      canBeOnRegionBorder: 1
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
+    - elementPrefabs:
+      - {fileID: -4887470238658300694, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -4370557645962880325, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 1827044944143628341, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.08
+      randomRotation: 1
+      scaleRange: {x: 1, y: 2}
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
