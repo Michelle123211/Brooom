@@ -663,10 +663,29 @@ MonoBehaviour:
   levelBorderWidth: 4
   regionBorderProbability: 0.55
   environmentParent: {fileID: 7380596193040418889}
-  regionElements:
-  - region: 101
+  defaultElements:
+    name: Default elements
+    region: 0
     elements:
-    - elementPrefabs:
+    - name: Cloud
+      elementPrefabs:
+      - {fileID: -6251415222658013802, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 2706975420639015632, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -4506693905801364069, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -2816851100432462536, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 2988072584756159707, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.02
+      randomRotation: 1
+      scaleRange: {x: 1, y: 4}
+      canBeOnRegionBorder: 1
+      specificHeightRange: 1
+      heightRange: {x: 35, y: 40}
+  regionElements:
+  - name: Above Water
+    region: 101
+    elements:
+    - name: Waterlily
+      elementPrefabs:
       - {fileID: -7224267084961352429, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 3097970756644350183, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 4681285641311267637, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -678,9 +697,11 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 1
       heightRange: {x: 0, y: 0}
-  - region: 102
+  - name: Enchanted Forest
+    region: 102
     elements:
-    - elementPrefabs:
+    - name: Tree
+      elementPrefabs:
       - {fileID: -3560333431449778757, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -3102673550567396458, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 4686717039866699053, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -690,7 +711,8 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-    - elementPrefabs:
+    - name: Bush
+      elementPrefabs:
       - {fileID: 6697753352598902797, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -3197194462005787935, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -7349306621376506623, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -702,7 +724,8 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-    - elementPrefabs:
+    - name: Plant
+      elementPrefabs:
       - {fileID: 8423178519194253117, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 918409824207420171, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       probability: 0.05
@@ -711,7 +734,8 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-    - elementPrefabs:
+    - name: Mushroom
+      elementPrefabs:
       - {fileID: -8469419384492004704, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 708612964619132342, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -8624612415288862081, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -721,9 +745,11 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-  - region: 111
+  - name: Arid Desert
+    region: 111
     elements:
-    - elementPrefabs:
+    - name: Cactus
+      elementPrefabs:
       - {fileID: -539432580269845247, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -8476136012345255292, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -1968737534264032914, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -733,7 +759,8 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-    - elementPrefabs:
+    - name: Pyramid
+      elementPrefabs:
       - {fileID: 1359867898279527817, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -8254028157915912680, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       probability: 0.003
@@ -742,9 +769,11 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-  - region: 112
+  - name: Blooming Meadow
+    region: 112
     elements:
-    - elementPrefabs:
+    - name: Flower
+      elementPrefabs:
       - {fileID: 863225567617393651, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -7951949854746000894, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 6035983006537194263, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -761,7 +790,8 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-    - elementPrefabs:
+    - name: Plant
+      elementPrefabs:
       - {fileID: 8423178519194253117, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 918409824207420171, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       probability: 0.05
@@ -770,9 +800,11 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-  - region: 113
+  - name: Stormy Area
+    region: 113
     elements:
-    - elementPrefabs:
+    - name: Tree
+      elementPrefabs:
       - {fileID: -468577308539393690, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -3585289010535396646, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -9040548031557970894, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -785,7 +817,8 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-    - elementPrefabs:
+    - name: Bush
+      elementPrefabs:
       - {fileID: -4887470238658300694, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -4370557645962880325, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 1827044944143628341, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -795,9 +828,11 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-  - region: 121
+  - name: Snowy Mountain
+    region: 121
     elements:
-    - elementPrefabs:
+    - name: Tree
+      elementPrefabs:
       - {fileID: 8421963456721975404, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -605803396687540364, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: -4819647184524822558, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -807,7 +842,8 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-    - elementPrefabs:
+    - name: Snowman
+      elementPrefabs:
       - {fileID: -3278178293119773410, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 8155765225251790599, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
       - {fileID: 4386539498256038399, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -821,7 +857,9 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
-  - region: 201
+  - name: Tunnel
+    region: 201
     elements: []
-  - region: 211
+  - name: Above Clouds
+    region: 211
     elements: []

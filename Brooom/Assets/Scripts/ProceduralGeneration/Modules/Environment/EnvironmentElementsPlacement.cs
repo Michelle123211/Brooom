@@ -15,6 +15,9 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	[Tooltip("An object which will be parent of all the environment objects in the hierarchy.")]
 	public Transform environmentParent;
 
+	[Tooltip("List of default environment elements which should be in every region (e.g. clouds).")]
+	public RegionEnvironment defaultElements;
+
 	[Tooltip("List of environment elements specific for each region.")]
 	public List<RegionEnvironment> regionElements;
 
@@ -50,23 +53,29 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		LevelRegionType regionType = level.terrain[spotX, spotY].region;
 		foreach (var region in regionElements) {
 			if (region.region == regionType) {
-				// Check that there are some options of elements
-				if (region.elements == null || region.elements.Count == 0)
-					break; // the spot should be empty
 				// Generate random number between 0 and 1
 				float randomNumber = Random.value;
 				// According to the number, select element type
-				foreach (var element in region.elements) {
-					if (randomNumber <= element.probability) { // this is the selected element
-						CreateElementInstance(level, spotX, spotY, element);
-						break;
-					} else {
-						randomNumber -= element.probability;
-					}
-				}
+				EnvironmentElement element = SelectElementType(region, ref randomNumber); // ... from the elements specific for the region
+				if (element == null) element = SelectElementType(defaultElements, ref randomNumber); // ... from the default elements
+				if (element != null) // the spot should not be empty
+					CreateElementInstance(level, spotX, spotY, element);
 				break;
 			}
 		}
+	}
+
+	private EnvironmentElement SelectElementType(RegionEnvironment environment, ref float randomNumber) {
+		if (environment.elements != null && environment.elements.Count > 0) { // There are some options
+			foreach (var element in environment.elements) {
+				if (randomNumber <= element.probability) { // this is the selected element
+					return element;
+				} else {
+					randomNumber -= element.probability;
+				}
+			}
+		}
+		return null;
 	}
 
 	private void CreateElementInstance(LevelRepresentation level, int spotX, int spotY, EnvironmentElement element) {
@@ -98,6 +107,8 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 
 [System.Serializable]
 public class RegionEnvironment {
+	[Tooltip("Used just to display a reasonable name instead of default 'Element X'.")]
+	public string name;
 	public LevelRegionType region;
 	[Tooltip("Elements with their variations and probabilities of them being placed on a generated spot. If probabilities don't add up to 1, the rest is probability of empty spot.")]
 	public List<EnvironmentElement> elements;
@@ -105,6 +116,8 @@ public class RegionEnvironment {
 
 [System.Serializable]
 public class EnvironmentElement {
+	[Tooltip("Used just to display a reasonable name instead of default 'Element X'.")]
+	public string name;
 	[Tooltip("From these elements one will be chosen randomly whenever an element is placed.")]
 	public List<GameObject> elementPrefabs;
 	[Tooltip("Number between 0 and 1 determining probability of placing any variant of this element on a generated spot.")]
