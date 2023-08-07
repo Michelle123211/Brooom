@@ -697,6 +697,19 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 1
       heightRange: {x: 0, y: 0}
+    - name: Rock
+      elementPrefabs:
+      - {fileID: -6818521533052780152, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4975330666680914685, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5125260784612964543, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4652350258223604000, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5606588803139367070, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.03
+      randomRotation: 1
+      scaleRange: {x: 0.8, y: 1.2}
+      canBeOnRegionBorder: 1
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
   - name: Enchanted Forest
     region: 102
     elements:
@@ -742,6 +755,19 @@ MonoBehaviour:
       probability: 0.05
       randomRotation: 1
       scaleRange: {x: 0.9, y: 1.2}
+      canBeOnRegionBorder: 1
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
+    - name: Rock
+      elementPrefabs:
+      - {fileID: -6818521533052780152, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4975330666680914685, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5125260784612964543, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4652350258223604000, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5606588803139367070, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.015
+      randomRotation: 1
+      scaleRange: {x: 0.8, y: 1.2}
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
@@ -828,6 +854,19 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+    - name: Rock
+      elementPrefabs:
+      - {fileID: -6818521533052780152, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4975330666680914685, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5125260784612964543, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4652350258223604000, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5606588803139367070, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.03
+      randomRotation: 1
+      scaleRange: {x: 0.8, y: 1.2}
+      canBeOnRegionBorder: 1
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
   - name: Snowy Mountain
     region: 121
     elements:
@@ -855,6 +894,19 @@ MonoBehaviour:
       randomRotation: 1
       scaleRange: {x: 0.8, y: 1.2}
       canBeOnRegionBorder: 0
+      specificHeightRange: 0
+      heightRange: {x: 0, y: 0}
+    - name: Rock
+      elementPrefabs:
+      - {fileID: -6818521533052780152, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4975330666680914685, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5125260784612964543, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: 4652350258223604000, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      - {fileID: -5606588803139367070, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
+      probability: 0.02
+      randomRotation: 1
+      scaleRange: {x: 0.8, y: 1.2}
+      canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
   - name: Tunnel
