@@ -533,7 +533,7 @@ MonoBehaviour:
   - trackRegion: 211
     probability: 0.4
     lengthRange: {x: 4, y: 7}
-    heightRange: {x: 25, y: 50}
+    heightRange: {x: 30, y: 50}
 --- !u!114 &6151264501117884229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,14 +547,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoopHeightAreaRadius: 5
-  defaultMinimumOffsetAboveGround: 2
+  defaultMinimumOffsetAboveGround: 4
   minHeightOffsetOverrides:
-  - region: 102
-    minimumHeight: 4
-    isRelativeToGround: 1
   - region: 101
     minimumHeight: 2
     isRelativeToGround: 0
+  - region: 111
+    minimumHeight: 2
+    isRelativeToGround: 1
 --- !u!114 &6727678963712564295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,7 +679,7 @@ MonoBehaviour:
       scaleRange: {x: 1, y: 4}
       canBeOnRegionBorder: 1
       specificHeightRange: 1
-      heightRange: {x: 35, y: 40}
+      heightRange: {x: 30, y: 35}
   regionElements:
   - name: Above Water
     region: 101
