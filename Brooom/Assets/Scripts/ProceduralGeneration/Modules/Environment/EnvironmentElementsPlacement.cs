@@ -103,10 +103,11 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		GameObject instance = Instantiate(element.elementPrefabs[variantIndex], position, rotation, environmentParent);
 		instance.transform.localScale *= scale;
 		// Set shadows on/off
+		MeshRenderer meshRenderer = instance.GetComponentInChildren<MeshRenderer>();
 		if (!element.castShadows) {
-			instance.GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+			meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 		} else {
-			instance.GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
+			meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
 		}
 	}
 }
