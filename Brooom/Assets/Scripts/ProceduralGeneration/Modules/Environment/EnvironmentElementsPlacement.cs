@@ -102,6 +102,12 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		// Instantiate with parameters
 		GameObject instance = Instantiate(element.elementPrefabs[variantIndex], position, rotation, environmentParent);
 		instance.transform.localScale *= scale;
+		// Set shadows on/off
+		if (!element.castShadows) {
+			instance.GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+		} else {
+			instance.GetComponentInChildren<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
+		}
 	}
 }
 
@@ -132,4 +138,6 @@ public class EnvironmentElement {
 	public bool specificHeightRange = false;
 	[Tooltip("Objects will be placed to a random height from this interval if the 'specificHeightRange' is set to true.")]
 	public Vector2 heightRange = Vector2.zero;
+	[Tooltip("Whether these objects should cast shadows.")]
+	public bool castShadows = true;
 }

@@ -247,7 +247,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9042582758647628373}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -680,6 +680,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 1
       heightRange: {x: 30, y: 35}
+      castShadows: 0
   regionElements:
   - name: Above Water
     region: 101
@@ -697,6 +698,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 1
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Rock
       elementPrefabs:
       - {fileID: -6818521533052780152, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -710,6 +712,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
   - name: Enchanted Forest
     region: 102
     elements:
@@ -724,6 +727,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Bush
       elementPrefabs:
       - {fileID: 6697753352598902797, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -737,6 +741,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Plant
       elementPrefabs:
       - {fileID: 8423178519194253117, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -747,6 +752,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Mushroom
       elementPrefabs:
       - {fileID: -8469419384492004704, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -758,6 +764,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Rock
       elementPrefabs:
       - {fileID: -6818521533052780152, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -771,6 +778,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
   - name: Arid Desert
     region: 111
     elements:
@@ -785,6 +793,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Pyramid
       elementPrefabs:
       - {fileID: 1359867898279527817, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -795,6 +804,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
   - name: Blooming Meadow
     region: 112
     elements:
@@ -816,6 +826,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Plant
       elementPrefabs:
       - {fileID: 8423178519194253117, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -826,6 +837,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
   - name: Stormy Area
     region: 113
     elements:
@@ -843,6 +855,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Bush
       elementPrefabs:
       - {fileID: -4887470238658300694, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -854,6 +867,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Rock
       elementPrefabs:
       - {fileID: -6818521533052780152, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -867,6 +881,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
   - name: Snowy Mountain
     region: 121
     elements:
@@ -881,6 +896,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Snowman
       elementPrefabs:
       - {fileID: -3278178293119773410, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -896,6 +912,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 0
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
     - name: Rock
       elementPrefabs:
       - {fileID: -6818521533052780152, guid: 001cad0b2ecf231419233f9863c521e8, type: 3}
@@ -909,6 +926,7 @@ MonoBehaviour:
       canBeOnRegionBorder: 1
       specificHeightRange: 0
       heightRange: {x: 0, y: 0}
+      castShadows: 1
   - name: Tunnel
     region: 201
     elements: []
