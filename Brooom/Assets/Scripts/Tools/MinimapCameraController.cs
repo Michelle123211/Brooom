@@ -8,7 +8,7 @@ public class MinimapCameraController : MonoBehaviour
     [SerializeField] Transform objectToFollow;
 
 	[Tooltip("Camera will be floating in this height above the followed object.")]
-	[SerializeField] float heightAboveObject = 10;
+	[SerializeField] float heightAboveObject = 100;
 
 	private void LateUpdate() {
 		Vector3 position = objectToFollow.position;

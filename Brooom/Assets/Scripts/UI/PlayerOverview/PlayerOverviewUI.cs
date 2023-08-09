@@ -24,7 +24,7 @@ public class PlayerOverviewUI : MonoBehaviour
             endurance = 55, dexterity = 43, magic = 13, precision = 63, speed = 32
         };
         PlayerState.Instance.CurrentStats = new PlayerStats {
-            endurance = 34, dexterity = 54, magic = 64, precision = 34, speed = 74
+            endurance = 76, dexterity = 54, magic = 64, precision = 34, speed = 74
         };
         //PlayerState.Instance.CurrentStats = new PlayerStats {
         //    endurance = 100, dexterity = 100, magic = 100, precision = 100, speed = 100
