@@ -20,7 +20,6 @@ public class TrackBorder : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.CompareTag("Player") && showImpact) {
-			Debug.Log("Collision");
 			showImpact = false;
 			isHighlighting = true;
 			meshRenderer?.sharedMaterial.SetVector("_ImpactPoint", collision.contacts[0].point);

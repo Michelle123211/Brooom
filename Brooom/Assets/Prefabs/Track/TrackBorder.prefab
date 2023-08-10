@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 5863173918357192546}
   - component: {fileID: 5863173918357192549}
   - component: {fileID: 3531372572537836873}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,6 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 5863173918357192546}
+  impactCooldown: 5
+  impactHighlightDuration: 1
 --- !u!1 &5863173918652967378
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5863173918652967379}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TrackBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
