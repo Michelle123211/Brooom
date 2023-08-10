@@ -23,7 +23,7 @@ public class TrackBorder : MonoBehaviour
 			Debug.Log("Collision");
 			showImpact = false;
 			isHighlighting = true;
-			meshRenderer?.material.SetVector("_ImpactPoint", collision.contacts[0].point);
+			meshRenderer?.sharedMaterial.SetVector("_ImpactPoint", collision.contacts[0].point);
 			Invoke(nameof(EnableShowingImpact), impactCooldown);
 		}
 	}
@@ -37,10 +37,10 @@ public class TrackBorder : MonoBehaviour
 			t += (Time.deltaTime / impactHighlightDuration);
 			if (t > 1) {
 				isHighlighting = false;
-				meshRenderer?.material.SetFloat("_ImpactTime", 1);
+				meshRenderer?.sharedMaterial.SetFloat("_ImpactTime", 1);
 				t = 0;
 			} else {
-				meshRenderer?.material.SetFloat("_ImpactTime", t);
+				meshRenderer?.sharedMaterial.SetFloat("_ImpactTime", t);
 			}
 		}
 	}
