@@ -24,6 +24,7 @@ public class TrackBorder : MonoBehaviour
 			showImpact = false;
 			isHighlighting = true;
 			meshRenderer?.sharedMaterial.SetVector("_ImpactPoint", collision.contacts[0].point);
+			meshRenderer?.sharedMaterial.SetFloat("_ImpactTime", 0);
 			Invoke(nameof(EnableShowingImpact), impactCooldown);
 		}
 	}
