@@ -5,8 +5,15 @@ using UnityEngine.UI;
 
 public class MainMenuUI : MonoBehaviour
 {
-    public LanguageButtonUI languageTogglePrefab;
-    public Transform languagesParent;
+    [SerializeField] LanguageButtonUI languageTogglePrefab;
+    [SerializeField] Transform languagesParent;
+
+    [Tooltip("Text of the button to start playing the game which is hidden if previously saved state exists.")]
+    [SerializeField] GameObject startButtonText;
+    [Tooltip("Text of the button to continue playing from previously saved state which is hidden when no saved state exists.")]
+    [SerializeField] GameObject continueButtonText;
+    [Tooltip("Button to start the game again from the beginning (and not prebiously saved state)  which is hidden when no saved state exists.")]
+    [SerializeField] GameObject startAgainButton;
 
     private bool saveExists = false;
 
@@ -54,12 +61,16 @@ public class MainMenuUI : MonoBehaviour
         }
         // Activate the button corresponding to the current language
         defaultLangToggle.isOn = true;
-        // TODO: Change the text on the first main button to either START or CONTINUE (according to the saved state)
+        // Show correctly buttons to Start, Continue and/or Start again
         if (PlayerPrefs.HasKey("GameStarted") && PlayerPrefs.GetString("GameStarted") == "true") { // there is previously saved game
             saveExists = true;
+            startButtonText.SetActive(false);
+            continueButtonText.SetActive(true);
+            startAgainButton.SetActive(true);
         } else { // there is no previously saved game
-        
+            startButtonText.SetActive(true);
+            continueButtonText.SetActive(false);
+            startAgainButton.SetActive(false);
         }
-        // Don't forget to use localization correctly
 	}
 }
