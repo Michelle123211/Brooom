@@ -74,7 +74,6 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     [HideInInspector] public Spell[] equippedSpells; // spells assigned to slots
     #endregion
 
-
     #region Broom Upgrades
     public float maxAltitude = 15f; // Maximum Y coordinate the player can fly up to
     private Dictionary<string, Tuple<int, int>> broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>(); // current and maximum level for each upgrade
@@ -149,10 +148,25 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     #region Singleton
     public void InitializeSingleton() {
-        // TODO: Initialize everything to default values
-
+        // Initialize everything to default values
+        // ...progress
+        gameComplete = false;
+        // ...statistics
+        PreviousStats = new PlayerStats();
+        currentStats = new PlayerStats();
+        // ...character customization
+        characterCustomization = null;
+        // ...coins
+        coins = 0;
+        // ...spells
         equippedSpells = new Spell[4];
+        // TODO: Initialize purchased spells
+        // ...broom upgrades
+        maxAltitude = 15f;
+        broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>();
+        // ...opponents
         knownOpponents = new Dictionary<int, string>();
+        // ...race state
         raceState = new RaceState();
 
         // TODO: DEBUG only, remove
