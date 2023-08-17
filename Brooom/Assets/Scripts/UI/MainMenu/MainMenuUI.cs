@@ -8,15 +8,17 @@ public class MainMenuUI : MonoBehaviour
     public LanguageButtonUI languageTogglePrefab;
     public Transform languagesParent;
 
+    private bool saveExists = false;
+
     public void StartOrContinueGame() { 
-        bool newGame = true;
-        // TODO: If there is any previously saved state, load it here and set newGame to false
-        if (newGame) {
-            // Load the CharacterCreation scene
-            SceneLoader.Instance.LoadScene(Scene.CharacterCreation);
-        } else {
+        // If there is any previously saved state, load it here
+        if (saveExists) {
+            PlayerState.Instance.LoadSavedState();
             // Load the PlayerOverview scene
             SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
+        } else {
+            // Load the CharacterCreation scene
+            SceneLoader.Instance.LoadScene(Scene.CharacterCreation);
         }
     }
 
@@ -28,7 +30,8 @@ public class MainMenuUI : MonoBehaviour
     }
 
     public void ExitGame() {
-        // TODO: Save the game state
+        // Save the game state
+        PlayerState.Instance.SaveCurrentState();
         // Load the Exit scene (so that all the GameObjects are unloaded except for these in DontDestroyOnLoad)
         // This way the singletons will be destroyed last
         SceneLoader.Instance.LoadScene(Scene.Exit, true, false);
@@ -52,6 +55,11 @@ public class MainMenuUI : MonoBehaviour
         // Activate the button corresponding to the current language
         defaultLangToggle.isOn = true;
         // TODO: Change the text on the first main button to either START or CONTINUE (according to the saved state)
+        if (PlayerPrefs.HasKey("GameStarted") && PlayerPrefs.GetString("GameStarted") == "true") { // there is previously saved game
+            saveExists = true;
+        } else { // there is no previously saved game
+        
+        }
         // Don't forget to use localization correctly
 	}
 }

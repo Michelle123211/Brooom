@@ -16,16 +16,9 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 
 	private List<AchievementProgress> achievementsProgress;
 
-	public void LoadAllAchievements() {
+	public void LoadAchievementsProgress() {
 		// Get all achievements' ScriptableObjects
-		Achievement[] achievements = Resources.LoadAll<Achievement>("Achievements/");
-		achievementsProgress = new List<AchievementProgress>();
-		foreach (var achievement in achievements) {
-			if (achievement.type == AchievementType.None) continue; // invalid achievement
-			AchievementProgress progress = new AchievementProgress(achievement);
-			if (progress.maximumLevel > 0) // it is valid
-				achievementsProgress.Add(progress);
-		}
+		ResetAchievementsProgress();
 		// TODO: Load the achievements (all tracked data) from a file
 		UpdateAchievementsProgress();
 	}
@@ -37,12 +30,28 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 	}
 
 	// TODO: Save the achievements (all tracked data) persistently
-	private void SaveAchievementsProgress() { 
-		
+	public void SaveAchievementsProgress() {
+		// If there is nothing to save, load it first
+	}
+
+	// Reset everything to default values
+	public void ResetAchievementsProgress() {
+		// Get all achievements' ScriptableObjects (and don't update their progress)
+		Achievement[] achievements = Resources.LoadAll<Achievement>("Achievements/");
+		achievementsProgress = new List<AchievementProgress>();
+		foreach (var achievement in achievements) {
+			if (achievement.type == AchievementType.None) continue; // invalid achievement
+			AchievementProgress progress = new AchievementProgress(achievement);
+			if (progress.maximumLevel > 0) // it is valid
+				achievementsProgress.Add(progress);
+		}
+		// Reset all data
+		foreach (var data in achievementData)
+			data.ResetData();
 	}
 
 	private void UpdateAchievementsProgress() {
-		if (achievementsProgress == null) LoadAllAchievements();
+		if (achievementsProgress == null) LoadAchievementsProgress();
 		for (int i = achievementsProgress.Count - 1; i >= 0; i--) {
 			// Get index of the handling class
 			int dataIndex = (int)achievementsProgress[i].achievement.type / 100;
@@ -81,7 +90,7 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 		foreach (var data in achievementData)
 			data.RegisterCallbacks();
 		// Load all achievements
-		LoadAllAchievements();
+		LoadAchievementsProgress();
 	}
 }
 
@@ -135,6 +144,9 @@ public class AchievementProgress {
 }
 
 abstract class AchievementData {
+	// Resets all data to its initial values
+	public abstract void ResetData();
+
 	// Registers callbacks to collect all necessary data
 	public abstract void RegisterCallbacks();
 	// Unregisters all registered callbacks
@@ -160,6 +172,11 @@ class ScoreData : AchievementData {
 	public int highestRank = int.MaxValue;
 	// Maximum statistics value
 	public int maxStatValue = 0;
+
+	public override void ResetData() {
+		highestRank = int.MaxValue;
+		maxStatValue = 0;
+	}
 
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("RankChanged", OnRankChanged);
@@ -198,6 +215,11 @@ class SpellsData : AchievementData {
 	public int spellsCasted = 0;
 	// Whether all spells have been purchased
 	public bool allSpellsPurchased = false;
+
+	public override void ResetData() {
+		spellsCasted = 0;
+		allSpellsPurchased = false;
+}
 
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("SpellCasted", OnSpellCasted);
@@ -253,6 +275,20 @@ class RaceData : AchievementData {
 	public int trackTrials = 0;
 
 	private int currentNumberOfRacers = 0;
+
+	public override void ResetData() {
+		racesFinished = 0;
+		firstPlace = 0;
+		lastPlace = 0;
+		racesGivenUp = 0;
+		currentLoseStreak = 0;
+		longestLoseStreak = 0;
+		currentWinStreak = 0;
+		longestWinStreak = 0;
+		trackTrials = 0;
+
+		currentNumberOfRacers = 0;
+}
 
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("RaceStarted", OnRaceStarted);
@@ -335,6 +371,15 @@ class LevelData : AchievementData {
 	// TODO: How to detect visiting a region
 	public bool allRegionsVisited = false;
 
+	public override void ResetData() {
+	obstacleCollisions = 0;
+	bonusesPickedUp = 0;
+	hoopsPassed = 0;
+	hoopsMissed = 0;
+	allRegionsAvailable = false;
+	allRegionsVisited = false;
+}
+
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("ObstacleCollision", OnCollisionWithObstacle);
 		Messaging.RegisterForMessage("BonusPickedUp", OnBonusPickedUp);
@@ -401,6 +446,11 @@ class CoinsData : AchievementData {
 	// Maximum number of coins at a single time
 	public int maxCoins = 0;
 
+	public override void ResetData() {
+		totalCoinsGain = 0;
+		maxCoins = 0;
+	}
+
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("CoinsChanged", OnCoinsAmountChanged);
 	}
@@ -431,6 +481,10 @@ class CoinsData : AchievementData {
 class BroomData : AchievementData {
 	// Whether all broom upgrades have been purchased
 	public bool allUpgradesPurchased = false;
+
+	public override void ResetData() {
+		allUpgradesPurchased = false;
+	}
 
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("AllBroomUpgrades", OnAllBroomUpgradesPurchased);

@@ -41,6 +41,8 @@ public class CharacterCreatorUI : MonoBehaviour
         CharacterCustomizationData currentCustomization = character.GetCustomizationData();
         currentCustomization.playerName = currentName;
         PlayerState.Instance.CharacterCustomization = currentCustomization;
+        // Set flag that the game was started
+        PlayerPrefs.SetString("GameStarted", "true");
         // Change scene
         SceneLoader.Instance.LoadScene(Scene.Tutorial);
     }

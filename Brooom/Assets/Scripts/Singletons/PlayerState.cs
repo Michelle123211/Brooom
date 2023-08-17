@@ -114,16 +114,43 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public int maxManaAmount = 100;
     [HideInInspector]
     public RaceState raceState;
-	#endregion
+    #endregion
 
 
-	public void ResetState() { 
-        // TODO: Reset the game state
+    public void SaveCurrentState() {
+        // Use SaveSystem to save all the player's state
+        // ...character customization is saved automatically in its setter
+        SaveSystem.SavePlayerState();
+        SaveSystem.SaveBroomUpgrades();
+        SaveSystem.SaveSpells();
+        // Save AchievementManager data
+        AchievementManager.Instance.SaveAchievementsProgress();
+    }
+
+    public void LoadSavedState() {
+        // Use SaveSystem to load all the player's state
+        // ...character customization is loaded automatically in its getter
+        SaveSystem.LoadPlayerState();
+        SaveSystem.LoadBroomUpgrades();
+        SaveSystem.LoadSpells();
+        // Load AchievementManager data
+        AchievementManager.Instance.LoadAchievementsProgress();
+    }
+
+	public void ResetState() {
+        // Initialize everything in player's state to default values
+        InitializeSingleton();
+        // Reset AchievementManager data
+        AchievementManager.Instance.ResetAchievementsProgress();
+        // Save the default state
+        SaveCurrentState();
     }
 
 
     #region Singleton
     public void InitializeSingleton() {
+        // TODO: Initialize everything to default values
+
         equippedSpells = new Spell[4];
         knownOpponents = new Dictionary<int, string>();
         raceState = new RaceState();

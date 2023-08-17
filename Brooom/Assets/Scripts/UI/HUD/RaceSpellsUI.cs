@@ -92,7 +92,7 @@ public class RaceSpellsUI : MonoBehaviour {
             spellSlots[selectedSpell].assignedSpell.CastSpell();
         }
         // Detect mouse wheel and change the currently selected spell
-        // TODO: Try it with other HW if it just like that everywhere (or it is necessary to e.g. accumulate value over frames, change spell if over some threshold, use mouse sensitivity)
+        // TODO: Try it with other HW if it works just like that everywhere (or it is necessary to e.g. accumulate value over frames, change spell if over some threshold, use mouse sensitivity)
         float scroll = Input.mouseScrollDelta.y;
         if (scroll != 0) {
             if (scroll > 0) selectedSpell = ChangeSelectedSpell(IterationDirection.Decreasing); // up
