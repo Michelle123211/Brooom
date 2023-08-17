@@ -35,6 +35,8 @@ public class LeaderboardUI : MonoBehaviour {
 		}
 		// If the player is not the last one, add gap to the end
 		if (playerData.place < leaderboard.opponentsCount) CreateGap();
+		// Save all the currently known opponents
+		SaveSystem.SaveKnownOpponents(PlayerState.Instance.knownOpponents);
 
 		// Return the current place
 		return playerData.place;

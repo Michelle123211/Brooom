@@ -8,7 +8,14 @@ using System;
 public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     #region Progress
-    public bool gameComplete = false;
+    private bool gameComplete = false;
+    public bool GameComplete {
+        get => gameComplete;
+        set {
+            gameComplete = value;
+            SaveSystem.SaveGameComplete(gameComplete);
+        }
+    }
 	#endregion
 
 	#region Statistics
@@ -20,6 +27,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         set { // Automatically store the previous stats when assigning new ones
             PreviousStats = currentStats;
             currentStats = value;
+            // Save the values into a file
+            SaveSystem.SavePlayerStatistics(PreviousStats, currentStats);
             // Notify anyone interested that the current stats are different
             Messaging.SendMessage("StatsChanged");
         }
@@ -63,8 +72,10 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         if (newAmount > 999_999) newAmount = 999_999; // cannot go over 999 999
         int oldAmount = coins;
         coins = newAmount;
-        onCoinsAmountChanged?.Invoke(oldAmount, newAmount);
+        // Save the value into a file
+        SaveSystem.SaveCoins(coins);
         // Notify anyone interested that the coins amount changed
+        onCoinsAmountChanged?.Invoke(oldAmount, newAmount);
         Messaging.SendMessage("CoinsChanged", newAmount - oldAmount);
         return true;
     }
@@ -119,7 +130,15 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public void SaveCurrentState() {
         // Use SaveSystem to save all the player's state
         // ...character customization is saved automatically in its setter
-        SaveSystem.SavePlayerState();
+        SaveSystem.SavePlayerState(new PlayerStateSaveData {
+            gameComplete = this.GameComplete,
+            stats = new StatisticsSaveData { 
+                previousStats = this.PreviousStats,
+                currentStats = this.currentStats
+            },
+            coins = this.coins,
+            KnownOpponents = this.knownOpponents
+        });
         SaveSystem.SaveBroomUpgrades();
         SaveSystem.SaveSpells();
         // Save AchievementManager data
@@ -129,9 +148,12 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public void LoadSavedState() {
         // Use SaveSystem to load all the player's state
         // ...character customization is loaded automatically in its getter
-        SaveSystem.LoadPlayerState();
+        PlayerStateSaveData playerState = SaveSystem.LoadPlayerState();
+        LoadFromSavedPlayerState(playerState);
         SaveSystem.LoadBroomUpgrades();
+        LoadFromSavedBroomUpgrades(); // TODO: Add parameter
         SaveSystem.LoadSpells();
+        LoadFromSavedSpells(); // TODO: Add parameter
         // Load AchievementManager data
         AchievementManager.Instance.LoadAchievementsProgress();
     }
@@ -145,12 +167,31 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         SaveCurrentState();
     }
 
+    private void LoadFromSavedPlayerState(PlayerStateSaveData savedState) {
+        GameComplete = savedState.gameComplete;
+
+        CurrentStats = savedState.stats.previousStats;
+        CurrentStats = savedState.stats.currentStats;
+
+        coins = savedState.coins;
+
+        knownOpponents = savedState.KnownOpponents;
+    }
+
+    private void LoadFromSavedBroomUpgrades() {
+        // TODO: Add parameter and implement
+    }
+
+    private void LoadFromSavedSpells() {
+        // TODO: Add parameter and implement
+    }
+
 
     #region Singleton
     public void InitializeSingleton() {
         // Initialize everything to default values
         // ...progress
-        gameComplete = false;
+        GameComplete = false;
         // ...statistics
         PreviousStats = new PlayerStats();
         currentStats = new PlayerStats();

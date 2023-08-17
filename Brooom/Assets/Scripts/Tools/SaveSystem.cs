@@ -99,52 +99,98 @@ public class SaveSystem
     #endregion
 
     #region Player state
-    public static void SavePlayerState() {
-        // TODO: Save all the parts from a given struct
-        SavePlayerStatistics();
-        SaveKnownOpponents();
-        SaveGameComplete();
-        SaveCoins();
+    public static void SavePlayerState(PlayerStateSaveData playerState) {
+        // Save the whole state
+        string json = JsonUtility.ToJson(playerState);
+        File.WriteAllText(playerStatePath, json);
     }
 
-    public static void LoadPlayerState() {
-        // TODO: Return all the parts in a single struct
-        LoadPlayerStatistics();
-        LoadKnownOpponents();
-        LoadGameComplete();
-        LoadCoins();
+    public static PlayerStateSaveData LoadPlayerState() {
+        // Load the whole state
+        if (File.Exists(playerStatePath)) { // If there is a save file, load the data from there
+            string json = File.ReadAllText(playerStatePath);
+            PlayerStateSaveData playerState = JsonUtility.FromJson<PlayerStateSaveData>(json);
+            return playerState;
+        } else { // Otherwise return null
+            return null;
+        }
     }
 
-	public static void SavePlayerStatistics() {
-        // TODO: Implement
+	public static void SavePlayerStatistics(PlayerStats previousStats, PlayerStats currentStats) {
+        // Load the whole player state
+        PlayerStateSaveData playerState = LoadPlayerState();
+        if (playerState == null) playerState = new PlayerStateSaveData(); // if there is no save file, use default values
+        // Override only the statistics
+        playerState.stats.previousStats = previousStats;
+        playerState.stats.currentStats = currentStats;
+        // Save it back
+        SavePlayerState(playerState);
     }
 
-    public static void LoadPlayerStatistics() {
-        // TODO: Implement
+    public static StatisticsSaveData LoadPlayerStatistics() {
+        // Load the whole player state
+        PlayerStateSaveData playerState = LoadPlayerState();
+        // If there is no saved state, return null
+        if (playerState == null) return null;
+        // Return only the statistics
+        return playerState.stats;
     }
 
-    public static void SaveKnownOpponents() {
-        // TODO: Implement
+    public static void SaveKnownOpponents(Dictionary<int, string> knownOpponents) {
+        // Load the whole player state
+        PlayerStateSaveData playerState = LoadPlayerState();
+        if (playerState == null) playerState = new PlayerStateSaveData(); // if there is no save file, use default values
+        // Override only the opponents
+        playerState.KnownOpponents = knownOpponents;
+        // Save it back
+        SavePlayerState(playerState);
     }
 
-    public static void LoadKnownOpponents() {
-        // TODO: Implement
+    public static Dictionary<int, string> LoadKnownOpponents() {
+        // Load the whole player state
+        PlayerStateSaveData playerState = LoadPlayerState();
+        // If there is no saved state, return null
+        if (playerState == null) return null;
+        // Return only the opponents
+        return playerState.KnownOpponents;
     }
 
-    public static void SaveGameComplete() {
-        // TODO: Implement
+    public static void SaveGameComplete(bool gameComplete) {
+        // Load the whole player state
+        PlayerStateSaveData playerState = LoadPlayerState();
+        if (playerState == null) playerState = new PlayerStateSaveData(); // if there is no save file, use default values
+        // Override only the bool
+        playerState.gameComplete = gameComplete;
+        // Save it back
+        SavePlayerState(playerState);
     }
 
-    public static void LoadGameComplete() {
-        // TODO: Implement
+    public static bool LoadGameComplete() {
+        // Load the whole player state
+        PlayerStateSaveData playerState = LoadPlayerState();
+        // If there is no saved state, return false
+        if (playerState == null) return false;
+        // Return only the bool
+        return playerState.gameComplete;
     }
 
-    public static void SaveCoins() {
-        // TODO: Implement
+    public static void SaveCoins(int coins) {
+        // Load the whole player state
+        PlayerStateSaveData playerState = LoadPlayerState();
+        if (playerState == null) playerState = new PlayerStateSaveData(); // if there is no save file, use default values
+        // Override only the coins
+        playerState.coins = coins;
+        // Save it back
+        SavePlayerState(playerState);
     }
 
-    public static void LoadCoins() {
-        // TODO: Implement
+    public static int LoadCoins() {
+        // Load the whole player state
+        PlayerStateSaveData playerState = LoadPlayerState();
+        // If there is no saved state, return 0
+        if (playerState == null) return 0;
+        // Return only the coins
+        return playerState.coins;
     }
     #endregion
 

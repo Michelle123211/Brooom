@@ -36,8 +36,8 @@ public class PlayerOverviewUI : MonoBehaviour
         achievements.UpdateUI();
 
         // Show game ending (with a short delay) if the player is on the first place
-        if (place == 1 && !PlayerState.Instance.gameComplete) {
-            PlayerState.Instance.gameComplete = true;
+        if (place == 1 && !PlayerState.Instance.GameComplete) {
+            PlayerState.Instance.GameComplete = true;
             Invoke(nameof(ShowGameEnding), 3);
         }
     }
