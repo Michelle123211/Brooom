@@ -12,35 +12,34 @@ public class PlayerStateSaveData {
     public int coins = 0;
     public Dictionary<int, string> KnownOpponents {
         get {
-            return ParseKnownOpponentsFromString();
+            return GetDictionaryOfOpponents(knownOpponentsArray);
         }
         set {
-            knownOpponentsString = ConvertKnownOpponentsToString(value);
+            knownOpponentsArray = GetArrayOfOpponents(value);
         }
     }
-    // Known opponents stored in string (which is serializable by JsonUtility as opposed to Dictionary)
-    public string knownOpponentsString = string.Empty; // all parts divided by |
+    // Known opponents stored in array (which is serializable by JsonUtility as opposed to Dictionary)
+    public string[] knownOpponentsArray; // each string contains index and name separated by |
 
-    private string ConvertKnownOpponentsToString(Dictionary<int, string> knownOpponents) {
-        StringBuilder result = new StringBuilder();
-        foreach (var opponent in knownOpponents) {
-            result.Append(opponent.Key.ToString());
-            result.Append('|');
-            result.Append(opponent.Value.ToString());
-            result.Append('|');
-        }
-        return result.ToString();
-    }
-
-    private Dictionary<int, string> ParseKnownOpponentsFromString() {
-        Dictionary<int, string> opponents = new Dictionary<int, string>();
-        string[] parts = knownOpponentsString.Split('|', System.StringSplitOptions.RemoveEmptyEntries);
-        for (int i = 0; i < parts.Length; i += 2) {
-            if (int.TryParse(parts[i], out int index)) {
-                opponents[index] = parts[i + 1];
+    private Dictionary<int, string> GetDictionaryOfOpponents(string[] opponentsArray) {
+        Dictionary<int, string> opponentsDictionary = new Dictionary<int, string>();
+        foreach (var opponent in opponentsArray) {
+            string[] parts = opponent.Split('|');
+            if (parts.Length == 2 && int.TryParse(parts[0], out int index)) {
+                opponentsDictionary[index] = parts[1];
             }
         }
-        return opponents;
+        return opponentsDictionary;
+    }
+
+    private string[] GetArrayOfOpponents(Dictionary<int, string> opponentsDictionary) {
+        string[] opponentsArray = new string[opponentsDictionary.Keys.Count];
+        int i = 0;
+        foreach (var opponent in opponentsDictionary) {
+            opponentsArray[i] = $"{opponent.Key}|{opponent.Value}";
+            i++;
+        }
+        return opponentsArray;
     }
 }
 
