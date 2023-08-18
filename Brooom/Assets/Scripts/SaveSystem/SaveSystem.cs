@@ -13,7 +13,7 @@ public class SaveSystem
     private static readonly string playerStateFileName = "player_state";
     private static readonly string broomUpgradesFileName = "broom_upgrades";
     private static readonly string spellsFileName = "spells";
-    private static readonly string achievementsFileName = "achievements_data.json";
+    private static readonly string achievementsFileName = "achievements";
 
     // Other parts of the path
     private static readonly string fileExtension = ".json";
@@ -26,7 +26,7 @@ public class SaveSystem
     private static readonly string playerStatePath = saveFolder + playerStateFileName + fileExtension;
     private static readonly string broomUpgradesPath = saveFolder + broomUpgradesFileName + fileExtension;
     private static readonly string spellsPath = saveFolder + spellsFileName + fileExtension;
-    private static readonly string achievementsPath = saveFolder + achievementsFileName + fileExtension;
+    private static readonly string achievementsPartialPath = saveFolder + achievementsFileName;
 
 
     static SaveSystem() {
@@ -246,13 +246,21 @@ public class SaveSystem
     #endregion
 
     #region Achievements
-    public static void SaveAchievements() {
-        // TODO: Implement
+    public static void SaveAchievementData<T>(T data, string dataIdentifier) {
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText($"{achievementsPartialPath}_{dataIdentifier}{fileExtension}", json);
     }
 
-    public static void LoadAchievements() {
-        // TODO: Implement
-        // Values necessary for unlocking achievements
+    public static T LoadAchievementData<T>(string dataIdentifier) {
+        string path = $"{achievementsPartialPath}_{dataIdentifier}{fileExtension}";
+        if (File.Exists(path)) {  // If there is a save file, load the data from there
+            // Load values from a file
+            string json = File.ReadAllText(path);
+            T result = JsonUtility.FromJson<T>(json);
+            return result;
+        } else {  // Otherwise return default
+            return default;
+        }
     }
-	#endregion
+    #endregion
 }

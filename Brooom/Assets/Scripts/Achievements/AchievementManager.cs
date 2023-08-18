@@ -19,7 +19,10 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 	public void LoadAchievementsProgress() {
 		// Get all achievements' ScriptableObjects
 		ResetAchievementsProgress();
-		// TODO: Load the achievements (all tracked data) from a file
+		// Load the achievements (all tracked data) from a file
+		foreach (var data in achievementData)
+			data.LoadData();
+		// Update progress of all achievements
 		UpdateAchievementsProgress();
 	}
 
@@ -29,9 +32,10 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 		return achievementsProgress;
 	}
 
-	// TODO: Save the achievements (all tracked data) persistently
+	// Save the achievements (all tracked data) persistently
 	public void SaveAchievementsProgress() {
-		// If there is nothing to save, load it first
+		foreach (var data in achievementData)
+			data.SaveData();
 	}
 
 	// Reset everything to default values
@@ -73,8 +77,6 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 		// Unregister from all messages
 		foreach (var data in achievementData)
 			data.UnregisterCallbacks();
-		// Save the progress
-		SaveAchievementsProgress();
 	}
 
 	// Persistent singleton
@@ -152,6 +154,12 @@ abstract class AchievementData {
 	// Unregisters all registered callbacks
 	public abstract void UnregisterCallbacks();
 
+	// Returns -1 in case of problems
+	public abstract int GetAchievementLevel(Achievement achievement);
+
+	public abstract void LoadData();
+	public abstract void SaveData();
+
 	protected int GetAchievementLevelFromValues(Achievement achievement, float value) {
 		int level = 0;
 		if (achievement.valuesForLevels != null) {
@@ -162,11 +170,9 @@ abstract class AchievementData {
 		}
 		return level;
 	}
-
-	// Returns -1 in case of problems
-	public abstract int GetAchievementLevel(Achievement achievement);
 }
 
+[System.Serializable]
 class ScoreData : AchievementData {
 	// Highest place in the leaderboard
 	public int highestRank = int.MaxValue;
@@ -176,6 +182,18 @@ class ScoreData : AchievementData {
 	public override void ResetData() {
 		highestRank = int.MaxValue;
 		maxStatValue = 0;
+	}
+
+	public override void LoadData() {
+		ScoreData data = SaveSystem.LoadAchievementData<ScoreData>("Score");
+		if (data != null) {
+			this.highestRank = data.highestRank;
+			this.maxStatValue = data.maxStatValue;
+		}
+	}
+
+	public override void SaveData() {
+		SaveSystem.SaveAchievementData(this, "Score");
 	}
 
 	public override void RegisterCallbacks() {
@@ -201,15 +219,18 @@ class ScoreData : AchievementData {
 
 	private void OnRankChanged(int rank) {
 		if (rank < highestRank) highestRank = rank;
+		SaveData();
 	}
 
 	private void OnStatsChanged() {
 		// Get maximum
 		foreach (var stat in PlayerState.Instance.CurrentStats.GetListOfValues())
 			if (maxStatValue < stat) maxStatValue = (int)stat;
+		SaveData();
 	}
 }
 
+[System.Serializable]
 class SpellsData : AchievementData {
 	// Number of spell cast
 	public int spellsCasted = 0;
@@ -219,7 +240,19 @@ class SpellsData : AchievementData {
 	public override void ResetData() {
 		spellsCasted = 0;
 		allSpellsPurchased = false;
-}
+	}
+
+	public override void LoadData() {
+		SpellsData data = SaveSystem.LoadAchievementData<SpellsData>("Spells");
+		if (data != null) {
+			this.spellsCasted = data.spellsCasted;
+			this.allSpellsPurchased = data.allSpellsPurchased;
+		}
+	}
+
+	public override void SaveData() {
+		SaveSystem.SaveAchievementData(this, "Spells");
+	}
 
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("SpellCasted", OnSpellCasted);
@@ -246,17 +279,21 @@ class SpellsData : AchievementData {
 
 	private void OnSpellCasted() {
 		spellsCasted++;
+		SaveData();
 	}
 
-	private void OnSpellPurchased() { 
+	private void OnSpellPurchased() {
 		// TODO: May not be needed
+		SaveData();
 	}
 
 	private void OnAllSpellsPurchased() {
 		allSpellsPurchased = true;
+		SaveData();
 	}
 }
 
+[System.Serializable]
 class RaceData : AchievementData {
 	// Number of races finished
 	public int racesFinished = 0;
@@ -288,7 +325,26 @@ class RaceData : AchievementData {
 		trackTrials = 0;
 
 		currentNumberOfRacers = 0;
-}
+	}
+
+	public override void LoadData() {
+		RaceData data = SaveSystem.LoadAchievementData<RaceData>("Race");
+		if (data != null) {
+			this.racesFinished = data.racesFinished;
+			this.firstPlace = data.firstPlace;
+			this.lastPlace = data.lastPlace;
+			this.racesGivenUp = data.racesGivenUp;
+			this.currentLoseStreak = data.currentLoseStreak;
+			this.longestLoseStreak = data.longestLoseStreak;
+			this.currentWinStreak = data.currentWinStreak;
+			this.longestWinStreak = data.longestWinStreak;
+			this.trackTrials = data.trackTrials;
+		}
+	}
+
+	public override void SaveData() {
+		SaveSystem.SaveAchievementData(this, "Race");
+	}
 
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("RaceStarted", OnRaceStarted);
@@ -327,10 +383,12 @@ class RaceData : AchievementData {
 
 	private void OnRaceStarted(int numRacers) { // TODO: Corresponding message must be called before OnRaceFinished - MESSAGES
 		currentNumberOfRacers = numRacers;
+		SaveData();
 	}
 
 	private void OnRaceGivenUp() {
 		racesGivenUp++;
+		SaveData();
 	}
 
 	private void OnRaceFinished(int place) {
@@ -349,13 +407,16 @@ class RaceData : AchievementData {
 			longestLoseStreak++;
 			if (currentLoseStreak > longestLoseStreak) longestLoseStreak = currentLoseStreak;
 		}
+		SaveData();
 	}
 
 	private void OnTrainingEnded(int numTrials) {
 		if (numTrials > trackTrials) trackTrials = numTrials;
+		SaveData();
 	}
 }
 
+[System.Serializable]
 class LevelData : AchievementData {
 	// Number of collisions with obstacles
 	public int obstacleCollisions = 0;
@@ -372,13 +433,29 @@ class LevelData : AchievementData {
 	public bool allRegionsVisited = false;
 
 	public override void ResetData() {
-	obstacleCollisions = 0;
-	bonusesPickedUp = 0;
-	hoopsPassed = 0;
-	hoopsMissed = 0;
-	allRegionsAvailable = false;
-	allRegionsVisited = false;
-}
+		obstacleCollisions = 0;
+		bonusesPickedUp = 0;
+		hoopsPassed = 0;
+		hoopsMissed = 0;
+		allRegionsAvailable = false;
+		allRegionsVisited = false;
+	}
+
+	public override void LoadData() {
+		LevelData data = SaveSystem.LoadAchievementData<LevelData>("Level");
+		if (data != null) {
+			this.obstacleCollisions = data.obstacleCollisions;
+			this.bonusesPickedUp = data.bonusesPickedUp;
+			this.hoopsPassed = data.hoopsPassed;
+			this.hoopsMissed = data.hoopsMissed;
+			this.allRegionsAvailable = data.allRegionsAvailable;
+			this.allRegionsVisited = data.allRegionsVisited;
+		}
+	}
+
+	public override void SaveData() {
+		SaveSystem.SaveAchievementData(this, "Level");
+	}
 
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("ObstacleCollision", OnCollisionWithObstacle);
@@ -417,15 +494,18 @@ class LevelData : AchievementData {
 
 	private void OnCollisionWithObstacle() {
 		obstacleCollisions++;
+		SaveData();
 	}
 
 	private void OnBonusPickedUp() {
 		bonusesPickedUp++;
+		SaveData();
 	}
 
 	private void OnHoopAdvance(bool passed) {
 		if (passed) hoopsPassed++;
 		else hoopsMissed++;
+		SaveData();
 	}
 
 	private void OnNewRegionAvailable() {
@@ -433,13 +513,16 @@ class LevelData : AchievementData {
 		foreach (var region in PlayerState.Instance.raceState.regionsAvailability)
 			if (!region.Value) allAvailable = false;
 		allRegionsAvailable = allAvailable;
+		SaveData();
 	}
 
 	private void OnNewRegionVisited() {
 		// TODO: React to a new region visited
+		SaveData();
 	}
 }
 
+[System.Serializable]
 class CoinsData : AchievementData {
 	// Total coins gained
 	public int totalCoinsGain = 0;
@@ -449,6 +532,18 @@ class CoinsData : AchievementData {
 	public override void ResetData() {
 		totalCoinsGain = 0;
 		maxCoins = 0;
+	}
+
+	public override void LoadData() {
+		CoinsData data = SaveSystem.LoadAchievementData<CoinsData>("Coins");
+		if (data != null) {
+			this.totalCoinsGain = data.totalCoinsGain;
+			this.maxCoins = data.maxCoins;
+		}
+	}
+
+	public override void SaveData() {
+		SaveSystem.SaveAchievementData(this, "Coins");
 	}
 
 	public override void RegisterCallbacks() {
@@ -475,15 +570,28 @@ class CoinsData : AchievementData {
 			totalCoinsGain += delta;
 		int currentCoins = PlayerState.Instance.coins;
 		if (currentCoins > maxCoins) maxCoins = currentCoins;
+		SaveData();
 	}
 }
 
+[System.Serializable]
 class BroomData : AchievementData {
 	// Whether all broom upgrades have been purchased
 	public bool allUpgradesPurchased = false;
 
 	public override void ResetData() {
 		allUpgradesPurchased = false;
+	}
+
+	public override void LoadData() {
+		BroomData data = SaveSystem.LoadAchievementData<BroomData>("Broom");
+		if (data != null) {
+			this.allUpgradesPurchased = data.allUpgradesPurchased;
+		}
+	}
+
+	public override void SaveData() {
+		SaveSystem.SaveAchievementData(this, "Broom");
 	}
 
 	public override void RegisterCallbacks() {
@@ -505,5 +613,6 @@ class BroomData : AchievementData {
 
 	private void OnAllBroomUpgradesPurchased() {
 		allUpgradesPurchased = true;
+		SaveData();
 	}
 }
