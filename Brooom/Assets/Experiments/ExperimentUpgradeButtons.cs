@@ -32,7 +32,7 @@ public class ExperimentUpgradeButtons : MonoBehaviour
 
 		int column = 0;
 		foreach (var upgrade in upgrades) { // speed, control, elevation
-			GUI.Label(new Rect(offsetX + column * width, offsetY, width, height), $"{upgrade.Name} [{upgrade.CurrentLevel}]: {column + 1}");
+			GUI.Label(new Rect(offsetX + column * width, offsetY, width, height), $"{upgrade.UpgradeName} [{upgrade.CurrentLevel}]: {column + 1}");
 			//if (GUI.Button(new Rect(offsetX + column * width, offsetY, width, height), $"{upgrade.Name} [{upgrade.CurrentLevel}] +")) {
 			//	upgrade.LevelUp();
 			//	PlayerState.Instance.SetBroomUpgradeLevel(upgrade.Name, upgrade.CurrentLevel);

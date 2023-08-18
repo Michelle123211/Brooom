@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System;
 using UnityEngine;
 
 public class SaveSystem
@@ -195,13 +196,20 @@ public class SaveSystem
     #endregion
 
     #region Broom upgrades
-    public static void SaveBroomUpgrades() {
-        // TODO: Implement
+    public static void SaveBroomUpgrades(BroomUpgradesSaveData broomUpgrades) {
+        string json = JsonUtility.ToJson(broomUpgrades);
+        File.WriteAllText(broomUpgradesPath, json);
     }
 
-    public static void LoadBroomUpgrades() {
-        // TODO: Implement
-        // Purchased broom upgrades and their levels
+    public static BroomUpgradesSaveData LoadBroomUpgrades() {
+        if (File.Exists(broomUpgradesPath)) { // If there is a save file, load the data from there
+            // Load broom upgrades from file
+            string json = File.ReadAllText(broomUpgradesPath);
+            BroomUpgradesSaveData upgrades = JsonUtility.FromJson<BroomUpgradesSaveData>(json);
+            return upgrades;
+        } else { // Otherwise return null
+            return null;
+        }
     }
     #endregion
 

@@ -33,7 +33,7 @@ public class PlayerStateSaveData {
     }
 
     private string[] GetArrayOfOpponents(Dictionary<int, string> opponentsDictionary) {
-        string[] opponentsArray = new string[opponentsDictionary.Keys.Count];
+        string[] opponentsArray = new string[opponentsDictionary.Count];
         int i = 0;
         foreach (var opponent in opponentsDictionary) {
             opponentsArray[i] = $"{opponent.Key}|{opponent.Value}";

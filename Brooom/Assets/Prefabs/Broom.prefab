@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6dcc7682db34b47b04ef6044380709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Speed
+  <UpgradeName>k__BackingField: Speed
   <CoinsCostOfEachLevel>k__BackingField: f4010000e8030000c4090000
   <MaxLevel>k__BackingField: 3
   effectsForEachLevel:
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6dcc7682db34b47b04ef6044380709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Control
+  <UpgradeName>k__BackingField: Control
   <CoinsCostOfEachLevel>k__BackingField: f4010000e8030000dc050000
   <MaxLevel>k__BackingField: 3
   effectsForEachLevel:
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6dcc7682db34b47b04ef6044380709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Elevation
+  <UpgradeName>k__BackingField: Elevation
   <CoinsCostOfEachLevel>k__BackingField: e8030000d0070000
   <MaxLevel>k__BackingField: 2
   effectsForEachLevel:

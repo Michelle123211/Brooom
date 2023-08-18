@@ -110,6 +110,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
                 break;
             }
         }
+        // Save the value into a file
+        SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.broomUpgradeLevels });
         // Notify anyone interested that the broom has been upgraded maximally
         if (allMax) Messaging.SendMessage("AllBroomUpgrades");
     }
@@ -139,7 +141,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             coins = this.coins,
             KnownOpponents = this.knownOpponents
         });
-        SaveSystem.SaveBroomUpgrades();
+        SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.broomUpgradeLevels });
         SaveSystem.SaveSpells();
         // Save AchievementManager data
         AchievementManager.Instance.SaveAchievementsProgress();
@@ -148,10 +150,13 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public void LoadSavedState() {
         // Use SaveSystem to load all the player's state
         // ...character customization is loaded automatically in its getter
+        // ...player state
         PlayerStateSaveData playerState = SaveSystem.LoadPlayerState();
         LoadFromSavedPlayerState(playerState);
-        SaveSystem.LoadBroomUpgrades();
-        LoadFromSavedBroomUpgrades(); // TODO: Add parameter
+        // ...broom upgrades
+        BroomUpgradesSaveData broomUpgrades = SaveSystem.LoadBroomUpgrades();
+        LoadFromSavedBroomUpgrades(broomUpgrades);
+        // ...purchased and equipped spells
         SaveSystem.LoadSpells();
         LoadFromSavedSpells(); // TODO: Add parameter
         // Load AchievementManager data
@@ -168,18 +173,22 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     }
 
     private void LoadFromSavedPlayerState(PlayerStateSaveData savedState) {
-        GameComplete = savedState.gameComplete;
+        if (savedState != null) {
+            GameComplete = savedState.gameComplete;
 
-        CurrentStats = savedState.stats.previousStats;
-        CurrentStats = savedState.stats.currentStats;
+            CurrentStats = savedState.stats.previousStats;
+            CurrentStats = savedState.stats.currentStats;
 
-        coins = savedState.coins;
+            coins = savedState.coins;
 
-        knownOpponents = savedState.KnownOpponents;
+            knownOpponents = savedState.KnownOpponents;
+        }
     }
 
-    private void LoadFromSavedBroomUpgrades() {
-        // TODO: Add parameter and implement
+    private void LoadFromSavedBroomUpgrades(BroomUpgradesSaveData broomUpgrades) {
+        if (broomUpgrades != null && broomUpgrades.UpgradeLevels != null) {
+            this.broomUpgradeLevels = broomUpgrades.UpgradeLevels;
+        }
     }
 
     private void LoadFromSavedSpells() {

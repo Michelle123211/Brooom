@@ -9,7 +9,7 @@ public class BroomUpgrade : MonoBehaviour {
 
 
     [field: SerializeField]
-    public string Name { get; private set; }
+    public string UpgradeName { get; private set; }
 
     [field: SerializeField]
     public List<int> CoinsCostOfEachLevel { get; private set; }
@@ -26,13 +26,13 @@ public class BroomUpgrade : MonoBehaviour {
     public void LevelUp() {
         if (CurrentLevel < MaxLevel) {
             if (CurrentLevel >= effectsForEachLevel.Count) {
-                Debug.LogWarning($"No effect of the {Name} upgrade specified for the {CurrentLevel + 1} level!");
+                Debug.LogWarning($"No effect of the {UpgradeName} upgrade specified for the {CurrentLevel + 1} level!");
             } else {
                 if (!Utils.IsNullEvent(effectsForEachLevel[CurrentLevel]))
                     effectsForEachLevel[CurrentLevel].Invoke();
             }
             CurrentLevel++;
-            PlayerState.Instance.SetBroomUpgradeLevel(Name, CurrentLevel, MaxLevel);
+            PlayerState.Instance.SetBroomUpgradeLevel(UpgradeName, CurrentLevel, MaxLevel);
         } 
     }
 }

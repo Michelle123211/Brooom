@@ -38,11 +38,11 @@ public class BroomUpgradeRowUI : MonoBehaviour
         this.assignedUpgrade = broomUpgrade;
         // Update UI
         // ...name
-        nameText.text = LocalizationManager.Instance.GetLocalizedString("BroomUpgrade" + broomUpgrade.Name);
+        nameText.text = LocalizationManager.Instance.GetLocalizedString("BroomUpgrade" + broomUpgrade.UpgradeName);
         // ...level, price and buy button
         InitializeCurrentLevel();
         // ...tooltip
-        tooltip.text = "BroomUpgradeTooltip" + assignedUpgrade.Name;
+        tooltip.text = "BroomUpgradeTooltip" + assignedUpgrade.UpgradeName;
     }
 
     public void PurchaseUpgrade() {
