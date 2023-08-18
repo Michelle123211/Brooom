@@ -185,7 +185,7 @@ class ScoreData : AchievementData {
 	}
 
 	public override void LoadData() {
-		ScoreData data = SaveSystem.LoadAchievementData<ScoreData>("Score");
+		ScoreData data = SaveSystem.LoadAchievementData<ScoreData>("score");
 		if (data != null) {
 			this.highestRank = data.highestRank;
 			this.maxStatValue = data.maxStatValue;
@@ -193,7 +193,7 @@ class ScoreData : AchievementData {
 	}
 
 	public override void SaveData() {
-		SaveSystem.SaveAchievementData(this, "Score");
+		SaveSystem.SaveAchievementData(this, "score");
 	}
 
 	public override void RegisterCallbacks() {
@@ -243,7 +243,7 @@ class SpellsData : AchievementData {
 	}
 
 	public override void LoadData() {
-		SpellsData data = SaveSystem.LoadAchievementData<SpellsData>("Spells");
+		SpellsData data = SaveSystem.LoadAchievementData<SpellsData>("spells");
 		if (data != null) {
 			this.spellsCasted = data.spellsCasted;
 			this.allSpellsPurchased = data.allSpellsPurchased;
@@ -251,7 +251,7 @@ class SpellsData : AchievementData {
 	}
 
 	public override void SaveData() {
-		SaveSystem.SaveAchievementData(this, "Spells");
+		SaveSystem.SaveAchievementData(this, "spells");
 	}
 
 	public override void RegisterCallbacks() {
@@ -328,7 +328,7 @@ class RaceData : AchievementData {
 	}
 
 	public override void LoadData() {
-		RaceData data = SaveSystem.LoadAchievementData<RaceData>("Race");
+		RaceData data = SaveSystem.LoadAchievementData<RaceData>("race");
 		if (data != null) {
 			this.racesFinished = data.racesFinished;
 			this.firstPlace = data.firstPlace;
@@ -343,7 +343,7 @@ class RaceData : AchievementData {
 	}
 
 	public override void SaveData() {
-		SaveSystem.SaveAchievementData(this, "Race");
+		SaveSystem.SaveAchievementData(this, "race");
 	}
 
 	public override void RegisterCallbacks() {
@@ -442,7 +442,7 @@ class LevelData : AchievementData {
 	}
 
 	public override void LoadData() {
-		LevelData data = SaveSystem.LoadAchievementData<LevelData>("Level");
+		LevelData data = SaveSystem.LoadAchievementData<LevelData>("level");
 		if (data != null) {
 			this.obstacleCollisions = data.obstacleCollisions;
 			this.bonusesPickedUp = data.bonusesPickedUp;
@@ -454,7 +454,7 @@ class LevelData : AchievementData {
 	}
 
 	public override void SaveData() {
-		SaveSystem.SaveAchievementData(this, "Level");
+		SaveSystem.SaveAchievementData(this, "level");
 	}
 
 	public override void RegisterCallbacks() {
@@ -535,7 +535,7 @@ class CoinsData : AchievementData {
 	}
 
 	public override void LoadData() {
-		CoinsData data = SaveSystem.LoadAchievementData<CoinsData>("Coins");
+		CoinsData data = SaveSystem.LoadAchievementData<CoinsData>("coins");
 		if (data != null) {
 			this.totalCoinsGain = data.totalCoinsGain;
 			this.maxCoins = data.maxCoins;
@@ -543,7 +543,7 @@ class CoinsData : AchievementData {
 	}
 
 	public override void SaveData() {
-		SaveSystem.SaveAchievementData(this, "Coins");
+		SaveSystem.SaveAchievementData(this, "coins");
 	}
 
 	public override void RegisterCallbacks() {
@@ -584,14 +584,14 @@ class BroomData : AchievementData {
 	}
 
 	public override void LoadData() {
-		BroomData data = SaveSystem.LoadAchievementData<BroomData>("Broom");
+		BroomData data = SaveSystem.LoadAchievementData<BroomData>("broom");
 		if (data != null) {
 			this.allUpgradesPurchased = data.allUpgradesPurchased;
 		}
 	}
 
 	public override void SaveData() {
-		SaveSystem.SaveAchievementData(this, "Broom");
+		SaveSystem.SaveAchievementData(this, "broom");
 	}
 
 	public override void RegisterCallbacks() {
