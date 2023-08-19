@@ -77,13 +77,27 @@ public class SaveSystem
         }
     }
 
-    public static void SaveSettings(SettingsSaveData settings) { 
-        // TODO: Implement
+    public static void SaveSettings(SettingsSaveData settings) {
+        // Load currently saved settings
+        SettingsSaveData settingsData;
+        if (File.Exists(settingsPath)) {// If there are any, copy the current language
+            string jsonData = File.ReadAllText(settingsPath);
+            settingsData = JsonUtility.FromJson<SettingsSaveData>(jsonData);
+            settings.currentLanguage = settingsData.currentLanguage;
+        }
+        // Save the settings into a file
+        string json = JsonUtility.ToJson(settings);
+        File.WriteAllText(settingsPath, json);
     }
 
     public static SettingsSaveData LoadSettings() {
-        // TODO: Implement
-        return null;
+        if (File.Exists(settingsPath)) { // If there is a save file, load the data from there
+            string json = File.ReadAllText(settingsPath);
+            SettingsSaveData settingsData = JsonUtility.FromJson<SettingsSaveData>(json);
+            return settingsData;
+        } else { // Otherwise return null
+            return null;
+        }
     }
 
 	public static void SaveKeyBindings(string bindingsAsJson) {

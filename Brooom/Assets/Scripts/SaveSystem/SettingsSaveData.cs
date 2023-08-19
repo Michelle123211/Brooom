@@ -6,5 +6,10 @@ using UnityEngine;
 public class SettingsSaveData
 {
     public string currentLanguage;
-    // TODO: Add other settings (e.g. mouse sensitivity, volumes)
+    
+    public float mouseSensitivity = 3;
+
+    public float musicVolume = 100;
+    public float ambienceVolume = 100;
+    public float soundEffectsVolume = 100;
 }
