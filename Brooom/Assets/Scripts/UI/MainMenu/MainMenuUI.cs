@@ -73,8 +73,6 @@ public class MainMenuUI : MonoBehaviour
             startAgainButton.SetActive(false);
         }
         // Initialize settings values
-        Debug.Log(SettingsUI.musicVolume);
         Utils.FindObject<SettingsUI>()[0].LoadSettingsValues();
-        Debug.Log(SettingsUI.musicVolume);
     }
 }
