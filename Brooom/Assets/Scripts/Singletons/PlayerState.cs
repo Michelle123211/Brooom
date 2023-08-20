@@ -83,6 +83,29 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     #region Spells
     [HideInInspector] public Spell[] equippedSpells; // spells assigned to slots
+    [HideInInspector] public Dictionary<string, bool> spellAvailability; // whether the spell is unlocked (purchased) or not
+
+    public void EquipSpell(Spell spell, int slotIndex) {
+        equippedSpells[slotIndex] = spell;
+        // Save value into a file
+        SaveSystem.SaveEquippedSpells(this.equippedSpells);
+    }
+
+    public void UnlockSpell(string spellIdentifier) {
+        spellAvailability[spellIdentifier] = true;
+        // Check if all spells are purchased
+        bool allUnlocked = true;
+        foreach (var spell in spellAvailability) {
+            if (!spell.Value) {
+                allUnlocked = false;
+                break;
+            }
+        }
+        // Save value into a file
+        SaveSystem.SavePurchasedSpells(this.spellAvailability);
+        // Notify anyone interested that all the spells have been purchased
+        if (allUnlocked) Messaging.SendMessage("AllSpellsPurchased");
+    }
     #endregion
 
     #region Broom Upgrades
@@ -142,7 +165,10 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             KnownOpponents = this.knownOpponents
         });
         SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.broomUpgradeLevels });
-        SaveSystem.SaveSpells();
+        SaveSystem.SaveSpells(new SpellsSaveData { 
+            EquippedSpells = this.equippedSpells,
+            SpellsAvailability = this.spellAvailability
+        });
         // Save AchievementManager data
         AchievementManager.Instance.SaveAchievementsProgress();
     }
@@ -157,8 +183,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         BroomUpgradesSaveData broomUpgrades = SaveSystem.LoadBroomUpgrades();
         LoadFromSavedBroomUpgrades(broomUpgrades);
         // ...purchased and equipped spells
-        SaveSystem.LoadSpells();
-        LoadFromSavedSpells(); // TODO: Add parameter
+        SpellsSaveData spells = SaveSystem.LoadSpells();
+        LoadFromSavedSpells(spells);
         // Load AchievementManager data
         AchievementManager.Instance.LoadAchievementsProgress();
     }
@@ -191,8 +217,11 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         }
     }
 
-    private void LoadFromSavedSpells() {
-        // TODO: Add parameter and implement
+    private void LoadFromSavedSpells(SpellsSaveData spells) {
+        if (spells != null) { 
+            if (spells.EquippedSpells != null) this.equippedSpells = spells.EquippedSpells;
+            if (spells.SpellsAvailability != null) this.spellAvailability = spells.SpellsAvailability;
+        }
     }
 
 
@@ -210,7 +239,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         coins = 0;
         // ...spells
         equippedSpells = new Spell[4];
-        // TODO: Initialize purchased spells
+        spellAvailability = new Dictionary<string, bool>(); // TODO: Initialize all spells to false
         // ...broom upgrades
         maxAltitude = 15f;
         broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>();

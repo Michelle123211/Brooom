@@ -28,14 +28,14 @@ public class ShopSpellSlotUI : MonoBehaviour
     public void PurchaseSpell() {
         // Check if the player has enough coins
         if (!PlayerState.Instance.ChangeCoinsAmount(-assignedSpell.coinsCost)) return;
-        assignedSpell.isUnlocked = true;
+        PlayerState.Instance.UnlockSpell(assignedSpell.identifier);
         // Update the UI
         ChangeToUnlockedd();
         // TODO: If it is the first purchased spell, start a tutorial
     }
 
 	public void UpdateUI() {
-        if (assignedSpell.isUnlocked) {
+        if (PlayerState.Instance.spellAvailability.TryGetValue(assignedSpell.identifier, out bool unlocked) && unlocked) {
             ChangeToUnlockedd();
         } else {
             ChangeToLocked();

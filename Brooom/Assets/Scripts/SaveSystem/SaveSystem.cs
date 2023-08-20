@@ -228,34 +228,59 @@ public class SaveSystem
     #endregion
 
     #region Spells
-    public static void SaveSpells() {
-        // TODO: Save all the parts from a given struct
-        SavePurchasedSpells();
-        SaveEquippedSpells();
+    public static void SaveSpells(SpellsSaveData spellsData) {
+        // Save everything
+        string json = JsonUtility.ToJson(spellsData);
+        File.WriteAllText(spellsPath, json);
     }
 
-    public static void LoadSpells() {
-        // TODO: Return all the parts in a single struct
-        LoadPurchasedSpells();
-        LoadEquippedSpells();
+    public static SpellsSaveData LoadSpells() {
+        // Load everything
+        if (File.Exists(spellsPath)) { // If there is a save file, load the data from there
+            string json = File.ReadAllText(spellsPath);
+            SpellsSaveData spellsData = JsonUtility.FromJson<SpellsSaveData>(json);
+            return spellsData;
+        } else { // Otherwise return null
+            return null;
+        }
     }
 
-    public static void SavePurchasedSpells() {
-        // TODO: Implement
+    public static void SavePurchasedSpells(Dictionary<string, bool> spellsAvailability) {
+        // Load everything
+        SpellsSaveData spellsData = LoadSpells();
+        if (spellsData == null) spellsData = new SpellsSaveData(); // if there is no save file, use default values
+        // Override only the purchased spells
+        spellsData.SpellsAvailability = spellsAvailability;
+        // Save it back
+        SaveSpells(spellsData);
     }
 
-    public static void LoadPurchasedSpells() {
-        // TODO: Implement
-        // Purchased spells, equipped spells
+    public static Dictionary<string, bool> LoadPurchasedSpells() {
+        // Load everything
+        SpellsSaveData spellsData = LoadSpells();
+        // If there is no saved state, return null
+        if (spellsData == null) return null;
+        // Return only the purchased spells
+        return spellsData.SpellsAvailability;
     }
 
-    public static void SaveEquippedSpells() {
-        // TODO: Implement
+    public static void SaveEquippedSpells(Spell[] equippedSpellsData) {
+        // Load everything
+        SpellsSaveData spellsData = LoadSpells();
+        if (spellsData == null) spellsData = new SpellsSaveData(); // if there is no save file, use default values
+        // Override only the equipped spells
+        spellsData.EquippedSpells = equippedSpellsData;
+        // Save it back
+        SaveSpells(spellsData);
     }
 
-    public static void LoadEquippedSpells() {
-        // TODO: Implement
-        // Purchased spells, equipped spells
+    public static Spell[] LoadEquippedSpells() {
+        // Load everything
+        SpellsSaveData spellsData = LoadSpells();
+        // If there is no saved state, return null
+        if (spellsData == null) return null;
+        // Return only the equipped spells
+        return spellsData.EquippedSpells;
     }
     #endregion
 

@@ -20,7 +20,7 @@ public class SpellSelectionUI : MonoBehaviour {
 	public void AssignSpellAndHide(Spell spell) {
 		if (lastTargetSlot != null) {
 			lastTargetSlot.AssignSpell(spell);
-			PlayerState.Instance.equippedSpells[lastTargetSlot.slotIndex] = spell;
+			PlayerState.Instance.EquipSpell(spell, lastTargetSlot.slotIndex);
 		}
 		HideSelection();
 	}

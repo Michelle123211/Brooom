@@ -10,7 +10,6 @@ public class Spell {
     public Sprite icon;
 
     public int coinsCost = 250;
-    public bool isUnlocked = false; // if the player has purchased the spell
     public int manaCost = 20;
     public float cooldown = 10; // how long it takes to recharge the spell
 
