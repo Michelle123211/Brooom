@@ -2307,6 +2307,7 @@ MonoBehaviour:
   outfitOptions: {fileID: 322335952}
   shoesOptions: {fileID: 1774847789}
   continueButton: {fileID: 1709560412}
+  namesFilename: names.txt
 --- !u!1 &1458622215
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,9 +2488,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1525653106}
   - component: {fileID: 1525653105}
-  - component: {fileID: 1525653104}
   - component: {fileID: 1525653103}
   - component: {fileID: 1525653102}
+  - component: {fileID: 1525653107}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -2564,14 +2565,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!81 &1525653104
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525653101}
-  m_Enabled: 1
 --- !u!20 &1525653105
 Camera:
   m_ObjectHideFlags: 0
@@ -2630,6 +2623,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1525653107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525653101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
 --- !u!1 &1542043369
 GameObject:
   m_ObjectHideFlags: 0
