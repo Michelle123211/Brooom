@@ -9,6 +9,7 @@ public class SettingsSaveData
     
     public float mouseSensitivity = 3;
 
+    public float masterVolume = 100;
     public float musicVolume = 100;
     public float ambienceVolume = 100;
     public float soundEffectsVolume = 100;

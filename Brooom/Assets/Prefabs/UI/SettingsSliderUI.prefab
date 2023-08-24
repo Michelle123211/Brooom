@@ -199,15 +199,27 @@ MonoBehaviour:
   m_HandleRect: {fileID: 892904085733868249}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
-  m_WholeNumbers: 1
-  m_Value: 100
+  m_MaxValue: 1
+  m_WholeNumbers: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5820424747882799848}
         m_TargetAssemblyTypeName: SettingsSliderUI, Assembly-CSharp
         m_MethodName: UpdateValueLabel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5069724564810044744}
+        m_TargetAssemblyTypeName: AudioVolumeSlider, Assembly-CSharp
+        m_MethodName: ChangeVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -323,6 +335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 892904086627560169}
   - component: {fileID: 5820424747882799848}
+  - component: {fileID: 5069724564810044744}
   - component: {fileID: 892904086627560168}
   m_Layer: 5
   m_Name: SettingsSliderUI
@@ -367,6 +380,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valueLabel: {fileID: 6398602979223252917}
+--- !u!114 &5069724564810044744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892904086627560170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3ce5fd795cd66438298b31aa084560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VCAPath: vca:/Master
+  slider: {fileID: 892904085926534061}
 --- !u!114 &892904086627560168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,7 +703,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236243, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_text
-      value: 100
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236243, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
@@ -726,7 +753,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
@@ -736,7 +763,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
@@ -786,12 +813,12 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1390
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
@@ -812,6 +839,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Value
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868143783121236245, guid: 6a8674091571ae54b90a7526d80a1ed3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a8674091571ae54b90a7526d80a1ed3, type: 3}
