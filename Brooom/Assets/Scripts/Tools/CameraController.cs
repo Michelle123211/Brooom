@@ -4,10 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 
-public class CameraController : MonoBehaviour
-{
-    [Header("Mouse Sensitivity")]
-    public float mouseSensitivity = 3f;
+public class CameraController : MonoBehaviour {
     [Tooltip("How long in seconds does it take to ease in the sensitivity after start (to prevent quick jump at the beginning).")]
     public float sensitivityEaseInDuration = 1f;
     [Header("Rotation limits")]
@@ -87,9 +84,9 @@ public class CameraController : MonoBehaviour
 
         // Gradually increase the sensitivity over the first "sensitivityEaseInDuration" seconds
         //  - at first the camera is following the mouse very slowly so it prevents quick jump at the beginning
-        if (currentSensitivity < mouseSensitivity) {
+        if (currentSensitivity < SettingsUI.mouseSensitivity) {
             currentT = Mathf.Clamp(currentT + Time.deltaTime / sensitivityEaseInDuration, 0, 1);
-            currentSensitivity = currentT * currentT * currentT * currentT * mouseSensitivity; // EaseInQuart
+            currentSensitivity = currentT * currentT * currentT * currentT * SettingsUI.mouseSensitivity; // EaseInQuart
         }
 
         // Mouse inputs are already framerate independent - multiplying with Time.deltaTime would make it framerate dependent
