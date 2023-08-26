@@ -2157,17 +2157,27 @@ PrefabInstance:
     - target: {fileID: 170133169350422497, guid: 7c667e000148a8e4da84385030cb60bc,
         type: 3}
       propertyPath: near clip plane
-      value: 0.2
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 170133169350422498, guid: 7c667e000148a8e4da84385030cb60bc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.65999985
+      value: 0.8000002
       objectReference: {fileID: 0}
     - target: {fileID: 170133169350422498, guid: 7c667e000148a8e4da84385030cb60bc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.15
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 170133169350422498, guid: 7c667e000148a8e4da84385030cb60bc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9961947
+      objectReference: {fileID: 0}
+    - target: {fileID: 170133169350422498, guid: 7c667e000148a8e4da84385030cb60bc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.08715578
       objectReference: {fileID: 0}
     - target: {fileID: 170133169353488105, guid: 7c667e000148a8e4da84385030cb60bc,
         type: 3}
@@ -2248,21 +2258,6 @@ PrefabInstance:
         type: 3}
       propertyPath: maxAltitude
       value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 170133170036109997, guid: 7c667e000148a8e4da84385030cb60bc,
-        type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3615994364904750990, guid: 7c667e000148a8e4da84385030cb60bc,
-        type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4949515050018913287, guid: 7c667e000148a8e4da84385030cb60bc,
-        type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c667e000148a8e4da84385030cb60bc, type: 3}
