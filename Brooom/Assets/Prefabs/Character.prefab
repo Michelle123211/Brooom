@@ -1925,6 +1925,7 @@ GameObject:
   - component: {fileID: 9101596594015878468}
   - component: {fileID: 8774670808699493033}
   - component: {fileID: 1275484982683560961}
+  - component: {fileID: 3955235436983778422}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1965,7 +1966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde3cb20853a0f54c86279be2f66ab13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 3
   rotationSpeed: 2
 --- !u!114 &1275484982683560961
 MonoBehaviour:
@@ -1984,6 +1984,27 @@ MonoBehaviour:
   hairRenderer: {fileID: 7686509110201124832}
   outfitRenderer: {fileID: 3311569138614501310}
   shoesRenderer: {fileID: 4534966059511447598}
+--- !u!95 &3955235436983778422
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8432019767846037502}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ec26690f54293314bbbff37a65b16944, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8453315499720029084
 GameObject:
   m_ObjectHideFlags: 0
