@@ -21,6 +21,8 @@ public class CameraController : MonoBehaviour {
     public float zoomDuration = 1f;
 
     [Header("Views")]
+    [Tooltip("Whether it is possible to switch between different views.")]
+    public bool enableViewSwitch = false;
     [Tooltip("A list of virtual cameras to switch between (in the exact order, index 0 is the default one).")]
     public List<CinemachineVirtualCamera> virtualCameras;
 
@@ -35,7 +37,7 @@ public class CameraController : MonoBehaviour {
 
     // Current camera view
     private CinemachineVirtualCamera currentCamera;
-    //private int currentCameraIndex = 0; // TODO: Uncomment to support multiple views
+    private int currentCameraIndex = 0;
 
     // Changes the camera's FOV to zoom in/out
     public void ZoomIn(bool zoomIn) {
@@ -71,16 +73,17 @@ public class CameraController : MonoBehaviour {
     void LateUpdate()
     {
         // Handle switching the view
-        // TODO: Uncomment to support multiple views
-        //if (InputManager.Instance.GetBoolValue("View")) {
-        //    int previousCameraIndex = currentCameraIndex;
-        //    currentCameraIndex++;
-        //    if (currentCameraIndex == virtualCameras.Count)
-        //        currentCameraIndex = 0;
-        //    currentCamera = virtualCameras[currentCameraIndex];
-        //    virtualCameras[currentCameraIndex].gameObject.SetActive(true);
-        //    virtualCameras[previousCameraIndex].gameObject.SetActive(false);
-        //}
+        if (enableViewSwitch) {
+			if (InputManager.Instance.GetBoolValue("View")) {
+				int previousCameraIndex = currentCameraIndex;
+				currentCameraIndex++;
+				if (currentCameraIndex == virtualCameras.Count)
+					currentCameraIndex = 0;
+				currentCamera = virtualCameras[currentCameraIndex];
+				virtualCameras[currentCameraIndex].gameObject.SetActive(true);
+				virtualCameras[previousCameraIndex].gameObject.SetActive(false);
+			}
+		}
 
         // Gradually increase the sensitivity over the first "sensitivityEaseInDuration" seconds
         //  - at first the camera is following the mouse very slowly so it prevents quick jump at the beginning
