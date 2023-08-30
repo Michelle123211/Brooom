@@ -13,7 +13,7 @@ public class RotateObjectOnMouse : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        currentRotation = transform.eulerAngles;
+        currentRotation = transform.localEulerAngles;
     }
 
     // Update is called once per frame

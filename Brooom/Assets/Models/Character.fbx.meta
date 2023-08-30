@@ -33,8 +33,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: metarig|Idle
-      takeName: metarig|Idle
+      name: Idle
+      takeName: Armature|Idle
       internalID: -5324238279805231817
       firstFrame: 0
       lastFrame: 80
@@ -62,8 +62,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: metarig|TPose
-      takeName: metarig|TPose
+      name: TPose
+      takeName: Armature|TPose
       internalID: 1311949501443899062
       firstFrame: 0
       lastFrame: 1
@@ -91,8 +91,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: metarig|BroomPose
-      takeName: metarig|BroomPose
+      name: BroomPose
+      takeName: Armature|BroomPose
       internalID: -8948137109096992527
       firstFrame: 0
       lastFrame: 1
@@ -120,8 +120,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: metarig|BroomIdle
-      takeName: metarig|BroomIdle
+      name: BroomIdle
+      takeName: Armature|BroomIdle
       internalID: -5073549995977665679
       firstFrame: 0
       lastFrame: 80
