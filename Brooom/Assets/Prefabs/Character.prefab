@@ -736,7 +736,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6098924145076851180, guid: bff9112c2417da84f8c563d40f169d17, type: 3}
+  - {fileID: 2100000, guid: 23d7adeeec9f98b4e88fafd3c0ba43ec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1224,7 +1224,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8627644809163848826, guid: bff9112c2417da84f8c563d40f169d17, type: 3}
+  - {fileID: 2100000, guid: 8dba07ae1d11ffd40a17e8d96d089fbe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1441,7 +1441,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2249960132812961191, guid: bff9112c2417da84f8c563d40f169d17, type: 3}
+  - {fileID: 2100000, guid: bee3700ac411da64ca6565253b18b62a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2115,6 +2115,7 @@ GameObject:
   - component: {fileID: 1790472050942874395}
   - component: {fileID: 6720980270762024088}
   - component: {fileID: 56864428490692461}
+  - component: {fileID: 3246136490368824538}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -2198,6 +2199,50 @@ MonoBehaviour:
   hairRenderer: {fileID: 8966292443779334137}
   outfitRenderer: {fileID: 4264999699765299111}
   shoesRenderer: {fileID: 2894182532390713399}
+--- !u!114 &3246136490368824538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7188256804632207335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b39ea2bb17487d24a8fe48a81c751ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animations:
+  - identifier: EyesBlinking
+    targetMeshRenderer: {fileID: 5708045531405033696}
+    playOnAwake: 1
+    loop: 1
+    keyframes:
+    - keyframeTexture: {fileID: 2800000, guid: cafb045b97021524e91ad4da4f1061b5, type: 3}
+      duration: {x: 3, y: 6}
+    - keyframeTexture: {fileID: 2800000, guid: 67eb41367cb356c4dbe51a8c18e6466d, type: 3}
+      duration: {x: 0.15, y: 0.15}
+  - identifier: StartSmiling
+    targetMeshRenderer: {fileID: 7233319830831560291}
+    playOnAwake: 0
+    loop: 0
+    keyframes:
+    - keyframeTexture: {fileID: 2800000, guid: 0e643fab47ab6334e9d2ced8202615b4, type: 3}
+      duration: {x: 0.05, y: 0.05}
+    - keyframeTexture: {fileID: 2800000, guid: c7dcedb354d24334bbacb59fb5cf4507, type: 3}
+      duration: {x: 0.05, y: 0.05}
+    - keyframeTexture: {fileID: 2800000, guid: 47de3a35f56b27541820bb4a62f4e910, type: 3}
+      duration: {x: 0.05, y: 0.05}
+  - identifier: StopSmiling
+    targetMeshRenderer: {fileID: 7233319830831560291}
+    playOnAwake: 0
+    loop: 0
+    keyframes:
+    - keyframeTexture: {fileID: 2800000, guid: 47de3a35f56b27541820bb4a62f4e910, type: 3}
+      duration: {x: 0.05, y: 0.05}
+    - keyframeTexture: {fileID: 2800000, guid: c7dcedb354d24334bbacb59fb5cf4507, type: 3}
+      duration: {x: 0.05, y: 0.05}
+    - keyframeTexture: {fileID: 2800000, guid: 0e643fab47ab6334e9d2ced8202615b4, type: 3}
+      duration: {x: 0.05, y: 0.05}
 --- !u!1 &7253569240073039010
 GameObject:
   m_ObjectHideFlags: 0
