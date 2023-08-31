@@ -35,3 +35,13 @@
 - System for sending messages between objects (used by achievement, in the future by analytics)
 - Placement of environment elements (trees, bushes, plants, cacti) - https://youtu.be/EDBznaUGtIY
 - Updated GDD
+
+**Milestone 5** (August 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone5.zip)):
+
+- Basic water surface
+- Static environment elements
+- Track border (reacting on impact)
+- Persistently saved state
+- Settings functionality
+- Character idle animations (on broom and standing) + facial animations
+- Main menu background
