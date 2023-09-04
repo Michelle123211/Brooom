@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrackHoopsPlacement : LevelGeneratorModule {
+public class TrackObjectsPlacement : LevelGeneratorModule {
 	[Tooltip("Prefab of the hoop.")]
 	public GameObject hoopPrefab;
 	[Tooltip("Scale of the hoop.")]
@@ -11,6 +11,10 @@ public class TrackHoopsPlacement : LevelGeneratorModule {
 	public GameObject checkpointPrefab;
 	[Tooltip("An object which will be parent of all the hoops objects in the hierarchy.")]
 	public Transform hoopsParent;
+	[Tooltip("Prefab of the starting zone.")]
+	public GameObject startingZonePrefab;
+	[Tooltip("How far in front of the player's start position is the starting zone placed.")]
+	public float startingZoneOffset = 70f;
 
 	public override void Generate(LevelRepresentation level) {
 		// Remove any previously instantiated hoops
@@ -35,5 +39,8 @@ public class TrackHoopsPlacement : LevelGeneratorModule {
 			if (!point.isCheckpoint)
 				point.assignedObject.GetComponent<Hoop>()?.SetScale(Vector3.one * hoopScale);
 		}
+		// Instantiate starting zone
+		Vector3 startingZonePosition = (level.playerStartPosition + Vector3.back * startingZoneOffset).WithY(level.playerStartPosition.y);
+		Instantiate(startingZonePrefab, startingZonePosition, Quaternion.identity);
 	}
 }

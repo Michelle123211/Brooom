@@ -38,7 +38,7 @@ public class RaceController : MonoBehaviour {
     private RaceUI raceHUD;
     private LevelGenerationPipeline levelGenerator;
     private TrackPointsGenerationRandomWalk trackGenerator;
-    private TrackHoopsPlacement hoopsPlacement;
+    private TrackObjectsPlacement hoopsPlacement;
     private MaximumAngleCorrection angleCorrection;
     private PlayerController player;
 
@@ -52,7 +52,7 @@ public class RaceController : MonoBehaviour {
         raceHUD = FindObjectOfType<RaceUI>();
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
         trackGenerator = FindObjectOfType<TrackPointsGenerationRandomWalk>();
-        hoopsPlacement = FindObjectOfType<TrackHoopsPlacement>();
+        hoopsPlacement = FindObjectOfType<TrackObjectsPlacement>();
         angleCorrection = FindObjectOfType<MaximumAngleCorrection>();
         player = FindObjectOfType<PlayerController>();
         // Initialize state at the beginning

@@ -621,6 +621,9 @@ MonoBehaviour:
   checkpointPrefab: {fileID: 8707123838125681049, guid: e6b6f9aa7ad39e743ad1581008394724,
     type: 3}
   hoopsParent: {fileID: 1704416431875874871}
+  startingZonePrefab: {fileID: 4392399856848757627, guid: e624ddabf06cec147b3fc3faa4e1c2c4,
+    type: 3}
+  startingZoneOffset: 70
 --- !u!114 &9121179430083006447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -982,6 +985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackWidth: 80
   borderHeightRange: {x: -10, y: 70}
+  startEndPadding: 150
   borderPrefab: {fileID: 5863173918652967378, guid: 108d2c6f3de342c43991bf461f64661f,
     type: 3}
   borderParent: {fileID: 650314752155898272}
