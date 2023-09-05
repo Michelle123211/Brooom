@@ -47,6 +47,15 @@ public class RaceController : MonoBehaviour {
     private int checkpointsPassed = 0;
     private int hoopsPassed = 0;
 
+
+    // Called when entering the race
+    public void StartRace() {
+        // TODO: Add everything related to the start of the race
+        raceStarted = true;
+        PlayerState.Instance.raceState.StartRace();
+        raceHUD.StartRace();
+    }
+
     void Start()
     {
         raceHUD = FindObjectOfType<RaceUI>();
@@ -72,11 +81,6 @@ public class RaceController : MonoBehaviour {
     }
 
 	private void Update() {
-        // TODO: DEBUG only, remove
-        if (!raceStarted && Input.GetMouseButtonDown(1)) {
-            StartRace();
-        }
-
         PlayerState.Instance.raceState.UpdateRaceState();
 
         // Update player's position relatively to the hoops
@@ -127,14 +131,6 @@ public class RaceController : MonoBehaviour {
             raceTime += Time.deltaTime;
             raceHUD.UpdateTime(raceTime);
         }
-    }
-
-    // TODO: Call when entering the race
-    private void StartRace() {
-        // TODO: Add everything related to the start of the race
-        raceStarted = true;
-        PlayerState.Instance.raceState.StartRace();
-        raceHUD.StartRace();
     }
 
     private void SetLevelGeneratorParameters() {
