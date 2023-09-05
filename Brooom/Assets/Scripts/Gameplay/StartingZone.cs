@@ -23,7 +23,7 @@ public class StartingZone : MonoBehaviour
 			isCountingDown = true;
 			// Initialize and show UI
 			UpdateCountdownUI();
-			countdownLabel.gameObject.SetActive(true);
+			Utils.TweenAwareEnable(countdownLabel.gameObject);
 		}
 	}
 
@@ -31,7 +31,7 @@ public class StartingZone : MonoBehaviour
 		if (other.CompareTag("Player")) {
 			isCountingDown = false;
 			// Hide UI
-			countdownLabel.gameObject.SetActive(false);
+			Utils.TweenAwareDisable(countdownLabel.gameObject);
 		}
 	}
 
