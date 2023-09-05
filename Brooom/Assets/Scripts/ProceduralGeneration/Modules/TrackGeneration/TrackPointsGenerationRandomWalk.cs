@@ -17,6 +17,8 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 	public int levelPadding = 150;
 	[Tooltip("How many track points are removed during backtracking when the last generated segment intersects with the already generated track.")]
 	public int backtrackDepth = 3;
+	[Tooltip("How far in front of the first point the player should be placed.")]
+	public float playerStartDistance = 60f;
 
 
 	// Minimum and maximum position of the track points (computed while centering the track around world origin, used for changing level dimensions)
@@ -37,7 +39,7 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		SnapPointsToGrid(level);
 
 		// Select player's start position in front of the first point
-		level.playerStartPosition = level.track[0].position + Vector3.back * distanceRange.y;
+		level.playerStartPosition = level.track[0].position + Vector3.back * playerStartDistance;
 	}
 
 	private void GenerateTrackPoints(LevelRepresentation level) {
