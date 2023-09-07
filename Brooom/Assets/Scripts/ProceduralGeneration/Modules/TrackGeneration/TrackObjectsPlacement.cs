@@ -37,7 +37,7 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 			point.assignedObject = Instantiate(prefab, level.track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
 			// Set scale of the hoops
 			if (!point.isCheckpoint)
-				point.assignedObject.GetComponent<Hoop>()?.SetScale(Vector3.one * hoopScale);
+				point.assignedObject.GetComponent<Scalable>()?.SetScale(Vector3.one * hoopScale);
 		}
 		// Instantiate starting zone
 		Vector3 startingZonePosition = (level.playerStartPosition + Vector3.back * startingZoneOffset).WithY(level.playerStartPosition.y);
