@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scalable : MonoBehaviour
-{
+public class Scalable : MonoBehaviour {
+
     [Tooltip("Transform which should be scaled up/down. If null, the implicit 'transform' will be used.")]
     [SerializeField] Transform transformToScale;
 
