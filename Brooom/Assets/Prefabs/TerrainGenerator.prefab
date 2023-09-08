@@ -552,6 +552,7 @@ MonoBehaviour:
   maxDirectionChangeAngle: {x: 10, y: 20}
   levelPadding: 200
   backtrackDepth: 3
+  playerStartDistance: 60
 --- !u!114 &4301535814927083996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -618,12 +619,12 @@ MonoBehaviour:
   hoopPrefab: {fileID: 8955490708990326914, guid: 2401e52c4a0f073469145858a53c9e0c,
     type: 3}
   hoopScale: 1
-  checkpointPrefab: {fileID: 8707123838125681049, guid: e6b6f9aa7ad39e743ad1581008394724,
+  checkpointPrefab: {fileID: 1370651353772857406, guid: 41f4d6901e670834cad855fe02d939ea,
     type: 3}
   hoopsParent: {fileID: 1704416431875874871}
   startingZonePrefab: {fileID: 4392399856848757627, guid: e624ddabf06cec147b3fc3faa4e1c2c4,
     type: 3}
-  startingZoneOffset: 70
+  startingZoneOffset: 60
 --- !u!114 &9121179430083006447
 MonoBehaviour:
   m_ObjectHideFlags: 0
