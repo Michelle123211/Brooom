@@ -28,6 +28,10 @@ public class RaceController : MonoBehaviour {
     [Tooltip("The approximate minimum and maximum distance between two hoops when the player's Speed stat is 100.")]
     public Vector2 finalHoopDistanceRange = new Vector2(80, 100);
 
+    [Header("Penalizations")]
+    [Tooltip("How many seconds are added to the time when player misses a hoop.")]
+    public int missedHoopPenalization = 5;
+
     [Header("Regions")]
     public List<LevelRegionType> defaultRegions;
     public List<RegionUnlockValue> regionsUnlockedByEndurance;
@@ -46,6 +50,7 @@ public class RaceController : MonoBehaviour {
     private float raceTime = 0;
     private int checkpointsPassed = 0;
     private int hoopsPassed = 0;
+    private int hoopsMissed = 0;
 
 
     // Called when entering the race
@@ -128,7 +133,7 @@ public class RaceController : MonoBehaviour {
             PlayerState.Instance.raceState.UpdateRaceState();
             UpdateHoops();
             // TODO: Update player's place
-            // Compare player's previous hoop with other racers, then compare distance to the next hoop
+            // Compare player's next hoop with other racers, then compare distance to the next hoop
         } else { // during training
             if (InputManager.Instance.GetBoolValue("Restart")) {
                 player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
@@ -180,12 +185,12 @@ public class RaceController : MonoBehaviour {
                 } else { // Player missed
                     if (PlayerState.Instance.raceState.level.track[nextHoopIndex].isCheckpoint) {
                         // Chackpoint cannot be missed - it stays highlighted
-                        // TODO: Warn the player that they must return to the checkpoint
+                        ReactOnCheckpointMissed();
                     } else {
                         // Hoops can be missed
+                        ReactOnHoopMissed();
                         PlayerState.Instance.raceState.nextTrackPointIndex = nextHoopIndex + 1;
                         shouldHighlightNext = true;
-                        // TODO: Update the missed hoops counter and add penalization
                     }
                 }
                 // Highlight the next hoop
@@ -194,10 +199,22 @@ public class RaceController : MonoBehaviour {
                     if (nextHoopIndex + 1 < PlayerState.Instance.raceState.level.track.Count)
                         PlayerState.Instance.raceState.level.track[nextHoopIndex + 1].assignedHoop.StartHighlighting();
                 }
+                PlayerState.Instance.raceState.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed, hoopsMissed);
             }
         }
-        // - otherwise the player is still between the same pair of hoops
-        PlayerState.Instance.raceState.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed);
+    }
+
+    private void ReactOnCheckpointMissed() {
+        // TODO: Warn the player that they must return to the checkpoint
+
+    }
+
+    private void ReactOnHoopMissed() {
+        // Update the missed hoops counter and add penalization
+        hoopsMissed++;
+        raceTime += missedHoopPenalization; // TODO: Tween somehow
+        raceHUD.UpdateTimePenalization(hoopsMissed * missedHoopPenalization);
+        // TODO: Make the screen red briefly
     }
 }
 

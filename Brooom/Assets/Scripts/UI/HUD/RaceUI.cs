@@ -63,13 +63,18 @@ public class RaceUI : MonoBehaviour {
         hoopsTotalText.text = hoopsTotal.ToString();
         hoopsMissedText.text = "";
     }
-    public void UpdatePlayerPositionWithinRace(int checkpointsPassed, int hoopsPassed) {
+    public void UpdatePassedHoops(int checkpointsPassed, int hoopsPassed) {
         checkpointsPassedText.text = checkpointsPassed.ToString();
         hoopsPassedText.text = hoopsPassed.ToString();
     }
-    public void UpdateTimePenalization(int penalizationInSeconds, int missedHoops) {
+    public void UpdateMissedHoops(int hoopsMissed) {
+        if (hoopsMissed != 0)
+            hoopsMissedText.text = $"(-{hoopsMissed})";
+        // TODO: Briefly scale the text up and back down
+    }
+    public void UpdateTimePenalization(int penalizationInSeconds) {
         timePenalizationText.text = $"(+{penalizationInSeconds} s)";
-        hoopsMissedText.text = missedHoops.ToString();
+        // TODO: Briefly scale the text up and back down
     }
     public void UpdatePlace(int place) {
         placeText.text = place.ToString();
@@ -120,12 +125,14 @@ public class RaceUI : MonoBehaviour {
     private void RegisterCallbacks() {
         // Register necessary callbacks
         PlayerState.Instance.raceState.onPlayerPlaceChanged += UpdatePlace;
-        PlayerState.Instance.raceState.onPlayerPositionWithinRaceChanged += UpdatePlayerPositionWithinRace;
+        PlayerState.Instance.raceState.onPassedHoopsChanged += UpdatePassedHoops;
+        PlayerState.Instance.raceState.onMissedHoopsChanged += UpdateMissedHoops;
     }
 
     private void UnregisterCallbacks() {
         PlayerState.Instance.raceState.onPlayerPlaceChanged -= UpdatePlace;
-        PlayerState.Instance.raceState.onPlayerPositionWithinRaceChanged -= UpdatePlayerPositionWithinRace;
+        PlayerState.Instance.raceState.onPassedHoopsChanged -= UpdatePassedHoops;
+        PlayerState.Instance.raceState.onMissedHoopsChanged -= UpdateMissedHoops;
     }
 
     private void Start() {
@@ -138,7 +145,6 @@ public class RaceUI : MonoBehaviour {
         RegisterCallbacks();
         // TODO: Hide all elements which should not be visible during training
         // TODO: Uncomment when finished debugging
-        timePenalizationText.gameObject.SetActive(false);
         //timeObject.SetActive(false);
         //placeObject.SetActive(false);
         //spellsObject.SetActive(false);

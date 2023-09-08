@@ -27,7 +27,8 @@ public class RaceState {
 
     // Callbacks
     public Action<int> onPlayerPlaceChanged; // parameter: new place
-    public Action<int, int> onPlayerPositionWithinRaceChanged; // parameters: checkpoints passed, hoops passed
+    public Action<int, int> onPassedHoopsChanged; // parameters: checkpoints passed, hoops passed
+    public Action<int> onMissedHoopsChanged; // parameter: missed hoops
     public Action<int> onManaAmountChanged; // parameter: new value
     public Action<PlayerEffect> onNewEffectAdded; // parameter: the added effect
 
@@ -58,14 +59,17 @@ public class RaceState {
             onPlayerPlaceChanged?.Invoke(place);
     }
 
-    public void UpdatePlayerPositionWithinRace(int checkpointsPassed, int hoopsPassed) {
+    public void UpdatePlayerPositionWithinRace(int checkpointsPassed, int hoopsPassed, int hoopsMissed) {
+        // Hoops passed
         bool valuesChanged = false;
         if (this.checkpointsPassed != checkpointsPassed || this.hoopsPassed != hoopsPassed) valuesChanged = true;
         this.checkpointsPassed = checkpointsPassed;
         this.hoopsPassed = hoopsPassed;
-        if (valuesChanged)
-            onPlayerPositionWithinRaceChanged?.Invoke(checkpointsPassed, hoopsPassed);
-
+        if (valuesChanged) onPassedHoopsChanged?.Invoke(checkpointsPassed, hoopsPassed);
+        // Hoops missed
+        valuesChanged = false;
+        if (this.hoopsMissed != hoopsMissed) valuesChanged = true;
+        if (valuesChanged) onMissedHoopsChanged?.Invoke(hoopsMissed);
     }
 
     public void ChangeManaAmount(int delta) {
