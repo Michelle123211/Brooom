@@ -376,7 +376,7 @@ public class TrackPoint {
 	public Vector3 position;
 	public bool isCheckpoint;
 	public LevelRegionType trackRegion;
-	public GameObject assignedObject;
+	public Hoop assignedHoop;
 
 	public TrackPoint() {
 		this.gridCoords = Vector2Int.zero;
