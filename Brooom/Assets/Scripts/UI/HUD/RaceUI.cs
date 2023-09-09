@@ -34,9 +34,9 @@ public class RaceUI : MonoBehaviour {
     [Header("Spells")]
     [SerializeField] RaceSpellsUI spellsUI;
 
-    [Header("Temporary text fields")]
-    [SerializeField] TextMeshProUGUI startRaceText;
-    [SerializeField] TextMeshProUGUI enteringRaceCountdownText;
+    [Header("Whole screen effects")]
+    [Tooltip("An overlay over the whole screen used to e.g. color the screen red.")]
+    [SerializeField] Image flashingColorOverlay;
 
 	string enteringRaceString;
     Color[] placeColors = new Color[] { // TODO: Move to a separate color palette
@@ -85,18 +85,12 @@ public class RaceUI : MonoBehaviour {
     }
     #endregion
 
-    #region Entering race countdown
-    public void StartEnteringRaceCountdown(float initialValue) {
-        UpdateEnteringRaceCountdown(initialValue);
-        enteringRaceCountdownText.gameObject.SetActive(true);
+    #region Screen effects
+    public void FlashScreenColor(Color color) {
+        flashingColorOverlay.color = color;
+        flashingColorOverlay.gameObject.TweenAwareEnable();
     }
-    public void StopEnteringRaceCountdown() {
-        enteringRaceCountdownText.gameObject.SetActive(false);
-    }
-    public void UpdateEnteringRaceCountdown(float value) {
-        enteringRaceCountdownText.text = string.Format(enteringRaceString, value.ToString());
-    }
-    #endregion
+	#endregion
 
 	private void ResetRaceState() {
         UpdatePlace(1);
@@ -136,9 +130,6 @@ public class RaceUI : MonoBehaviour {
     }
 
     private void Start() {
-        // Cache localized strings
-        enteringRaceString = LocalizationManager.Instance.GetLocalizedString("RaceLabelEntering");
-        // ...
         // Initialize everything
         ResetRaceState();
         // Register necessary callbacks

@@ -54,6 +54,7 @@ public class StartingZone : MonoBehaviour
 	}
 
 	private void Start() {
+		// Cache localized string
 		countdownText = LocalizationManager.Instance.GetLocalizedString("RaceLabelEntering");
 	}
 }

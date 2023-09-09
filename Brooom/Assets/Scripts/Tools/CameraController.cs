@@ -47,6 +47,14 @@ public class CameraController : MonoBehaviour {
         }
     }
 
+    public void Shake(float duration, float intensity) {
+        foreach (var camera in virtualCameras) {
+            CinemachineBasicMultiChannelPerlin cameraNoise = camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            DOTween.To(() => cameraNoise.m_AmplitudeGain, x => cameraNoise.m_AmplitudeGain = x, intensity, duration/2f).SetEase(Ease.InOutCubic)
+                .OnComplete(() => DOTween.To(() => cameraNoise.m_AmplitudeGain, x => cameraNoise.m_AmplitudeGain = x, 0, duration/2f)).SetEase(Ease.InOutCubic);
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start() {

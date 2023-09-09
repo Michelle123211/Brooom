@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 public class RaceController : MonoBehaviour {
     [Header("Level length (Endurance)")]
@@ -204,9 +205,14 @@ public class RaceController : MonoBehaviour {
         }
     }
 
+    private int lastCheckpointMissed = -1;
     private void ReactOnCheckpointMissed() {
-        // TODO: Warn the player that they must return to the checkpoint
-
+        if (PlayerState.Instance.raceState.nextTrackPointIndex != lastCheckpointMissed) { // Player should be warned only once for the same checkpoint
+            lastCheckpointMissed = PlayerState.Instance.raceState.nextTrackPointIndex;
+            // Make the screen red briefly
+            raceHUD.FlashScreenColor(Color.red);
+            // TODO: Warn the player that they must return to the checkpoint
+        }
     }
 
     private void ReactOnHoopMissed() {
@@ -214,7 +220,9 @@ public class RaceController : MonoBehaviour {
         hoopsMissed++;
         raceTime += missedHoopPenalization; // TODO: Tween somehow
         raceHUD.UpdateTimePenalization(hoopsMissed * missedHoopPenalization);
-        // TODO: Make the screen red briefly
+        // Make the screen red briefly
+        raceHUD.FlashScreenColor(Color.red);
+        
     }
 }
 
