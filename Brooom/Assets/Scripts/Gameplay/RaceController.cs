@@ -47,8 +47,12 @@ public class RaceController : MonoBehaviour {
     private MaximumAngleCorrection angleCorrection;
     private PlayerController player;
 
+
     private bool raceStarted = false; // distinguish between training and race
+
     private float raceTime = 0;
+    private float timePenalization = 0; // added to the raceTime
+
     private int checkpointsPassed = 0;
     private int hoopsPassed = 0;
     private int hoopsMissed = 0;
@@ -147,7 +151,7 @@ public class RaceController : MonoBehaviour {
             raceHUD.UpdatePlayerState(player.GetCurrentSpeed(), player.GetCurrentAltitude());
             // TODO: Change to the actual time from the start of the race (not including training)
             raceTime += Time.deltaTime;
-            raceHUD.UpdateTime(raceTime);
+            raceHUD.UpdateTime(raceTime + timePenalization);
         }
     }
 
@@ -175,7 +179,6 @@ public class RaceController : MonoBehaviour {
             if (relativePosition == HoopRelativePosition.After) { // The player got after the next hoop
                 bool shouldHighlightNext = false;
                 if (PlayerState.Instance.raceState.level.track[nextHoopIndex].assignedHoop.playerDetected) { // Player went through and did not miss
-                    PlayerState.Instance.raceState.nextTrackPointIndex = nextHoopIndex + 1;
                     // Update hoop/checkpoint count
                     if (PlayerState.Instance.raceState.level.track[nextHoopIndex].isCheckpoint) {
                         checkpointsPassed++;
@@ -185,17 +188,17 @@ public class RaceController : MonoBehaviour {
                     shouldHighlightNext = true;
                 } else { // Player missed
                     if (PlayerState.Instance.raceState.level.track[nextHoopIndex].isCheckpoint) {
-                        // Chackpoint cannot be missed - it stays highlighted
+                        // Checkpoint cannot be missed - it stays highlighted
                         ReactOnCheckpointMissed();
                     } else {
                         // Hoops can be missed
                         ReactOnHoopMissed();
-                        PlayerState.Instance.raceState.nextTrackPointIndex = nextHoopIndex + 1;
                         shouldHighlightNext = true;
                     }
                 }
                 // Highlight the next hoop
                 if (shouldHighlightNext) {
+                    PlayerState.Instance.raceState.nextTrackPointIndex = nextHoopIndex + 1;
                     PlayerState.Instance.raceState.level.track[nextHoopIndex].assignedHoop.StopHighlighting();
                     if (nextHoopIndex + 1 < PlayerState.Instance.raceState.level.track.Count)
                         PlayerState.Instance.raceState.level.track[nextHoopIndex + 1].assignedHoop.StartHighlighting();
@@ -218,11 +221,16 @@ public class RaceController : MonoBehaviour {
     private void ReactOnHoopMissed() {
         // Update the missed hoops counter and add penalization
         hoopsMissed++;
-        raceTime += missedHoopPenalization; // TODO: Tween somehow
-        raceHUD.UpdateTimePenalization(hoopsMissed * missedHoopPenalization);
+        AddTimePenalization(missedHoopPenalization);
         // Make the screen red briefly
         raceHUD.FlashScreenColor(Color.red);
-        
+
+    }
+
+    private void AddTimePenalization(float penalization) {
+        float currentPenalization = timePenalization + penalization;
+        raceHUD.UpdateTimePenalization(Mathf.RoundToInt(currentPenalization));
+        DOTween.To(() => timePenalization, x => timePenalization = x, currentPenalization, 0.5f);
     }
 }
 

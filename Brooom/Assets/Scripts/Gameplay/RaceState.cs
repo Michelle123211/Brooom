@@ -61,14 +61,13 @@ public class RaceState {
 
     public void UpdatePlayerPositionWithinRace(int checkpointsPassed, int hoopsPassed, int hoopsMissed) {
         // Hoops passed
-        bool valuesChanged = false;
-        if (this.checkpointsPassed != checkpointsPassed || this.hoopsPassed != hoopsPassed) valuesChanged = true;
+        bool valuesChanged = (this.checkpointsPassed != checkpointsPassed || this.hoopsPassed != hoopsPassed);
         this.checkpointsPassed = checkpointsPassed;
         this.hoopsPassed = hoopsPassed;
         if (valuesChanged) onPassedHoopsChanged?.Invoke(checkpointsPassed, hoopsPassed);
         // Hoops missed
-        valuesChanged = false;
-        if (this.hoopsMissed != hoopsMissed) valuesChanged = true;
+        valuesChanged = this.hoopsMissed != hoopsMissed;
+        this.hoopsMissed = hoopsMissed;
         if (valuesChanged) onMissedHoopsChanged?.Invoke(hoopsMissed);
     }
 

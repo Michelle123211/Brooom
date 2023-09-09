@@ -38,12 +38,12 @@ public class RaceUI : MonoBehaviour {
     [Tooltip("An overlay over the whole screen used to e.g. color the screen red.")]
     [SerializeField] Image flashingColorOverlay;
 
-	string enteringRaceString;
     Color[] placeColors = new Color[] { // TODO: Move to a separate color palette
         Utils.ColorFromRBG256(243, 217, 81), // gold
         Utils.ColorFromRBG256(164, 164, 164), // silver
         Utils.ColorFromRBG256(203, 128, 83), // bronz
         Utils.ColorFromRBG256(126, 92, 80) };
+
 
     #region Basic information
     public void UpdateTime(float timeInSeconds) {
@@ -70,11 +70,19 @@ public class RaceUI : MonoBehaviour {
     public void UpdateMissedHoops(int hoopsMissed) {
         if (hoopsMissed != 0)
             hoopsMissedText.text = $"(-{hoopsMissed})";
-        // TODO: Briefly scale the text up and back down
+        // Briefly scale the text up and back down
+        EnlargeTextBriefly(hoopsMissedText, 1.5f, 0.5f);
     }
-    public void UpdateTimePenalization(int penalizationInSeconds) {
+    public void UpdateTimePenalization(int penalizationInSeconds, bool highlightTime = true) {
         timePenalizationText.text = $"(+{penalizationInSeconds} s)";
-        // TODO: Briefly scale the text up and back down
+        // Briefly scale the text up and back down
+        EnlargeTextBriefly(timePenalizationText, 1.5f, 0.5f);
+        // Highlight the race time text if required
+        if (highlightTime) {
+            // Make the text bigger and red
+            EnlargeTextBriefly(timeText, 1.5f, 0.5f);
+            ChangeTextColorBriefly(timeText, Color.red, 0.5f);
+        }
     }
     public void UpdatePlace(int place) {
         placeText.text = place.ToString();
@@ -127,6 +135,18 @@ public class RaceUI : MonoBehaviour {
         PlayerState.Instance.raceState.onPlayerPlaceChanged -= UpdatePlace;
         PlayerState.Instance.raceState.onPassedHoopsChanged -= UpdatePassedHoops;
         PlayerState.Instance.raceState.onMissedHoopsChanged -= UpdateMissedHoops;
+    }
+
+    private void EnlargeTextBriefly(TextMeshProUGUI text, float sizeMultiplier, float duration) {
+        float originalSize = text.fontSize;
+        float biggerSize = originalSize * sizeMultiplier;
+        DOTween.To(() => text.fontSize, x => text.fontSize = x, biggerSize, duration/2f)
+            .OnComplete(() => DOTween.To(() => text.fontSize, x => text.fontSize = x, originalSize, duration / 2f));
+    }
+
+    private void ChangeTextColorBriefly(TextMeshProUGUI text, Color color, float duration) {
+        Color originalColor = text.color;
+        text.DOColor(color, duration / 2f).OnComplete(() => text.DOColor(originalColor, duration / 2f));
     }
 
     private void Start() {
