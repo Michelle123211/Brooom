@@ -9,7 +9,8 @@ public class RaceState {
     // Level - to get access to track points and record player's position within the track
     public LevelRepresentation level;
     // Race position
-    public int nextTrackPointIndex = 0; // position of the player within the track (index of the following hoop they should fly through)
+    public int followingTrackPoint = 0; // position of the player within the track (they are before the hoop with this index)
+    public int trackPointToPassNext = 0; // index of the following hoop the player should fly through
     public int place;
     public int hoopsPassed;
     public int hoopsMissed;
@@ -117,7 +118,7 @@ public class RaceState {
     // The RaceState is reset at the beginning of a new race
     public void Reset() {
         level = null;
-        nextTrackPointIndex = 0;
+        trackPointToPassNext = 0;
         this.currentMana = 0;
         // Initialize all spells
         for (int i = 0; i < spellSlots.Length; i++) {

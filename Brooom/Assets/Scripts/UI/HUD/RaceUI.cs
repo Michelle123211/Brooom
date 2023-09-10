@@ -39,6 +39,8 @@ public class RaceUI : MonoBehaviour {
     [SerializeField] Image flashingColorOverlay;
     [Tooltip("A label warning the player that a checkpoint has been missed.")]
     [SerializeField] GameObject missedCheckpointWarning;
+    [Tooltip("An image warning the player that they are flying in a wrong direction.")]
+    [SerializeField] GenericTween wrongDirectionWarning;
 
     Color[] placeColors = new Color[] { // TODO: Move to a separate color palette
         Utils.ColorFromRBG256(243, 217, 81), // gold
@@ -102,6 +104,20 @@ public class RaceUI : MonoBehaviour {
     }
     public void ShowMissedCheckpointWarning() {
         missedCheckpointWarning.TweenAwareEnable();
+    }
+    private bool wrongDirectionWarningVisible = false;
+    public void ShowWrongDirectionWarning() {
+        if (wrongDirectionWarningVisible) return;
+        wrongDirectionWarningVisible = true;
+        wrongDirectionWarning.loop = true;
+        if (!wrongDirectionWarning.IsPlaying())
+            wrongDirectionWarning.DoTween();
+    }
+    public void HideWringDirectionWarning() {
+        if (!wrongDirectionWarningVisible) return;
+        wrongDirectionWarningVisible = false;
+        wrongDirectionWarning.loop = false;
+        wrongDirectionWarning.DoTween();
     }
 	#endregion
 

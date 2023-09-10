@@ -137,12 +137,14 @@ public class RaceController : MonoBehaviour {
         if (raceStarted) { // during race
             PlayerState.Instance.raceState.UpdateRaceState();
             UpdateHoops();
+            UpdatePlayerPositionAndDirection();
+            DetectWrongDirection();
             // TODO: Update player's place
             // Compare player's next hoop with other racers, then compare distance to the next hoop
         } else { // during training
             if (InputManager.Instance.GetBoolValue("Restart")) {
                 player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
-                PlayerState.Instance.raceState.nextTrackPointIndex = 0;
+                PlayerState.Instance.raceState.trackPointToPassNext = 0;
             }
         }
 
@@ -171,9 +173,10 @@ public class RaceController : MonoBehaviour {
         else return HoopRelativePosition.At;
     }
 
+    // Updates passed checkpoints and hoops
+    // Highlights the next one
     private void UpdateHoops() {
-        // Update player's position relatively to the hoops
-        int nextHoopIndex = PlayerState.Instance.raceState.nextTrackPointIndex;
+        int nextHoopIndex = PlayerState.Instance.raceState.trackPointToPassNext;
         if (nextHoopIndex < PlayerState.Instance.raceState.level.track.Count) {
             HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
             if (relativePosition == HoopRelativePosition.After) { // The player got after the next hoop
@@ -198,7 +201,7 @@ public class RaceController : MonoBehaviour {
                 }
                 // Highlight the next hoop
                 if (shouldHighlightNext) {
-                    PlayerState.Instance.raceState.nextTrackPointIndex = nextHoopIndex + 1;
+                    PlayerState.Instance.raceState.trackPointToPassNext = nextHoopIndex + 1;
                     PlayerState.Instance.raceState.level.track[nextHoopIndex].assignedHoop.StopHighlighting();
                     if (nextHoopIndex + 1 < PlayerState.Instance.raceState.level.track.Count)
                         PlayerState.Instance.raceState.level.track[nextHoopIndex + 1].assignedHoop.StartHighlighting();
@@ -210,8 +213,8 @@ public class RaceController : MonoBehaviour {
 
     private int lastCheckpointMissed = -1;
     private void ReactOnCheckpointMissed() {
-        if (PlayerState.Instance.raceState.nextTrackPointIndex != lastCheckpointMissed) { // Player should be warned only once for the same checkpoint
-            lastCheckpointMissed = PlayerState.Instance.raceState.nextTrackPointIndex;
+        if (PlayerState.Instance.raceState.trackPointToPassNext != lastCheckpointMissed) { // Player should be warned only once for the same checkpoint
+            lastCheckpointMissed = PlayerState.Instance.raceState.trackPointToPassNext;
             // Make the screen red briefly
             raceHUD.FlashScreenColor(Color.red);
             // Warn the player that they must return to the checkpoint
@@ -232,6 +235,57 @@ public class RaceController : MonoBehaviour {
         float currentPenalization = timePenalization + penalization;
         raceHUD.UpdateTimePenalization(Mathf.RoundToInt(currentPenalization));
         DOTween.To(() => timePenalization, x => timePenalization = x, currentPenalization, 0.5f);
+    }
+
+    // Updates player's position relatively to the hoops
+    private void UpdatePlayerPositionAndDirection() {
+        // Find between which hoops the player is located
+        // ... whether he is after the following hoop
+        if (PlayerState.Instance.raceState.followingTrackPoint < PlayerState.Instance.raceState.level.track.Count &&
+            GetHoopRelativePosition(PlayerState.Instance.raceState.followingTrackPoint) == HoopRelativePosition.After) {
+            PlayerState.Instance.raceState.followingTrackPoint += 1;
+        }
+        // ... or whether he returned before the previous hoop
+        else if (PlayerState.Instance.raceState.followingTrackPoint - 1 >= 0 &&
+                GetHoopRelativePosition(PlayerState.Instance.raceState.followingTrackPoint - 1) == HoopRelativePosition.Before) {
+            PlayerState.Instance.raceState.followingTrackPoint -= 1;
+        }
+    }
+
+    // Detects if player is flying in the opposite direction
+    private void DetectWrongDirection() {
+        // If the player has completed the track there is nothing more to be done
+        if (PlayerState.Instance.raceState.trackPointToPassNext >= PlayerState.Instance.raceState.level.track.Count)
+            return;
+
+        // The player is now between the nextPoint and previousPoint
+        int nextPoint = PlayerState.Instance.raceState.followingTrackPoint;
+        int previousPoint = PlayerState.Instance.raceState.followingTrackPoint - 1;
+
+        // Determine whether the player needs to fly to the higher or lower index
+        // ... if they does not need to go to the lower index (so some corner cases are interpreted as going forward, without warning)
+        bool needsToGoForward = !(PlayerState.Instance.raceState.trackPointToPassNext <= previousPoint);
+
+        // Get direction from one hoop to the other
+        Vector3 direction;
+        // ... resolve corner cases first
+        if (previousPoint < 0) // it is always forward to the first hoop
+            direction = Vector3.forward;
+        else if (nextPoint >= PlayerState.Instance.raceState.level.track.Count) // directly to the last hoop
+            direction = PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0) - player.transform.position.WithY(0);
+        // ... then the standard case
+        else
+            direction = PlayerState.Instance.raceState.level.track[nextPoint].position.WithY(0) - PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0);
+
+        // Reverse if necessary
+        if (!needsToGoForward) direction *= -1;
+
+        // Compare with the player's current direction
+        float angle = Vector3.Angle(direction, player.transform.forward.WithY(0));
+        // Show warning if necessary
+        if (angle > 100) raceHUD.ShowWrongDirectionWarning();
+        // Hide warning if necessary
+        else if (angle < 80) raceHUD.HideWringDirectionWarning();
     }
 }
 

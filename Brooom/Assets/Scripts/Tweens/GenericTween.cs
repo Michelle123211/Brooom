@@ -61,6 +61,10 @@ public class GenericTween : MonoBehaviour {
         InitializeTween();
     }
 
+    public bool IsPlaying() {
+        return tweenIsRunning;
+    }
+
     private void InitializeTween() {
         // Set initial values
         tweenIsRunning = true;
