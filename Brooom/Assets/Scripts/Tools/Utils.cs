@@ -38,7 +38,7 @@ public static class Utils
         int seconds = (int)(timeInSeconds % 60);
         int miliseconds = (int)((timeInSeconds - (minutes * 60) - seconds) * 1000);
         if (minutes > 0)
-            return $"{minutes}:{seconds.ToString("D2")}.{miliseconds}";
+            return $"{minutes}:{seconds.ToString("D2")}.{miliseconds.ToString("D3")}";
         else
             return $"{seconds}.{miliseconds}";
     } 

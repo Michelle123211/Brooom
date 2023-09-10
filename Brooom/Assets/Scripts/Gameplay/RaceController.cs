@@ -189,6 +189,8 @@ public class RaceController : MonoBehaviour {
                         hoopsPassed++;
                     }
                     shouldHighlightNext = true;
+                    // Notify anyone interested that a hoop has been passed
+                    Messaging.SendMessage("HoopAdvance", true);
                 } else { // Player missed
                     if (PlayerState.Instance.raceState.level.track[nextHoopIndex].isCheckpoint) {
                         // Checkpoint cannot be missed - it stays highlighted
@@ -197,6 +199,8 @@ public class RaceController : MonoBehaviour {
                         // Hoops can be missed
                         ReactOnHoopMissed();
                         shouldHighlightNext = true;
+                        // Notify anyone interested that a hoop has been missed
+                        Messaging.SendMessage("HoopAdvance", false);
                     }
                 }
                 // Highlight the next hoop
@@ -271,8 +275,8 @@ public class RaceController : MonoBehaviour {
         // ... resolve corner cases first
         if (previousPoint < 0) // it is always forward to the first hoop
             direction = Vector3.forward;
-        else if (nextPoint >= PlayerState.Instance.raceState.level.track.Count) // directly to the last hoop
-            direction = PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0) - player.transform.position.WithY(0);
+        else if (nextPoint >= PlayerState.Instance.raceState.level.track.Count) // directly between the last hoop and the player
+            direction = player.transform.position.WithY(0) - PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0);
         // ... then the standard case
         else
             direction = PlayerState.Instance.raceState.level.track[nextPoint].position.WithY(0) - PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0);
