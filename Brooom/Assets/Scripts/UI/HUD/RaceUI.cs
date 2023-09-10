@@ -34,9 +34,11 @@ public class RaceUI : MonoBehaviour {
     [Header("Spells")]
     [SerializeField] RaceSpellsUI spellsUI;
 
-    [Header("Whole screen effects")]
+    [Header("Screen overlays")]
     [Tooltip("An overlay over the whole screen used to e.g. color the screen red.")]
     [SerializeField] Image flashingColorOverlay;
+    [Tooltip("A label warning the player that a checkpoint has been missed.")]
+    [SerializeField] GameObject missedCheckpointWarning;
 
     Color[] placeColors = new Color[] { // TODO: Move to a separate color palette
         Utils.ColorFromRBG256(243, 217, 81), // gold
@@ -93,10 +95,13 @@ public class RaceUI : MonoBehaviour {
     }
     #endregion
 
-    #region Screen effects
+    #region Screen overlays
     public void FlashScreenColor(Color color) {
         flashingColorOverlay.color = color;
         flashingColorOverlay.gameObject.TweenAwareEnable();
+    }
+    public void ShowMissedCheckpointWarning() {
+        missedCheckpointWarning.TweenAwareEnable();
     }
 	#endregion
 

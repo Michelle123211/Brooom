@@ -214,7 +214,8 @@ public class RaceController : MonoBehaviour {
             lastCheckpointMissed = PlayerState.Instance.raceState.nextTrackPointIndex;
             // Make the screen red briefly
             raceHUD.FlashScreenColor(Color.red);
-            // TODO: Warn the player that they must return to the checkpoint
+            // Warn the player that they must return to the checkpoint
+            raceHUD.ShowMissedCheckpointWarning();
         }
     }
 
