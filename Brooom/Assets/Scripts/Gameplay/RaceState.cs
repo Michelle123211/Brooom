@@ -115,9 +115,10 @@ public class RaceState {
         }
     }
 
-    // The RaceState is reset at the beginning of a new race
-    public void Reset() {
+    // The RaceState is reset at the beginning of a new level
+    public void ResetAll() {
         level = null;
+        followingTrackPoint = 0;
         trackPointToPassNext = 0;
         this.currentMana = 0;
         // Initialize all spells
@@ -138,9 +139,13 @@ public class RaceState {
     }
 
     public void StartRace() {
+        followingTrackPoint = 0;
+        trackPointToPassNext = 0;
+        this.currentMana = 0;
         // Reset all spells
         for (int i = 0; i < spellSlots.Length; i++) {
             if (spellSlots[i] != null) spellSlots[i].Reset();
         }
+        selectedSpell = 0;
     }
 }

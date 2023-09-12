@@ -42,6 +42,7 @@ public class RaceController : MonoBehaviour {
     // Related objects
     private RaceUI raceHUD;
     private LevelGenerationPipeline levelGenerator;
+    private Transform bonusParent;
     private TrackPointsGenerationRandomWalk trackGenerator;
     private TrackObjectsPlacement hoopsPlacement;
     private MaximumAngleCorrection angleCorrection;
@@ -63,13 +64,30 @@ public class RaceController : MonoBehaviour {
         // TODO: Add everything related to the start of the race
         raceStarted = true;
         PlayerState.Instance.raceState.StartRace();
-        raceHUD.StartRace();
+        raceHUD.StartRace(); // also resets e.g. hoop progress and mana
+        // Show bonuses
+        if (bonusParent != null) bonusParent.gameObject.SetActive(true);
         // Activate the hoops
         foreach (var hoop in PlayerState.Instance.raceState.level.track) {
             hoop.assignedHoop.Activate();
         }
         // Highlight the first hoop
         PlayerState.Instance.raceState.level.track[0].assignedHoop.StartHighlighting();
+        // Place the player
+        player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+        // TODO: Disable player actions
+        // TODO: Place the opponents (with disabled actions)
+        // TODO: Start animation sequence
+        // TODO: At the end of the sequence, show the race countdown
+        // TODO: At the end of the countdown, enable player actions and enable opponents actions
+    }
+
+    private void StartTraining() {
+        // Place the player
+        player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+        // Hide bonuses
+        bonusParent = levelGenerator.transform.Find("Bonus");
+        if (bonusParent != null) bonusParent.gameObject.SetActive(false);
     }
 
     void Start()
@@ -81,12 +99,10 @@ public class RaceController : MonoBehaviour {
         angleCorrection = FindObjectOfType<MaximumAngleCorrection>();
         player = FindObjectOfType<PlayerController>();
         // Initialize state at the beginning
-        PlayerState.Instance.raceState.Reset();
+        PlayerState.Instance.raceState.ResetAll();
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
         PlayerState.Instance.raceState.level = levelGenerator.GenerateLevel();
-        // Place the player
-        player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
         // Initialize HUD
         int checkpointsTotal = 0, hoopsTotal = 0;
         foreach (var trackPoint in PlayerState.Instance.raceState.level.track) {
@@ -94,6 +110,8 @@ public class RaceController : MonoBehaviour {
             else hoopsTotal++;
         }
         raceHUD.InitializeCheckpointsAndHoops(checkpointsTotal, hoopsTotal);
+        // Initialize training
+        StartTraining();
     }
 
     private void SetLevelGeneratorParameters() {
