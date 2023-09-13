@@ -76,18 +76,20 @@ public class RaceController : MonoBehaviour {
         // Place the player
         player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
         // TODO: Disable player actions
-        // TODO: Place the opponents (with disabled actions)
+        // TODO: Place the opponents (with disabled actions, random appearance (character + broom), minimap icon color)
         // TODO: Start animation sequence
         // TODO: At the end of the sequence, show the race countdown
         // TODO: At the end of the countdown, enable player actions and enable opponents actions
     }
 
     private void StartTraining() {
-        // Place the player
-        player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
         // Hide bonuses
         bonusParent = levelGenerator.transform.Find("Bonus");
         if (bonusParent != null) bonusParent.gameObject.SetActive(false);
+        // Place the player
+        player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+        // TODO: Enable player actions
+        // Get reference to CharacterMovementComponent, if isPlayer == true, it is the player, otherwise it is the opponent
     }
 
     void Start()
