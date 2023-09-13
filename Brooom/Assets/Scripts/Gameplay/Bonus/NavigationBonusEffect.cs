@@ -11,7 +11,7 @@ public class NavigationBonusEffect : BonusEffect {
 
 	public HighlightTrajectory trajectoryHighlighterPrefab;
 
-	public override void ApplyBonusEffect(PlayerController player) {
+	public override void ApplyBonusEffect(CharacterMovementController character) {
 		// Instantiate an object travelling between the track points and leaving trail behind
 		HighlightTrajectory highlighter = Instantiate<HighlightTrajectory>(trajectoryHighlighterPrefab, transform.position, Quaternion.identity);
 		int nextHoopIndex = PlayerState.Instance.raceState.trackPointToPassNext;

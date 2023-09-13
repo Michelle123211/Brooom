@@ -5,7 +5,7 @@ using TMPro;
 
 public class ExperimentDisplay : MonoBehaviour
 {
-    public PlayerController player;
+    public CharacterMovementController player;
 
     public TextMeshProUGUI currentSpeedText;
     public TextMeshProUGUI maxSpeedText;

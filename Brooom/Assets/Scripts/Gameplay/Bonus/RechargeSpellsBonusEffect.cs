@@ -5,7 +5,7 @@ using UnityEngine;
 
 // Immediately recharges all equipped spells
 public class RechargeSpellsBonusEffect : BonusEffect {
-	public override void ApplyBonusEffect(PlayerController player) {
+	public override void ApplyBonusEffect(CharacterMovementController character) {
 		PlayerState.Instance.raceState.RechargeAllSpells();
 	}
 

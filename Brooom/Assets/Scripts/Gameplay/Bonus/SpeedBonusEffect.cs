@@ -13,8 +13,8 @@ public class SpeedBonusEffect : BonusEffect
 	[Tooltip("An icon which will be used in the UI of effects affecting the player.")]
 	[SerializeField] Sprite speedIcon;
 
-	public override void ApplyBonusEffect(PlayerController player) {
-		player.SetBonusSpeed(speedAdded, duration);
+	public override void ApplyBonusEffect(CharacterMovementController character) {
+		character.SetBonusSpeed(speedAdded, duration);
 		PlayerState.Instance.raceState.AddEffect(new PlayerEffect(speedIcon, duration));
 	}
 

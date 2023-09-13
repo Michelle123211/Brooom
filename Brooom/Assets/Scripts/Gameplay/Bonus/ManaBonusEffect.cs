@@ -8,7 +8,7 @@ public class ManaBonusEffect : BonusEffect {
 	[Tooltip("How much mana the player gets after picking the bonus up.")]
 	public int manaAmount = 30;
 
-	public override void ApplyBonusEffect(PlayerController player) {
+	public override void ApplyBonusEffect(CharacterMovementController character) {
 		PlayerState.Instance.raceState.ChangeManaAmount(manaAmount);
 	}
 

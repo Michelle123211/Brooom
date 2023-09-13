@@ -46,7 +46,8 @@ public class RaceController : MonoBehaviour {
     private TrackPointsGenerationRandomWalk trackGenerator;
     private TrackObjectsPlacement hoopsPlacement;
     private MaximumAngleCorrection angleCorrection;
-    private PlayerController player;
+    private List<CharacterMovementController> characters;
+    private int playerIndex = 0;
 
 
     private bool raceStarted = false; // distinguish between training and race
@@ -74,7 +75,7 @@ public class RaceController : MonoBehaviour {
         // Highlight the first hoop
         PlayerState.Instance.raceState.level.track[0].assignedHoop.StartHighlighting();
         // Place the player
-        player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+        characters[playerIndex].ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
         // TODO: Disable player actions
         // TODO: Place the opponents (with disabled actions, random appearance (character + broom), minimap icon color)
         // TODO: Start animation sequence
@@ -87,8 +88,9 @@ public class RaceController : MonoBehaviour {
         bonusParent = levelGenerator.transform.Find("Bonus");
         if (bonusParent != null) bonusParent.gameObject.SetActive(false);
         // Place the player
-        player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
-        // TODO: Enable player actions
+        characters[playerIndex].ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+        // Enable player actions
+        characters[playerIndex].ActionsEnabled = true;
         // Get reference to CharacterMovementComponent, if isPlayer == true, it is the player, otherwise it is the opponent
     }
 
@@ -99,12 +101,15 @@ public class RaceController : MonoBehaviour {
         trackGenerator = FindObjectOfType<TrackPointsGenerationRandomWalk>();
         hoopsPlacement = FindObjectOfType<TrackObjectsPlacement>();
         angleCorrection = FindObjectOfType<MaximumAngleCorrection>();
-        player = FindObjectOfType<PlayerController>();
         // Initialize state at the beginning
         PlayerState.Instance.raceState.ResetAll();
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
         PlayerState.Instance.raceState.level = levelGenerator.GenerateLevel();
+        // Get references to the characters
+        characters = Utils.FindObject<CharacterMovementController>();
+        for (int i = 0; i < characters.Count; i++)
+            if (characters[i].isPlayer) playerIndex = i;
         // Initialize HUD
         int checkpointsTotal = 0, hoopsTotal = 0;
         foreach (var trackPoint in PlayerState.Instance.raceState.level.track) {
@@ -163,14 +168,14 @@ public class RaceController : MonoBehaviour {
             // Compare player's next hoop with other racers, then compare distance to the next hoop
         } else { // during training
             if (InputManager.Instance.GetBoolValue("Restart")) {
-                player.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+                characters[playerIndex].ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
                 PlayerState.Instance.raceState.trackPointToPassNext = 0;
             }
         }
 
         // Update UI
         if (raceHUD != null) {
-            raceHUD.UpdatePlayerState(player.GetCurrentSpeed(), player.GetCurrentAltitude());
+            raceHUD.UpdatePlayerState(characters[playerIndex].GetCurrentSpeed(), characters[playerIndex].GetCurrentAltitude());
             // TODO: Change to the actual time from the start of the race (not including training)
             raceTime += Time.deltaTime;
             raceHUD.UpdateTime(raceTime + timePenalization);
@@ -186,7 +191,7 @@ public class RaceController : MonoBehaviour {
     private HoopRelativePosition GetHoopRelativePosition(int hoopIndex) {
         TrackPoint nextHoopPoint = PlayerState.Instance.raceState.level.track[hoopIndex];
         Vector3 dividingVector = nextHoopPoint.assignedHoop.transform.right.WithY(0); // vector dividing space into two parts (before/after the hoop)
-        Vector3 playerVector = player.transform.position.WithY(0) - nextHoopPoint.position.WithY(0); // vector from the hoop to the player
+        Vector3 playerVector = characters[playerIndex].transform.position.WithY(0) - nextHoopPoint.position.WithY(0); // vector from the hoop to the player
         float angle = Vector3.SignedAngle(playerVector, dividingVector, Vector3.up); // angle between the two vectors
         if (angle < 0) return HoopRelativePosition.Before;
         if (angle > 0) return HoopRelativePosition.After;
@@ -296,7 +301,7 @@ public class RaceController : MonoBehaviour {
         if (previousPoint < 0) // it is always forward to the first hoop
             direction = Vector3.forward;
         else if (nextPoint >= PlayerState.Instance.raceState.level.track.Count) // directly between the last hoop and the player
-            direction = player.transform.position.WithY(0) - PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0);
+            direction = characters[playerIndex].transform.position.WithY(0) - PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0);
         // ... then the standard case
         else
             direction = PlayerState.Instance.raceState.level.track[nextPoint].position.WithY(0) - PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0);
@@ -305,7 +310,7 @@ public class RaceController : MonoBehaviour {
         if (!needsToGoForward) direction *= -1;
 
         // Compare with the player's current direction
-        float angle = Vector3.Angle(direction, player.transform.forward.WithY(0));
+        float angle = Vector3.Angle(direction, characters[playerIndex].transform.forward.WithY(0));
         // Show warning if necessary
         if (angle > 100) raceHUD.ShowWrongDirectionWarning();
         // Hide warning if necessary

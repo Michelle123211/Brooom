@@ -167,7 +167,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 170133169353488106}
-  - component: {fileID: 170133169353488110}
+  - component: {fileID: 7880505193574360730}
+  - component: {fileID: 2678651349297665560}
   - component: {fileID: 170133169353488111}
   - component: {fileID: 170133169353488107}
   - component: {fileID: 5414360033389718321}
@@ -200,7 +201,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &170133169353488110
+--- !u!114 &7880505193574360730
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,7 +210,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 170133169353488105}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7f97104db1d04a4e8f2191840ee1d81, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b30631f486d6b04cae70d332e3e657c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
@@ -219,6 +220,19 @@ MonoBehaviour:
   maxRollAngle: 30
   maxPitchAngle: 35
   pitchResponsiveness: 0.01
+  isPlayer: 1
+--- !u!114 &2678651349297665560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170133169353488105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3127c36e6867aed43a1ff287d84141f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &170133169353488111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -764,12 +778,12 @@ PrefabInstance:
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
@@ -869,32 +883,32 @@ PrefabInstance:
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
@@ -1124,32 +1138,32 @@ PrefabInstance:
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 170133169353488110}
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_CallState

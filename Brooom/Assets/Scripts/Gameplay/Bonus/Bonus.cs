@@ -22,22 +22,23 @@ public class Bonus : MonoBehaviour {
     public UnityEvent deactivationEvent;
 
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player")) {
-            // Get the PlayerController component
-            PlayerController player = other.GetComponent<PlayerController>(); // try the colliding object
-            if (player == null)
-                player = other.transform.parent.GetComponent<PlayerController>(); // otherwise try the parent object
-            if (player == null)
-                Debug.LogWarning("OnTriggerEnter() in bonus object is invoked but no PlayerController was found.");
+        if (other.CompareTag("Player") || other.CompareTag("Opponent")) {
+            // Get the CharacterMovementController component
+            CharacterMovementController character = other.GetComponent<CharacterMovementController>(); // try the colliding object
+            if (character == null)
+                character = other.transform.parent.GetComponent<CharacterMovementController>(); // otherwise try the parent object
+            if (character == null)
+                Debug.LogWarning("OnTriggerEnter() in bonus object is invoked but no CharacterMovementController was found.");
             // Invoke the specific event
             BonusEffect effect = GetComponent<BonusEffect>();
-            if (effect != null && player != null)
-                effect.ApplyBonusEffect(player);
+            if (effect != null && character != null)
+                effect.ApplyBonusEffect(character);
             // Invoke the common events (e.g. particles, destroying self)
             if (!Utils.IsNullEvent(pickUpEvent))
                 pickUpEvent.Invoke();
-            // Let anyone interested know that a bonus was picked up
-            Messaging.SendMessage("BonusPickedUp");
+            // Let anyone interested know that a bonus was picked up by the player
+            if (character.isPlayer)
+                Messaging.SendMessage("BonusPickedUp");
             // Deactivate and start reactivation countdown
             Invoke(nameof(Activate), reactivationTime);
             Deactivate();
