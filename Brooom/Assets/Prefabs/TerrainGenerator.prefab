@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1675268942833146961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3068122376443345296}
+  m_Layer: 0
+  m_Name: Opponents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3068122376443345296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675268942833146961}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9042582758647628369}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3290991413137529981
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +268,7 @@ GameObject:
   - component: {fileID: 8828255952473319498}
   - component: {fileID: 1533366935923736327}
   - component: {fileID: 2346958430670841784}
+  - component: {fileID: 4135809981501154050}
   m_Layer: 6
   m_Name: TerrainGenerator
   m_TagString: Untagged
@@ -261,6 +293,7 @@ Transform:
   - {fileID: 2155503869580160128}
   - {fileID: 7380596193040418889}
   - {fileID: 650314752155898272}
+  - {fileID: 3068122376443345296}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -370,6 +403,8 @@ MonoBehaviour:
   - module: {fileID: 1533366935923736327}
     isModuleEnabled: 1
   - module: {fileID: 2346958430670841784}
+    isModuleEnabled: 1
+  - module: {fileID: 4135809981501154050}
     isModuleEnabled: 1
   dimensions: {x: 100, y: 100}
   pointOffset: 2
@@ -990,3 +1025,18 @@ MonoBehaviour:
   borderPrefab: {fileID: 5863173918652967378, guid: 108d2c6f3de342c43991bf461f64661f,
     type: 3}
   borderParent: {fileID: 650314752155898272}
+--- !u!114 &4135809981501154050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042582758647628373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106837b7179602547b05e777dc89b243, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opponentPrefab: {fileID: 0}
+  opponentsCount: 5
+  opponentsParent: {fileID: 0}
