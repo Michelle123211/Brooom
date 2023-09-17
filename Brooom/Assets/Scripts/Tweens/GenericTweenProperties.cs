@@ -74,6 +74,11 @@ public class TweenPropertyAlpha : TweenProperty<float> {
     }
     protected override void SetTweenedPropertyInternal(GameObject target, float time) {
         float currentAlpha = tweenPropertyValues.GetTweenValue(time);
+        var canvasGroup = target.GetComponent<CanvasGroup>();
+        if (canvasGroup != null) {
+            canvasGroup.alpha = currentAlpha;
+            return;
+        }
         var spriteRenderer = target.GetComponent<SpriteRenderer>();
         if (spriteRenderer != null) {
             spriteRenderer.color = spriteRenderer.color.WithA(currentAlpha);
@@ -84,11 +89,7 @@ public class TweenPropertyAlpha : TweenProperty<float> {
             image.color = image.color.WithA(currentAlpha);
             return;
         }
-        var canvasGroup = target.GetComponent<CanvasGroup>();
-        if (canvasGroup != null)
-            canvasGroup.alpha = currentAlpha;
-        else
-            Debug.LogWarning($"Target object ({target.name}) for tweening the alpha does not have a suitable component (e.g. Sprite Renderer, Image, CanvasGroup).");
+        Debug.LogWarning($"Target object ({target.name}) for tweening the alpha does not have a suitable component (e.g. Sprite Renderer, Image, CanvasGroup).");
     }
 }
 
