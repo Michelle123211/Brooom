@@ -22,7 +22,7 @@ public class Bonus : MonoBehaviour {
     public UnityEvent deactivationEvent;
 
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player") || other.CompareTag("Opponent")) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Characters")) {
             // Get the CharacterMovementController component
             CharacterMovementController character = other.GetComponent<CharacterMovementController>(); // try the colliding object
             if (character == null)

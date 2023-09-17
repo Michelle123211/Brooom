@@ -91,6 +91,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dcd437041b1674b8612dd3d5d369ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  otherObjectLayer:
+    serializedVersion: 2
+    m_Bits: 512
   otherObjectTag: Player
   onTriggerEnterCallback:
     m_PersistentCalls:
@@ -382,6 +385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dcd437041b1674b8612dd3d5d369ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  otherObjectLayer:
+    serializedVersion: 2
+    m_Bits: 512
   otherObjectTag: Player
   onTriggerEnterCallback:
     m_PersistentCalls:
