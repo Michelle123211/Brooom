@@ -1037,6 +1037,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106837b7179602547b05e777dc89b243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  opponentPrefab: {fileID: 0}
+  spacing: 2
   opponentsCount: 5
-  opponentsParent: {fileID: 0}
+  opponentPrefab: {fileID: 7379058528382252356, guid: 8b56d100b8391d74c9041cd5987d66f8,
+    type: 3}
+  opponentsParent: {fileID: 3068122376443345296}
