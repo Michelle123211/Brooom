@@ -17,6 +17,8 @@ public class CharacterAppearance : MonoBehaviour
     private CustomizationVariantData currentOutfitCustomization;
     private CustomizationVariantData currentShoesCustomization;
 
+    private CharacterCustomizationOptions customizationOptions;
+
     public void InitializeFromCustomizationData(CharacterCustomizationData customizationData) {
         // Apply all the customizations
         ApplyCustomization(CustomizedPart.SkinTone, customizationData.skinColor);
@@ -24,6 +26,12 @@ public class CharacterAppearance : MonoBehaviour
         ApplyCustomization(CustomizedPart.HairStyle, customizationData.hairStyle);
         ApplyCustomization(CustomizedPart.Outfit, customizationData.outfit);
         ApplyCustomization(CustomizedPart.Shoes, customizationData.shoes);
+    }
+
+    public void RandomizeCharacterCustomization() {
+        CharacterCustomizationData customizationData = new CharacterCustomizationData();
+        customizationData.InitializeToRandomValues(customizationOptions);
+        InitializeFromCustomizationData(customizationData);
     }
 
     public CharacterCustomizationData GetCustomizationData() {
@@ -67,15 +75,17 @@ public class CharacterAppearance : MonoBehaviour
         renderer.sharedMaterials = customization.assignedMaterials;
     }
 
-    void Awake()
-    {
-        InitializeFromCustomizationData(PlayerState.Instance.CharacterCustomization);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void Awake() {
+        customizationOptions = PlayerState.Instance.customizationOptions;
+        // Initialize to the player appearance
+        if (gameObject.CompareTag("Player"))
+            InitializeFromCustomizationData(PlayerState.Instance.CharacterCustomization);
+        // Or to the default values
+        else {
+            CharacterCustomizationData customizationData = new CharacterCustomizationData();
+            customizationData.InitializeToDefaultValues(customizationOptions);
+            InitializeFromCustomizationData(customizationData);
+        }
     }
 }
 

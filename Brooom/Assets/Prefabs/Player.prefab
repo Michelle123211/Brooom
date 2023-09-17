@@ -622,10 +622,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 5823012339945298755, guid: 149184abac261ac42894e03924214111,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 6720980270762024088, guid: 149184abac261ac42894e03924214111,
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7188256804632207335, guid: 149184abac261ac42894e03924214111,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 149184abac261ac42894e03924214111, type: 3}
@@ -753,6 +763,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224150, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
@@ -1348,6 +1363,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Broom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381441234776, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381441234779, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}

@@ -6,8 +6,18 @@ using System.IO;
 // This class is used to provide names for the opponents in leaderboard and the randomization in character creation
 public class NamesManagement : MonoBehaviour
 {
-    public static List<string> LoadNames(string namesFilename) {
-		List<string> names = null;
+	// Name of the file in the StreamingAssets folder containing possible names for the randomization
+	private const string namesFilename = "names.txt";
+
+	private static List<string> possibleNames = null;
+
+	public static string GetRandomName() {
+		if (possibleNames == null || possibleNames.Count == 0)
+			LoadNamesFromFile();
+		return possibleNames[Random.Range(0, possibleNames.Count)];
+	}
+
+	private static void LoadNamesFromFile() {
 		// Load list of names from a file
 		if (string.IsNullOrEmpty(namesFilename)) { // empty filename
 			Debug.LogError($"An empty filename was given for the file containing a list of names.");
@@ -17,16 +27,15 @@ public class NamesManagement : MonoBehaviour
 				if (!File.Exists(path)) { // file does not exist
 					Debug.LogError($"The file '{namesFilename}' does not exist in the StreamingAssets.");
 				} else using (StreamReader reader = new StreamReader(path)) { // reading the file
-						names = ParseNamesFromReader(reader);
+						possibleNames = ParseNamesFromReader(reader);
 					}
 			} catch (IOException ex) { // exception while reading
 				Debug.LogError($"An exception occurred while reading the file '{namesFilename}': {ex.Message}");
 			}
 		}
 		// Make sure there is at least one name
-		if (names == null || names.Count == 0)
-			names = UseDefaultNames();
-		return names;
+		if (possibleNames == null || possibleNames.Count == 0)
+			possibleNames = UseDefaultNames();
 	}
 
 	private static List<string> ParseNamesFromReader(StreamReader reader) {

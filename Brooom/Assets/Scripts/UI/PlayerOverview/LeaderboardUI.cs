@@ -116,8 +116,6 @@ public class LeaderboardUI : MonoBehaviour {
 public class LeaderboardRepresentation {
 	[Tooltip("Total number of opponents.")]
 	public int opponentsCount = 157;
-	[Tooltip("Name of the file in the StreamingAssets folder containing possible names for the opponents.")]
-	public string namesFilename = "names.txt";
 	[Tooltip("Animation Curve which is used to map opponent's place to their average.")]
 	public AnimationCurve placeToAverageCurve;
 	[Tooltip("The average of the weakest opponent.")]
@@ -160,9 +158,7 @@ public class LeaderboardRepresentation {
 		// Use the given place to get the opponent's name
 		if (PlayerState.Instance.knownOpponents != null && PlayerState.Instance.knownOpponents.ContainsKey(place))
 			return PlayerState.Instance.knownOpponents[place]; // opponent on this place has been seen before
-		if (possibleNames == null || possibleNames.Count == 0)
-			possibleNames = NamesManagement.LoadNames(namesFilename);
-		string name = possibleNames[UnityEngine.Random.Range(0, possibleNames.Count)]; // a new random name
+		string name = NamesManagement.GetRandomName(); // a new random name
 		PlayerState.Instance.knownOpponents[place] = name; // store the name among the already known ones
 		return name;
 	}

@@ -19,10 +19,6 @@ public class CharacterCreatorUI : MonoBehaviour
     [SerializeField] ToggleGroup shoesOptions;
     [SerializeField] Button continueButton;
 
-    [Header("Parameters")]
-    [Tooltip("Name of the file in the StreamingAssets folder containing possible names for the randomization.")]
-    public string namesFilename = "names.txt";
-
     private CharacterCustomizationOptions customizationOptions;
     private CharacterCustomizationData customizationData = new CharacterCustomizationData();
 
@@ -58,9 +54,7 @@ public class CharacterCreatorUI : MonoBehaviour
 
     public void RandomizeName() {
         // Select a random name from a large list
-        if (possibleNames == null || possibleNames.Count == 0)
-            possibleNames = NamesManagement.LoadNames(namesFilename);
-        currentName = possibleNames[Random.Range(0, possibleNames.Count)];
+        currentName = NamesManagement.GetRandomName();
         nameInputField.text = currentName;
     }
 

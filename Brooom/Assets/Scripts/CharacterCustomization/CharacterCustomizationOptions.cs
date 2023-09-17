@@ -23,6 +23,23 @@ public class CharacterCustomizationOptions : ScriptableObject
 [System.Serializable]
 public abstract class Customization {
     public abstract IEnumerable<CustomizationVariantData> EnumerateVariants();
+    public int GetVariantCount() {
+        int i = 0;
+        foreach (var variant in EnumerateVariants()) i++;
+        return i;
+    }
+    public CustomizationVariantData GetVariantAt(int index) {
+        int i = 0;
+        foreach (var variant in EnumerateVariants()) {
+            if (i == index) return variant;
+            i++;
+        }
+        return null;
+    }
+    public CustomizationVariantData GetRandomVariant() {
+        int index = Random.Range(0, GetVariantCount());
+        return GetVariantAt(index);
+    }
 }
 
 // A class holding data about available customization options changing only color
@@ -115,6 +132,15 @@ public class CharacterCustomizationData {
         hairColor = customizationOptions.hairColor.EnumerateVariants().First();
         outfit = customizationOptions.outfits.EnumerateVariants().First();
         shoes = customizationOptions.shoes.EnumerateVariants().First();
+    }
+
+    public void InitializeToRandomValues(CharacterCustomizationOptions customizationOptions) {
+        playerName = NamesManagement.GetRandomName();
+        skinColor = customizationOptions.skinTones.GetRandomVariant();
+        hairStyle = customizationOptions.hair.GetRandomVariant();
+        hairColor = customizationOptions.hairColor.GetRandomVariant();
+        outfit = customizationOptions.outfits.GetRandomVariant();
+        shoes = customizationOptions.shoes.GetRandomVariant();
     }
 
     public CharacterCustomizationSaveData GetSaveData() {
