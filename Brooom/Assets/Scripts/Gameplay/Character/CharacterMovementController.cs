@@ -4,7 +4,6 @@ using UnityEngine;
 using DG.Tweening;
 
 
-[RequireComponent(typeof(CharacterInput))]
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterMovementController : MonoBehaviour {
 
@@ -138,6 +137,8 @@ public class CharacterMovementController : MonoBehaviour {
 
     private void Awake() {
         characterInput = GetComponent<CharacterInput>();
+        if (characterInput == null)
+            Debug.LogError("An object with CharacterMovementController component must also have any component derived from CharacterInput (e.g. PlayerCharacterInput, OpponentCharacterInput).");
         rb = GetComponent<Rigidbody>();
         isPlayer = gameObject.CompareTag("Player");
         if (isPlayer)
