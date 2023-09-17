@@ -18,7 +18,7 @@ public class OpponentsGeneration : LevelGeneratorModule {
 			// TODO: Choose a random appearance (randomization similar to the character customization scene, then set in the CharacterAppearance component)
 			// ... along with a random name
 			// TODO: Choose a random broom upgrades (the same altitude as the player, the same total number of upgrades +/- 1 as the player)
-			// TODO: Choose random equipped spells (inly if player has unlocked at least one spell, similar in value and similar number)
+			// TODO: Choose random equipped spells (only if player has unlocked at least one spell, similar in value and similar number)
 			// TODO: Choose and set a minimap icon color
 		}
 	}
