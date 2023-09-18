@@ -9,22 +9,22 @@ public class TriggerCallbacks : MonoBehaviour {
 	[Tooltip("To which layer should the object, activating the trigger, belong.")]
 	[SerializeField] LayerMask otherObjectLayer;
 
-	[Tooltip("What should happen when an object with the given tag enters the trigger.")]
-    [SerializeField] UnityEvent onTriggerEnterCallback;
-	[Tooltip("What should happen when an object with the given tag exits the trigger.")]
-	[SerializeField] UnityEvent onTriggerExitCallback;
+	[Tooltip("What should happen when an object belonging to the required layer enters the trigger. Parameter is the collider of the object.")]
+	[SerializeField] UnityEvent<Collider> onTriggerEnterCallback;
+	[Tooltip("What should happen when an object belonging to the required layer exits the trigger. Parameter is the collider of the object.")]
+	[SerializeField] UnityEvent<Collider> onTriggerExitCallback;
 
 	private void OnTriggerEnter(Collider other) {
 		if (((1 << other.gameObject.layer) & otherObjectLayer) != 0) {
 			if (!Utils.IsNullEvent(onTriggerEnterCallback))
-				onTriggerEnterCallback.Invoke();
+				onTriggerEnterCallback.Invoke(other);
 		}	
 	}
 
 	private void OnTriggerExit(Collider other) {
 		if (((1 << other.gameObject.layer) & otherObjectLayer) != 0) {
 			if (!Utils.IsNullEvent(onTriggerExitCallback))
-				onTriggerExitCallback.Invoke();
+				onTriggerExitCallback.Invoke(other);
 		}
 	}
 }

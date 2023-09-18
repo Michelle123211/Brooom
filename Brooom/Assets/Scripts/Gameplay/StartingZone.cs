@@ -46,7 +46,7 @@ public class StartingZone : MonoBehaviour
 			UpdateCountdownUI();
 			if (currentTime < 0) {
 				// Start the race
-				FindObjectOfType<RaceController>()?.StartRace();
+				RaceController.instance?.StartRace();
 				// Destroy the whole starting zone
 				Destroy(transform.parent.gameObject);
 			}

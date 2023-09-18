@@ -94,14 +94,13 @@ MonoBehaviour:
   otherObjectLayer:
     serializedVersion: 2
     m_Bits: 512
-  otherObjectTag: Player
   onTriggerEnterCallback:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8639878166937494887}
         m_TargetAssemblyTypeName: Hoop, Assembly-CSharp
-        m_MethodName: OnPlayerTriggerEntered
-        m_Mode: 1
+        m_MethodName: OnHoopTriggerEntered
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -115,8 +114,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8639878166937494887}
         m_TargetAssemblyTypeName: Hoop, Assembly-CSharp
-        m_MethodName: OnPlayerTriggerExited
-        m_Mode: 1
+        m_MethodName: OnHoopTriggerExited
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -292,7 +291,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlightArrow: {fileID: 7393766371738250598}
   minimapIcon: {fileID: 140421890969603524}
-  playerDetected: 0
 --- !u!114 &3098164245144789834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,14 +386,13 @@ MonoBehaviour:
   otherObjectLayer:
     serializedVersion: 2
     m_Bits: 512
-  otherObjectTag: Player
   onTriggerEnterCallback:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8639878166937494887}
         m_TargetAssemblyTypeName: Hoop, Assembly-CSharp
-        m_MethodName: OnPlayerTriggerEntered
-        m_Mode: 1
+        m_MethodName: OnHoopTriggerEntered
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -409,8 +406,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8639878166937494887}
         m_TargetAssemblyTypeName: Hoop, Assembly-CSharp
-        m_MethodName: OnPlayerTriggerExited
-        m_Mode: 1
+        m_MethodName: OnHoopTriggerExited
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

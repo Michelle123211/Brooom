@@ -123,4 +123,13 @@ public static class Utils
         }
         return true;
     }
+    public static bool IsNullEvent<T>(UnityEvent<T> unityEvent) {
+        if (unityEvent == null) return true;
+        for (int i = 0; i < unityEvent.GetPersistentEventCount(); i++) {
+            if (unityEvent.GetPersistentTarget(i) != null) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

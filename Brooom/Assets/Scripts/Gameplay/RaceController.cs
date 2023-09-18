@@ -5,6 +5,10 @@ using System;
 using DG.Tweening;
 
 public class RaceController : MonoBehaviour {
+
+    // Simple singleton
+    public static RaceController instance;
+
     [Header("Level length (Endurance)")]
     [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 0.")]
     public int initialNumberOfCheckpoints = 4;
@@ -74,8 +78,8 @@ public class RaceController : MonoBehaviour {
         // Show bonuses
         if (bonusParent != null) bonusParent.gameObject.SetActive(true);
         // Activate the hoops
-        foreach (var hoop in PlayerState.Instance.raceState.level.track) {
-            hoop.assignedHoop.Activate();
+        for (int i = 0; i < PlayerState.Instance.raceState.level.track.Count; i++) {
+            PlayerState.Instance.raceState.level.track[i].assignedHoop.Activate(i);
         }
         // Highlight the first hoop
         PlayerState.Instance.raceState.level.track[0].assignedHoop.StartHighlighting();
@@ -89,6 +93,19 @@ public class RaceController : MonoBehaviour {
         // TODO: At the end of the countdown, enable player actions and enable opponents actions
         foreach (var racer in racers)
             racer.characterController.ActionsEnabled = true;
+    }
+
+    public void OnHoopPassed(int hoopIndex, Collider racerCollider) {
+        // TODO: Handle pasing hoop for the given racer (make sure only the next hoop is considered)
+        CharacterMovementController controller = racerCollider.transform.parent.GetComponent<CharacterMovementController>();
+        if (controller != null) {
+            foreach (var racer in racers) {
+                if (racer.characterController == controller) {
+                    racer.hoopsPassed[hoopIndex] = true;
+                    break;
+                }
+            }
+        }
     }
 
     private void StartTraining() {
@@ -122,6 +139,7 @@ public class RaceController : MonoBehaviour {
         for (int i = 0; i < characters.Count; i++) {
             racers.Add(new RacerRepresentation {
                 characterController = characters[i],
+                hoopsPassed = new bool[PlayerState.Instance.raceState.level.track.Count]
                 // TODO: Add race state assignment
             });
             if (characters[i].isPlayer) playerIndex = i;
@@ -137,7 +155,15 @@ public class RaceController : MonoBehaviour {
         StartTraining();
     }
 
-    private void SetLevelGeneratorParameters() {
+	private void Awake() {
+        instance = this;
+	}
+
+	private void OnDestroy() {
+        instance = null;
+	}
+
+	private void SetLevelGeneratorParameters() {
         // Compute parameters based on player's stats
         // ... number of checkpoints from Endurance
         int numOfCheckpoints = Mathf.RoundToInt(Mathf.Lerp(initialNumberOfCheckpoints, finalNumberOfCheckpoints, PlayerState.Instance.CurrentStats.endurance / 100f));
@@ -226,7 +252,7 @@ public class RaceController : MonoBehaviour {
             HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
             if (relativePosition == HoopRelativePosition.After) { // The player got after the next hoop
                 bool shouldHighlightNext = false;
-                if (PlayerState.Instance.raceState.level.track[nextHoopIndex].assignedHoop.playerDetected) { // Player went through and did not miss
+                if (racers[playerIndex].hoopsPassed[nextHoopIndex]) { // Player went through and did not miss
                     // Update hoop/checkpoint count
                     if (PlayerState.Instance.raceState.level.track[nextHoopIndex].isCheckpoint) {
                         checkpointsPassed++;
@@ -349,6 +375,7 @@ public class RegionUnlockValue {
 // Everything the RaceController needs for a character
 public class RacerRepresentation {
     public CharacterMovementController characterController;
+    public bool[] hoopsPassed;
     // TODO: Add reference to the character's race state (passed/missed hoops, equipped spells and their charge, mana, effects, ...)
 }
 

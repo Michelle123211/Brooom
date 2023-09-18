@@ -9,20 +9,19 @@ public class Hoop : MonoBehaviour {
     [Tooltip("Sprite Renderer representing a minimap icon of the hoop.")]
     [SerializeField] SpriteRenderer minimapIcon;
 
-    [HideInInspector] public bool playerDetected = false;
-
+    private int index = 0; // index of the track point represented by the hoop
     private bool isActive = false; // when active the hoop detects the player flying through it
-    private int numOfTriggersActive = 0; // how many triggers the player entered and have not exited
+    private Dictionary<int, int> activeTriggersCount = new Dictionary<int, int>(); // how many triggers (value) the racer (instanceID is the key) entered and have not exited
 
     private Animator animator;
     private Color minimapIconColor;
 
     // Player flying through the hoop is detected only if the hoop is active
-    public void Activate() {
+    public void Activate(int hoopIndex) {
+        index = hoopIndex;
         isActive = true;
         // Reset
-        playerDetected = false;
-        numOfTriggersActive = 0;
+        activeTriggersCount.Clear();
     }
 
     public void StartHighlighting() {
@@ -41,25 +40,37 @@ public class Hoop : MonoBehaviour {
         minimapIcon.color = minimapIconColor;
     }
 
-    public void OnPlayerTriggerEntered() {
+    public void OnHoopTriggerEntered(Collider otherObject) {
         if (!isActive) return;
-        numOfTriggersActive++;
-        if (numOfTriggersActive == 2) { // there are 2 triggers, both must be active simultaneously
-            playerDetected = true;
+        int instanceID = otherObject.gameObject.GetInstanceID();
+        // Note that the racer with the given instance ID entered the hoop trigger
+        if (activeTriggersCount.TryGetValue(instanceID, out int triggerCount)) {
+            activeTriggersCount[instanceID] = triggerCount + 1;
+        } else {
+            activeTriggersCount[instanceID] = 1;
+        }
+        // If there are 2 triggers active simultaneously, the races has passed through the hoop
+        if (activeTriggersCount.GetValueOrDefault(instanceID) == 2) {
+            RaceController.instance?.OnHoopPassed(index, otherObject);
         }
     }
 
-    public void OnPlayerTriggerExited() {
+    public void OnHoopTriggerExited(Collider otherObject) {
         if (!isActive) return;
-        numOfTriggersActive--;
+        int instanceID = otherObject.gameObject.GetInstanceID();
+        // Note that the racer with the given instance ID exited the hoop trigger
+        if (activeTriggersCount.TryGetValue(instanceID, out int triggerCount)) {
+            activeTriggersCount[instanceID] = triggerCount - 1;
+        }
         // Prevent eventual errors (when activating the hoop while the player is inside a trigger)
-        if (numOfTriggersActive < 0) numOfTriggersActive = 0;
+        if (activeTriggersCount.GetValueOrDefault(instanceID) < 0)
+            activeTriggersCount[instanceID] = 0;
     }
 
 	private void Awake() {
         highlightArrow.SetActive(false);
         animator = GetComponent<Animator>();
         minimapIconColor = minimapIcon.color;
-	}
+    }
 
 }
