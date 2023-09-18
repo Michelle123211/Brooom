@@ -21,7 +21,6 @@ public class OpponentsGeneration : LevelGeneratorModule {
 			Vector3 position = level.playerStartPosition + offset * Vector3.right * spacing;
 			// Instantiate under the common parent
 			OpponentRandomization opponent = Instantiate<OpponentRandomization>(opponentPrefab, position, Quaternion.identity, opponentsParent);
-			opponent.transform.localScale = 0.5f * opponent.transform.localScale;
 			// Randomize the opponent (appearance, name, broom upgrades, equipped spells, minimap icon color)
 			opponent.Randomize();
 		}
