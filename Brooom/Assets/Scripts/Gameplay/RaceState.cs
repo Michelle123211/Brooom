@@ -6,13 +6,6 @@ using UnityEngine;
 
 // A class representing state during the race
 public class RaceState {
-    // Race position
-    public int followingTrackPoint = 0; // position of the player within the track (they are before the hoop with this index)
-    public int trackPointToPassNext = 0; // index of the following hoop the player should fly through
-    public int place;
-    public int hoopsPassed;
-    public int hoopsMissed;
-    public int checkpointsPassed;
     // Regions
     public Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>();
     // Mana
@@ -23,9 +16,6 @@ public class RaceState {
     public int selectedSpell; // index of currently selected spell
 
     // Callbacks
-    public Action<int> onPlayerPlaceChanged; // parameter: new place
-    public Action<int, int> onPassedHoopsChanged; // parameters: checkpoints passed, hoops passed
-    public Action<int> onMissedHoopsChanged; // parameter: missed hoops
     public Action<int> onManaAmountChanged; // parameter: new value
 
     public RaceState() {
@@ -45,25 +35,6 @@ public class RaceState {
 
     public void UpdateRaceState() {
         UpdateSpellsCharge(Time.deltaTime);
-    }
-
-    public void UpdatePlayerPlace(int place) {
-        bool valueChanged = this.place != place;
-        this.place = place;
-        if (valueChanged)
-            onPlayerPlaceChanged?.Invoke(place);
-    }
-
-    public void UpdatePlayerPositionWithinRace(int checkpointsPassed, int hoopsPassed, int hoopsMissed) {
-        // Hoops passed
-        bool valuesChanged = (this.checkpointsPassed != checkpointsPassed || this.hoopsPassed != hoopsPassed);
-        this.checkpointsPassed = checkpointsPassed;
-        this.hoopsPassed = hoopsPassed;
-        if (valuesChanged) onPassedHoopsChanged?.Invoke(checkpointsPassed, hoopsPassed);
-        // Hoops missed
-        valuesChanged = this.hoopsMissed != hoopsMissed;
-        this.hoopsMissed = hoopsMissed;
-        if (valuesChanged) onMissedHoopsChanged?.Invoke(hoopsMissed);
     }
 
     public void ChangeManaAmount(int delta) {
@@ -87,8 +58,6 @@ public class RaceState {
 
     // The RaceState is reset at the beginning of a new level
     public void ResetAll() {
-        followingTrackPoint = 0;
-        trackPointToPassNext = 0;
         this.currentMana = 0;
         // Initialize all spells
         for (int i = 0; i < spellSlots.Length; i++) {
@@ -103,8 +72,6 @@ public class RaceState {
     }
 
     public void StartRace() {
-        followingTrackPoint = 0;
-        trackPointToPassNext = 0;
         this.currentMana = 0;
         // Reset all spells
         for (int i = 0; i < spellSlots.Length; i++) {

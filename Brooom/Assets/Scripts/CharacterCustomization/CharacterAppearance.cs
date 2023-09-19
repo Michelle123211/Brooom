@@ -11,6 +11,8 @@ public class CharacterAppearance : MonoBehaviour
     public SkinnedMeshRenderer outfitRenderer;
     public SkinnedMeshRenderer shoesRenderer;
 
+    [HideInInspector] public string characterName;
+
     private CustomizationVariantData currentSkinCustomization;
     private CustomizationVariantData currentHairColorCustomization;
     private CustomizationVariantData currentHairStyleCustomization;
@@ -20,6 +22,7 @@ public class CharacterAppearance : MonoBehaviour
     private CharacterCustomizationOptions customizationOptions;
 
     public void InitializeFromCustomizationData(CharacterCustomizationData customizationData) {
+        characterName = customizationData.characterName;
         // Apply all the customizations
         ApplyCustomization(CustomizedPart.SkinTone, customizationData.skinColor);
         ApplyCustomization(CustomizedPart.HairColor, customizationData.hairColor);

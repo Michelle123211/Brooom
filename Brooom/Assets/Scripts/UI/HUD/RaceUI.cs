@@ -42,6 +42,8 @@ public class RaceUI : MonoBehaviour {
     [Tooltip("An image warning the player that they are flying in a wrong direction.")]
     [SerializeField] GenericTween wrongDirectionWarning;
 
+    private CharacterRaceState playerRaceState;
+
     Color[] placeColors = new Color[] { // TODO: Move to a separate color palette
         Utils.ColorFromRBG256(243, 217, 81), // gold
         Utils.ColorFromRBG256(164, 164, 164), // silver
@@ -67,8 +69,10 @@ public class RaceUI : MonoBehaviour {
         hoopsTotalText.text = hoopsTotal.ToString();
         hoopsMissedText.text = "";
     }
-    public void UpdatePassedHoops(int checkpointsPassed, int hoopsPassed) {
+    public void UpdatePassedCheckpoints(int checkpointsPassed) {
         checkpointsPassedText.text = checkpointsPassed.ToString();
+    }
+    public void UpdatePassedHoops(int hoopsPassed) {
         hoopsPassedText.text = hoopsPassed.ToString();
     }
     public void UpdateMissedHoops(int hoopsMissed) {
@@ -77,16 +81,13 @@ public class RaceUI : MonoBehaviour {
         // Briefly scale the text up and back down
         EnlargeTextBriefly(hoopsMissedText, 1.5f, 0.5f);
     }
-    public void UpdateTimePenalization(int penalizationInSeconds, bool highlightTime = true) {
+    public void UpdateTimePenalization(int penalizationInSeconds) {
         timePenalizationText.text = $"(+{penalizationInSeconds} s)";
         // Briefly scale the text up and back down
         EnlargeTextBriefly(timePenalizationText, 1.5f, 0.5f);
-        // Highlight the race time text if required
-        if (highlightTime) {
-            // Make the text bigger and red
-            EnlargeTextBriefly(timeText, 1.5f, 0.5f);
-            ChangeTextColorBriefly(timeText, Color.red, 0.5f);
-        }
+        // Highlight the race time text - make it bigger and red
+        EnlargeTextBriefly(timeText, 1.5f, 0.5f);
+        ChangeTextColorBriefly(timeText, Color.red, 0.5f);
     }
     public void UpdatePlace(int place) {
         placeText.text = place.ToString();
@@ -113,11 +114,16 @@ public class RaceUI : MonoBehaviour {
         if (!wrongDirectionWarning.IsPlaying())
             wrongDirectionWarning.DoTween();
     }
-    public void HideWringDirectionWarning() {
+    public void HideWrongDirectionWarning() {
         if (!wrongDirectionWarningVisible) return;
         wrongDirectionWarningVisible = false;
         wrongDirectionWarning.loop = false;
         wrongDirectionWarning.DoTween();
+    }
+    public void ShowHideWrongDirectionWarning(bool show) {
+        wrongDirectionWarning.loop = show;
+        if (show && !wrongDirectionWarning.IsPlaying())
+            wrongDirectionWarning.DoTween();
     }
 	#endregion
 
@@ -146,16 +152,27 @@ public class RaceUI : MonoBehaviour {
     }
 
     private void RegisterCallbacks() {
-        // Register necessary callbacks
-        PlayerState.Instance.raceState.onPlayerPlaceChanged += UpdatePlace;
-        PlayerState.Instance.raceState.onPassedHoopsChanged += UpdatePassedHoops;
-        PlayerState.Instance.raceState.onMissedHoopsChanged += UpdateMissedHoops;
+        // Find the player race state and register necessary callbacks
+        playerRaceState = UtilsMonoBehaviour.FindObjectOfTypeAndTag<CharacterRaceState>("Player");
+        if (playerRaceState != null) {
+            playerRaceState.onPlaceChanged += UpdatePlace;
+            playerRaceState.onPassedCheckpointsChanged += UpdatePassedCheckpoints;
+            playerRaceState.onPassedHoopsChanged += UpdatePassedHoops;
+            playerRaceState.onMissedHoopsChanged += UpdateMissedHoops;
+            playerRaceState.onTimePenalizationChanged += UpdateTimePenalization;
+            playerRaceState.onWrongDirectionChanged += ShowHideWrongDirectionWarning;
+        }
     }
 
     private void UnregisterCallbacks() {
-        PlayerState.Instance.raceState.onPlayerPlaceChanged -= UpdatePlace;
-        PlayerState.Instance.raceState.onPassedHoopsChanged -= UpdatePassedHoops;
-        PlayerState.Instance.raceState.onMissedHoopsChanged -= UpdateMissedHoops;
+        if (playerRaceState != null) {
+            playerRaceState.onPlaceChanged -= UpdatePlace;
+            playerRaceState.onPassedCheckpointsChanged -= UpdatePassedCheckpoints;
+            playerRaceState.onPassedHoopsChanged -= UpdatePassedHoops;
+            playerRaceState.onMissedHoopsChanged -= UpdateMissedHoops;
+            playerRaceState.onTimePenalizationChanged -= UpdateTimePenalization;
+            playerRaceState.onWrongDirectionChanged -= ShowHideWrongDirectionWarning;
+        }
     }
 
     private void EnlargeTextBriefly(TextMeshProUGUI text, float sizeMultiplier, float duration) {

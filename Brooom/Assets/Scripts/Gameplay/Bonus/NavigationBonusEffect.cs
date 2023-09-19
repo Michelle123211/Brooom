@@ -12,9 +12,14 @@ public class NavigationBonusEffect : BonusEffect {
 	public HighlightTrajectory trajectoryHighlighterPrefab;
 
 	public override void ApplyBonusEffect(CharacterMovementController character) {
+		// This bonus is visual, therefore it works for the player only
+		if (!character.CompareTag("Player"))
+			return;
+		
 		// Instantiate an object travelling between the track points and leaving trail behind
 		HighlightTrajectory highlighter = Instantiate<HighlightTrajectory>(trajectoryHighlighterPrefab, transform.position, Quaternion.identity);
-		int nextHoopIndex = PlayerState.Instance.raceState.trackPointToPassNext;
+		CharacterRaceState raceState = character.GetComponent<CharacterRaceState>();
+		int nextHoopIndex = raceState.trackPointToPassNext;
 		for (int i = 0; i < numberOfPoints; i++) {
 			int hoopIndex = nextHoopIndex + i;
 			if (hoopIndex >= RaceController.Instance.level.track.Count) break;

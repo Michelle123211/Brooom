@@ -44,7 +44,7 @@ public class LeaderboardUI : MonoBehaviour {
 
 	private PlayerLeaderboardData ComputePlayerData() {
 		// Name, average, place
-		string name = PlayerState.Instance.CharacterCustomization.playerName;
+		string name = PlayerState.Instance.CharacterCustomization.characterName;
 		float average = PlayerState.Instance.CurrentStats.GetWeightedAverage();
 		int place = leaderboard.GetPlayerPlace(average);
 

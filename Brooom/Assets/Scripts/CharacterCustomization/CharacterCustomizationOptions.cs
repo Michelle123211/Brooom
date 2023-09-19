@@ -117,7 +117,7 @@ public enum CustomizationType {
 
 // The description of appearance of the character
 public class CharacterCustomizationData {
-    public string playerName;
+    public string characterName;
     public CustomizationVariantData skinColor;
     public CustomizationVariantData hairStyle;
     public CustomizationVariantData hairColor;
@@ -125,7 +125,7 @@ public class CharacterCustomizationData {
     public CustomizationVariantData shoes;
 
     public void InitializeToDefaultValues(CharacterCustomizationOptions customizationOptions) {
-        playerName = "";
+        characterName = "";
         // Take the first variant
         skinColor = customizationOptions.skinTones.EnumerateVariants().First();
         hairStyle = customizationOptions.hair.EnumerateVariants().First();
@@ -135,7 +135,7 @@ public class CharacterCustomizationData {
     }
 
     public void InitializeToRandomValues(CharacterCustomizationOptions customizationOptions) {
-        playerName = NamesManagement.GetRandomName();
+        characterName = NamesManagement.GetRandomName();
         skinColor = customizationOptions.skinTones.GetRandomVariant();
         hairStyle = customizationOptions.hair.GetRandomVariant();
         hairColor = customizationOptions.hairColor.GetRandomVariant();
@@ -145,7 +145,7 @@ public class CharacterCustomizationData {
 
     public CharacterCustomizationSaveData GetSaveData() {
         return new CharacterCustomizationSaveData {
-            playerName = playerName,
+            characterName = characterName,
             skinColor = skinColor.assignedColor,
             hairStyleName = hairStyle.variantName,
             hairColor = hairColor.assignedColor,
@@ -156,7 +156,7 @@ public class CharacterCustomizationData {
 
     public void LoadFromSaveData(CharacterCustomizationSaveData saveData, CharacterCustomizationOptions customizationOptions) {
         // First load the primitive types
-        playerName = saveData.playerName;
+        characterName = saveData.characterName;
         skinColor = new CustomizationVariantData(saveData.skinColor);
         hairColor = new CustomizationVariantData(saveData.hairColor);
         // Then search for the variants according to their names among...
@@ -186,7 +186,7 @@ public class CharacterCustomizationData {
     }
 
     private void ReplaceNullsWithDefaults(CharacterCustomizationOptions customizationOptions) {
-        if (playerName == null) playerName = "";
+        if (characterName == null) characterName = "";
         Color newColor = new Color();
         if (skinColor.assignedColor == newColor)
             skinColor = customizationOptions.skinTones.EnumerateVariants().First();
@@ -205,7 +205,7 @@ public class CharacterCustomizationData {
 // The smallest class describing the current appearance of the character
 [System.Serializable]
 public class CharacterCustomizationSaveData {
-    public string playerName;
+    public string characterName;
     public Color skinColor;
     public string hairStyleName;
     public Color hairColor;

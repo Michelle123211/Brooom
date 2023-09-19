@@ -35,7 +35,7 @@ public class CharacterCreatorUI : MonoBehaviour
         PlayerState.Instance.ResetState();
         // Save all the choices (including the name)
         CharacterCustomizationData currentCustomization = character.GetCustomizationData();
-        currentCustomization.playerName = currentName;
+        currentCustomization.characterName = currentName;
         PlayerState.Instance.CharacterCustomization = currentCustomization;
         // Set flag that the game was started
         PlayerPrefs.SetString("GameStarted", "true");

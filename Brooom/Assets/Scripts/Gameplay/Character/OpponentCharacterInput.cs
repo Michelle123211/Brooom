@@ -8,7 +8,7 @@ public class OpponentCharacterInput : CharacterInput {
 	public override CharacterMovementValue GetMovementInput() {
 		// TODO: Return movement values according to the AI
 		return new CharacterMovementValue {
-			forward = ForwardValue.None,
+			forward = ForwardValue.Forward,
 			yaw = YawValue.None,
 			pitch = PitchIValue.None
 		};

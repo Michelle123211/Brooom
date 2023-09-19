@@ -65,11 +65,6 @@ public class RaceController : MonoBehaviour {
     private bool raceStarted = false; // distinguish between training and race
 
     private float raceTime = 0;
-    private float timePenalization = 0; // added to the raceTime
-
-    private int checkpointsPassed = 0;
-    private int hoopsPassed = 0;
-    private int hoopsMissed = 0;
 
 
     // Called when entering the race
@@ -94,20 +89,9 @@ public class RaceController : MonoBehaviour {
         // TODO: Start animation sequence
         // TODO: At the end of the sequence, show the race countdown
         // TODO: At the end of the countdown, enable player actions and enable opponents actions
-        foreach (var racer in racers)
+        foreach (var racer in racers) {
             racer.characterController.ActionsEnabled = true;
-    }
-
-    public void OnHoopPassed(int hoopIndex, Collider racerCollider) {
-        // TODO: Handle pasing hoop for the given racer (make sure only the next hoop is considered)
-        CharacterMovementController controller = racerCollider.transform.parent.GetComponent<CharacterMovementController>();
-        if (controller != null) {
-            foreach (var racer in racers) {
-                if (racer.characterController == controller) {
-                    racer.hoopsPassed[hoopIndex] = true;
-                    break;
-                }
-            }
+            racer.state.SetRaceStarted(true);
         }
     }
 
@@ -140,12 +124,14 @@ public class RaceController : MonoBehaviour {
         List<CharacterMovementController> characters = Utils.FindObject<CharacterMovementController>();
         racers = new List<RacerRepresentation>();
         for (int i = 0; i < characters.Count; i++) {
-            racers.Add(new RacerRepresentation {
+            RacerRepresentation racer = new RacerRepresentation {
+                characterName = characters[i].GetComponentInChildren<CharacterAppearance>().characterName,
                 characterController = characters[i],
-                hoopsPassed = new bool[level.track.Count]
-                // TODO: Add race state assignment
-            });
-            if (characters[i].isPlayer) playerIndex = i;
+                state = characters[i].GetComponent<CharacterRaceState>()
+            };
+            racer.state.Initialize(level.track.Count);
+            racers.Add(racer);
+            if (racer.characterController.isPlayer) playerIndex = i;
         }
         // Initialize HUD
         int checkpointsTotal = 0, hoopsTotal = 0;
@@ -154,6 +140,10 @@ public class RaceController : MonoBehaviour {
             else hoopsTotal++;
         }
         raceHUD.InitializeCheckpointsAndHoops(checkpointsTotal, hoopsTotal);
+        // Register callbacks on player race state changes
+        racers[playerIndex].state.onHoopAdvance += HighlightNextHoop;
+        racers[playerIndex].state.onCheckpointMissed += ReactOnCheckpointMissed;
+        racers[playerIndex].state.onHoopMissed += ReactOnHoopMissed;
         // Initialize training
         StartTraining();
     }
@@ -164,7 +154,11 @@ public class RaceController : MonoBehaviour {
 
 	private void OnDestroy() {
         Instance = null;
-	}
+        // Unregister callbacks on player race state changes
+        racers[playerIndex].state.onHoopAdvance -= HighlightNextHoop;
+        racers[playerIndex].state.onCheckpointMissed -= ReactOnCheckpointMissed;
+        racers[playerIndex].state.onHoopMissed -= ReactOnHoopMissed;
+    }
 
 	private void SetLevelGeneratorParameters() {
         // Compute parameters based on player's stats
@@ -205,18 +199,22 @@ public class RaceController : MonoBehaviour {
             opponentsGenerator.opponentsCount = 5; // TODO: Change this number if necessary, in the future
     }
 
+    // Highlights the next hoop for the player
+    private void HighlightNextHoop() {
+        int nextHoopIndex = racers[playerIndex].state.trackPointToPassNext;
+        level.track[nextHoopIndex - 1].assignedHoop.StopHighlighting();
+        if (nextHoopIndex < level.track.Count)
+            level.track[nextHoopIndex].assignedHoop.StartHighlighting();
+    }
+
     private void Update() {
         if (raceStarted) { // during race
             PlayerState.Instance.raceState.UpdateRaceState();
-            UpdateHoops();
-            UpdatePlayerPositionAndDirection();
-            DetectWrongDirection();
             // TODO: Update player's place
             // Compare player's next hoop with other racers, then compare distance to the next hoop
         } else { // during training
             if (InputManager.Instance.GetBoolValue("Restart")) {
                 racers[playerIndex].characterController.ResetPosition(level.playerStartPosition);
-                PlayerState.Instance.raceState.trackPointToPassNext = 0;
             }
         }
 
@@ -227,143 +225,21 @@ public class RaceController : MonoBehaviour {
                 racers[playerIndex].characterController.GetCurrentAltitude());
             // TODO: Change to the actual time from the start of the race (not including training)
             raceTime += Time.deltaTime;
-            raceHUD.UpdateTime(raceTime + timePenalization);
+            raceHUD.UpdateTime(raceTime + racers[playerIndex].state.timePenalization);
         }
     }
 
-    private enum HoopRelativePosition { 
-        Before,
-        At,
-        After
-    }
-    // Checks whether the player is in the space before or after the hoop with the given index
-    private HoopRelativePosition GetHoopRelativePosition(int hoopIndex) {
-        TrackPoint nextHoopPoint = level.track[hoopIndex];
-        Vector3 dividingVector = nextHoopPoint.assignedHoop.transform.right.WithY(0); // vector dividing space into two parts (before/after the hoop)
-        Vector3 playerVector = racers[playerIndex].characterController.transform.position.WithY(0) - nextHoopPoint.position.WithY(0); // vector from the hoop to the player
-        float angle = Vector3.SignedAngle(playerVector, dividingVector, Vector3.up); // angle between the two vectors
-        if (angle < 0) return HoopRelativePosition.Before;
-        if (angle > 0) return HoopRelativePosition.After;
-        else return HoopRelativePosition.At;
-    }
-
-    // Updates passed checkpoints and hoops
-    // Highlights the next one
-    private void UpdateHoops() {
-        int nextHoopIndex = PlayerState.Instance.raceState.trackPointToPassNext;
-        if (nextHoopIndex < level.track.Count) {
-            HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
-            if (relativePosition == HoopRelativePosition.After) { // The player got after the next hoop
-                bool shouldHighlightNext = false;
-                if (racers[playerIndex].hoopsPassed[nextHoopIndex]) { // Player went through and did not miss
-                    // Update hoop/checkpoint count
-                    if (level.track[nextHoopIndex].isCheckpoint) {
-                        checkpointsPassed++;
-                    } else {
-                        hoopsPassed++;
-                    }
-                    shouldHighlightNext = true;
-                    // Notify anyone interested that a hoop has been passed
-                    Messaging.SendMessage("HoopAdvance", true);
-                } else { // Player missed
-                    if (level.track[nextHoopIndex].isCheckpoint) {
-                        // Checkpoint cannot be missed - it stays highlighted
-                        ReactOnCheckpointMissed();
-                    } else {
-                        // Hoops can be missed
-                        ReactOnHoopMissed();
-                        shouldHighlightNext = true;
-                        // Notify anyone interested that a hoop has been missed
-                        Messaging.SendMessage("HoopAdvance", false);
-                    }
-                }
-                // Highlight the next hoop
-                if (shouldHighlightNext) {
-                    PlayerState.Instance.raceState.trackPointToPassNext = nextHoopIndex + 1;
-                    level.track[nextHoopIndex].assignedHoop.StopHighlighting();
-                    if (nextHoopIndex + 1 < level.track.Count)
-                        level.track[nextHoopIndex + 1].assignedHoop.StartHighlighting();
-                }
-                PlayerState.Instance.raceState.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed, hoopsMissed);
-            }
-        }
-    }
-
-    private int lastCheckpointMissed = -1;
     private void ReactOnCheckpointMissed() {
-        if (PlayerState.Instance.raceState.trackPointToPassNext != lastCheckpointMissed) { // Player should be warned only once for the same checkpoint
-            lastCheckpointMissed = PlayerState.Instance.raceState.trackPointToPassNext;
-            // Make the screen red briefly
-            raceHUD.FlashScreenColor(Color.red);
-            // Warn the player that they must return to the checkpoint
-            raceHUD.ShowMissedCheckpointWarning();
-        }
+        // Make the screen red briefly
+        raceHUD.FlashScreenColor(Color.red);
+        // Warn the player that they must return to the checkpoint
+        raceHUD.ShowMissedCheckpointWarning();
     }
 
     private void ReactOnHoopMissed() {
-        // Update the missed hoops counter and add penalization
-        hoopsMissed++;
-        AddTimePenalization(missedHoopPenalization);
         // Make the screen red briefly
         raceHUD.FlashScreenColor(Color.red);
 
-    }
-
-    private void AddTimePenalization(float penalization) {
-        float currentPenalization = timePenalization + penalization;
-        raceHUD.UpdateTimePenalization(Mathf.RoundToInt(currentPenalization));
-        DOTween.To(() => timePenalization, x => timePenalization = x, currentPenalization, 0.5f);
-    }
-
-    // Updates player's position relatively to the hoops
-    private void UpdatePlayerPositionAndDirection() {
-        // Find between which hoops the player is located
-        // ... whether he is after the following hoop
-        if (PlayerState.Instance.raceState.followingTrackPoint < level.track.Count &&
-            GetHoopRelativePosition(PlayerState.Instance.raceState.followingTrackPoint) == HoopRelativePosition.After) {
-            PlayerState.Instance.raceState.followingTrackPoint += 1;
-        }
-        // ... or whether he returned before the previous hoop
-        else if (PlayerState.Instance.raceState.followingTrackPoint - 1 >= 0 &&
-                GetHoopRelativePosition(PlayerState.Instance.raceState.followingTrackPoint - 1) == HoopRelativePosition.Before) {
-            PlayerState.Instance.raceState.followingTrackPoint -= 1;
-        }
-    }
-
-    // Detects if player is flying in the opposite direction
-    private void DetectWrongDirection() {
-        // If the player has completed the track there is nothing more to be done
-        if (PlayerState.Instance.raceState.trackPointToPassNext >= level.track.Count)
-            return;
-
-        // The player is now between the nextPoint and previousPoint
-        int nextPoint = PlayerState.Instance.raceState.followingTrackPoint;
-        int previousPoint = PlayerState.Instance.raceState.followingTrackPoint - 1;
-
-        // Determine whether the player needs to fly to the higher or lower index
-        // ... if they does not need to go to the lower index (so some corner cases are interpreted as going forward, without warning)
-        bool needsToGoForward = !(PlayerState.Instance.raceState.trackPointToPassNext <= previousPoint);
-
-        // Get direction from one hoop to the other
-        Vector3 direction;
-        // ... resolve corner cases first
-        if (previousPoint < 0) // it is always forward to the first hoop
-            direction = Vector3.forward;
-        else if (nextPoint >= level.track.Count) // directly between the last hoop and the player
-            direction = racers[playerIndex].characterController.transform.position.WithY(0) - level.track[previousPoint].position.WithY(0);
-        // ... then the standard case
-        else
-            direction = level.track[nextPoint].position.WithY(0) - level.track[previousPoint].position.WithY(0);
-
-        // Reverse if necessary
-        if (!needsToGoForward) direction *= -1;
-
-        // Compare with the player's current direction
-        float angle = Vector3.Angle(direction, racers[playerIndex].characterController.transform.forward.WithY(0));
-        // Show warning if necessary
-        if (angle > 100) raceHUD.ShowWrongDirectionWarning();
-        // Hide warning if necessary
-        else if (angle < 80) raceHUD.HideWringDirectionWarning();
     }
 }
 
@@ -377,7 +253,7 @@ public class RegionUnlockValue {
 
 // Everything the RaceController needs for a character
 public class RacerRepresentation {
+    public string characterName = string.Empty;
     public CharacterMovementController characterController;
-    public bool[] hoopsPassed;
-    // TODO: Add reference to the character's race state (passed/missed hoops, equipped spells and their charge, mana, effects, ...)
+    public CharacterRaceState state;
 }
