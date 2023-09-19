@@ -20,14 +20,9 @@ public class EffectsUI : MonoBehaviour {
         // Remove all existing slots
         UtilsMonoBehaviour.RemoveAllChildren(effectSlotsParent);
         // Find the player character and register callback
-        EffectibleCharacter[] characters = FindObjectsOfType<EffectibleCharacter>();
-        foreach (var character in characters) {
-            if (character.CompareTag("Player")) {
-                playerCharacter = character;
-                playerCharacter.onNewEffectAdded += CreateNewEffectSlot;
-                break;
-            }
-        }
+        playerCharacter = UtilsMonoBehaviour.FindObjectOfTypeAndTag<EffectibleCharacter>("Player");
+        if (playerCharacter!= null)
+            playerCharacter.onNewEffectAdded += CreateNewEffectSlot;
     }
 
 	private void OnDestroy() {
