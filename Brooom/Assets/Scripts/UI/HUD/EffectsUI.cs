@@ -8,7 +8,9 @@ public class EffectsUI : MonoBehaviour {
     [Tooltip("A parent object of all the effect slots.")]
     [SerializeField] Transform effectSlotsParent;
 
-    private void CreateNewEffectSlot(PlayerEffect effect) {
+    private EffectibleCharacter playerCharacter;
+
+    private void CreateNewEffectSlot(CharacterEffect effect) {
         EffectSlotUI slot = Instantiate<EffectSlotUI>(effectSlotPrefab, effectSlotsParent);
         slot.Initialize(effect);
     }
@@ -17,12 +19,20 @@ public class EffectsUI : MonoBehaviour {
     {
         // Remove all existing slots
         UtilsMonoBehaviour.RemoveAllChildren(effectSlotsParent);
-        // Register callback
-        PlayerState.Instance.raceState.onNewEffectAdded += CreateNewEffectSlot;
+        // Find the player character and register callback
+        EffectibleCharacter[] characters = FindObjectsOfType<EffectibleCharacter>();
+        foreach (var character in characters) {
+            if (character.CompareTag("Player")) {
+                playerCharacter = character;
+                playerCharacter.onNewEffectAdded += CreateNewEffectSlot;
+                break;
+            }
+        }
     }
 
 	private void OnDestroy() {
         // Unregister callback
-        PlayerState.Instance.raceState.onNewEffectAdded -= CreateNewEffectSlot;
+        if (playerCharacter != null)
+            playerCharacter.onNewEffectAdded -= CreateNewEffectSlot;
     }
 }

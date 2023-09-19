@@ -23,15 +23,12 @@ public class RaceState {
     // Spells
     public SpellInRace[] spellSlots;
     public int selectedSpell; // index of currently selected spell
-    // Effects
-    public List<PlayerEffect> effects = new List<PlayerEffect>();
 
     // Callbacks
     public Action<int> onPlayerPlaceChanged; // parameter: new place
     public Action<int, int> onPassedHoopsChanged; // parameters: checkpoints passed, hoops passed
     public Action<int> onMissedHoopsChanged; // parameter: missed hoops
     public Action<int> onManaAmountChanged; // parameter: new value
-    public Action<PlayerEffect> onNewEffectAdded; // parameter: the added effect
 
     public RaceState() {
         this.maxMana = PlayerState.Instance.maxManaAmount;
@@ -50,7 +47,6 @@ public class RaceState {
 
     public void UpdateRaceState() {
         UpdateSpellsCharge(Time.deltaTime);
-        UpdateEffects(Time.deltaTime);
     }
 
     public void UpdatePlayerPlace(int place) {
@@ -91,30 +87,6 @@ public class RaceState {
         }
     }
 
-    public void AddEffect(PlayerEffect effect) {
-        // If there is already the same effect, increase only the duration
-        foreach (var existingEffect in effects) {
-            if (existingEffect == effect) {
-                existingEffect.OverrideDuration(Mathf.Max(effect.TimeLeft, existingEffect.TimeLeft));
-                return;
-            }
-        }
-        // Otherwise add the new effect and call its start action
-        effects.Add(effect);
-        onNewEffectAdded?.Invoke(effect);
-        effect.onEffectStart?.Invoke();
-    }
-
-    public void UpdateEffects(float timeDelta) {
-        for (int i = effects.Count - 1; i >= 0; i--) {
-            effects[i].Update(timeDelta);
-            if (effects[i].IsFinished()) {
-                effects[i].onEffectEnd?.Invoke();
-                effects.RemoveAt(i);
-            }
-        }
-    }
-
     // The RaceState is reset at the beginning of a new level
     public void ResetAll() {
         level = null;
@@ -131,11 +103,6 @@ public class RaceState {
             }
         }
         selectedSpell = 0;
-        // Reset all effects
-        for (int i = effects.Count - 1; i >= 0; i--) {
-            effects[i].onEffectEnd?.Invoke(); // reverse the effects if any
-            effects.RemoveAt(i);
-        }
     }
 
     public void StartRace() {

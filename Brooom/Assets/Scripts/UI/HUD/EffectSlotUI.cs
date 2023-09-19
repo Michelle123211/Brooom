@@ -11,10 +11,10 @@ public class EffectSlotUI : MonoBehaviour
 	[Tooltip("A label which displays the time left.")]
 	[SerializeField] TextMeshProUGUI effectDurationText;
 
-	private PlayerEffect assignedEffect;
+	private CharacterEffect assignedEffect;
 
 	// Initialization with icon and duration
-	public void Initialize(PlayerEffect effect) {
+	public void Initialize(CharacterEffect effect) {
 		assignedEffect = effect;
 		effectImage.sprite = assignedEffect.Icon;
 		effectDurationText.text = $"{(int)assignedEffect.TimeLeft} s";

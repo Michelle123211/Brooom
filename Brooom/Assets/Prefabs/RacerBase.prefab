@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 170133169353488106}
   - component: {fileID: 7880505193574360730}
+  - component: {fileID: 2333713172298268372}
   - component: {fileID: 170133169353488107}
   - component: {fileID: 4933597784101161968}
   m_Layer: 9
@@ -58,6 +59,18 @@ MonoBehaviour:
   maxPitchAngle: 35
   pitchResponsiveness: 0.01
   isPlayer: 1
+--- !u!114 &2333713172298268372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170133169353488105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e96160d03035e4c8ef03fb35656619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &170133169353488107
 Rigidbody:
   m_ObjectHideFlags: 0
