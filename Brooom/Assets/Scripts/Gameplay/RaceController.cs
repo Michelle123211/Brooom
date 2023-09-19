@@ -7,7 +7,7 @@ using DG.Tweening;
 public class RaceController : MonoBehaviour {
 
     // Simple singleton
-    public static RaceController instance;
+    public static RaceController Instance;
 
     [Header("Level length (Endurance)")]
     [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 0.")]
@@ -52,6 +52,9 @@ public class RaceController : MonoBehaviour {
     private OpponentsGeneration opponentsGenerator;
 
 
+    // Level - to get access to track points and record racers' position within the track
+    public LevelRepresentation level;
+
     private Transform bonusParent;
     private Transform opponentParent;
 
@@ -78,13 +81,13 @@ public class RaceController : MonoBehaviour {
         // Show bonuses
         if (bonusParent != null) bonusParent.gameObject.SetActive(true);
         // Activate the hoops
-        for (int i = 0; i < PlayerState.Instance.raceState.level.track.Count; i++) {
-            PlayerState.Instance.raceState.level.track[i].assignedHoop.Activate(i);
+        for (int i = 0; i < level.track.Count; i++) {
+            level.track[i].assignedHoop.Activate(i);
         }
         // Highlight the first hoop
-        PlayerState.Instance.raceState.level.track[0].assignedHoop.StartHighlighting();
+        level.track[0].assignedHoop.StartHighlighting();
         // Place the player + disable actions
-        racers[playerIndex].characterController.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+        racers[playerIndex].characterController.ResetPosition(level.playerStartPosition);
         racers[playerIndex].characterController.ActionsEnabled = false;
         // Show the opponents
         if (opponentParent != null) opponentParent.gameObject.SetActive(true);
@@ -116,7 +119,7 @@ public class RaceController : MonoBehaviour {
         opponentParent = levelGenerator.transform.Find("Opponents");
         if (opponentParent != null) opponentParent.gameObject.SetActive(false);
         // Place the player + enable actions
-        racers[playerIndex].characterController.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+        racers[playerIndex].characterController.ResetPosition(level.playerStartPosition);
         racers[playerIndex].characterController.ActionsEnabled = true;
     }
 
@@ -132,21 +135,21 @@ public class RaceController : MonoBehaviour {
         PlayerState.Instance.raceState.ResetAll();
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
-        PlayerState.Instance.raceState.level = levelGenerator.GenerateLevel();
+        level = levelGenerator.GenerateLevel();
         // Get references to the characters
         List<CharacterMovementController> characters = Utils.FindObject<CharacterMovementController>();
         racers = new List<RacerRepresentation>();
         for (int i = 0; i < characters.Count; i++) {
             racers.Add(new RacerRepresentation {
                 characterController = characters[i],
-                hoopsPassed = new bool[PlayerState.Instance.raceState.level.track.Count]
+                hoopsPassed = new bool[level.track.Count]
                 // TODO: Add race state assignment
             });
             if (characters[i].isPlayer) playerIndex = i;
         }
         // Initialize HUD
         int checkpointsTotal = 0, hoopsTotal = 0;
-        foreach (var trackPoint in PlayerState.Instance.raceState.level.track) {
+        foreach (var trackPoint in level.track) {
             if (trackPoint.isCheckpoint) checkpointsTotal++;
             else hoopsTotal++;
         }
@@ -156,11 +159,11 @@ public class RaceController : MonoBehaviour {
     }
 
 	private void Awake() {
-        instance = this;
+        Instance = this;
 	}
 
 	private void OnDestroy() {
-        instance = null;
+        Instance = null;
 	}
 
 	private void SetLevelGeneratorParameters() {
@@ -212,7 +215,7 @@ public class RaceController : MonoBehaviour {
             // Compare player's next hoop with other racers, then compare distance to the next hoop
         } else { // during training
             if (InputManager.Instance.GetBoolValue("Restart")) {
-                racers[playerIndex].characterController.ResetPosition(PlayerState.Instance.raceState.level.playerStartPosition);
+                racers[playerIndex].characterController.ResetPosition(level.playerStartPosition);
                 PlayerState.Instance.raceState.trackPointToPassNext = 0;
             }
         }
@@ -235,7 +238,7 @@ public class RaceController : MonoBehaviour {
     }
     // Checks whether the player is in the space before or after the hoop with the given index
     private HoopRelativePosition GetHoopRelativePosition(int hoopIndex) {
-        TrackPoint nextHoopPoint = PlayerState.Instance.raceState.level.track[hoopIndex];
+        TrackPoint nextHoopPoint = level.track[hoopIndex];
         Vector3 dividingVector = nextHoopPoint.assignedHoop.transform.right.WithY(0); // vector dividing space into two parts (before/after the hoop)
         Vector3 playerVector = racers[playerIndex].characterController.transform.position.WithY(0) - nextHoopPoint.position.WithY(0); // vector from the hoop to the player
         float angle = Vector3.SignedAngle(playerVector, dividingVector, Vector3.up); // angle between the two vectors
@@ -248,13 +251,13 @@ public class RaceController : MonoBehaviour {
     // Highlights the next one
     private void UpdateHoops() {
         int nextHoopIndex = PlayerState.Instance.raceState.trackPointToPassNext;
-        if (nextHoopIndex < PlayerState.Instance.raceState.level.track.Count) {
+        if (nextHoopIndex < level.track.Count) {
             HoopRelativePosition relativePosition = GetHoopRelativePosition(nextHoopIndex);
             if (relativePosition == HoopRelativePosition.After) { // The player got after the next hoop
                 bool shouldHighlightNext = false;
                 if (racers[playerIndex].hoopsPassed[nextHoopIndex]) { // Player went through and did not miss
                     // Update hoop/checkpoint count
-                    if (PlayerState.Instance.raceState.level.track[nextHoopIndex].isCheckpoint) {
+                    if (level.track[nextHoopIndex].isCheckpoint) {
                         checkpointsPassed++;
                     } else {
                         hoopsPassed++;
@@ -263,7 +266,7 @@ public class RaceController : MonoBehaviour {
                     // Notify anyone interested that a hoop has been passed
                     Messaging.SendMessage("HoopAdvance", true);
                 } else { // Player missed
-                    if (PlayerState.Instance.raceState.level.track[nextHoopIndex].isCheckpoint) {
+                    if (level.track[nextHoopIndex].isCheckpoint) {
                         // Checkpoint cannot be missed - it stays highlighted
                         ReactOnCheckpointMissed();
                     } else {
@@ -277,9 +280,9 @@ public class RaceController : MonoBehaviour {
                 // Highlight the next hoop
                 if (shouldHighlightNext) {
                     PlayerState.Instance.raceState.trackPointToPassNext = nextHoopIndex + 1;
-                    PlayerState.Instance.raceState.level.track[nextHoopIndex].assignedHoop.StopHighlighting();
-                    if (nextHoopIndex + 1 < PlayerState.Instance.raceState.level.track.Count)
-                        PlayerState.Instance.raceState.level.track[nextHoopIndex + 1].assignedHoop.StartHighlighting();
+                    level.track[nextHoopIndex].assignedHoop.StopHighlighting();
+                    if (nextHoopIndex + 1 < level.track.Count)
+                        level.track[nextHoopIndex + 1].assignedHoop.StartHighlighting();
                 }
                 PlayerState.Instance.raceState.UpdatePlayerPositionWithinRace(checkpointsPassed, hoopsPassed, hoopsMissed);
             }
@@ -316,7 +319,7 @@ public class RaceController : MonoBehaviour {
     private void UpdatePlayerPositionAndDirection() {
         // Find between which hoops the player is located
         // ... whether he is after the following hoop
-        if (PlayerState.Instance.raceState.followingTrackPoint < PlayerState.Instance.raceState.level.track.Count &&
+        if (PlayerState.Instance.raceState.followingTrackPoint < level.track.Count &&
             GetHoopRelativePosition(PlayerState.Instance.raceState.followingTrackPoint) == HoopRelativePosition.After) {
             PlayerState.Instance.raceState.followingTrackPoint += 1;
         }
@@ -330,7 +333,7 @@ public class RaceController : MonoBehaviour {
     // Detects if player is flying in the opposite direction
     private void DetectWrongDirection() {
         // If the player has completed the track there is nothing more to be done
-        if (PlayerState.Instance.raceState.trackPointToPassNext >= PlayerState.Instance.raceState.level.track.Count)
+        if (PlayerState.Instance.raceState.trackPointToPassNext >= level.track.Count)
             return;
 
         // The player is now between the nextPoint and previousPoint
@@ -346,11 +349,11 @@ public class RaceController : MonoBehaviour {
         // ... resolve corner cases first
         if (previousPoint < 0) // it is always forward to the first hoop
             direction = Vector3.forward;
-        else if (nextPoint >= PlayerState.Instance.raceState.level.track.Count) // directly between the last hoop and the player
-            direction = racers[playerIndex].characterController.transform.position.WithY(0) - PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0);
+        else if (nextPoint >= level.track.Count) // directly between the last hoop and the player
+            direction = racers[playerIndex].characterController.transform.position.WithY(0) - level.track[previousPoint].position.WithY(0);
         // ... then the standard case
         else
-            direction = PlayerState.Instance.raceState.level.track[nextPoint].position.WithY(0) - PlayerState.Instance.raceState.level.track[previousPoint].position.WithY(0);
+            direction = level.track[nextPoint].position.WithY(0) - level.track[previousPoint].position.WithY(0);
 
         // Reverse if necessary
         if (!needsToGoForward) direction *= -1;

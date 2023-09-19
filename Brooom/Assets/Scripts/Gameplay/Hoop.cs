@@ -51,7 +51,7 @@ public class Hoop : MonoBehaviour {
         }
         // If there are 2 triggers active simultaneously, the races has passed through the hoop
         if (activeTriggersCount.GetValueOrDefault(instanceID) == 2) {
-            RaceController.instance?.OnHoopPassed(index, otherObject);
+            RaceController.Instance?.OnHoopPassed(index, otherObject);
         }
     }
 

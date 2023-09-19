@@ -6,8 +6,6 @@ using UnityEngine;
 
 // A class representing state during the race
 public class RaceState {
-    // Level - to get access to track points and record player's position within the track
-    public LevelRepresentation level;
     // Race position
     public int followingTrackPoint = 0; // position of the player within the track (they are before the hoop with this index)
     public int trackPointToPassNext = 0; // index of the following hoop the player should fly through
@@ -89,7 +87,6 @@ public class RaceState {
 
     // The RaceState is reset at the beginning of a new level
     public void ResetAll() {
-        level = null;
         followingTrackPoint = 0;
         trackPointToPassNext = 0;
         this.currentMana = 0;
