@@ -111,10 +111,17 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     #region Broom Upgrades
     public float maxAltitude = 15f; // Maximum Y coordinate the player can fly up to
     private Dictionary<string, Tuple<int, int>> broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>(); // current and maximum level for each upgrade
+    private bool broomUpgradesLoaded = false; // if the data is loaded from a saved state
 
     // Returns the highest purchased level of the given broom upgrade
     // Or -1 if the given broom upgrade is not known
     public int GetBroomUpgradeLevel(string upgradeName) {
+        // Load from the saved state if necessary - enables loading it even before the whole PlayerState(e.g. in the main menu)
+        if (!broomUpgradesLoaded) {
+            BroomUpgradesSaveData broomUpgrades = SaveSystem.LoadBroomUpgrades();
+            LoadFromSavedBroomUpgrades(broomUpgrades);
+            broomUpgradesLoaded = true;
+        }
         if (broomUpgradeLevels.ContainsKey(upgradeName))
             return broomUpgradeLevels[upgradeName].Item1;
         else {
@@ -155,6 +162,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public void SaveCurrentState() {
         // Use SaveSystem to save all the player's state
         // ...character customization is saved automatically in its setter
+        // ...player state
         SaveSystem.SavePlayerState(new PlayerStateSaveData {
             gameComplete = this.GameComplete,
             stats = new StatisticsSaveData { 
@@ -164,7 +172,9 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             coins = this.coins,
             KnownOpponents = this.knownOpponents
         });
+        // ...broom upgrades
         SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.broomUpgradeLevels });
+        // ...purchased and equipped spells
         SaveSystem.SaveSpells(new SpellsSaveData { 
             EquippedSpells = this.equippedSpells,
             SpellsAvailability = this.spellAvailability
@@ -192,6 +202,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 	public void ResetState() {
         // Initialize everything in player's state to default values
         InitializeSingleton();
+        broomUpgradesLoaded = true;
         // Reset AchievementManager data
         AchievementManager.Instance.ResetAchievementsProgress();
         // Save the default state
@@ -214,6 +225,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     private void LoadFromSavedBroomUpgrades(BroomUpgradesSaveData broomUpgrades) {
         if (broomUpgrades != null && broomUpgrades.UpgradeLevels != null) {
             this.broomUpgradeLevels = broomUpgrades.UpgradeLevels;
+            broomUpgradesLoaded = true;
         }
     }
 
@@ -243,18 +255,11 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         // ...broom upgrades
         maxAltitude = 15f;
         broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>();
+        broomUpgradesLoaded = false;
         // ...opponents
         knownOpponents = new Dictionary<int, string>();
         // ...race state
         raceState = new RaceState();
-
-        // TODO: DEBUG only, remove
-        equippedSpells[0] = new Spell();
-        equippedSpells[0].identifier = "Test";
-        equippedSpells[1] = new Spell();
-        equippedSpells[1].identifier = "Test";
-        equippedSpells[3] = new Spell();
-        equippedSpells[3].identifier = "Test";
     }
 
     public void AwakeSingleton() {

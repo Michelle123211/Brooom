@@ -12,9 +12,6 @@ public class Broom : MonoBehaviour
 	public void UpdateFromPlayerState() {
 		foreach (var upgrade in upgradesAvailable) {
 			int targetLevel = PlayerState.Instance.GetBroomUpgradeLevel(upgrade.UpgradeName);
-			if (targetLevel == -1) { // this broom upgrade is not known, register it
-				PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, 0, upgrade.MaxLevel);
-			}
 			while (upgrade.CurrentLevel < targetLevel)
 				upgrade.LevelUp();
 		}
