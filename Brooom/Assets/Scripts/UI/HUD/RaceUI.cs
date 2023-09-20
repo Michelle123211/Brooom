@@ -138,17 +138,13 @@ public class RaceUI : MonoBehaviour {
 
 	public void StartRace() {
         // TODO: Hide all elements which are visible only during the training
-        // TODO: Uncomment when finished debugging
-        //enteringRaceCountdownText.gameObject.SetActive(false);
-        //startRaceText.gameObject.SetActive(false);
-        // ...
         // TODO: Initialize all elements
         ResetRaceState();
         spellsUI.ResetState();
         // TODO: Show elements visible only during the race
-        //timeObject.SetActive(true);
-        //placeObject.SetActive(true);
-        //spellsObject.SetActive(true);
+        timeObject.SetActive(true);
+        placeObject.SetActive(true);
+        spellsUI.gameObject.SetActive(true); // TODO: Show only if the player has some spells unlocked
     }
 
     private void RegisterCallbacks() {
@@ -193,10 +189,9 @@ public class RaceUI : MonoBehaviour {
         // Register necessary callbacks
         RegisterCallbacks();
         // TODO: Hide all elements which should not be visible during training
-        // TODO: Uncomment when finished debugging
-        //timeObject.SetActive(false);
-        //placeObject.SetActive(false);
-        //spellsObject.SetActive(false);
+        timeObject.SetActive(false);
+        placeObject.SetActive(false);
+        spellsUI.gameObject.SetActive(false);
     }
 
 	private void OnDestroy() {

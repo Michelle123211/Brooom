@@ -29,7 +29,6 @@ public class RaceSpellsUI : MonoBehaviour {
         InitializeSpellSlots();
         InitializeSelectedSpell();
         InitializeMana();
-        gameObject.SetActive(true);
     }
 
     public void UpdateManaAmount(int amount) {
@@ -83,7 +82,6 @@ public class RaceSpellsUI : MonoBehaviour {
 
     private void Start() {
         PlayerState.Instance.raceState.onManaAmountChanged += UpdateManaAmount;
-        gameObject.SetActive(false);
     }
 
 	private void Update() {

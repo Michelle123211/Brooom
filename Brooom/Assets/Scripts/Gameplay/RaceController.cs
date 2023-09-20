@@ -63,7 +63,6 @@ public class RaceController : MonoBehaviour {
 
 
     private bool raceStarted = false; // distinguish between training and race
-
     private float raceTime = 0;
 
 
@@ -71,6 +70,7 @@ public class RaceController : MonoBehaviour {
     public void StartRace() {
         // TODO: Add everything related to the start of the race
         raceStarted = true;
+        raceTime = 0;
         PlayerState.Instance.raceState.StartRace();
         raceHUD.StartRace(); // also resets e.g. hoop progress and mana
         // Show bonuses
@@ -209,6 +209,9 @@ public class RaceController : MonoBehaviour {
 
     private void Update() {
         if (raceStarted) { // during race
+            // Time from start of the race
+            raceTime += Time.deltaTime;
+            raceHUD.UpdateTime(raceTime + racers[playerIndex].state.timePenalization);
             PlayerState.Instance.raceState.UpdateRaceState();
             // TODO: Update player's place
             // Compare player's next hoop with other racers, then compare distance to the next hoop
@@ -223,9 +226,6 @@ public class RaceController : MonoBehaviour {
             raceHUD.UpdatePlayerState(
                 racers[playerIndex].characterController.GetCurrentSpeed(),
                 racers[playerIndex].characterController.GetCurrentAltitude());
-            // TODO: Change to the actual time from the start of the race (not including training)
-            raceTime += Time.deltaTime;
-            raceHUD.UpdateTime(raceTime + racers[playerIndex].state.timePenalization);
         }
     }
 
