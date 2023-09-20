@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 
 [System.Serializable]
@@ -33,42 +34,28 @@ public class SpellInRace {
     }
 
     public void CastSpell() {
-        if (spell == null) return;
-        if (charge >= 1 && PlayerState.Instance.raceState.currentMana >= spell.manaCost) {
-            PlayerState.Instance.raceState.ChangeManaAmount(-spell.manaCost);
-            // TODO: Invoke effect of the spell
-            // TODO: Tween the charge value so that the decrease is animated
-            charge = 0;
-            UpdateAvailability();
-            // Notify anyone interested that a spell has been casted
-            Messaging.SendMessage("SpellCasted");
-        }
+        // TODO: Invoke effect of the spell
+        // TODO: Tween the charge value so that the decrease is animated
+        charge = 0;
     }
 
     public void Recharge() {
         // TODO: Tween the value to animate the increase
         this.charge = 1;
-        UpdateAvailability();
     }
 
     public void UpdateCharge(float timeDelta) {
         if (spell == null) return;
         this.charge = Mathf.Clamp(this.charge + (timeDelta / spell.cooldown), 0, 1);
-        UpdateAvailability();
     }
 
-    public void Reset() {
-        charge = 1; // it is fully charged at the beginning
-        UpdateAvailability();
-    }
-
-    public bool IsSpellAvailable() {
+    public bool IsSpellAvailable(int currentMana) {
         if (spell == null || string.IsNullOrEmpty(spell.identifier)) return false;
-        return this.charge >= 1 && PlayerState.Instance.raceState.currentMana >= spell.manaCost; // fully charged and enough mana
+        return this.charge >= 1 && currentMana >= spell.manaCost; // fully charged and enough mana
     }
 
-    private void UpdateAvailability() {
-        bool newAvailability = IsSpellAvailable();
+    public void UpdateAvailability(int currentMana) {
+        bool newAvailability = IsSpellAvailable(currentMana);
         // Check if the state changed
         bool becomesAvailable = false;
         bool becomesUnavailable = false;
@@ -80,5 +67,9 @@ public class SpellInRace {
         // Invoke callbacks
         if (becomesAvailable) onBecomesAvailable?.Invoke();
         if (becomesUnavailable) onBecomesUnavailable?.Invoke();
+    }
+
+    public void Reset() {
+        charge = 1; // it is fully charged at the beginning
     }
 }

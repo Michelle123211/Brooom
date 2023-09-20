@@ -10,6 +10,7 @@ public class OpponentRandomization : MonoBehaviour
 		// Choose random levels of broom upgrades
 		GetComponentInChildren<Broom>()?.RandomizeStateCloseToPlayer();
 		// TODO: Choose random equipped spells (only if player has unlocked at least one spell, similar in value and similar number)
+		GetComponent<SpellController>()?.RandomizeEquippedSpells();
 		// TODO: Choose and set a minimap icon color
 	}
 }

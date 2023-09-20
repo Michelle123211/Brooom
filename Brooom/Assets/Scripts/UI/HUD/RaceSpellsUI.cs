@@ -21,14 +21,21 @@ public class RaceSpellsUI : MonoBehaviour {
 
 
     private RaceSpellSlotUI[] spellSlots;
-    private int selectedSpell = -1;
     private int highlightedSpell = -1;
 
+    private SpellController playerSpellController;
 
-    public void ResetState() {
-        InitializeSpellSlots();
-        InitializeSelectedSpell();
-        InitializeMana();
+    public void Initialize(GameObject playerObject) {
+        this.playerSpellController = playerObject.GetComponent<SpellController>();
+        // Show only if the player has some spells equipped
+        if (playerSpellController.HasEquippedSpells()) {
+            gameObject.SetActive(true);
+            StartCoroutine(InitializeSpellSlots());
+            InitializeMana();
+            // Register callbacks
+            playerSpellController.onManaAmountChanged += UpdateManaAmount;
+            playerSpellController.onSelectedSpellChanged += HighlightSelectedSpell;
+        }
     }
 
     public void UpdateManaAmount(int amount) {
@@ -39,64 +46,27 @@ public class RaceSpellsUI : MonoBehaviour {
         manaText.text = amount.ToString();
     }
 
-	private void InitializeSpellSlots() {
+	private IEnumerator InitializeSpellSlots() {
         // Remove all existing slots
         UtilsMonoBehaviour.RemoveAllChildren(spellSlotsParent);
         // Instantiate new slots
-        spellSlots = new RaceSpellSlotUI[PlayerState.Instance.raceState.spellSlots.Length];
+        spellSlots = new RaceSpellSlotUI[playerSpellController.spellSlots.Length];
         for (int i = 0; i < spellSlots.Length; i++) {
             spellSlots[i] = Instantiate<RaceSpellSlotUI>(spellSlotPrefab, spellSlotsParent);
-            spellSlots[i].Initialize(PlayerState.Instance.raceState.spellSlots[i]);
+            spellSlots[i].Initialize(playerSpellController.spellSlots[i]);
         }
-    }
-
-    private void InitializeSelectedSpell() {
-        // Use the first non-empty slot as the selected one
-        for (int i = 0; i < spellSlots.Length; i++) {
-            if (!spellSlots[i].isEmpty) {
-                selectedSpell = i;
-                break;
-            }
-        }
-        // If there is no equipped spell, hide the highlight border
-        highlightBorder.gameObject.SetActive(selectedSpell >= 0);
+        // Wait 1 frame before highlighting the selected slot (so the LayoutGroup is rebuild)
+        yield return null;
+        HighlightSelectedSpell(playerSpellController.selectedSpell);
     }
 
     private void InitializeMana() {
-        manaBar.maxValue = PlayerState.Instance.maxManaAmount;
-        manaBar.value = PlayerState.Instance.raceState.currentMana;
+        manaBar.maxValue = playerSpellController.maxMana;
+        manaBar.value = playerSpellController.currentMana;
         manaText.text = manaBar.value.ToString();
     }
 
-    // direction ... Decreasing = lower index, Increasing = higher index
-    private int ChangeSelectedSpell(IterationDirection direction) {
-        // Choose the first non-empty slot in the given direction
-        int increment = (int)direction;
-        for (int i = selectedSpell + increment; i >= 0 && i < spellSlots.Length; i = i + increment) {
-            if (!spellSlots[i].isEmpty) return i;
-        }
-        return selectedSpell;
-    }
-
-    // TODO: Tween the scale of the selected spell slot (pulse)
-
-    private void Start() {
-        PlayerState.Instance.raceState.onManaAmountChanged += UpdateManaAmount;
-    }
-
-	private void Update() {
-        // Detect mouse click and cast the currently selected spell
-        if (Input.GetMouseButtonDown(0)) {
-            spellSlots[selectedSpell].assignedSpell.CastSpell();
-        }
-        // Detect mouse wheel and change the currently selected spell
-        // TODO: Try it with other HW if it works just like that everywhere (or it is necessary to e.g. accumulate value over frames, change spell if over some threshold, use mouse sensitivity)
-        float scroll = Input.mouseScrollDelta.y;
-        if (scroll != 0) {
-            if (scroll > 0) selectedSpell = ChangeSelectedSpell(IterationDirection.Decreasing); // up
-            else            selectedSpell = ChangeSelectedSpell(IterationDirection.Increasing); // down
-        }
-
+    private void HighlightSelectedSpell(int selectedSpell) {
         // Highlight the selected slot - move the highlight border
         if (highlightedSpell != selectedSpell) { // the spell to highlight changed
             if (highlightedSpell >= 0) spellSlots[highlightedSpell].Deselect();
@@ -107,12 +77,20 @@ public class RaceSpellsUI : MonoBehaviour {
                 spellSlots[highlightedSpell].Select();
             }
         }
+    }
 
+    // TODO: Tween the scale of the selected spell slot (pulse)
+
+	private void Update() {
         // Update mana bar
         UpdateManaAmountText(manaBar.value);
     }
 
 	private void OnDestroy() {
-        PlayerState.Instance.raceState.onManaAmountChanged -= UpdateManaAmount;
+        // Unregister callbacks
+        if (playerSpellController.HasEquippedSpells()) {
+            playerSpellController.onManaAmountChanged -= UpdateManaAmount;
+            playerSpellController.onSelectedSpellChanged -= HighlightSelectedSpell;
+        }
     }
 }

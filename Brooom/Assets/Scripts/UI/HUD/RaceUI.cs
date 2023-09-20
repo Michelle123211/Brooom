@@ -140,16 +140,13 @@ public class RaceUI : MonoBehaviour {
         // TODO: Hide all elements which are visible only during the training
         // TODO: Initialize all elements
         ResetRaceState();
-        spellsUI.ResetState();
         // TODO: Show elements visible only during the race
         timeObject.SetActive(true);
         placeObject.SetActive(true);
-        spellsUI.gameObject.SetActive(true); // TODO: Show only if the player has some spells unlocked
+        spellsUI.Initialize(playerRaceState.gameObject); // initialize and show
     }
 
     private void RegisterCallbacks() {
-        // Find the player race state and register necessary callbacks
-        playerRaceState = UtilsMonoBehaviour.FindObjectOfTypeAndTag<CharacterRaceState>("Player");
         if (playerRaceState != null) {
             playerRaceState.onPlaceChanged += UpdatePlace;
             playerRaceState.onPassedCheckpointsChanged += UpdatePassedCheckpoints;
@@ -186,9 +183,11 @@ public class RaceUI : MonoBehaviour {
     private void Start() {
         // Initialize everything
         ResetRaceState();
+        // Find the player race state
+        playerRaceState = UtilsMonoBehaviour.FindObjectOfTypeAndTag<CharacterRaceState>("Player");
         // Register necessary callbacks
         RegisterCallbacks();
-        // TODO: Hide all elements which should not be visible during training
+        // Hide all elements which should not be visible during training
         timeObject.SetActive(false);
         placeObject.SetActive(false);
         spellsUI.gameObject.SetActive(false);

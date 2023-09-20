@@ -71,7 +71,6 @@ public class RaceController : MonoBehaviour {
         // TODO: Add everything related to the start of the race
         raceStarted = true;
         raceTime = 0;
-        PlayerState.Instance.raceState.StartRace();
         raceHUD.StartRace(); // also resets e.g. hoop progress and mana
         // Show bonuses
         if (bonusParent != null) bonusParent.gameObject.SetActive(true);
@@ -115,8 +114,6 @@ public class RaceController : MonoBehaviour {
         hoopsPlacement = levelGenerator.GetComponent<TrackObjectsPlacement>();
         angleCorrection = levelGenerator.GetComponent<MaximumAngleCorrection>();
         opponentsGenerator = levelGenerator.GetComponent<OpponentsGeneration>();
-        // Initialize state at the beginning
-        PlayerState.Instance.raceState.ResetAll();
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
         level = levelGenerator.GenerateLevel();
@@ -212,7 +209,6 @@ public class RaceController : MonoBehaviour {
             // Time from start of the race
             raceTime += Time.deltaTime;
             raceHUD.UpdateTime(raceTime + racers[playerIndex].state.timePenalization);
-            PlayerState.Instance.raceState.UpdateRaceState();
             // TODO: Update player's place
             // Compare player's next hoop with other racers, then compare distance to the next hoop
         } else { // during training

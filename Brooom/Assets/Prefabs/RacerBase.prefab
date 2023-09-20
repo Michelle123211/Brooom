@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7880505193574360730}
   - component: {fileID: 2333713172298268372}
   - component: {fileID: 323339028744606743}
+  - component: {fileID: 3161338561109082813}
   - component: {fileID: 170133169353488107}
   - component: {fileID: 4933597784101161968}
   m_Layer: 9
@@ -82,6 +83,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b88f47b0705bad94a9bb00ac9afc5ed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkpointsPassed: 0
+  hoopsPassed: 0
+  hoopsMissed: 0
+  hoopsPassedArray: 
+  followingTrackPoint: 0
+  trackPointToPassNext: 0
+  isWrongDirection: 1
+  place: 0
+  timePenalization: 0
+  finishTime: 0
+--- !u!114 &3161338561109082813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170133169353488105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37ac72e79f280443bce084f5fa1daa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!54 &170133169353488107

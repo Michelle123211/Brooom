@@ -441,6 +441,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 448
   collisionTimeout: 5
+--- !u!114 &2878251013454923591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5248744375916558361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f37025da00420341b8d1607b91ed359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5248744375916558362 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 170133169353488106, guid: d5057250aeb262d42b6597b1fc78f59b,

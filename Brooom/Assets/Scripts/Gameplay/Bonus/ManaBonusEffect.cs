@@ -9,13 +9,14 @@ public class ManaBonusEffect : BonusEffect {
 	public int manaAmount = 30;
 
 	public override void ApplyBonusEffect(CharacterMovementController character) {
-		PlayerState.Instance.raceState.ChangeManaAmount(manaAmount);
+		SpellController spellController = character.GetComponent<SpellController>();
+		spellController.ChangeManaAmount(manaAmount);
 	}
 
 	public override bool IsAvailable() {
 		// Available if at least one spell is equipped
 		// TODO: Maybe change later to at least one spell purchased (so the opponents can use spells even when the player does not have any equipped)
-		foreach (var spell in PlayerState.Instance.raceState.spellSlots) {
+		foreach (var spell in PlayerState.Instance.equippedSpells) {
 			if (spell != null) return true;
 		}
 		return false;
