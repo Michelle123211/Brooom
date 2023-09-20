@@ -49,6 +49,7 @@ public class BroomUpgradeRowUI : MonoBehaviour
         // Check if the player has enough coins
         if (!PlayerState.Instance.ChangeCoinsAmount(-assignedUpgrade.CoinsCostOfEachLevel[assignedUpgrade.CurrentLevel])) return;
         assignedUpgrade.LevelUp();
+        PlayerState.Instance.SetBroomUpgradeLevel(assignedUpgrade.UpgradeName, assignedUpgrade.CurrentLevel, assignedUpgrade.MaxLevel);
         // Update the UI
         UpdateCurrentLevel();
     }

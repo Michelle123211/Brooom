@@ -50,7 +50,7 @@ public class ShopUI : MonoBehaviour
 	}
 
 	private void InitializeBroomUpgrades() {
-		broom.UpdateState();
+		broom.UpdateFromPlayerState();
 		// Remove all existing broom upgrade rows
 		UtilsMonoBehaviour.RemoveAllChildren(broomUpgradesParent);
 		// Instantiate new broom upgrade rows
@@ -69,7 +69,7 @@ public class ShopUI : MonoBehaviour
 			spell.UpdateUI();
 		}
 		// Update broom upgrades
-		broom.UpdateState();
+		broom.UpdateFromPlayerState();
 		foreach (var upgrade in broomUpgrades) {
 			upgrade.UpdateUI();
 		}

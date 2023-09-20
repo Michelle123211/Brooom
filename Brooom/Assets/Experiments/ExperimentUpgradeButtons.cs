@@ -21,7 +21,6 @@ public class ExperimentUpgradeButtons : MonoBehaviour
 		for (int i = 0; i < upgrades.Length; i++) {
 			if (Input.GetKeyDown(keys[i])) {
 				upgrades[i].LevelUp();
-				broom.UpdateState();
 			}
 		}
 	}

@@ -56,7 +56,8 @@ public class CharacterMovementController : MonoBehaviour {
         this.maxSpeed = maxSpeed;
     }
     public void SetMaxAltitude(float maxAltitude) {
-        PlayerState.Instance.maxAltitude = maxAltitude;
+        if (isPlayer)
+            PlayerState.Instance.maxAltitude = maxAltitude;
     }
     public void SetForwardResponsiveness(float responsiveness) {
         this.forwardResponsiveness = responsiveness;
