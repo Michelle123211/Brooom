@@ -3361,7 +3361,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8641,7 +8641,7 @@ PrefabInstance:
     - target: {fileID: 8004432853684954485, guid: 8e08e41628b242d42b50b1845dab500c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8000002
+      value: 0.4000001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e08e41628b242d42b50b1845dab500c, type: 3}
@@ -8798,12 +8798,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1335941031}
-  - component: {fileID: 1335941030}
+  - component: {fileID: 1335941032}
   - component: {fileID: 1335941029}
   - component: {fileID: 1335941028}
   - component: {fileID: 1335941027}
   m_Layer: 5
-  m_Name: DebugControls
+  m_Name: Cheats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8870,37 +8870,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1335941030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1335941026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79f6eb0c6a290234dacc72004d51c0a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeObject: {fileID: 0}
-  timeText: {fileID: 0}
-  timePenalizationText: {fileID: 0}
-  speedText: {fileID: 0}
-  altitudeText: {fileID: 0}
-  checkpointsLayout: {fileID: 0}
-  checkpointsPassedText: {fileID: 0}
-  checkpointsTotalText: {fileID: 0}
-  hoopsLayout: {fileID: 0}
-  hoopsPassedText: {fileID: 0}
-  hoopsTotalText: {fileID: 0}
-  hoopsMissedText: {fileID: 0}
-  placeObject: {fileID: 0}
-  placeBackground: {fileID: 0}
-  placeText: {fileID: 0}
-  spellsUI: {fileID: 0}
-  flashingColorOverlay: {fileID: 0}
-  missedCheckpointWarning: {fileID: 0}
-  wrongDirectionWarning: {fileID: 0}
 --- !u!224 &1335941031
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8915,13 +8884,30 @@ RectTransform:
   m_Children:
   - {fileID: 1463833051}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1335941032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335941026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 676ae1ec847c8b242be956f63e378ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keysAndCorrespondingScenes:
+  - key: 112
+    scene: PlayerOverview
+  - key: 109
+    scene: MainMenu
 --- !u!1 &1337663511
 GameObject:
   m_ObjectHideFlags: 0
@@ -10937,55 +10923,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1624277592}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1647322952
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1647322954}
-  - component: {fileID: 1647322955}
-  m_Layer: 0
-  m_Name: Cheats
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1647322954
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647322952}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -190.15903, y: 54.134476, z: -44.18605}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1647322955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647322952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 676ae1ec847c8b242be956f63e378ba2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  keysAndCorrespondingScenes:
-  - key: 112
-    scene: PlayerOverview
-  - key: 109
-    scene: MainMenu
 --- !u!1001 &1676610059
 PrefabInstance:
   m_ObjectHideFlags: 0
