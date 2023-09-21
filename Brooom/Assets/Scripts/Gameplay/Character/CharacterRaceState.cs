@@ -6,22 +6,22 @@ using DG.Tweening;
 
 public class CharacterRaceState : MonoBehaviour {
     // Hoops/checkpoints
-    public int checkpointsPassed = 0;
-    public int hoopsPassed = 0;
-    public int hoopsMissed = 0;
-    public bool[] hoopsPassedArray;
+    [HideInInspector] public int checkpointsPassed = 0;
+    [HideInInspector] public int hoopsPassed = 0;
+    [HideInInspector] public int hoopsMissed = 0;
+    [HideInInspector] public bool[] hoopsPassedArray;
 
     // Position within the race
-    public int followingTrackPoint = 0; // position of the player within the track (they are before the hoop with this index)
-    public int trackPointToPassNext = 0; // index of the following hoop the player should fly through
-    public bool isWrongDirection = true;
+    [HideInInspector] public int followingTrackPoint = 0; // position of the player within the track (they are before the hoop with this index)
+    [HideInInspector] public int trackPointToPassNext = 0; // index of the following hoop the player should fly through
+    [HideInInspector] public bool isWrongDirection = true;
 
     // Place
-    public int place;
+    [HideInInspector] public int place;
 
     // Time and penalization
-    public float timePenalization = 0;
-    public float finishTime = -1;
+    [HideInInspector] public float timePenalization = 0;
+    [HideInInspector] public float finishTime = -1;
 
     // Callbacks on state change (used e.g. for HUD update)
     public Action<int> onPlaceChanged; // parameter: new place

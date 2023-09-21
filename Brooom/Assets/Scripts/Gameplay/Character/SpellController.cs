@@ -6,12 +6,12 @@ using System;
 public class SpellController : MonoBehaviour {
 
 	// Mana
-	public int currentMana;
-	public int maxMana;
+	[HideInInspector] public int currentMana;
+	[HideInInspector] public int maxMana;
 
 	// Spells
-	public SpellInRace[] spellSlots;
-	public int selectedSpell;
+	[HideInInspector] public SpellInRace[] spellSlots;
+	[HideInInspector] public int selectedSpell;
 
 	// Callbacks
 	public Action<int> onManaAmountChanged; // parameter: new mana value
