@@ -35,13 +35,11 @@ public class SpellInRace {
 
     public void CastSpell() {
         // TODO: Invoke effect of the spell
-        // TODO: Tween the charge value so that the decrease is animated
-        charge = 0;
+        DOTween.To(() => charge, x => charge = x, 0, 0.3f);
     }
 
     public void Recharge() {
-        // TODO: Tween the value to animate the increase
-        this.charge = 1;
+        DOTween.To(() => charge, x => charge = x, 1, 0.3f);
     }
 
     public void UpdateCharge(float timeDelta) {
