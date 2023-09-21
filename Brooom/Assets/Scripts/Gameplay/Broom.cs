@@ -10,6 +10,12 @@ public class Broom : MonoBehaviour
 
 	// Set everything according to the the player's highest purchased levels of each broom upgrade
 	public void UpdateFromPlayerState() {
+		// Make sure all upgrades are known in the PlayerState
+		foreach (var upgrade in upgradesAvailable) {
+			if (PlayerState.Instance.GetBroomUpgradeLevel(upgrade.UpgradeName) < 0)
+				PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, 0, upgrade.MaxLevel);
+		}
+		// Level up according to the PlayerState
 		foreach (var upgrade in upgradesAvailable) {
 			int targetLevel = PlayerState.Instance.GetBroomUpgradeLevel(upgrade.UpgradeName);
 			while (upgrade.CurrentLevel < targetLevel)

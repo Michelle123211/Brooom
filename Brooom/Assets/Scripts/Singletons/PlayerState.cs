@@ -135,7 +135,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         // Check if all upgrades are purchased
         bool allMax = true;
         foreach (var upgrade in broomUpgradeLevels) {
-            if (upgrade.Value.Item1 != upgrade.Value.Item2) {
+            if (upgrade.Value.Item1 != upgrade.Value.Item2) { // current level is not max level
                 allMax = false;
                 break;
             }

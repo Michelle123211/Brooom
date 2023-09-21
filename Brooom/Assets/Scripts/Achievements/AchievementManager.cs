@@ -18,7 +18,7 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 
 	public void LoadAchievementsProgress() {
 		// Get all achievements' ScriptableObjects
-		ResetAchievementsProgress();
+		InitializeAchievements();
 		// Load the achievements (all tracked data) from a file
 		foreach (var data in achievementData)
 			data.LoadData();
@@ -40,6 +40,13 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 
 	// Reset everything to default values
 	public void ResetAchievementsProgress() {
+		// Get all achievements' ScriptableObjects (and don't update their progress), reset them
+		InitializeAchievements();
+		// Save the new values
+		SaveAchievementsProgress();
+	}
+
+	private void InitializeAchievements() {
 		// Get all achievements' ScriptableObjects (and don't update their progress)
 		Achievement[] achievements = Resources.LoadAll<Achievement>("Achievements/");
 		achievementsProgress = new List<AchievementProgress>();
@@ -52,8 +59,6 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 		// Reset all data
 		foreach (var data in achievementData)
 			data.ResetData();
-		// Save the new values
-		SaveAchievementsProgress();
 	}
 
 	private void UpdateAchievementsProgress() {
@@ -615,6 +620,7 @@ class BroomData : AchievementData {
 	}
 
 	private void OnAllBroomUpgradesPurchased() {
+		if (allUpgradesPurchased) return; // no need to continue
 		allUpgradesPurchased = true;
 		SaveData();
 	}
