@@ -94,7 +94,7 @@ MonoBehaviour:
   isWrongDirection: 1
   place: 0
   timePenalization: 0
-  finishTime: 0
+  finishTime: -1
 --- !u!114 &3161338561109082813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d37ac72e79f280443bce084f5fa1daa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMana: 0
+  maxMana: 0
+  selectedSpell: 0
 --- !u!54 &170133169353488107
 Rigidbody:
   m_ObjectHideFlags: 0

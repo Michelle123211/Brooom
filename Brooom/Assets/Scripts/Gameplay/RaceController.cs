@@ -59,7 +59,7 @@ public class RaceController : MonoBehaviour {
     private Transform opponentParent;
 
     private List<RacerRepresentation> racers;
-    private int playerIndex = 0;
+    private RacerRepresentation playerRacer;
 
 
     private bool raceStarted = false; // distinguish between training and race
@@ -81,8 +81,8 @@ public class RaceController : MonoBehaviour {
         // Highlight the first hoop
         level.track[0].assignedHoop.StartHighlighting();
         // Place the player + disable actions
-        racers[playerIndex].characterController.ResetPosition(level.playerStartPosition);
-        racers[playerIndex].characterController.ActionsEnabled = false;
+        playerRacer.characterController.ResetPosition(level.playerStartPosition);
+        playerRacer.characterController.ActionsEnabled = false;
         // Show the opponents
         if (opponentParent != null) opponentParent.gameObject.SetActive(true);
         // TODO: Start animation sequence
@@ -102,8 +102,8 @@ public class RaceController : MonoBehaviour {
         opponentParent = levelGenerator.transform.Find("Opponents");
         if (opponentParent != null) opponentParent.gameObject.SetActive(false);
         // Place the player + enable actions
-        racers[playerIndex].characterController.ResetPosition(level.playerStartPosition);
-        racers[playerIndex].characterController.ActionsEnabled = true;
+        playerRacer.characterController.ResetPosition(level.playerStartPosition);
+        playerRacer.characterController.ActionsEnabled = true;
     }
 
     void Start()
@@ -128,7 +128,7 @@ public class RaceController : MonoBehaviour {
             };
             racer.state.Initialize(level.track.Count);
             racers.Add(racer);
-            if (racer.characterController.isPlayer) playerIndex = i;
+            if (racer.characterController.isPlayer) playerRacer = racer;
         }
         // Initialize HUD
         int checkpointsTotal = 0, hoopsTotal = 0;
@@ -138,9 +138,9 @@ public class RaceController : MonoBehaviour {
         }
         raceHUD.InitializeCheckpointsAndHoops(checkpointsTotal, hoopsTotal);
         // Register callbacks on player race state changes
-        racers[playerIndex].state.onHoopAdvance += HighlightNextHoop;
-        racers[playerIndex].state.onCheckpointMissed += ReactOnCheckpointMissed;
-        racers[playerIndex].state.onHoopMissed += ReactOnHoopMissed;
+        playerRacer.state.onHoopAdvance += HighlightNextHoop;
+        playerRacer.state.onCheckpointMissed += ReactOnCheckpointMissed;
+        playerRacer.state.onHoopMissed += ReactOnHoopMissed;
         // Initialize training
         StartTraining();
     }
@@ -152,9 +152,9 @@ public class RaceController : MonoBehaviour {
 	private void OnDestroy() {
         Instance = null;
         // Unregister callbacks on player race state changes
-        racers[playerIndex].state.onHoopAdvance -= HighlightNextHoop;
-        racers[playerIndex].state.onCheckpointMissed -= ReactOnCheckpointMissed;
-        racers[playerIndex].state.onHoopMissed -= ReactOnHoopMissed;
+        playerRacer.state.onHoopAdvance -= HighlightNextHoop;
+        playerRacer.state.onCheckpointMissed -= ReactOnCheckpointMissed;
+        playerRacer.state.onHoopMissed -= ReactOnHoopMissed;
     }
 
 	private void SetLevelGeneratorParameters() {
@@ -198,7 +198,7 @@ public class RaceController : MonoBehaviour {
 
     // Highlights the next hoop for the player
     private void HighlightNextHoop() {
-        int nextHoopIndex = racers[playerIndex].state.trackPointToPassNext;
+        int nextHoopIndex = playerRacer.state.trackPointToPassNext;
         level.track[nextHoopIndex - 1].assignedHoop.StopHighlighting();
         if (nextHoopIndex < level.track.Count)
             level.track[nextHoopIndex].assignedHoop.StartHighlighting();
@@ -208,20 +208,43 @@ public class RaceController : MonoBehaviour {
         if (raceStarted) { // during race
             // Time from start of the race
             raceTime += Time.deltaTime;
-            raceHUD.UpdateTime(raceTime + racers[playerIndex].state.timePenalization);
-            // TODO: Update player's place
-            // Compare player's next hoop with other racers, then compare distance to the next hoop
+            raceHUD.UpdateTime(raceTime + playerRacer.state.timePenalization);
+            // Update racers' place
+            ComputeRacerPlaces();
         } else { // during training
             if (InputManager.Instance.GetBoolValue("Restart")) {
-                racers[playerIndex].characterController.ResetPosition(level.playerStartPosition);
+                playerRacer.characterController.ResetPosition(level.playerStartPosition);
             }
         }
 
         // Update UI
         if (raceHUD != null) {
             raceHUD.UpdatePlayerState(
-                racers[playerIndex].characterController.GetCurrentSpeed(),
-                racers[playerIndex].characterController.GetCurrentAltitude());
+                playerRacer.characterController.GetCurrentSpeed(),
+                playerRacer.characterController.GetCurrentAltitude());
+        }
+    }
+
+    private void ComputeRacerPlaces() {
+        // Sort the racers according to their place
+        racers.Sort((x, y) => {
+            // If both have finish time, the better one should be first
+            if (x.state.finishTime > 0 && y.state.finishTime > 0)
+                return (x.state.finishTime + x.state.timePenalization).CompareTo(y.state.finishTime + y.state.timePenalization);
+            // The one having finish time should be first
+            if (x.state.finishTime > 0 && y.state.finishTime <= 0) return -1; // x is first
+            if (x.state.finishTime <= 0 && y.state.finishTime > 0) return 1; // y is first
+            // The one having next hoop with higher index should be first
+            if (x.state.trackPointToPassNext != y.state.trackPointToPassNext)
+                return y.state.trackPointToPassNext.CompareTo(x.state.trackPointToPassNext);
+            // The one closer to the hoop should be first
+            float xDistance = Vector3.Distance(x.state.transform.position, level.track[x.state.trackPointToPassNext].position);
+            float yDistance = Vector3.Distance(y.state.transform.position, level.track[y.state.trackPointToPassNext].position);
+            return xDistance.CompareTo(yDistance);
+        });
+        // Let them know what their place is
+        for (int i = 0; i < racers.Count; i++) {
+            racers[i].state.UpdatePlace(i + 1);
         }
     }
 

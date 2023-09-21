@@ -21,7 +21,7 @@ public class CharacterRaceState : MonoBehaviour {
 
     // Time and penalization
     public float timePenalization = 0;
-    public float finishTime;
+    public float finishTime = -1;
 
     // Callbacks on state change (used e.g. for HUD update)
     public Action<int> onPlaceChanged; // parameter: new place
