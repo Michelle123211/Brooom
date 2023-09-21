@@ -5,8 +5,6 @@ using UnityEngine;
 public class CharacterAppearance : MonoBehaviour
 {
     [Header("Character model parts")]
-    public Material skinMaterial;
-    public Material hairMaterial;
     public SkinnedMeshRenderer headRenderer;
     public SkinnedMeshRenderer hairRenderer;
     public SkinnedMeshRenderer handsRenderer;
