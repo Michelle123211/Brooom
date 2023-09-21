@@ -61,15 +61,19 @@ public class RaceController : MonoBehaviour {
     private List<RacerRepresentation> racers;
     private RacerRepresentation playerRacer;
 
-
-    private bool raceStarted = false; // distinguish between training and race
+    private enum RaceState {
+        Training,
+        RaceInProgress,
+        RaceFinished
+    }
+    private RaceState raceState = RaceState.Training; // distinguish between training and race
     private float raceTime = 0;
 
 
     // Called when entering the race
     public void StartRace() {
         // TODO: Add everything related to the start of the race
-        raceStarted = true;
+        raceState = RaceState.RaceInProgress;
         raceTime = 0;
         raceHUD.StartRace(); // also resets e.g. hoop progress and mana
         // Show bonuses
@@ -94,7 +98,18 @@ public class RaceController : MonoBehaviour {
         }
     }
 
+    // Called when player finishes the race
+    public void EndRace() {
+        // TODO: Add everything related to the end of the race
+        raceState = RaceState.RaceFinished;
+        playerRacer.characterController.ActionsEnabled = false;
+        // TODO: Start animation sequence
+        // TODO: Start computing player statistics
+        // TODO: At the end of the sequence, recompute racers' places, show the results
+    }
+
     private void StartTraining() {
+        raceState = RaceState.Training;
         // Hide bonuses
         bonusParent = levelGenerator.transform.Find("Bonus");
         if (bonusParent != null) bonusParent.gameObject.SetActive(false);
@@ -205,24 +220,27 @@ public class RaceController : MonoBehaviour {
     }
 
     private void Update() {
-        if (raceStarted) { // during race
-            // Time from start of the race
-            raceTime += Time.deltaTime;
-            raceHUD.UpdateTime(raceTime + playerRacer.state.timePenalization);
-            // Update racers' place
-            ComputeRacerPlaces();
-        } else { // during training
-            if (InputManager.Instance.GetBoolValue("Restart")) {
-                playerRacer.characterController.ResetPosition(level.playerStartPosition);
-            }
+        switch (raceState) {
+            case RaceState.Training:
+                // Handle restart
+                if (InputManager.Instance.GetBoolValue("Restart")) {
+                    playerRacer.characterController.ResetPosition(level.playerStartPosition);
+                }
+                break;
+            case RaceState.RaceInProgress:
+                // Update time from the start of the race
+                raceTime += Time.deltaTime;
+                raceHUD.UpdateTime(raceTime + playerRacer.state.timePenalization);
+                // Update racers' place
+                ComputeRacerPlaces();
+                break;
+            case RaceState.RaceFinished:
+                break;
         }
-
         // Update UI
-        if (raceHUD != null) {
-            raceHUD.UpdatePlayerState(
-                playerRacer.characterController.GetCurrentSpeed(),
-                playerRacer.characterController.GetCurrentAltitude());
-        }
+        raceHUD.UpdatePlayerState(
+            playerRacer.characterController.GetCurrentSpeed(),
+            playerRacer.characterController.GetCurrentAltitude());
     }
 
     private void ComputeRacerPlaces() {
