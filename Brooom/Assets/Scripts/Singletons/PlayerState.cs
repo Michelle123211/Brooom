@@ -151,11 +151,18 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public Dictionary<int, string> knownOpponents; // stored names of opponents already visible in the leaderboard (according to their place)
 	#endregion
 
-	#region Race State
+	#region Mana + available regions
 	[Tooltip("The maximum amount of mana the player can have at once.")]
     public int maxManaAmount = 100;
-    [HideInInspector]
-    public RaceState raceState;
+
+    public Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>();
+    public void SetRegionAvailability(LevelRegionType region, bool availability) {
+        if (regionsAvailability.ContainsKey(region) && availability && !regionsAvailability[region]) { // a new region became available
+            // Notify anyone interested that a new region has been unlocked
+            Messaging.SendMessage("NewRegionAvailable");
+        }
+        regionsAvailability[region] = availability;
+    }
     #endregion
 
 
@@ -258,8 +265,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         broomUpgradesLoaded = false;
         // ...opponents
         knownOpponents = new Dictionary<int, string>();
-        // ...race state
-        raceState = new RaceState();
+        // ...available regions
+        regionsAvailability = new Dictionary<LevelRegionType, bool>();
     }
 
     public void AwakeSingleton() {

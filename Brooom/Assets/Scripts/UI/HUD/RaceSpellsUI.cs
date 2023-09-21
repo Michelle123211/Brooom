@@ -88,7 +88,7 @@ public class RaceSpellsUI : MonoBehaviour {
 
 	private void OnDestroy() {
         // Unregister callbacks
-        if (playerSpellController.HasEquippedSpells()) {
+        if (playerSpellController != null && playerSpellController.HasEquippedSpells()) {
             playerSpellController.onManaAmountChanged -= UpdateManaAmount;
             playerSpellController.onSelectedSpellChanged -= HighlightSelectedSpell;
         }

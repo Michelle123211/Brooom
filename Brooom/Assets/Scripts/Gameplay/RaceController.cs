@@ -169,20 +169,20 @@ public class RaceController : MonoBehaviour {
         Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.CurrentStats.speed / 100f);
         // ... available regions from Endurance
         foreach (var region in defaultRegions)
-            PlayerState.Instance.raceState.regionsAvailability[region] = true;
+            PlayerState.Instance.regionsAvailability[region] = true;
         foreach (var regionWithValue in regionsUnlockedByEndurance)
-            PlayerState.Instance.raceState.SetRegionAvailability(
+            PlayerState.Instance.SetRegionAvailability(
                 regionWithValue.region, 
                 PlayerState.Instance.CurrentStats.endurance >= regionWithValue.minValue ? true : false
             );
         // ... available regions from max altitude
         foreach (var regionWithValue in regionsUnlockedByAltitude)
-            PlayerState.Instance.raceState.SetRegionAvailability(
+            PlayerState.Instance.SetRegionAvailability(
                 regionWithValue.region,
                 PlayerState.Instance.maxAltitude >= regionWithValue.minValue ? true : false
             );
         // And set them
-        levelGenerator.regionsAvailability = PlayerState.Instance.raceState.regionsAvailability;
+        levelGenerator.regionsAvailability = PlayerState.Instance.regionsAvailability;
         if (trackGenerator != null) {
             trackGenerator.numberOfCheckpoints = numOfCheckpoints;
             trackGenerator.maxDirectionChangeAngle = directionChange;

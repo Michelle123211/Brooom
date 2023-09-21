@@ -52,6 +52,8 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 		// Reset all data
 		foreach (var data in achievementData)
 			data.ResetData();
+		// Save the new values
+		SaveAchievementsProgress();
 	}
 
 	private void UpdateAchievementsProgress() {
@@ -509,8 +511,9 @@ class LevelData : AchievementData {
 	}
 
 	private void OnNewRegionAvailable() {
+		if (allRegionsAvailable) return; // no need to check again
 		bool allAvailable = true;
-		foreach (var region in PlayerState.Instance.raceState.regionsAvailability)
+		foreach (var region in PlayerState.Instance.regionsAvailability)
 			if (!region.Value) allAvailable = false;
 		allRegionsAvailable = allAvailable;
 		SaveData();
