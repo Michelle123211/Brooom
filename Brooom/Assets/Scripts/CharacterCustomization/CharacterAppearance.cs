@@ -7,7 +7,9 @@ public class CharacterAppearance : MonoBehaviour
     [Header("Character model parts")]
     public Material skinMaterial;
     public Material hairMaterial;
+    public SkinnedMeshRenderer headRenderer;
     public SkinnedMeshRenderer hairRenderer;
+    public SkinnedMeshRenderer handsRenderer;
     public SkinnedMeshRenderer outfitRenderer;
     public SkinnedMeshRenderer shoesRenderer;
 
@@ -50,13 +52,15 @@ public class CharacterAppearance : MonoBehaviour
     // Applies the given customization to the character (changes the given material or renderer)
     public void ApplyCustomization(CustomizedPart part, CustomizationVariantData customization) {
         if (part == CustomizedPart.SkinTone) {
-            ApplyCustomization(skinMaterial, customization);
+            ApplyCustomization(headRenderer.material, customization);
+            ApplyCustomization(handsRenderer.material, customization);
             currentSkinCustomization = customization;
         } else if (part == CustomizedPart.HairColor) {
-            ApplyCustomization(hairMaterial, customization);
+            ApplyCustomization(hairRenderer.material, customization);
             currentHairColorCustomization = customization;
         } else if (part == CustomizedPart.HairStyle) {
             ApplyCustomization(hairRenderer, customization);
+            ApplyCustomization(hairRenderer.material, currentHairColorCustomization); // re-apply the hair color
             currentHairStyleCustomization = customization;
         } else if (part == CustomizedPart.Outfit) {
             ApplyCustomization(outfitRenderer, customization);

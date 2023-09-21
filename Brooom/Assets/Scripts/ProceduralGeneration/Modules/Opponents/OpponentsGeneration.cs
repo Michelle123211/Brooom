@@ -12,6 +12,8 @@ public class OpponentsGeneration : LevelGeneratorModule {
 	public OpponentRandomization opponentPrefab;
 	[Tooltip("An object which will be parent of all opponent objects in the hierarchy.")]
 	public Transform opponentsParent;
+	[Tooltip("Colors assigned to the opponents which are then used in the minimap.")]
+	public Color[] opponentColors;
 
 	public override void Generate(LevelRepresentation level) {
 		for (int i = 0; i < opponentsCount; i++) {
@@ -22,7 +24,7 @@ public class OpponentsGeneration : LevelGeneratorModule {
 			// Instantiate under the common parent
 			OpponentRandomization opponent = Instantiate<OpponentRandomization>(opponentPrefab, position, Quaternion.identity, opponentsParent);
 			// Randomize the opponent (appearance, name, broom upgrades, equipped spells, minimap icon color)
-			opponent.Randomize();
+			opponent.Randomize(opponentColors[i % opponentColors.Length]);
 		}
 	}
 }

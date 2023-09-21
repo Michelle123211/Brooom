@@ -2196,9 +2196,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skinMaterial: {fileID: 2100000, guid: bb03473978f67ce48a7ed1f13c50d080, type: 2}
   hairMaterial: {fileID: 2100000, guid: 895ae046cf48de64aac65ac49122665d, type: 2}
+  headRenderer: {fileID: 3313318443320812793}
   hairRenderer: {fileID: 8966292443779334137}
+  handsRenderer: {fileID: 1672934227134283722}
   outfitRenderer: {fileID: 4264999699765299111}
   shoesRenderer: {fileID: 2894182532390713399}
+  characterName: 
 --- !u!114 &3246136490368824538
 MonoBehaviour:
   m_ObjectHideFlags: 0
