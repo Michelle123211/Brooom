@@ -14,25 +14,31 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 	[Tooltip("Prefab of the starting zone.")]
 	public GameObject startingZonePrefab;
 	[Tooltip("How far in front of the player's start position is the starting zone placed.")]
-	public float startingZoneOffset = 70f;
+	public float startingZoneOffset = 60f;
+	[Tooltip("Prefab of the finish line.")]
+	public FinishLine finishLinePrefab;
+	[Tooltip("How far behind the last hoop is the finish line placed.")]
+	public float finishLineOffset = 50f;
 
 	public override void Generate(LevelRepresentation level) {
 		// Remove any previously instantiated hoops
 		UtilsMonoBehaviour.RemoveAllChildren(hoopsParent);
 		// Instantiate hoops/checkpoints in track points
 		TrackPoint point;
+		Vector3 previousPosition, nextPosition, direction = Vector3.forward;
 		for (int i = 0; i < level.track.Count; i++) {
 			point = level.track[i];
 			Hoop prefab = hoopPrefab;
 			if (point.isCheckpoint)
 				prefab = checkpointPrefab;
 			// Orientation is given by the vector from the previous hoop to the next hoop
-			Vector3 previousPosition = point.position, nextPosition = point.position;
+			previousPosition = point.position;
+			nextPosition = point.position;
 			if (i > 0)
 				previousPosition = level.track[i - 1].position;
 			if (i < level.track.Count - 1)
 				nextPosition = level.track[i + 1].position;
-			Vector3 direction = (nextPosition - previousPosition).WithY(0); // Y = 0 to rotate only around the Y axis
+			direction = (nextPosition - previousPosition).WithY(0); // Y = 0 to rotate only around the Y axis
 			// Create instance
 			point.assignedHoop = Instantiate<Hoop>(prefab, level.track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
 			// Set scale of the hoops
@@ -42,5 +48,10 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 		// Instantiate starting zone
 		Vector3 startingZonePosition = (level.playerStartPosition + Vector3.back * startingZoneOffset).WithY(level.playerStartPosition.y);
 		Instantiate(startingZonePrefab, startingZonePosition, Quaternion.identity);
+		// Instantiate finish line
+		// ... orientation is the same as for the last hoop
+		Vector3 finishLinePosition = level.track[level.track.Count - 1].position + direction.normalized * finishLineOffset;
+		FinishLine finish = Instantiate<FinishLine>(finishLinePrefab, finishLinePosition, Quaternion.FromToRotation(Vector3.forward, direction), transform);
+		level.finish = finish;
 	}
 }

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ScrollingTextureMaterial
+  m_Name: FinishLineMaterial
   m_Shader: {fileID: -6465566751694194690, guid: af072c92ab6375d469b33c1b9e634473,
     type: 3}
   m_ValidKeywords: []
@@ -148,7 +148,7 @@ Material:
     - _BaseColor: {r: 1, g: 0.5267917, b: 0, a: 0.20784314}
     - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _CameraFadeParams: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.09411766, g: 1.4980392, b: 0.13432534, a: 1}
+    - _Color: {r: 2, g: 2, b: 2, a: 1}
     - _Direction: {r: 0.4, g: 0.2, b: 0, a: 0}
     - _DirectionAndSpeed: {r: 0.4, g: 0.2, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

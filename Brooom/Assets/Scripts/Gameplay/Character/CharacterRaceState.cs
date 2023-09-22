@@ -62,6 +62,15 @@ public class CharacterRaceState : MonoBehaviour {
         }
     }
 
+    public void OnFinishPassed() {
+        // Get the current time from the RaceController and store it
+        if (finishTime <= 0 && trackPointToPassNext >= hoopsPassedArray.Length) { // only the first time and only when the player did not miss any checkpoint
+            finishTime = RaceController.Instance.raceTime;
+            // Player ends the race
+            if (isPlayer) RaceController.Instance.EndRace();
+        }
+    }
+
     private int lastCheckpointMissed = -1;
     public void OnCheckpointMissed(int hoopIndex) {
         if (hoopIndex != lastCheckpointMissed) {  // Should be warned only once for the same checkpoint

@@ -42,6 +42,10 @@ public class RaceController : MonoBehaviour {
     public List<RegionUnlockValue> regionsUnlockedByEndurance;
     public List<RegionUnlockValue> regionsUnlockedByAltitude;
 
+    // Level - to get access to track points and record racers' position within the track
+    public LevelRepresentation level;
+    // Current time elapsed in the race
+    public float raceTime = 0;
 
     // Related objects
     private RaceUI raceHUD;
@@ -52,8 +56,6 @@ public class RaceController : MonoBehaviour {
     private OpponentsGeneration opponentsGenerator;
 
 
-    // Level - to get access to track points and record racers' position within the track
-    public LevelRepresentation level;
 
     private Transform bonusParent;
     private Transform opponentParent;
@@ -67,7 +69,6 @@ public class RaceController : MonoBehaviour {
         RaceFinished
     }
     private RaceState raceState = RaceState.Training; // distinguish between training and race
-    private float raceTime = 0;
 
 
     // Called when entering the race
@@ -78,10 +79,11 @@ public class RaceController : MonoBehaviour {
         raceHUD.StartRace(); // also resets e.g. hoop progress and mana
         // Show bonuses
         if (bonusParent != null) bonusParent.gameObject.SetActive(true);
-        // Activate the hoops
+        // Activate the hoops and finish line
         for (int i = 0; i < level.track.Count; i++) {
             level.track[i].assignedHoop.Activate(i);
         }
+        level.finish.Activate();
         // Highlight the first hoop
         level.track[0].assignedHoop.StartHighlighting();
         // Place the player + disable actions

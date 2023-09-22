@@ -10,7 +10,7 @@ public class Hoop : MonoBehaviour {
     [SerializeField] SpriteRenderer minimapIcon;
 
     private int index = 0; // index of the track point represented by the hoop
-    private bool isActive = false; // when active the hoop detects the player flying through it
+    private bool isActive = false; // when active, the hoop detects racer flying through it
     private Dictionary<int, int> activeTriggersCount = new Dictionary<int, int>(); // how many triggers (value) the racer (instanceID is the key) entered and have not exited
 
     private Animator animator;

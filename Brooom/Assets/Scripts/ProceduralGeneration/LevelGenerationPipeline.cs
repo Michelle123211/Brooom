@@ -239,6 +239,7 @@ public class LevelRepresentation {
 	public List<TrackPoint> track;
 	public List<BonusSpot> bonuses;
 	public Vector3 playerStartPosition;
+	public FinishLine finish;
 
 	// Dimensions and resolution
 	public Vector2 dimensions = new Vector2(50, 50); // Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.

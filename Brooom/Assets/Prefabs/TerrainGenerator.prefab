@@ -660,6 +660,9 @@ MonoBehaviour:
   startingZonePrefab: {fileID: 4392399856848757627, guid: e624ddabf06cec147b3fc3faa4e1c2c4,
     type: 3}
   startingZoneOffset: 60
+  finishLinePrefab: {fileID: 4067089856840154264, guid: 2afd2e4e743ab4a4b9657c7a973642da,
+    type: 3}
+  finishLineOffset: 70
 --- !u!114 &9121179430083006447
 MonoBehaviour:
   m_ObjectHideFlags: 0
