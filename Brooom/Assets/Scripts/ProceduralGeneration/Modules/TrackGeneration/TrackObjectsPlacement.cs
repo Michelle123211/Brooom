@@ -50,7 +50,7 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 		Instantiate(startingZonePrefab, startingZonePosition, Quaternion.identity);
 		// Instantiate finish line
 		// ... orientation is the same as for the last hoop
-		Vector3 finishLinePosition = level.track[level.track.Count - 1].position + direction.normalized * finishLineOffset;
+		Vector3 finishLinePosition = (level.track[level.track.Count - 1].position + direction.normalized * finishLineOffset).WithY(0);
 		FinishLine finish = Instantiate<FinishLine>(finishLinePrefab, finishLinePosition, Quaternion.FromToRotation(Vector3.forward, direction), transform);
 		level.finish = finish;
 	}
