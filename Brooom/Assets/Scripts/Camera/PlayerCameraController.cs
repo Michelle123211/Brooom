@@ -4,7 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using DG.Tweening;
 
-public class CameraController : MonoBehaviour {
+public class PlayerCameraController : MonoBehaviour {
     [Tooltip("How long in seconds does it take to ease in the sensitivity after start (to prevent quick jump at the beginning).")]
     public float sensitivityEaseInDuration = 1f;
     [Header("Rotation limits")]

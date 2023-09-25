@@ -35,7 +35,7 @@ public class CharacterMovementController : MonoBehaviour {
     // Components
     CharacterInput characterInput;
     Rigidbody rb;
-    CameraController cameraController; // available only for the player (not opponents)
+    PlayerCameraController cameraController; // available only for the player (not opponents)
 
     // Current values (for gradual change)
     float currentForwardSpeed = 0; // current speed
@@ -143,7 +143,7 @@ public class CharacterMovementController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         isPlayer = gameObject.CompareTag("Player");
         if (isPlayer)
-            cameraController = GetComponent<CameraController>();
+            cameraController = GetComponent<PlayerCameraController>();
 	}
 
 	private void FixedUpdate() {

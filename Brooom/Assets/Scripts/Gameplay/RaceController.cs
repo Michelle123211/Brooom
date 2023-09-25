@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using DG.Tweening;
+using UnityEngine.Playables;
 
 public class RaceController : MonoBehaviour {
 
@@ -73,41 +74,14 @@ public class RaceController : MonoBehaviour {
 
     // Called when entering the race
     public void StartRace() {
-        // TODO: Add everything related to the start of the race
-        raceState = RaceState.RaceInProgress;
-        raceTime = 0;
-        raceHUD.StartRace(); // also resets e.g. hoop progress and mana
-        // Show bonuses
-        if (bonusParent != null) bonusParent.gameObject.SetActive(true);
-        // Activate the hoops and finish line
-        for (int i = 0; i < level.track.Count; i++) {
-            level.track[i].assignedHoop.Activate(i);
-        }
-        level.finish.Activate();
-        // Highlight the first hoop
-        level.track[0].assignedHoop.StartHighlighting();
-        // Place the player + disable actions
-        playerRacer.characterController.ResetPosition(level.playerStartPosition);
-        playerRacer.characterController.ActionsEnabled = false;
-        // Show the opponents
-        if (opponentParent != null) opponentParent.gameObject.SetActive(true);
-        // TODO: Start animation sequence
-        // TODO: At the end of the sequence, show the race countdown
-        // TODO: At the end of the countdown, enable player actions and enable opponents actions
-        foreach (var racer in racers) {
-            racer.characterController.ActionsEnabled = true;
-            racer.state.SetRaceStarted(true);
-        }
+        // Start animation sequence
+        StartCoroutine(PlayRaceStartSequence());
     }
 
     // Called when player finishes the race
     public void EndRace() {
-        // TODO: Add everything related to the end of the race
-        raceState = RaceState.RaceFinished;
-        playerRacer.characterController.ActionsEnabled = false;
-        // TODO: Start animation sequence
-        // TODO: Start computing player statistics
-        // TODO: At the end of the sequence, recompute racers' places, show the results
+        // Start animation sequence
+        StartCoroutine(PlayRaceEndSequence());
     }
 
     private void StartTraining() {
@@ -121,6 +95,85 @@ public class RaceController : MonoBehaviour {
         // Place the player + enable actions
         playerRacer.characterController.ResetPosition(level.playerStartPosition);
         playerRacer.characterController.ActionsEnabled = true;
+    }
+
+    private IEnumerator PlayRaceStartSequence() {
+        // Find the correct timeline instance
+        PlayableDirector[] cutscenes = FindObjectsOfType<PlayableDirector>();
+        PlayableDirector startCutscene = null;
+        foreach (var cutscene in cutscenes) {
+            if (cutscene.name == "RaceStart") {
+                startCutscene = cutscene;
+                break;
+            }
+        }
+        double remainingDuration = 0;
+        // Start playing the sequence
+        if (startCutscene != null) {
+            remainingDuration = startCutscene.duration;
+            startCutscene.Play();
+            yield return new WaitForSeconds(0.18f); // allow the screen to fade out first
+            remainingDuration -= startCutscene.time;
+        }
+        // Place the player + disable actions
+        playerRacer.characterController.ResetPosition(level.playerStartPosition);
+        playerRacer.characterController.ActionsEnabled = false;
+        // Prepare HUD
+        raceHUD.StartRace(); // also resets e.g. hoop progress and mana
+        // Show bonuses
+        if (bonusParent != null) bonusParent.gameObject.SetActive(true);
+        // Activate the hoops and finish line
+        for (int i = 0; i < level.track.Count; i++) {
+            level.track[i].assignedHoop.Activate(i);
+        }
+        level.finish.Activate();
+        // Highlight the first hoop
+        level.track[0].assignedHoop.StartHighlighting();
+        // Show the opponents
+        if (opponentParent != null) opponentParent.gameObject.SetActive(true);
+        // Wait until the end of the sequence
+        yield return new WaitForSeconds((float)remainingDuration);
+        // TODO: Show the race countdown
+        for (int i = 3; i > 0; i--) {
+            // TODO: Change the countdown label
+            yield return new WaitForSeconds(1);
+        }
+        // TODO: Hide the race countdown
+        // Actually start the race
+        raceState = RaceState.RaceInProgress;
+        raceTime = 0;
+        // Enable player and enable opponents actions
+        foreach (var racer in racers) {
+            racer.characterController.ActionsEnabled = true;
+            racer.state.SetRaceStarted(true);
+        }
+    }
+
+    private IEnumerator PlayRaceEndSequence() {
+        raceState = RaceState.RaceFinished;
+        // Find the correct timeline instance
+        PlayableDirector[] cutscenes = FindObjectsOfType<PlayableDirector>();
+        PlayableDirector endCutscene = null;
+        foreach (var cutscene in cutscenes) {
+            if (cutscene.name == "RaceEnd") {
+                endCutscene = cutscene;
+                break;
+            }
+        }
+        // Disable player actions
+        playerRacer.characterController.ActionsEnabled = false;
+        // Start playing the sequence
+        double remainingDuration = 0;
+        if (endCutscene != null) {
+            remainingDuration = endCutscene.duration;
+            endCutscene.Play();
+        }
+        // TODO: Start computing player statistics
+        // Wait until the end of the sequence
+        yield return new WaitForSeconds((float)remainingDuration);
+        // Recompute racers' places
+        ComputeRacerPlaces();
+        // TODO: Show the race results
     }
 
     void Start()
@@ -237,6 +290,8 @@ public class RaceController : MonoBehaviour {
                 ComputeRacerPlaces();
                 break;
             case RaceState.RaceFinished:
+                // Update time from the start of the race
+                raceTime += Time.deltaTime;
                 break;
         }
         // Update UI
