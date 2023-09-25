@@ -98,20 +98,11 @@ public class RaceController : MonoBehaviour {
     }
 
     private IEnumerator PlayRaceStartSequence() {
-        // Find the correct timeline instance
-        PlayableDirector[] cutscenes = FindObjectsOfType<PlayableDirector>();
-        PlayableDirector startCutscene = null;
-        foreach (var cutscene in cutscenes) {
-            if (cutscene.name == "RaceStart") {
-                startCutscene = cutscene;
-                break;
-            }
-        }
         double remainingDuration = 0;
         // Start playing the sequence
+        PlayableDirector startCutscene = Cutscenes.Instance.PlayCutscene("RaceStart");
         if (startCutscene != null) {
             remainingDuration = startCutscene.duration;
-            startCutscene.Play();
             yield return new WaitForSeconds(0.18f); // allow the screen to fade out first
             remainingDuration -= startCutscene.time;
         }
@@ -151,22 +142,13 @@ public class RaceController : MonoBehaviour {
 
     private IEnumerator PlayRaceEndSequence() {
         raceState = RaceState.RaceFinished;
-        // Find the correct timeline instance
-        PlayableDirector[] cutscenes = FindObjectsOfType<PlayableDirector>();
-        PlayableDirector endCutscene = null;
-        foreach (var cutscene in cutscenes) {
-            if (cutscene.name == "RaceEnd") {
-                endCutscene = cutscene;
-                break;
-            }
-        }
         // Disable player actions
         playerRacer.characterController.ActionsEnabled = false;
         // Start playing the sequence
+        PlayableDirector endCutscene = Cutscenes.Instance.PlayCutscene("RaceEnd");
         double remainingDuration = 0;
         if (endCutscene != null) {
             remainingDuration = endCutscene.duration;
-            endCutscene.Play();
         }
         // TODO: Start computing player statistics
         // Wait until the end of the sequence
