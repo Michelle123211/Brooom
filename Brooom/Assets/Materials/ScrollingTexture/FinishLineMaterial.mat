@@ -124,7 +124,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Power: 0.3
+    - _Power: 0.4
     - _PulseSpeed: 4
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -143,6 +143,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _Surface: 1
+    - _VisibilityDistance: 300
     - _WorkflowMode: 0
     - _ZWrite: 0
     m_Colors:
