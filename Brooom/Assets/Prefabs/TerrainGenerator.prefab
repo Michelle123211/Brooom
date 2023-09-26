@@ -1024,7 +1024,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackWidth: 80
   borderHeightRange: {x: -10, y: 70}
-  startEndPadding: 150
+  startPadding: 150
+  endPadding: 200
   borderPrefab: {fileID: 5863173918652967378, guid: 108d2c6f3de342c43991bf461f64661f,
     type: 3}
   borderParent: {fileID: 650314752155898272}

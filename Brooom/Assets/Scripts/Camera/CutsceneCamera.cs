@@ -15,6 +15,9 @@ public class CutsceneCamera : MonoBehaviour {
 	[Tooltip("The position and rotation are given relatively to this object (as offsets).")]
 	[SerializeField] Transform target;
 
+	[Tooltip("The camera will look at point offset from the target object origin by these values.")]
+	[SerializeField] Vector3 lookAtOffset;
+
 	[Tooltip("Direction in which the camera moves relatively to its rotation.")]
 	[SerializeField] Vector3 direction;
 	[Tooltip("Speed with which the camera moves in the given direction.")]
@@ -45,8 +48,9 @@ public class CutsceneCamera : MonoBehaviour {
 	}
 
 	private void LookAt() {
-		Vector3 lookDirection = target.position - transform.position;
+		Vector3 lookDirection = target.TransformPoint(lookAtOffset) - transform.position;
 		transform.rotation = Quaternion.FromToRotation(Vector3.forward, lookDirection);
+		transform.eulerAngles = transform.eulerAngles.WithZ(0);
 	}
 
 	private void Follow() {

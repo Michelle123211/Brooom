@@ -33,6 +33,9 @@ public class CutsceneCameraEditor : Editor {
 		// Rotation
 		if (behaviourType != CutsceneCameraBehaviour.FollowingObject)
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("rotation"));
+		// Offset of the look at point
+		if (behaviourType == CutsceneCameraBehaviour.FollowingObject)
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("lookAtOffset"));
 		// Movement direction and speed
 		if (behaviourType == CutsceneCameraBehaviour.Moving ||
 			behaviourType == CutsceneCameraBehaviour.MovingRelativeToObject) {

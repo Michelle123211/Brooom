@@ -46,7 +46,7 @@ public class RaceController : MonoBehaviour {
     // Level - to get access to track points and record racers' position within the track
     public LevelRepresentation level;
     // Current time elapsed in the race
-    public float raceTime = 0;
+    [HideInInspector] public float raceTime = 0;
 
     // Related objects
     private RaceUI raceHUD;

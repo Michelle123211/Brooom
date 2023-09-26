@@ -9,8 +9,10 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 	[Tooltip("The border will be covering exactly this height range.")]
 	[SerializeField] Vector2 borderHeightRange = new Vector2(-10f, 70f);
 
-	[Tooltip("The border is closed in front of the first track point and behind the last track point at a distance specified by this parameter.")]
-	[SerializeField] float startEndPadding = 150f;
+	[Tooltip("The border is closed in front of the first track pointat a distance specified by this parameter.")]
+	[SerializeField] float startPadding = 150f;
+	[Tooltip("The border is closed behind the finish line at a distance specified by this parameter.")]
+	[SerializeField] float endPadding = 200f;
 
 	[Tooltip("Prefab of the object used as a border.")]
 	[SerializeField] GameObject borderPrefab;
@@ -60,11 +62,11 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 			previousPoint2 = nextPoint2;
 		}
 		// Close the start
-		CloseBorder(level.track[0].position, Vector3.back);
+		CloseBorder(level.track[0].position, Vector3.back, startPadding);
 		// Close the end
 		Vector3 endDirection = Vector3.forward;
 		if (level.track.Count > 1) endDirection = level.track[level.track.Count - 1].position - level.track[level.track.Count - 2].position;
-		CloseBorder(level.track[level.track.Count - 1].position, endDirection);
+		CloseBorder(level.track[level.track.Count - 1].position, endDirection, endPadding);
 	}
 
 	private void InstantiateBorder(Vector3 startPoint, Vector3 endPoint) {//, Vector3 direction) {
@@ -77,7 +79,7 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		borderInstance.transform.localScale = new Vector3(1, borderHeightRange.y - borderHeightRange.x, length + 0.1f);
 	}
 
-	private void CloseBorder(Vector3 position, Vector3 direction) {
+	private void CloseBorder(Vector3 position, Vector3 direction, float padding) {
 		Vector3 direction2D = direction.WithY(0).normalized;
 		// Get orthogonal vector
 		Vector3 orthogonal = new Vector3(direction2D.z, 0, -direction2D.x).normalized;
@@ -85,7 +87,7 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		Vector3 corner1 = position + orthogonal * trackWidth / 2;
 		Vector3 corner4 = position - orthogonal * trackWidth / 2;
 		// Get second pair of corners
-		Vector3 end = position + direction2D * startEndPadding;
+		Vector3 end = position + direction2D * padding;
 		Vector3 corner2 = end + orthogonal * trackWidth / 2;
 		Vector3 corner3 = end - orthogonal * trackWidth / 2;
 		// Instantiate borders
