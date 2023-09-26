@@ -38,6 +38,12 @@ public class RaceController : MonoBehaviour {
     [Tooltip("How many seconds are added to the time when player misses a hoop.")]
     public int missedHoopPenalization = 5;
 
+    [Header("Coins")]
+    [Tooltip("Curve describing first place reward depending on the track difficulty.")]
+    public AnimationCurve firstPlaceReward;
+    [Tooltip("Minimum and maximum reward for the first place.")]
+    public Vector2Int firstPlaceRewardRange = new Vector2Int(100, 5000);
+
     [Header("Regions")]
     public List<LevelRegionType> defaultRegions;
     public List<RegionUnlockValue> regionsUnlockedByEndurance;
@@ -45,6 +51,7 @@ public class RaceController : MonoBehaviour {
 
     // Level - to get access to track points and record racers' position within the track
     public LevelRepresentation level;
+    private float levelDifficulty; // number between 0 and 1
     // Current time elapsed in the race
     [HideInInspector] public float raceTime = 0;
 
@@ -188,6 +195,7 @@ public class RaceController : MonoBehaviour {
         raceResults.SetTime(playerRacer.state.finishTime + playerRacer.state.timePenalization);
         raceResults.SetPenalization(Mathf.RoundToInt(playerRacer.state.timePenalization));
         // Collect results from individual racers
+        int[] coinRewards = ComputeCoinRewards();
         RaceResultData[] results = new RaceResultData[racers.Count];
         foreach (var racer in racers) {
             float time = racer.state.finishTime + racer.state.timePenalization;
@@ -197,11 +205,25 @@ public class RaceController : MonoBehaviour {
             results[racer.state.place - 1] = new RaceResultData { 
                 name = racer.characterName,
                 time = time,
-                coinsReward = 0 };
+                coinsReward = coinRewards[racer.state.place - 1] };
         }
         raceResults.SetResultsTable(results);
         // Display everything
         raceResults.gameObject.TweenAwareEnable();
+    }
+
+    private int[] ComputeCoinRewards() {
+        int[] result = new int[racers.Count];
+        // Compute rewards for individual places
+        float firstPlaceRaw = firstPlaceReward.Evaluate(levelDifficulty) * (firstPlaceRewardRange.y - firstPlaceRewardRange.x) + firstPlaceRewardRange.x;
+        result[0] = Mathf.FloorToInt(firstPlaceRaw / 10) * 10; // floor to tens
+        result[1] = Mathf.FloorToInt((result[0] * 0.6f) / 10) * 10; // 60 % of the first place reward, floored to tens
+        result[2] = Mathf.FloorToInt((result[0] * 0.2f) / 10) * 10; // 20 % of the first place reward, floored to tens
+        // Add coins to the player's account
+        int playerReward = result[playerRacer.state.place - 1];
+        if (playerReward > 0)
+            PlayerState.Instance.ChangeCoinsAmount(playerReward);
+        return result;
     }
 
     void Start()
@@ -216,6 +238,7 @@ public class RaceController : MonoBehaviour {
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
         level = levelGenerator.GenerateLevel();
+        levelDifficulty = ComputeLevelDifficulty();
         // Get references to the characters
         List<CharacterMovementController> characters = Utils.FindObject<CharacterMovementController>();
         racers = new List<RacerRepresentation>();
@@ -293,6 +316,20 @@ public class RaceController : MonoBehaviour {
             angleCorrection.maxAngle = directionChange.x;
         if (opponentsGenerator != null)
             opponentsGenerator.opponentsCount = 5; // TODO: Change this number if necessary, in the future
+    }
+
+    private float ComputeLevelDifficulty() {
+        // Weighted average of current player stats which were used for level generation
+        // - weight 3: dexterity // the most important
+        // - weight 2: precision
+        // - weight 1: endurance, speed // both combined represent length of the track
+        float weightedAverage = (
+            3 * (PlayerState.Instance.CurrentStats.dexterity) +
+            2 * (PlayerState.Instance.CurrentStats.precision) +
+            1 * (PlayerState.Instance.CurrentStats.endurance + PlayerState.Instance.CurrentStats.speed))
+            / 10f;
+        // Mapped from (0, 100) to (0, 1)
+        return weightedAverage / 100;
     }
 
     // Highlights the next hoop for the player

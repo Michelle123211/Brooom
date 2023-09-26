@@ -29,7 +29,7 @@ public class PlayerOverviewUI : MonoBehaviour
         //PlayerState.Instance.CurrentStats = new PlayerStats {
         //    endurance = 100, dexterity = 100, magic = 100, precision = 100, speed = 100
         //};
-        PlayerState.Instance.ChangeCoinsAmount(5_000);
+        //PlayerState.Instance.ChangeCoinsAmount(5_000);
 
         int place = leaderboard.GetPlayerPlaceAndUpdateUI();
         UpdateGraph();
