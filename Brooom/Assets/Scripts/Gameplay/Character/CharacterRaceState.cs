@@ -22,6 +22,7 @@ public class CharacterRaceState : MonoBehaviour {
     // Time and penalization
     [HideInInspector] public float timePenalization = 0;
     [HideInInspector] public float finishTime = -1;
+    [HideInInspector] public float lastHoopTime = -1;
 
     // Callbacks on state change (used e.g. for HUD update)
     public Action<int> onPlaceChanged; // parameter: new place
@@ -50,6 +51,7 @@ public class CharacterRaceState : MonoBehaviour {
     public void OnHoopPassed(int hoopIndex) {
         // Make sure only the next (highlighted) hoop is considered
         if (hoopIndex == trackPointToPassNext) {
+            lastHoopTime = RaceController.Instance.raceTime;
             hoopsPassedArray[hoopIndex] = true;
             if (RaceController.Instance.level.track[hoopIndex].isCheckpoint) {
                 checkpointsPassed++;
@@ -81,6 +83,7 @@ public class CharacterRaceState : MonoBehaviour {
     }
 
     public void OnHoopMissed(int hoopIndex) {
+        lastHoopTime = RaceController.Instance.raceTime;
         hoopsMissed++;
         onMissedHoopsChanged?.Invoke(hoopsMissed);
         onHoopMissed?.Invoke();

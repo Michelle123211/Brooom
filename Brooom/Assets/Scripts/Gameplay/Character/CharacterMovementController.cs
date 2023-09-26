@@ -21,6 +21,7 @@ public class CharacterMovementController : MonoBehaviour {
 
 
     private bool actionsEnabled = false;
+    private StopMethod actionsDisabledStop = StopMethod.NoStop;
 
     // Distinguish between controlling movement of the player or the opponents
     [HideInInspector] public bool isPlayer = true;
@@ -47,9 +48,15 @@ public class CharacterMovementController : MonoBehaviour {
     public void EnableActions() {
         actionsEnabled = true;
     }
-    public void DisableActions(bool stopMovement = true) {
-        if (actionsEnabled && stopMovement)
+    public enum StopMethod { 
+        ImmediateStop,
+        BrakeStop,
+        NoStop
+    }
+    public void DisableActions(StopMethod stopMethod = StopMethod.ImmediateStop) {
+        if (actionsEnabled && stopMethod == StopMethod.ImmediateStop)
             ResetMovement();
+        actionsDisabledStop = stopMethod;
         actionsEnabled = false;
     }
 
@@ -150,9 +157,15 @@ public class CharacterMovementController : MonoBehaviour {
 
 	private void FixedUpdate() {
         // Do nothing if movement actions are not enabled
-        if (!actionsEnabled) return;
+        if (!actionsEnabled && actionsDisabledStop != StopMethod.BrakeStop) {
+            return;
+        }
 
         CharacterMovementValue movementInput = characterInput.GetMovementInput();
+
+        // Handle disabled movement actions with braking
+        if (!actionsEnabled && actionsDisabledStop == StopMethod.BrakeStop)
+            movementInput = new CharacterMovementValue { forward = ForwardValue.Brake, pitch = PitchIValue.None, yaw = YawValue.None };
 
         // Forward input
         float forwardInput = (float)movementInput.forward;

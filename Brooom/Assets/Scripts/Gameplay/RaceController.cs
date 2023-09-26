@@ -144,8 +144,8 @@ public class RaceController : MonoBehaviour {
 
     private IEnumerator PlayRaceEndSequence() {
         raceState = RaceState.RaceFinished;
-        // Disable player actions
-        playerRacer.characterController.DisableActions(false);
+        // Disable player actions make them brake
+        playerRacer.characterController.DisableActions(CharacterMovementController.StopMethod.BrakeStop);
         // Start playing the sequence
         PlayableDirector endCutscene = Cutscenes.Instance.PlayCutscene("RaceEnd");
         double remainingDuration = 0;
@@ -169,7 +169,7 @@ public class RaceController : MonoBehaviour {
                 // Compute the finish time proportionaly to the number of remaining hoops
                 float timeForOneHoop = raceTime;
                 if (racer.state.trackPointToPassNext > 0)
-                    timeForOneHoop /= racer.state.trackPointToPassNext;
+                    timeForOneHoop = racer.state.lastHoopTime / racer.state.trackPointToPassNext;
                 racer.state.finishTime = timeForOneHoop * level.track.Count;
                 // Compute time penalization for likely missed hoops
                 if (racer.state.trackPointToPassNext > 0) {
