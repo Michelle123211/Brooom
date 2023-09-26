@@ -34,6 +34,10 @@ public class RaceUI : MonoBehaviour {
     [Header("Spells")]
     [SerializeField] RaceSpellsUI spellsUI;
 
+    [Header("Race countdown")]
+    [SerializeField] GameObject countdownObject;
+    [SerializeField] TextMeshProUGUI countdownText;
+
     [Header("Screen overlays")]
     [Tooltip("An overlay over the whole screen used to e.g. color the screen red.")]
     [SerializeField] Image flashingColorOverlay;
@@ -50,6 +54,20 @@ public class RaceUI : MonoBehaviour {
         Utils.ColorFromRBG256(203, 128, 83), // bronz
         Utils.ColorFromRBG256(126, 92, 80) };
 
+
+    #region Coutndown
+    public void ShowCountdown(string coutndownValue) {
+        countdownText.text = coutndownValue;
+        countdownText.DOComplete();
+        countdownObject.SetActive(true);
+        countdownText.color = countdownText.color.WithA(0);
+        countdownText.DOFade(1, 0.2f).OnComplete(() => {
+            countdownText.DOFade(0, 0.6f).OnComplete(() => {
+                countdownObject.SetActive(false);
+            });
+        });
+    }
+    #endregion
 
     #region Basic information
     public void UpdateTime(float timeInSeconds) {

@@ -110,6 +110,8 @@ public class RaceController : MonoBehaviour {
         playerRacer.characterController.ResetPosition(level.playerStartPosition);
         playerRacer.characterController.ActionsEnabled = false;
         // Prepare HUD
+        raceTime = 0;
+        raceHUD.UpdateTime(raceTime + playerRacer.state.timePenalization);
         raceHUD.StartRace(); // also resets e.g. hoop progress and mana
         // Show bonuses
         if (bonusParent != null) bonusParent.gameObject.SetActive(true);
@@ -124,15 +126,14 @@ public class RaceController : MonoBehaviour {
         if (opponentParent != null) opponentParent.gameObject.SetActive(true);
         // Wait until the end of the sequence
         yield return new WaitForSeconds((float)remainingDuration);
-        // TODO: Show the race countdown
+        // Show the race countdown
         for (int i = 3; i > 0; i--) {
-            // TODO: Change the countdown label
+            raceHUD.ShowCountdown(i.ToString());
             yield return new WaitForSeconds(1);
         }
-        // TODO: Hide the race countdown
+        raceHUD.ShowCountdown("START!");
         // Actually start the race
         raceState = RaceState.RaceInProgress;
-        raceTime = 0;
         // Enable player and enable opponents actions
         foreach (var racer in racers) {
             racer.characterController.ActionsEnabled = true;
