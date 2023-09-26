@@ -79,7 +79,6 @@ public static class Utils
     public static List<T> FindObject<T>() where T : Component {
         List<T> result = new List<T>();
         foreach (GameObject root in SceneManager.GetActiveScene().GetRootGameObjects()) {
-
             AddHidden(root, result);
         }
         return result;

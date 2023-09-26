@@ -50,6 +50,7 @@ public class RaceController : MonoBehaviour {
 
     // Related objects
     private RaceUI raceHUD;
+    private RaceResultsUI raceResults;
     private LevelGenerationPipeline levelGenerator;
     private TrackPointsGenerationRandomWalk trackGenerator;
     private TrackObjectsPlacement hoopsPlacement;
@@ -155,13 +156,58 @@ public class RaceController : MonoBehaviour {
         // Wait until the end of the sequence
         yield return new WaitForSeconds((float)remainingDuration);
         // Recompute racers' places
+        CompleteOpponentState();
         ComputeRacerPlaces();
-        // TODO: Show the race results
+        // Show the race results
+        ShowRaceResults();
+    }
+
+    private void CompleteOpponentState() {
+        // Handle case when the opponent did not finish
+        foreach (var racer in racers) {
+            if (racer.state.finishTime <= 0) {
+                // Compute the finish time proportionaly to the number of remaining hoops
+                float timeForOneHoop = raceTime;
+                if (racer.state.trackPointToPassNext > 0)
+                    timeForOneHoop /= racer.state.trackPointToPassNext;
+                racer.state.finishTime = timeForOneHoop * level.track.Count;
+                // Compute time penalization for likely missed hoops
+                if (racer.state.trackPointToPassNext > 0) {
+                    float missedHoopsPercentage = racer.state.hoopsMissed / racer.state.trackPointToPassNext;
+                    float missedHoopsInFuture = Mathf.RoundToInt((level.track.Count - racer.state.trackPointToPassNext) * missedHoopsPercentage);
+                    racer.state.timePenalization += (missedHoopsInFuture * missedHoopPenalization);
+                }
+            }
+        }
+
+    }
+
+    private void ShowRaceResults() {
+        // Set player's results
+        raceResults.SetPlace(playerRacer.state.place, racers.Count);
+        raceResults.SetTime(playerRacer.state.finishTime + playerRacer.state.timePenalization);
+        raceResults.SetPenalization(Mathf.RoundToInt(playerRacer.state.timePenalization));
+        // Collect results from individual racers
+        RaceResultData[] results = new RaceResultData[racers.Count];
+        foreach (var racer in racers) {
+            float time = racer.state.finishTime + racer.state.timePenalization;
+            // If the total time is too big, make them DNF instead
+            if (time > (playerRacer.state.finishTime + playerRacer.state.timePenalization) * 6)
+                time = -1;
+            results[racer.state.place - 1] = new RaceResultData { 
+                name = racer.characterName,
+                time = time,
+                coinsReward = 0 };
+        }
+        raceResults.SetResultsTable(results);
+        // Display everything
+        raceResults.gameObject.TweenAwareEnable();
     }
 
     void Start()
     {
         raceHUD = FindObjectOfType<RaceUI>();
+        raceResults = Utils.FindObject<RaceResultsUI>()[0];
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
         trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
         hoopsPlacement = levelGenerator.GetComponent<TrackObjectsPlacement>();

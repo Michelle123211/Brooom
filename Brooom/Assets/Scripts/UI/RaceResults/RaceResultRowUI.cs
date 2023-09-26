@@ -24,7 +24,8 @@ public class RaceResultRowUI : MonoBehaviour {
         // Initialize all text fields
         placeText.text = place.ToString();
         nameText.text = data.name;
-        timeText.text = Utils.FormatTime(data.time);
+        if (data.time < 0) timeText.text = "DNF";
+        else timeText.text = Utils.FormatTime(data.time);
         if (data.coinsReward != 0) {
             rewardText.text = data.coinsReward.ToString();
         }

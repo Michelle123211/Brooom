@@ -57,28 +57,28 @@ public class RaceResultsUI : MonoBehaviour {
         timeText.text = string.Format(LocalizationManager.Instance.GetLocalizedString("ResultsLabelTime"), Utils.FormatTime(timeInSeconds));
     }
 
-    public void SetPenalization(int secondsForHoops = -1, int coinsForExposure = -1) {
-        if (secondsForHoops == -1 && coinsForExposure == -1) // there is no penalization
+    public void SetPenalization(int secondsForHoops = 0, int coinsForExposure = 0) {
+        if (secondsForHoops == 0 && coinsForExposure == 0) // there is no penalization
             penalizationsObject.SetActive(false);
         else { // there is some penalization
-            if (secondsForHoops != -1) { // penalization for missing hoops
+            if (secondsForHoops != 0) { // penalization for missing hoops
                 missedHoopsText.text = "+" + string.Format(LocalizationManager.Instance.GetLocalizedString("ResultsLabelHoops"), secondsForHoops);
             }
-            if (coinsForExposure != -1) { // penalization for exposing magic
+            if (coinsForExposure != 0) { // penalization for exposing magic
                 exposingMagicText.text = "-" + coinsForExposure.ToString();
             }
             // Set correct visibility
-            missedHoopsText.gameObject.SetActive(secondsForHoops != -1);
-            exposingMagicObject.SetActive(coinsForExposure != -1);
+            missedHoopsText.gameObject.SetActive(secondsForHoops != 0);
+            exposingMagicObject.SetActive(coinsForExposure != 0);
             penalizationsObject.SetActive(true);
         }
     }
 
-    public void SetResultsTable(List<RaceResultData> results) {
+    public void SetResultsTable(RaceResultData[] results) {
         // Remove all existing rows from the table
         UtilsMonoBehaviour.RemoveAllChildren(resultRowsParent);
         // Instantiate rows according to the results
-        for (int i = 0; i < results.Count; i++) {
+        for (int i = 0; i < results.Length; i++) {
             RaceResultRowUI row = Instantiate<RaceResultRowUI>(resultRowPrefab, resultRowsParent);
             row.Initialize(i + 1, results[i]);
             // Highlight player
@@ -100,19 +100,6 @@ public class RaceResultsUI : MonoBehaviour {
             Cursor.visible = true;
         }
     }
-
-	private void Start() {
-        // DEBUG, remove when not needed anymore
-        SetPlace(4, 8);
-        SetTime(69.752f);
-        SetPenalization(12, 200);
-        SetResultsTable(new List<RaceResultData> {
-            new RaceResultData { name = "Fridrich", time = 54.1f, coinsReward = 500 },
-            new RaceResultData { name = "Charlie", time = 69.752f, coinsReward = 200 },
-            new RaceResultData { name = "Irma", time = 102.378f, coinsReward = -100 },
-            new RaceResultData { name = "Wilhelm", time = 463.456f, coinsReward = 0 }
-        });
-	}
 }
 
 public struct RaceResultData {
