@@ -94,7 +94,7 @@ public class RaceController : MonoBehaviour {
         if (opponentParent != null) opponentParent.gameObject.SetActive(false);
         // Place the player + enable actions
         playerRacer.characterController.ResetPosition(level.playerStartPosition);
-        playerRacer.characterController.ActionsEnabled = true;
+        playerRacer.characterController.EnableActions();
     }
 
     private IEnumerator PlayRaceStartSequence() {
@@ -108,7 +108,7 @@ public class RaceController : MonoBehaviour {
         }
         // Place the player + disable actions
         playerRacer.characterController.ResetPosition(level.playerStartPosition);
-        playerRacer.characterController.ActionsEnabled = false;
+        playerRacer.characterController.DisableActions();
         // Prepare HUD
         raceTime = 0;
         raceHUD.UpdateTime(raceTime + playerRacer.state.timePenalization);
@@ -136,7 +136,7 @@ public class RaceController : MonoBehaviour {
         raceState = RaceState.RaceInProgress;
         // Enable player and enable opponents actions
         foreach (var racer in racers) {
-            racer.characterController.ActionsEnabled = true;
+            racer.characterController.EnableActions();
             racer.state.SetRaceStarted(true);
         }
     }
@@ -144,7 +144,7 @@ public class RaceController : MonoBehaviour {
     private IEnumerator PlayRaceEndSequence() {
         raceState = RaceState.RaceFinished;
         // Disable player actions
-        playerRacer.characterController.ActionsEnabled = false;
+        playerRacer.characterController.DisableActions(false);
         // Start playing the sequence
         PlayableDirector endCutscene = Cutscenes.Instance.PlayCutscene("RaceEnd");
         double remainingDuration = 0;

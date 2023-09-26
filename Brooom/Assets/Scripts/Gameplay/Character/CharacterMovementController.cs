@@ -21,13 +21,6 @@ public class CharacterMovementController : MonoBehaviour {
 
 
     private bool actionsEnabled = false;
-    public bool ActionsEnabled {
-        get => actionsEnabled;
-        set {
-            if (actionsEnabled && !value) ResetMovement();
-            actionsEnabled = value;
-        }
-    }
 
     // Distinguish between controlling movement of the player or the opponents
     [HideInInspector] public bool isPlayer = true;
@@ -50,6 +43,15 @@ public class CharacterMovementController : MonoBehaviour {
     DG.Tweening.Core.TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> bonusSpeedTween;
 
 
+    // Enabling/disabling the action inputs
+    public void EnableActions() {
+        actionsEnabled = true;
+    }
+    public void DisableActions(bool stopMovement = true) {
+        if (actionsEnabled && stopMovement)
+            ResetMovement();
+        actionsEnabled = false;
+    }
 
     // The following 5 methods are used from the broom upgrades
     public void SetMaxSpeed(float maxSpeed) {

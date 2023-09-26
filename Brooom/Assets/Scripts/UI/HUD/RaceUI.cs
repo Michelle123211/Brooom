@@ -61,6 +61,10 @@ public class RaceUI : MonoBehaviour {
         countdownText.DOComplete();
         countdownObject.SetActive(true);
         countdownText.color = countdownText.color.WithA(0);
+        countdownText.fontSize = 0;
+        DOTween.To(() => countdownText.fontSize, x => countdownText.fontSize = x, 180, 0.2f).OnComplete(() => {
+            DOTween.To(() => countdownText.fontSize, x => countdownText.fontSize = x, 80, 0.6f);
+        });
         countdownText.DOFade(1, 0.2f).OnComplete(() => {
             countdownText.DOFade(0, 0.6f).OnComplete(() => {
                 countdownObject.SetActive(false);
