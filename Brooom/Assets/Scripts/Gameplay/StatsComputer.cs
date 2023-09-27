@@ -16,6 +16,7 @@ public class StatsComputer : MonoBehaviour {
     public void StopComputingAndUpdateStats() {
         isComputing = false;
         // Finalize stats values
+        CompleteComputationParameters();
         PlayerStats newValues = new PlayerStats {
             endurance = ComputeEnduranceValue(),
             speed = ComputeSpeedValue(),
@@ -41,6 +42,11 @@ public class StatsComputer : MonoBehaviour {
     // Called from TODO: ??? when player gives up the race
     public void LowerAllStatsOnRaceGivenUp() { 
         // TODO: 5 % decrease in all stats
+    }
+
+    private void CompleteComputationParameters() { 
+        // TODO: Compute all values which are then used as parameters for stats computation
+        // e.g. total number of bonuses, hoops, ...
     }
 
     private int ComputeEnduranceValue() {
