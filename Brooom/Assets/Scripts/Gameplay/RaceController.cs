@@ -59,7 +59,7 @@ public class RaceController : MonoBehaviour {
     private RaceUI raceHUD;
     private RaceResultsUI raceResults;
     private LevelGenerationPipeline levelGenerator;
-
+    private StatsComputer statsComputer;
 
 
     private Transform bonusParent;
@@ -143,6 +143,8 @@ public class RaceController : MonoBehaviour {
             racer.characterController.EnableActions();
             racer.state.SetRaceStarted(true);
         }
+        // Start computing player stats
+        statsComputer.StartComputingStats();
     }
 
     private IEnumerator PlayRaceEndSequence() {
@@ -155,7 +157,8 @@ public class RaceController : MonoBehaviour {
         if (endCutscene != null) {
             remainingDuration = endCutscene.duration;
         }
-        // TODO: Start computing player statistics
+        // Finish computing player statistics and update them in PlayerState
+        statsComputer.StopComputingAndUpdateStats();
         // Wait until the end of the sequence
         yield return new WaitForSeconds((float)remainingDuration);
         // Recompute racers' places
@@ -227,6 +230,7 @@ public class RaceController : MonoBehaviour {
         raceHUD = FindObjectOfType<RaceUI>();
         raceResults = Utils.FindObject<RaceResultsUI>()[0];
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
+        statsComputer = GetComponent<StatsComputer>();
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
         level = levelGenerator.GenerateLevel();
