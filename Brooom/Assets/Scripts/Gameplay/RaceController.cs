@@ -59,10 +59,6 @@ public class RaceController : MonoBehaviour {
     private RaceUI raceHUD;
     private RaceResultsUI raceResults;
     private LevelGenerationPipeline levelGenerator;
-    private TrackPointsGenerationRandomWalk trackGenerator;
-    private TrackObjectsPlacement hoopsPlacement;
-    private MaximumAngleCorrection angleCorrection;
-    private OpponentsGeneration opponentsGenerator;
 
 
 
@@ -231,10 +227,6 @@ public class RaceController : MonoBehaviour {
         raceHUD = FindObjectOfType<RaceUI>();
         raceResults = Utils.FindObject<RaceResultsUI>()[0];
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
-        trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
-        hoopsPlacement = levelGenerator.GetComponent<TrackObjectsPlacement>();
-        angleCorrection = levelGenerator.GetComponent<MaximumAngleCorrection>();
-        opponentsGenerator = levelGenerator.GetComponent<OpponentsGeneration>();
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
         level = levelGenerator.GenerateLevel();
@@ -305,17 +297,13 @@ public class RaceController : MonoBehaviour {
             );
         // And set them
         levelGenerator.regionsAvailability = PlayerState.Instance.regionsAvailability;
-        if (trackGenerator != null) {
-            trackGenerator.numberOfCheckpoints = numOfCheckpoints;
-            trackGenerator.maxDirectionChangeAngle = directionChange;
-            trackGenerator.distanceRange = distanceRange;
-        }
-        if (hoopsPlacement != null)
-            hoopsPlacement.hoopScale = hoopScale;
-        if (angleCorrection != null)
-            angleCorrection.maxAngle = directionChange.x;
-        if (opponentsGenerator != null)
-            opponentsGenerator.opponentsCount = 5; // TODO: Change this number if necessary, in the future
+        TrackPointsGenerationRandomWalk trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
+        trackGenerator.numberOfCheckpoints = numOfCheckpoints;
+        trackGenerator.maxDirectionChangeAngle = directionChange;
+        trackGenerator.distanceRange = distanceRange;
+        levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale = hoopScale;
+        levelGenerator.GetComponent<MaximumAngleCorrection>().maxAngle = directionChange.x;
+        levelGenerator.GetComponent<OpponentsGeneration>().opponentsCount = 5; // TODO: Change this number if necessary, in the future
     }
 
     private float ComputeLevelDifficulty() {
