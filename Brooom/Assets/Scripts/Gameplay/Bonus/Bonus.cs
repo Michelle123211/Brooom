@@ -37,7 +37,7 @@ public class Bonus : MonoBehaviour {
             if (!Utils.IsNullEvent(pickUpEvent))
                 pickUpEvent.Invoke();
             // Let anyone interested know that a bonus was picked up by the player
-            if (character.isPlayer) Messaging.SendMessage("BonusPickedUp");
+            if (character.isPlayer) Messaging.SendMessage("BonusPickedUp", gameObject);
             // Deactivate and start reactivation countdown
             Invoke(nameof(Activate), reactivationTime);
             Deactivate();

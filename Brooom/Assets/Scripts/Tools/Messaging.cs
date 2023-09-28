@@ -12,6 +12,7 @@ public static class Messaging {
 	private static Dictionary<string, Action<int>> messageIntParameter = new();
 	private static Dictionary<string, Action<float>> messageFloatParameter = new();
 	private static Dictionary<string, Action<bool>> messageBoolParameter = new();
+	private static Dictionary<string, Action<GameObject>> messageGameObjectParameter = new();
 
 	private static bool debugLogs = false;
 
@@ -47,6 +48,12 @@ public static class Messaging {
 		else
 			messageBoolParameter[messageName] = messageCallback;
 	}
+	public static void RegisterForMessage(string messageName, Action<GameObject> messageCallback) { // GameObject parameter
+		if (messageGameObjectParameter.ContainsKey(messageName))
+			messageGameObjectParameter[messageName] = messageGameObjectParameter[messageName] + messageCallback;
+		else
+			messageGameObjectParameter[messageName] = messageCallback;
+	}
 	#endregion
 
 	#region Unregister from message
@@ -70,6 +77,10 @@ public static class Messaging {
 	public static void UnregisterFromMessage(string messageName, Action<bool> messageCallback) { // Bool parameter
 		if (messageBoolParameter.ContainsKey(messageName))
 			messageBoolParameter[messageName] = messageBoolParameter[messageName] - messageCallback;
+	}
+	public static void UnregisterFromMessage(string messageName, Action<GameObject> messageCallback) { // GameObject parameter
+		if (messageGameObjectParameter.ContainsKey(messageName))
+			messageGameObjectParameter[messageName] = messageGameObjectParameter[messageName] - messageCallback;
 	}
 	#endregion
 
@@ -104,6 +115,12 @@ public static class Messaging {
 			Debug.Log($"Message {messageName} sent with parameter {messageParameter}.");
 		if (messageBoolParameter.ContainsKey(messageName))
 			messageBoolParameter[messageName]?.Invoke(messageParameter);
+	}
+	public static void SendMessage(string messageName, GameObject messageParameter) { // GameObject parameter
+		if (debugLogs)
+			Debug.Log($"Message {messageName} sent with parameter {messageParameter.name}.");
+		if (messageGameObjectParameter.ContainsKey(messageName))
+			messageGameObjectParameter[messageName]?.Invoke(messageParameter);
 	}
 	#endregion
 }

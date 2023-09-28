@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, ISingleton {
@@ -467,7 +468,7 @@ class LevelData : AchievementData {
 	public override void RegisterCallbacks() {
 		Messaging.RegisterForMessage("ObstacleCollision", OnCollisionWithObstacle);
 		Messaging.RegisterForMessage("BonusPickedUp", OnBonusPickedUp);
-		Messaging.RegisterForMessage("HoopAdvance", OnHoopAdvance);
+		Messaging.RegisterForMessage("HoopAdvance", (Action<bool>)OnHoopAdvance);
 		Messaging.RegisterForMessage("NewRegionAvailable", OnNewRegionAvailable);
 		Messaging.RegisterForMessage("NewRegionVisited", OnNewRegionVisited);
 	}
@@ -475,7 +476,7 @@ class LevelData : AchievementData {
 	public override void UnregisterCallbacks() {
 		Messaging.UnregisterFromMessage("ObstacleCollision", OnCollisionWithObstacle);
 		Messaging.UnregisterFromMessage("BonusPickedUp", OnBonusPickedUp);
-		Messaging.UnregisterFromMessage("HoopAdvance", OnHoopAdvance);
+		Messaging.UnregisterFromMessage("HoopAdvance", (Action<bool>)OnHoopAdvance);
 		Messaging.UnregisterFromMessage("NewRegionAvailable", OnNewRegionAvailable);
 		Messaging.UnregisterFromMessage("NewRegionVisited", OnNewRegionVisited);
 	}
@@ -504,7 +505,7 @@ class LevelData : AchievementData {
 		SaveData();
 	}
 
-	private void OnBonusPickedUp() {
+	private void OnBonusPickedUp(GameObject bonus) {
 		bonusesPickedUp++;
 		SaveData();
 	}
