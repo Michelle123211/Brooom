@@ -7,9 +7,12 @@ using DG.Tweening;
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterMovementController : MonoBehaviour {
 
+    public static float MAX_SPEED = 20; // TODO: Use it everywhere (e.g. in the broom upgrades)
+
     // Parameters
     [Header("Forward movement")]
-    public float maxSpeed = 10;
+    [Tooltip("Number between 0 and 1 describing initial speed as a fraction of the maximum possible speed, which is currently 20.")]
+    public float initialMaxSpeed = 0.5f;
     public float forwardResponsiveness = 0.01f;
     [Header("Yaw and Roll")]
     public float turnSpeed = 2;
@@ -30,6 +33,8 @@ public class CharacterMovementController : MonoBehaviour {
     CharacterInput characterInput;
     Rigidbody rb;
     PlayerCameraController cameraController; // available only for the player (not opponents)
+
+    float maxSpeed;
 
     // Current values (for gradual change)
     float currentForwardSpeed = 0; // current speed
@@ -61,13 +66,6 @@ public class CharacterMovementController : MonoBehaviour {
     }
 
     // The following 5 methods are used from the broom upgrades
-    public void SetMaxSpeed(float maxSpeed) {
-        this.maxSpeed = maxSpeed;
-    }
-    public void SetMaxAltitude(float maxAltitude) {
-        if (isPlayer)
-            PlayerState.Instance.maxAltitude = maxAltitude;
-    }
     public void SetForwardResponsiveness(float responsiveness) {
         this.forwardResponsiveness = responsiveness;
     }
@@ -76,6 +74,14 @@ public class CharacterMovementController : MonoBehaviour {
     }
     public void SetPitchResponsiveness(float responsiveness) {
         this.pitchResponsiveness = responsiveness;
+    }
+    // Parameter is number between 0 and 1 describing current maximum speed as a fraction of the maximum possible speed, which is currently 20
+    public void SetMaxSpeed(float maxSpeed) {
+        this.maxSpeed = maxSpeed * MAX_SPEED;
+    }
+    public void SetMaxAltitude(float maxAltitude) {
+        if (isPlayer)
+            PlayerState.Instance.maxAltitude = maxAltitude;
     }
 
     // Used from the speed-up bonus
@@ -153,6 +159,7 @@ public class CharacterMovementController : MonoBehaviour {
         isPlayer = gameObject.CompareTag("Player");
         if (isPlayer)
             cameraController = GetComponent<PlayerCameraController>();
+        maxSpeed = initialMaxSpeed * MAX_SPEED;
 	}
 
 	private void FixedUpdate() {

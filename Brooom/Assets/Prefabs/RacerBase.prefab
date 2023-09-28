@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b30631f486d6b04cae70d332e3e657c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 10
+  initialMaxSpeed: 0.5
   forwardResponsiveness: 0.01
   turnSpeed: 2
   yawResponsiveness: 0.01
@@ -95,6 +95,7 @@ MonoBehaviour:
   place: 0
   timePenalization: 0
   finishTime: -1
+  lastHoopTime: -1
 --- !u!114 &3161338561109082813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,7 +747,7 @@ PrefabInstance:
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
-      value: 15
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
@@ -756,7 +757,7 @@ PrefabInstance:
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
-      value: 20
+      value: 0.765
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
@@ -766,7 +767,7 @@ PrefabInstance:
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
-      value: 25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
