@@ -35,6 +35,10 @@ public class StatsComputer : MonoBehaviour {
     [Tooltip("Curve describing fraction of Magic value depending on the percentage of the equipped spells which were used.")]
     [SerializeField] AnimationCurve notUsedSpellPenalization;
 
+    [Header("Error tolerance")]
+    [Tooltip("Percentage of errors which is tolerated every time, e.g. if it is 0.2f, then the score will be increased by (100 - score) * 0.2f.")]
+    [SerializeField] float errorTolerance;
+
     [Header("Giving up race")]
     [Tooltip("This fraction of the current stats values will be kept after the player gives up the race.")]
     [SerializeField] float givingUpPenalization = 0.95f;
@@ -126,7 +130,7 @@ public class StatsComputer : MonoBehaviour {
         playerRaceState.onWrongDirectionChanged -= OnWrongDirectionChanged;
         playerSpellController.onManaAmountChanged -= OnManaAmountChanged;
         playerSpellController.onSpellCasted -= OnSpellCasted;
-        // Finalize stats values
+        // Compute new stats values
         CompleteComputationParameters();
         PlayerStats newValues = new PlayerStats {
             endurance = ComputeEnduranceValue(),
@@ -135,6 +139,12 @@ public class StatsComputer : MonoBehaviour {
             precision = ComputePrecisionValue(),
             magic = ComputeMagicValue()
         };
+        // Finalize stats values with some tolerance for errors
+        newValues.endurance = Mathf.Min(Mathf.RoundToInt(newValues.endurance + (100 - newValues.endurance) * errorTolerance), 100); // must not exceed 100
+        newValues.speed = Mathf.Min(Mathf.RoundToInt(newValues.speed + (100 - newValues.speed) * errorTolerance), 100); // must not exceed 100
+        newValues.dexterity = Mathf.Min(Mathf.RoundToInt(newValues.dexterity + (100 - newValues.dexterity) * errorTolerance), 100); // must not exceed 100
+        newValues.precision = Mathf.Min(Mathf.RoundToInt(newValues.precision + (100 - newValues.precision) * errorTolerance), 100); // must not exceed 100
+        newValues.magic = Mathf.Min(Mathf.RoundToInt(newValues.magic + (100 - newValues.magic) * errorTolerance), 100); // must not exceed 100
         // Compute weighted average of the old and new stats
         // --- current value usually has more weight than the previous values
         // --- weight of current values depends on: place, stat category (for precision and dexterity, the old value has more weight)
