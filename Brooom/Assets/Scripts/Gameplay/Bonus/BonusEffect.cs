@@ -7,6 +7,9 @@ using UnityEngine;
 // The method is then called from the common Bonus component
 public abstract class BonusEffect : MonoBehaviour
 {
+    [Tooltip("Weight determines importance of this specific type of bonus. This is taken into account e.g. when computing player stats based on missed bonuses.")]
+    public int bonusWeight = 1;
+
     // The primary function of the bonus object (e.g. speed up)
     public abstract void ApplyBonusEffect(CharacterMovementController character);
 

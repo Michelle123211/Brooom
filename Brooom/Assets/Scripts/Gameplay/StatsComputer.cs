@@ -62,10 +62,7 @@ public class StatsComputer : MonoBehaviour {
     private float trackLength; // Dexterity, Precision
 
     private int totalHoops, passedHoops; // Precision
-    private int totalSpeedBonus, pickedUpSpeedBonus; // Precision
-    private int totalManaBonus, pickedUpManaBonus; // Precision
-    private int totalChargeBonus, pickedUpChargeBonus; // Precision
-    private int totalTrajectoryBonus, pickedUpTrajectoryBonus; // Precision
+    private int totalBonusWeightSum, pickedUpBonusWeightSum; // Precision
 
     private int wrongDirectionCount; // Precision
 
@@ -103,10 +100,7 @@ public class StatsComputer : MonoBehaviour {
         currentSpeed = PlayerState.Instance.CurrentStats.speed;
         trackLength = ((currentEndurance * 2 + currentSpeed) / 3) / 100;
 
-        pickedUpSpeedBonus = 0;
-        pickedUpManaBonus = 0;
-        pickedUpChargeBonus = 0;
-        pickedUpTrajectoryBonus = 0;
+        pickedUpBonusWeightSum = 0;
         Messaging.RegisterForMessage("BonusPickedUp", OnBonusPickedUp);
 
         wrongDirectionCount = 0;
@@ -180,18 +174,11 @@ public class StatsComputer : MonoBehaviour {
         passedHoops = 0;
         foreach (var isHoopPassed in playerRaceState.hoopsPassedArray)
             if (isHoopPassed) passedHoops++;
-        // Number of bonuses from RaceController.Instance.level
-        totalSpeedBonus = 0; totalManaBonus = 0; totalChargeBonus = 0; totalTrajectoryBonus = 0;
+        // Sum of weights of all the bonuses - from RaceController.Instance.level
+        totalBonusWeightSum = 0;
         foreach (var bonusSpot in RaceController.Instance.level.bonuses) {
             if (bonusSpot.isEmpty) continue;
-            if (bonusSpot.assignedBonus.gameObject.GetComponent<SpeedBonusEffect>() != null)
-                totalSpeedBonus++;
-            if (bonusSpot.assignedBonus.gameObject.GetComponent<ManaBonusEffect>() != null)
-                totalManaBonus++;
-            if (bonusSpot.assignedBonus.gameObject.GetComponent<RechargeSpellsBonusEffect>() != null)
-                totalChargeBonus++;
-            if (bonusSpot.assignedBonus.gameObject.GetComponent<NavigationBonusEffect>() != null)
-                totalTrajectoryBonus++;
+            totalBonusWeightSum += bonusSpot.assignedBonus.bonusWeight;
         }
         // Obstacle collisions - value between 0 and 100 representing how well the player evades collisions
         obstacleCollisionValue = Mathf.Clamp(1 - (obstacleCollisionCount * collisionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100;
@@ -230,19 +217,16 @@ public class StatsComputer : MonoBehaviour {
 
     private int ComputePrecisionValue() {
         // TODO
-        // (passedHoops / totalHoops) * 100 * 0.3f
-        // (pickedUpSpeedBonus / totalSpeedBonus) * 100 * 0.25f
+        // (passedHoops / totalHoops) * 100 * 0.35f
+        // Mathf.Clamp(pickedUpBonusWeightSum / totalBonusWeightSum, 0, 1) * 100 * 0.25f // Clamp in case the player picks up more bonuses at the same bonus spot
         // obstacleCollisionValue * 0.25f
-        // Mathf.Clamp(1 - (wrongDirectionCount * wrongDirectionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100
-        // (pickedUpManaBonus / totalManaBonus) * 100 * 0.02f
-        // (pickedUpChargeBonus / totalChargeBonus) * 100 * 0.02f
-        // (pickedUpTrajectoryBonus / totalTrajectoryBonus) * 100 * 0.02f
+        // Mathf.Clamp(1 - (wrongDirectionCount * wrongDirectionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100 * 0.15f
         return 0;
     }
 
     private int ComputeMagicValue() {
         // TODO
-        // ((pickedUpMana / totalMana) * 2 + (usedMana / totalMana)) / 3
+        // (Mathf.Clamp(pickedUpMana / totalMana, 0, 1) * 2 + Mathf.Clamp(usedMana / totalMana, 0, 1)) / 3 // Clamp in case the player picks up more bonuses at the same bonus spot
         // * equippedSpellUsageValue
         // * spellUsageValue
         return 0;
@@ -336,14 +320,7 @@ public class StatsComputer : MonoBehaviour {
     }
 
     private void OnBonusPickedUp(GameObject bonus) {
-        if (bonus.GetComponent<SpeedBonusEffect>() != null)
-            pickedUpSpeedBonus++;
-        if (bonus.GetComponent<ManaBonusEffect>() != null)
-            pickedUpManaBonus++;
-        if (bonus.GetComponent<RechargeSpellsBonusEffect>() != null)
-            pickedUpChargeBonus++;
-        if (bonus.GetComponent<NavigationBonusEffect>() != null)
-            pickedUpTrajectoryBonus++;
+        pickedUpBonusWeightSum += bonus.GetComponent<BonusEffect>().bonusWeight;
     }
 
     private void OnWrongDirectionChanged(bool isWrongDirection) {
