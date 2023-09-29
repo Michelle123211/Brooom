@@ -55,6 +55,9 @@ public class RaceController : MonoBehaviour {
     // Current time elapsed in the race
     [HideInInspector] public float raceTime = 0;
 
+    public List<RacerRepresentation> racers;
+    public RacerRepresentation playerRacer;
+
     // Related objects
     private RaceUI raceHUD;
     private RaceResultsUI raceResults;
@@ -64,9 +67,6 @@ public class RaceController : MonoBehaviour {
 
     private Transform bonusParent;
     private Transform opponentParent;
-
-    private List<RacerRepresentation> racers;
-    private RacerRepresentation playerRacer;
 
     private enum RaceState {
         Training,

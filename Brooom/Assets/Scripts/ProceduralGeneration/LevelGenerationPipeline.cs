@@ -398,6 +398,7 @@ public class BonusSpot {
 	public bool isEmpty = true;
 	public int previousHoopIndex;
 	public float distanceFraction; // how far is the bonus spot between a pair of checkpoints (e.g. 1/4), used for linear interpolation of position
+	public BonusEffect assignedBonus;
 
 	public BonusSpot(Vector3 position, int previousHoopIndex, float distanceFraction) {
 		this.position = position;

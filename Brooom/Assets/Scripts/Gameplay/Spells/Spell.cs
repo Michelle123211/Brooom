@@ -48,8 +48,12 @@ public class SpellInRace {
     }
 
     public bool IsSpellAvailable(int currentMana) {
-        if (spell == null || string.IsNullOrEmpty(spell.identifier)) return false;
+        if (IsEmpty()) return false;
         return this.charge >= 1 && currentMana >= spell.manaCost; // fully charged and enough mana
+    }
+
+    public bool IsEmpty() {
+        return spell == null || string.IsNullOrEmpty(spell.identifier);
     }
 
     public void UpdateAvailability(int currentMana) {

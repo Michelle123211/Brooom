@@ -16,6 +16,7 @@ public class SpellController : MonoBehaviour {
 	// Callbacks
 	public Action<int> onManaAmountChanged; // parameter: new mana value
 	public Action<int> onSelectedSpellChanged; // parameter: index of the currently selected spell
+	public Action<int> onSpellCasted; // parameter: index of the spell
 
 	private bool isPlayer = false;
 
@@ -41,6 +42,7 @@ public class SpellController : MonoBehaviour {
 				currentSpell.CastSpell();
 				ChangeManaAmount(-currentSpell.spell.manaCost);
 				// Notify anyone interested that a spell has been casted
+				onSpellCasted?.Invoke(selectedSpell);
 				if (isPlayer) Messaging.SendMessage("SpellCasted");
 			}
 		}
