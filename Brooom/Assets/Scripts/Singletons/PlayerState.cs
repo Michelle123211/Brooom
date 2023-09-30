@@ -290,10 +290,10 @@ public struct PlayerStats {
 
     // Computes weighted average of the stats
     // weight 3: precision, speed (more important and objective)
-    // weight 2: endurance (artificially lowering the score at the beginning)
-    // weight 1: magic (artificially lowering the score at the beginning), dexterity (not precise)
+    // weight 2: endurance, magic (artificially lowering the score at the beginning and not that important)
+    // weight 1: dexterity (not precise)
     public float GetWeightedAverage() {
-        return (3 * (precision + speed) + 2 * (endurance) + 1 * (magic + dexterity)) / 10f;
+        return (3 * (precision + speed) + 2 * (endurance + magic) + 1 * (dexterity)) / 11f;
     }
 
     // Returns the values in a specific order
