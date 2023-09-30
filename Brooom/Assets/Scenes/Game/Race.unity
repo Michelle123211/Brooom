@@ -1385,7 +1385,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 247.255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
@@ -1976,7 +1976,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 157.33002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
@@ -13463,7 +13463,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 134.41998
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
@@ -13803,6 +13803,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  errorTolerance: 0.1
+  givingUpPenalization: 0.95
 --- !u!1001 &1840248406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15326,7 +15328,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 117.125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}

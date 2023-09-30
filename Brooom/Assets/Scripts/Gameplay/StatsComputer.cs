@@ -62,7 +62,7 @@ public class StatsComputer : MonoBehaviour {
     private int obstacleCollisionCount; // Dexterity, Precision
     private float obstacleCollisionValue; // Dexterity, Precision
 
-    private float currentEndurance, currentSpeed;
+    private int currentEndurance, currentSpeed, currentMagic;
     private float trackLength; // Dexterity, Precision
 
     private int totalHoops, passedHoops; // Precision
@@ -78,6 +78,8 @@ public class StatsComputer : MonoBehaviour {
     private int equippedSpellCount; // Magic
     private int totalSpellUsedCount, totalSpellCount; // Magic
     private float equippedSpellUsageValue, spellUsageValue; // Magic
+
+    private int statWeightBasedOnPlace; // When combining the old stat value with the new one, the weight of the new value is based on the place
 
 
     // Called from RaceController at the start of the race
@@ -102,7 +104,9 @@ public class StatsComputer : MonoBehaviour {
 
         currentEndurance = PlayerState.Instance.CurrentStats.endurance;
         currentSpeed = PlayerState.Instance.CurrentStats.speed;
-        trackLength = ((currentEndurance * 2 + currentSpeed) / 3) / 100;
+        trackLength = ((currentEndurance * 2 + currentSpeed) / 3f) / 100f;
+
+        currentMagic = PlayerState.Instance.CurrentStats.magic;
 
         pickedUpBonusWeightSum = 0;
         Messaging.RegisterForMessage("BonusPickedUp", OnBonusPickedUp);
@@ -111,6 +115,7 @@ public class StatsComputer : MonoBehaviour {
         playerRaceState.onWrongDirectionChanged += OnWrongDirectionChanged;
 
         pickedUpMana = 0; usedMana = 0;
+        currentMana = 0;
         playerSpellController.onManaAmountChanged += OnManaAmountChanged;
 
         spellUsed = new bool[playerSpellController.spellSlots.Length];
@@ -140,11 +145,11 @@ public class StatsComputer : MonoBehaviour {
             magic = ComputeMagicValue()
         };
         // Finalize stats values with some tolerance for errors
-        newValues.endurance = Mathf.Min(Mathf.RoundToInt(newValues.endurance + (100 - newValues.endurance) * errorTolerance), 100); // must not exceed 100
         newValues.speed = Mathf.Min(Mathf.RoundToInt(newValues.speed + (100 - newValues.speed) * errorTolerance), 100); // must not exceed 100
         newValues.dexterity = Mathf.Min(Mathf.RoundToInt(newValues.dexterity + (100 - newValues.dexterity) * errorTolerance), 100); // must not exceed 100
         newValues.precision = Mathf.Min(Mathf.RoundToInt(newValues.precision + (100 - newValues.precision) * errorTolerance), 100); // must not exceed 100
-        newValues.magic = Mathf.Min(Mathf.RoundToInt(newValues.magic + (100 - newValues.magic) * errorTolerance), 100); // must not exceed 100
+        if (equippedSpellCount > 0) // don't increment the value if no spells are equipped
+            newValues.magic = Mathf.Min(Mathf.RoundToInt(newValues.magic + (100 - newValues.magic) * errorTolerance), 100); // must not exceed 100
         // Compute weighted average of the old and new stats
         // --- current value usually has more weight than the previous values
         // --- weight of current values depends on: place, stat category (for precision and dexterity, the old value has more weight)
@@ -204,80 +209,75 @@ public class StatsComputer : MonoBehaviour {
         totalSpellUsedCount = 0; // TODO: how many of the total spells the player has ever used
         totalSpellCount = 1; // TODO: how many spells are available in the game
         spellUsageValue = (totalSpellUsedCount / (float)totalSpellCount); // number between 0 and 1 describing how diverse spells the player has ever casted
+        // Weight of the new stat value when cimbining it with the old one
+        float middle = (totalRacers - 1) / 2f + 1;
+        statWeightBasedOnPlace = Mathf.FloorToInt(Mathf.Abs(middle - playerPlace) + 1); // e.g. 3 for 1st place among 5-6 racers
     }
 
     private int ComputeEnduranceValue() {
         // Change the current Endurance value based on place
         float delta = enduranceDeltaBasedOnPlace.Evaluate(1 - ((playerPlace - 1) / (totalRacers - 1))) * maxEnduranceDelta;
-        return Mathf.RoundToInt(currentEndurance + delta);
+        return Mathf.Min(Mathf.RoundToInt(currentEndurance + delta), 100); // must not exceed 100
     }
 
     private int ComputeSpeedValue() {
-        // TODO
-        // currentSpeedSum / maxSpeedSum
-        return 0;
+        return Mathf.RoundToInt(Mathf.Clamp((float)(currentSpeedSum / maxSpeedSum), 0, 1) * 100); // Clamp in case the player has maximum speed broom upgrade and picks up speed bonuses
     }
 
     private int ComputeDexterityValue() {
-        // TODO
-        // (1 - (currentDistancePenalizationSum / maxDistancePenalizationSum)) * 100 * 0.4f
-        // obstacleCollisionValue * 0.6f
-        return 0;
+        // Combination of distance from the 'ideal' trajectory and number of collisions with obstacles
+        float distancePart = (float)(1 - (currentDistancePenalizationSum / maxDistancePenalizationSum)) * 100;
+        float collisionPart = obstacleCollisionValue;
+        return Mathf.RoundToInt(distancePart * 0.4f + collisionPart * 0.6f);
     }
 
     private int ComputePrecisionValue() {
-        // TODO
-        // (passedHoops / totalHoops) * 100 * 0.35f
-        // Mathf.Clamp(pickedUpBonusWeightSum / totalBonusWeightSum, 0, 1) * 100 * 0.25f // Clamp in case the player picks up more bonuses at the same bonus spot
-        // obstacleCollisionValue * 0.25f
-        // Mathf.Clamp(1 - (wrongDirectionCount * wrongDirectionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100 * 0.15f
-        return 0;
+        // Combination of passed/missed hoops, picked/missed bonuses, obstacle collisions and wrong directions
+        float hoopPart = (passedHoops / totalHoops) * 100;
+        float bonusPart = Mathf.Clamp(pickedUpBonusWeightSum / totalBonusWeightSum, 0, 1) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
+        float collisionPart = obstacleCollisionValue;
+        float wrongDirectionPart = Mathf.Clamp(1 - (wrongDirectionCount * wrongDirectionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100;
+        return Mathf.RoundToInt(hoopPart * 0.35f + bonusPart * 0.25f + collisionPart * 0.25f + wrongDirectionPart * 0.15f);
     }
 
     private int ComputeMagicValue() {
-        // TODO
-        // (Mathf.Clamp(pickedUpMana / totalMana, 0, 1) * 2 + Mathf.Clamp(usedMana / totalMana, 0, 1)) / 3 // Clamp in case the player picks up more bonuses at the same bonus spot
-        // * equippedSpellUsageValue
-        // * spellUsageValue
-        return 0;
+        // Combination of picked up mana bonuses and diverse spell usage
+        float manaPart = ((Mathf.Clamp(pickedUpMana / totalMana, 0, 1) * 2 + Mathf.Clamp(usedMana / totalMana, 0, 1)) / 3) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
+        if (equippedSpellCount == 0) // no equipped spells, just return the old value
+            return currentMagic;
+        else
+            return Mathf.RoundToInt(manaPart * equippedSpellUsageValue * spellUsageValue);
     }
 
     private int CombineEnduranceValues(int oldValue, int newValue) {
-        // TODO
-        // Weighted average of the old and new stat value
-        // Weight of current values depends on: place, stat category
-        // Maybe only the new value may be taken instead
-        return (oldValue + newValue) / 2;
+        // Only the new value may be taken in this case
+        return newValue;
     }
 
     private int CombineSpeedValues(int oldValue, int newValue) {
-        // TODO
         // Weighted average of the old and new stat value
-        // Weight of current values depends on: place, stat category
-        return (oldValue + newValue) / 2;
+        // Weight of current value depends on place
+        return Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1));
     }
 
     private int CombineDexterityValues(int oldValue, int newValue) {
-        // TODO
         // Weighted average of the old and new stat value
-        // Weight of current values depends on: place, stat category
-        // Old value has more weight
-        return (oldValue + newValue) / 2;
+        // Weight of current value depends on place
+        // Old value has more weight so the stat does not immediately jump to very high values
+        return Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 2) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 2));
     }
 
     private int CombinePrecisionValues(int oldValue, int newValue) {
-        // TODO
         // Weighted average of the old and new stat value
-        // Weight of current values depends on: place, stat category
-        // Old value has more weight
-        return (oldValue + newValue) / 2;
+        // Weight of current value depends on place
+        // Old value has more weight so the stat does not immediately jump to very high values
+        return Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 2) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 2));
     }
 
     private int CombineMagicValues(int oldValue, int newValue) {
-        // TODO
         // Weighted average of the old and new stat value
-        // Weight of current values depends on: place, stat category
-        return (oldValue + newValue) / 2;
+        // Weight of current values depends on place
+        return Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1));
     }
 
     private void Update() {
