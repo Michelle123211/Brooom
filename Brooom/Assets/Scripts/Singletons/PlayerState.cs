@@ -84,6 +84,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     #region Spells
     [HideInInspector] public Spell[] equippedSpells; // spells assigned to slots
     [HideInInspector] public Dictionary<string, bool> spellAvailability; // whether the spell is unlocked (purchased) or not
+    [HideInInspector] public int availableSpellCount = 0; // number of purchased spells
 
     public void EquipSpell(Spell spell, int slotIndex) {
         equippedSpells[slotIndex] = spell;
@@ -92,6 +93,9 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     }
 
     public void UnlockSpell(string spellIdentifier) {
+        bool isKnown = spellAvailability.ContainsKey(spellIdentifier);
+        if (!isKnown || (isKnown && !spellAvailability[spellIdentifier]))
+            availableSpellCount++;
         spellAvailability[spellIdentifier] = true;
         // Check if all spells are purchased
         bool allUnlocked = true;

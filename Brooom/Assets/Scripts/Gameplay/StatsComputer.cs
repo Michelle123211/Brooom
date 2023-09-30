@@ -242,11 +242,10 @@ public class StatsComputer : MonoBehaviour {
 
     private int ComputeMagicValue() {
         // Combination of picked up mana bonuses and diverse spell usage
+        if (PlayerState.Instance.availableSpellCount == 0) // no purchased spells, just return 0
+            return 0;
         float manaPart = ((Mathf.Clamp(pickedUpMana / totalMana, 0, 1) * 2 + Mathf.Clamp(usedMana / totalMana, 0, 1)) / 3) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
-        if (equippedSpellCount == 0) // no equipped spells, just return the old value
-            return currentMagic;
-        else
-            return Mathf.RoundToInt(manaPart * equippedSpellUsageValue * spellUsageValue);
+        return Mathf.RoundToInt(manaPart * equippedSpellUsageValue * spellUsageValue);
     }
 
     private int CombineEnduranceValues(int oldValue, int newValue) {
