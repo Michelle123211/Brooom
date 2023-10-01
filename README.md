@@ -45,3 +45,11 @@
 - Settings functionality
 - Character idle animations (on broom and standing) + facial animations
 - Main menu background
+
+**Milestone 6** (September 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone6.zip))):
+
+- Preparation for opponents - complex refactorization, spawning randomized enemies
+- Training vs race - transition, starting zone, finish line, detecting and highlighting hoops, missed checkpoint warning, wrong direction warning
+- Cutscenes - start and finish
+- Race results - coin reward, table and computation of opponents' times
+- Player stats computation
