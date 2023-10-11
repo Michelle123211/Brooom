@@ -101,8 +101,8 @@ public class PlayerCameraController : MonoBehaviour {
         }
 
         // Mouse inputs are already framerate independent - multiplying with Time.deltaTime would make it framerate dependent
-        float mouseX = Input.GetAxis("Mouse X") * currentSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * currentSensitivity;
+        float mouseX = Input.GetAxis("Mouse X") * currentSensitivity * Time.timeScale; // multiplied by Time.timeScale to support game pause
+        float mouseY = Input.GetAxis("Mouse Y") * currentSensitivity * Time.timeScale;
 
         // Limiting the angle of rotation
         rotationX = Mathf.Clamp(rotationX - mouseY, -maxAngleX, maxAngleX);

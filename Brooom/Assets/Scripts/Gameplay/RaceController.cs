@@ -64,7 +64,6 @@ public class RaceController : MonoBehaviour {
     private LevelGenerationPipeline levelGenerator;
     private StatsComputer statsComputer;
 
-
     private Transform bonusParent;
     private Transform opponentParent;
 
@@ -86,6 +85,13 @@ public class RaceController : MonoBehaviour {
     public void EndRace() {
         // Start animation sequence
         StartCoroutine(PlayRaceEndSequence());
+    }
+
+    public void GiveUpRace() {
+        // Decrease all stats
+        statsComputer.LowerAllStatsOnRaceGivenUp();
+        // Change scene
+        SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
     private void StartTraining() {
@@ -333,6 +339,7 @@ public class RaceController : MonoBehaviour {
     }
 
     private void Update() {
+        // Update state
         switch (raceState) {
             case RaceState.Training:
                 // Handle restart
