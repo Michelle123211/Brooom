@@ -93,7 +93,7 @@ public class GenericTween : MonoBehaviour {
 
     private void Update() {
         if (tweenIsRunning) {
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             if (time >= duration) {
                 // Final values
                 tweenIsRunning = false;

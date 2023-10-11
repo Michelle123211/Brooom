@@ -32,8 +32,8 @@ public abstract class TooltipBase : MonoBehaviour, IPointerEnterHandler, IPointe
 
 	private void Update() {
 		// Update the countdown of tooltip delay
-		if (pointerHasEntered && countdown > 0) {
-			countdown -= Time.deltaTime;
+		if (pointerHasEntered && countdown >= 0) {
+			countdown -= Time.unscaledDeltaTime;
 			if (countdown < 0) {
 				// Show tooltip
 				TooltipController.Instance.SetIsLocalized(isLocalized);
