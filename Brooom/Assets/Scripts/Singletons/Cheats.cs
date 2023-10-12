@@ -205,7 +205,51 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		}));
-		// TODO: stats - change player statistics values
+		// stats - change player statistics values
+		commands.Add(new CheatCommand("stats", "Changes values of individual player statistics. Available stats: e (endurance), s (speed), d (dexterity), p (precision), m (magic). Usage: 'stats (<statLetter>=<0-100>){1,5}', e.g. 'stats m=45', 'stats e=83 p=21'.", (commandParts) => {
+			// Handle errors
+			if (commandParts.Length < 2 || commandParts.Length > 6) {
+				return new CommandParseResult {
+					isSuccessful = false, message = "Invalid number of parameters, at least one is required and at most five."
+				};
+			} else {
+				PlayerStats stats = PlayerState.Instance.CurrentStats;
+				// Parse individual stats and try to override the values
+				for (int i = 1; i < commandParts.Length; i++) {
+					string[] statParts = commandParts[i].Trim().Split('=', StringSplitOptions.RemoveEmptyEntries);
+					if (statParts.Length != 2)
+						return new CommandParseResult {
+							isSuccessful = false, message = "Invalid parameter. All parameters must be in a form of <statLetter>=<value>."
+						};
+					if (!int.TryParse(statParts[1], out int statValue))
+						return new CommandParseResult {
+							isSuccessful = false, message = "Invalid parameter, an integer is required for the stat value."
+						};
+					if (statValue < 0 || statValue > 100)
+						return new CommandParseResult {
+							isSuccessful = false, message = "Invalid parameter, stat value must be between 0 and 100 (inclusive)."
+						};
+					string statLetter = statParts[0];
+					if (statLetter == "e") stats.endurance = statValue;
+					else if (statLetter == "s") stats.speed = statValue;
+					else if (statLetter == "d") stats.dexterity = statValue;
+					else if (statLetter == "p") stats.precision = statValue;
+					else if (statLetter == "m") stats.magic = statValue;
+					else // unknown
+						return new CommandParseResult {
+							isSuccessful = false, message = $"Invalid parameter, stat {statLetter} is not known. Use only e (endurance), s (speed), d (dexterity), p (precision), m (magic)."
+						};
+				}
+				// Everything was all right
+				string message = $"Player stats have been changed from ({PlayerState.Instance.CurrentStats.endurance}, {PlayerState.Instance.CurrentStats.speed}, {PlayerState.Instance.CurrentStats.dexterity}, {PlayerState.Instance.CurrentStats.precision}, {PlayerState.Instance.CurrentStats.magic}).";
+				PlayerState.Instance.CurrentStats = stats;
+				message += $" to ({PlayerState.Instance.CurrentStats.endurance}, {PlayerState.Instance.CurrentStats.speed}, {PlayerState.Instance.CurrentStats.dexterity}, {PlayerState.Instance.CurrentStats.precision}, {PlayerState.Instance.CurrentStats.magic}).";
+				return new CommandParseResult {
+					isSuccessful = true,
+					message = message
+				};
+			}
+		}));
 		// TODO: unlock - unlock all spells or broom upgrades
 		// speed - change maximum speed, available only in Race
 		commands.Add(new CheatCommand("speed", "Changes the maximum speed. Usage: 'speed <value>', e.g. 'speed 30', 'speed 10'.", (commandParts) => {
