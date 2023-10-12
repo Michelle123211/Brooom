@@ -82,7 +82,7 @@ public class PlayerCameraController : MonoBehaviour {
     {
         // Handle switching the view
         if (enableViewSwitch) {
-			if (InputManager.Instance.GetBoolValue("View")) {
+			if (GamePause.pauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("View")) {
 				int previousCameraIndex = currentCameraIndex;
 				currentCameraIndex++;
 				if (currentCameraIndex == virtualCameras.Count)

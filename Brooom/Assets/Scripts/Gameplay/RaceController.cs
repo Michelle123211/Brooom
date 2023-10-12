@@ -343,7 +343,7 @@ public class RaceController : MonoBehaviour {
         switch (raceState) {
             case RaceState.Training:
                 // Handle restart
-                if (InputManager.Instance.GetBoolValue("Restart")) {
+                if (GamePause.pauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
                     playerRacer.characterController.ResetPosition(level.playerStartPosition);
                 }
                 break;

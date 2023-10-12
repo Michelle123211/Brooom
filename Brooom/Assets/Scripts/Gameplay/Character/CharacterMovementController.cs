@@ -171,6 +171,10 @@ public class CharacterMovementController : MonoBehaviour {
             return;
         }
 
+        // Do nothing if the game is paused
+        if (GamePause.pauseState == GamePauseState.Paused)
+            return;
+
         CharacterMovementValue movementInput = characterInput.GetMovementInput();
 
         // Handle disabled movement actions with braking

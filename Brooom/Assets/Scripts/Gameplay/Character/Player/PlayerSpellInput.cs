@@ -7,6 +7,9 @@ public class PlayerSpellInput : MonoBehaviour {
 	private SpellController spellController;
 
 	private void Update() {
+		// Do nothing if the game is paused
+		if (GamePause.pauseState != GamePauseState.Running) return;
+
 		// Detect mouse click and cast the currently selected spell
 		if (Input.GetMouseButtonDown(0)) {
 			spellController.CastCurrentlySelectedSpell();
