@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 
+	[HideInInspector]
+	public string currentScene = Scene.Start.ToString();
+
 	[SerializeField] private Animator animator;
 
 	// Loads scene with the given name (using fade in/out and loading screen) - one parameter variant to be used in UnityEvent
@@ -45,6 +48,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		loadingScene.allowSceneActivation = true;
 		// Wait until the scene is loaded
 		yield return new WaitUntil(() => loadingScene.isDone);
+		currentScene = sceneName;
 		// Fade into the new scene
 		if (fade) {
 			animator.SetTrigger("FadeIn");
@@ -54,6 +58,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	}
 
 	public void InitializeSingleton() {
+		currentScene = SceneManager.GetActiveScene().name;
 	}
 
 	public void AwakeSingleton() {

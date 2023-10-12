@@ -79,6 +79,9 @@ public class CharacterMovementController : MonoBehaviour {
     public void SetMaxSpeed(float maxSpeed) {
         this.maxSpeed = maxSpeed * MAX_SPEED;
     }
+    public float GetMaxSpeed() {
+        return this.maxSpeed;
+    }
     public void SetMaxAltitude(float maxAltitude) {
         if (isPlayer)
             PlayerState.Instance.maxAltitude = maxAltitude;

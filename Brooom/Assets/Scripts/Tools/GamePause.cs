@@ -5,17 +5,22 @@ using DG.Tweening;
 
 public class GamePause : MonoBehaviour {
 
-    [Tooltip("Exposed to be used from animations to gradually decrease/increase.")]
-    [SerializeField] float timeScale = 1;
-
-    private Animator animator;
     public static GamePauseState pauseState = GamePauseState.Running;
 
-    public void PauseGame() {
+    [Tooltip("Exposed to be used from animations to gradually decrease/increase.")]
+    [SerializeField] float timeScale = 0f;
+
+    private Animator animator;
+
+    private bool menuVisible = false;
+
+    public void PauseGame(bool showMenu = false) {
         // Pause
         pauseState = GamePauseState.Pausing;
         // Show pause menu
-        animator.SetBool("ShowMenu", true);
+        if (showMenu) animator.SetBool("ShowMenu", true); // timeScale changed in animation
+        else timeScale = 0;
+        menuVisible = true;
         // Enable cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -26,7 +31,8 @@ public class GamePause : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         // Hide pause menu
-        animator.SetBool("ShowMenu", false);
+        if (menuVisible) animator.SetBool("ShowMenu", false); // timeScale changed in animation
+        else timeScale = 1f;
         // Resume
         pauseState = GamePauseState.Resuming;
     }
@@ -39,7 +45,7 @@ public class GamePause : MonoBehaviour {
         // Pause game if requested
         if (InputManager.Instance.GetBoolValue("Pause")) {
             if (pauseState == GamePauseState.Running) {
-                PauseGame();
+                PauseGame(true);
             } else if (pauseState == GamePauseState.Paused) {
                 ResumeGame();
             }
