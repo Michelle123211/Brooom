@@ -208,7 +208,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		}));
 		// stats - change player statistics values
-		commands.Add(new CheatCommand("stats", "Changes values of individual player statistics or all of them at once. Usage: 'stats all=<0-100>', e.g. 'stats all=40', or 'stats (<statLetter>=<0-100>){1,5}', e.g. 'stats m=45', 'stats e=83 p=21'.\nAvailable stats: e (endurance), s (speed), d (dexterity), p (precision), m (magic).", (commandParts) => {
+		commands.Add(new CheatCommand("stats", "Changes values of individual player statistics or all of them at once. Statistics not specified will be left without change. Usage: 'stats all=<0-100>', e.g. 'stats all=40', or 'stats (<statLetter>=<0-100>){1,5}', e.g. 'stats m=45', 'stats e=83 p=21'.\nAvailable stats: e (endurance), s (speed), d (dexterity), p (precision), m (magic).", (commandParts) => {
 			// Handle errors
 			if (commandParts.Length < 2 || commandParts.Length > 6) {
 				return new CommandParseResult {
@@ -355,6 +355,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			// Handle errors
 			if (commandParts.Length != 2) message = "Invalid number of parameters, one is required.";
 			else if (!int.TryParse(commandParts[1], out int value)) message = "Invalid parameter, an integer is required.";
+			else if (value < 0) message = "Invalid parameter, the value must be non-negative.";
 			// Perform the command
 			else {
 				CharacterMovementController controller = UtilsMonoBehaviour.FindObjectOfTypeAndTag<CharacterMovementController>("Player");
