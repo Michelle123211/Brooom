@@ -180,8 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b093ac3e8941e4589603ce104dd25d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cheatsEnabled: 1
   historyLength: 10
-  pauseInScenes: 020000000300000005000000
   commandField: {fileID: 1812760457202051083}
   messageField: {fileID: 5562000415053220144}
   messageArea: {fileID: 4696947064982229980}

@@ -10,6 +10,8 @@ using UnityEngine.SceneManagement;
 public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 	[Header("Parameters")]
+	[Tooltip("Whether the cheats are enabled in the game (so they can be easily disabled in the final product).")]
+	[SerializeField] bool cheatsEnabled = true;
 	[Tooltip("How many previous commands are remembered.")]
 	[SerializeField] int historyLength;
 
@@ -277,26 +279,24 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		// TODO: finish - quick race finish, available only in Race
 	}
 
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
 	private void Update() {
-		// Only in editor and development build
-
-		// Handle input
-		// ... show/hide cheats
-		if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.C) && // all keys are pressed
-			(Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.C))) { // and one of them was pressed just now
-			ToggleVisibility();
-		}
-		// ... enter cheat
-		if (Input.GetKeyDown(KeyCode.Return)) { // Enter
-			OnCommandEntered();
-		}
-		// ... history
-		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) {
-			HandleCommandHistory();
+		if (cheatsEnabled) {
+			// Handle input
+			// ... show/hide cheats
+			if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.C) && // all keys are pressed
+				(Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.C))) { // and one of them was pressed just now
+				ToggleVisibility();
+			}
+			// ... enter cheat
+			if (Input.GetKeyDown(KeyCode.Return)) { // Enter
+				OnCommandEntered();
+			}
+			// ... history
+			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) {
+				HandleCommandHistory();
+			}
 		}
 	}
-#endif
 
 	#region SINGLETON
 	public void AwakeSingleton() {
