@@ -208,7 +208,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		}));
 		// stats - change player statistics values
-		commands.Add(new CheatCommand("stats", "Changes values of individual player statistics. Usage: 'stats (<statLetter>=<0-100>){1,5}', e.g. 'stats m=45', 'stats e=83 p=21'.\nAvailable stats: e (endurance), s (speed), d (dexterity), p (precision), m (magic).", (commandParts) => {
+		commands.Add(new CheatCommand("stats", "Changes values of individual player statistics or all of them at once. Usage: 'stats all=<0-100>', e.g. 'stats all=40', or 'stats (<statLetter>=<0-100>){1,5}', e.g. 'stats m=45', 'stats e=83 p=21'.\nAvailable stats: e (endurance), s (speed), d (dexterity), p (precision), m (magic).", (commandParts) => {
 			// Handle errors
 			if (commandParts.Length < 2 || commandParts.Length > 6) {
 				return new CommandParseResult {
@@ -216,12 +216,39 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				};
 			} else {
 				PlayerStats stats = PlayerState.Instance.CurrentStats;
+				string message = string.Empty;
+				// Parse parameters to set all stats at once
+				if (commandParts.Length == 2) {
+					string[] parameterParts = commandParts[1].Trim().Split('=', StringSplitOptions.RemoveEmptyEntries);
+					if (parameterParts.Length != 2)
+						return new CommandParseResult {
+							isSuccessful = false, message = "Invalid parameter. All parameters must be in a form of <parameterName>=<value>."
+						};
+					if (parameterParts[0] == "all") {
+						if (!int.TryParse(parameterParts[1], out int parameterValue))
+							return new CommandParseResult {
+								isSuccessful = false, message = "Invalid parameter, an integer is required for the stat value."
+							};
+						if (parameterValue < 0 || parameterValue > 100)
+							return new CommandParseResult {
+								isSuccessful = false, message = "Invalid parameter, stat value must be between 0 and 100 (inclusive)."
+							};
+						// Everything was all right
+						message = $"Player stats have been changed from ({PlayerState.Instance.CurrentStats.endurance}, {PlayerState.Instance.CurrentStats.speed}, {PlayerState.Instance.CurrentStats.dexterity}, {PlayerState.Instance.CurrentStats.precision}, {PlayerState.Instance.CurrentStats.magic}).";
+						PlayerState.Instance.CurrentStats = new PlayerStats { endurance = parameterValue, speed = parameterValue, dexterity = parameterValue, precision = parameterValue, magic = parameterValue };
+						message += $" to ({PlayerState.Instance.CurrentStats.endurance}, {PlayerState.Instance.CurrentStats.speed}, {PlayerState.Instance.CurrentStats.dexterity}, {PlayerState.Instance.CurrentStats.precision}, {PlayerState.Instance.CurrentStats.magic}).";
+						return new CommandParseResult {
+							isSuccessful = true,
+							message = message
+						};
+					}
+				}
 				// Parse individual stats and try to override the values
 				for (int i = 1; i < commandParts.Length; i++) {
 					string[] statParts = commandParts[i].Trim().Split('=', StringSplitOptions.RemoveEmptyEntries);
 					if (statParts.Length != 2)
 						return new CommandParseResult {
-							isSuccessful = false, message = "Invalid parameter. All parameters must be in a form of <statLetter>=<value>."
+							isSuccessful = false, message = "Invalid parameter. All parameters must be in a form of <parameterName>=<value>."
 						};
 					if (!int.TryParse(statParts[1], out int statValue))
 						return new CommandParseResult {
@@ -243,7 +270,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 						};
 				}
 				// Everything was all right
-				string message = $"Player stats have been changed from ({PlayerState.Instance.CurrentStats.endurance}, {PlayerState.Instance.CurrentStats.speed}, {PlayerState.Instance.CurrentStats.dexterity}, {PlayerState.Instance.CurrentStats.precision}, {PlayerState.Instance.CurrentStats.magic}).";
+				message = $"Player stats have been changed from ({PlayerState.Instance.CurrentStats.endurance}, {PlayerState.Instance.CurrentStats.speed}, {PlayerState.Instance.CurrentStats.dexterity}, {PlayerState.Instance.CurrentStats.precision}, {PlayerState.Instance.CurrentStats.magic}).";
 				PlayerState.Instance.CurrentStats = stats;
 				message += $" to ({PlayerState.Instance.CurrentStats.endurance}, {PlayerState.Instance.CurrentStats.speed}, {PlayerState.Instance.CurrentStats.dexterity}, {PlayerState.Instance.CurrentStats.precision}, {PlayerState.Instance.CurrentStats.magic}).";
 				return new CommandParseResult {
