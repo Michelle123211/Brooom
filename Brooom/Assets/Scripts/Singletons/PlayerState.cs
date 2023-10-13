@@ -252,7 +252,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public void InitializeSingleton() {
         // Initialize everything to default values
         // ...progress
-        GameComplete = false;
+        gameComplete = false;
         // ...statistics
         PreviousStats = new PlayerStats();
         currentStats = new PlayerStats();
