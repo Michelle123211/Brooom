@@ -189,7 +189,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		}));
 		// scene - change scene
-		commands.Add(new CheatCommand("scene", "Changes the current scene to the given one. Available scenes: MainMenu, CharacterCreation, Tutorial, Race, PlayerOverview, TestingTrack, Ending, Start, Exit. Usage: 'scene <sceneName>', e.g. 'scene PlayerOverview'.", (commandParts) => {
+		commands.Add(new CheatCommand("scene", "Changes the current scene to the given one. Usage: 'scene <sceneName>', e.g. 'scene PlayerOverview'.\nAvailable scenes: MainMenu, CharacterCreation, Tutorial, Race, PlayerOverview, TestingTrack, Ending, Start, Exit.", (commandParts) => {
 			bool success = false;
 			string message = string.Empty;
 			// Handle errors
@@ -208,7 +208,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		}));
 		// stats - change player statistics values
-		commands.Add(new CheatCommand("stats", "Changes values of individual player statistics. Available stats: e (endurance), s (speed), d (dexterity), p (precision), m (magic). Usage: 'stats (<statLetter>=<0-100>){1,5}', e.g. 'stats m=45', 'stats e=83 p=21'.", (commandParts) => {
+		commands.Add(new CheatCommand("stats", "Changes values of individual player statistics. Usage: 'stats (<statLetter>=<0-100>){1,5}', e.g. 'stats m=45', 'stats e=83 p=21'.\nAvailable stats: e (endurance), s (speed), d (dexterity), p (precision), m (magic).", (commandParts) => {
 			// Handle errors
 			if (commandParts.Length < 2 || commandParts.Length > 6) {
 				return new CommandParseResult {
@@ -252,7 +252,75 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				};
 			}
 		}));
-		// TODO: unlock - unlock all spells or broom upgrades
+		// upgrade - upgrade the broom
+		commands.Add(new CheatCommand("upgrade", "Unlocks all broom upgrades or only levels up the given one. Usage: 'unlock all' or 'unlock <upgradeIdentifier>', e.g. 'unlock Speed'.\nAvailable upgrades: Speed, Control, Elevation..", (commandParts) => {
+			bool success = false;
+			string message = string.Empty;
+			// Handle errors
+			if (commandParts.Length != 2) message = "Invalid number of parameters, one is required.";
+			else if (commandParts[1] == "all") {
+				// Unlock all broom upgrades
+				Broom broom = UtilsMonoBehaviour.FindObjectOfTypeAndTag<Broom>("Player");
+				if (broom == null)
+					message = "It is not possible to use this command in a scene without a broom.";
+				else {
+					foreach (var upgrade in broom.GetAvailableUpgrades()) {
+						while (upgrade.CurrentLevel != upgrade.MaxLevel) {
+							upgrade.LevelUp();
+							PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, upgrade.CurrentLevel, upgrade.MaxLevel);
+						}
+					}
+					return new CommandParseResult { isSuccessful = true, message = "All broom upgrades have been unlocked and equipped." };
+				}
+			} else {
+				// Unlock only one level of the given upgrade
+				Broom broom = UtilsMonoBehaviour.FindObjectOfTypeAndTag<Broom>("Player");
+				if (broom == null)
+					message = "It is not possible to use this command in a scene without a broom.";
+				else {
+					foreach (var upgrade in broom.GetAvailableUpgrades()) {
+						if (upgrade.UpgradeName == commandParts[1]) {
+							upgrade.LevelUp();
+							PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, upgrade.CurrentLevel, upgrade.MaxLevel);
+							return new CommandParseResult { isSuccessful = true, message = $"Broom upgrade '{commandParts[1]}' has been leveled up." };
+						}
+					}
+					return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, upgrade '{commandParts[1]}' is not known." };
+				}
+			}
+			// Return the result
+			return new CommandParseResult {
+				isSuccessful = success,
+				message = message
+			};
+		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.MainMenu, Scene.Tutorial })); // broom must be available
+		// PARTIAL: spell - unlock all spells or only the given one
+		commands.Add(new CheatCommand("spell", "Unlocks all spells or only the given one. Usage 'spell all' or 'spell <spellIdentifier>'.\nAvailable spells: .", (commandParts) => {
+			bool success = false;
+			string message = string.Empty;
+			// Handle errors
+			if (commandParts.Length != 2) message = "Invalid number of parameters, one is needed.";
+			else if (commandParts[1] == "all") {
+				// Unlock all spells
+				foreach (var spell in PlayerState.Instance.spellAvailability) {
+					if (!spell.Value) PlayerState.Instance.UnlockSpell(spell.Key);
+				}
+				return new CommandParseResult { isSuccessful = true, message = "All spells have been unlocked." };
+			} else {
+				// Unlock only the given spell
+				if (PlayerState.Instance.spellAvailability.ContainsKey(commandParts[1])) { // if the spell exists
+					PlayerState.Instance.UnlockSpell(commandParts[1]);
+					return new CommandParseResult { isSuccessful = true, message = $"Spell '{commandParts[1]}' has been unlocked." };
+				} else {
+					return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, spell '{commandParts[1]}' is not known." };
+				}
+			}
+			// Return the result
+			return new CommandParseResult {
+				isSuccessful = success,
+				message = message
+			};
+		}));
 		// speed - change maximum speed, available only in Race
 		commands.Add(new CheatCommand("speed", "Changes the maximum speed. Usage: 'speed <value>', e.g. 'speed 30', 'speed 10'.", (commandParts) => {
 			bool success = false;
