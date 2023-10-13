@@ -342,9 +342,98 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		},
+		enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack }));
+		// start - quick race start, available only in Race
+		commands.Add(new CheatCommand("start", "Immediately goes from training to race. Usage: 'start'.", (commandParts) => {
+			bool success = false;
+			string message = string.Empty;
+			// Handle errors
+			if (commandParts.Length != 1) message = "Invalid number of parameters, there should be none.";
+			else {
+				if (RaceController.Instance.State != RaceController.RaceState.Training) {
+					message = "The race has already started.";
+				} else {
+					// Perform the command
+					RaceController.Instance.StartRace();
+					Destroy(FindObjectOfType<StartingZone>().transform.parent.gameObject);
+					success = true;
+					message = "The race is starting";
+				}
+			}
+			// Return the result
+			return new CommandParseResult {
+				isSuccessful = success,
+				message = message
+			};
+		},
 		enabledScenes: new Scene[] { Scene.Race }));
-		// TODO: start - quick race start, available only in Race
-		// TODO: finish - quick race finish, available only in Race
+		// finish - quick race finish, available only in Race
+		commands.Add(new CheatCommand("finish", "Immediately finishes the race with the given parameters. Usage: 'finish time=<finishTimeInSeconds> (missed=<numberOfHoopsMissed>)?', e.g. 'finish time=65', 'finish time=137 missed=3'.", (commandParts) => {
+			bool success = false;
+			string message = string.Empty;
+			// Handle errors
+			if (commandParts.Length < 2 || commandParts.Length > 3) message = "Invalid number of parameters, there should be at least one and at most two.";
+			else if (RaceController.Instance.State != RaceController.RaceState.RaceInProgress)
+				message = "The race has not started yet and therefore cannot be finished.";
+			else {
+				int time = -1;
+				int missedHoops = 0;
+				for (int i = 1; i < commandParts.Length; i++) {
+					string[] parameterParts = commandParts[i].Trim().Split('=', StringSplitOptions.RemoveEmptyEntries);
+					if (parameterParts.Length != 2)
+						return new CommandParseResult {
+							isSuccessful = false, message = "Invalid parameter. All parameters must be in a form of <parameterName>=<value>."
+						};
+					if (!int.TryParse(parameterParts[1], out int parameterValue))
+						return new CommandParseResult {
+							isSuccessful = false, message = "Invalid parameter, an integer is required for the parameter value."
+						};
+					if (parameterValue < 0)
+						return new CommandParseResult {
+							isSuccessful = false, message = "Invalid parameter, the value must be non-negative."
+						};
+					if (parameterParts[0] == "time") {
+						time = parameterValue;
+					} else if (parameterParts[0] == "missed") {
+						missedHoops = parameterValue;
+					} else {
+						return new CommandParseResult {
+							isSuccessful = false, message = $"Invalid parameter, the parameter '{parameterParts[0]}' is not known. Available parameters: time, missed."
+						};
+					}
+				}
+				if (time < 0)
+					return new CommandParseResult {
+						isSuccessful = false, message = $"Invalid parameter, the 'time' parameter must be specified."
+					};
+				// Perform the command
+				CharacterRaceState playerState = RaceController.Instance.playerRacer.state;
+				// Distribute the missed hoops but pass all checkpoints
+				int actualMissedHoops = 0;
+				for (int i = 0; i < playerState.hoopsPassedArray.Length; i++) {
+					if (RaceController.Instance.level.track[i].isCheckpoint || missedHoops == 0) {
+						playerState.hoopsPassedArray[i] = true;
+					} else {
+						missedHoops--;
+						actualMissedHoops++;
+					}
+				}
+				// Set time and penalization
+				int penalization = Mathf.RoundToInt(RaceController.Instance.missedHoopPenalization * actualMissedHoops);
+				playerState.finishTime = time;
+				playerState.timePenalization = penalization;
+				// End race
+				RaceController.Instance.EndRace();
+				success = true;
+				message = $"The race is finishing with finish time {time} s and {actualMissedHoops} missed hoops (resulting in penalization {penalization} s).";
+			}
+			// Return the result
+			return new CommandParseResult {
+				isSuccessful = success,
+				message = message
+			};
+		},
+		enabledScenes: new Scene[] { Scene.Race }));
 	}
 
 	private void Update() {

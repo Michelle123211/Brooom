@@ -127,7 +127,7 @@ public class StatsComputer : MonoBehaviour {
 }
 
     // Called from RaceController at the end of the race
-    public void StopComputingAndUpdateStats() {
+    public void StopComputing() {
         isComputing = false;
         // Unregister callbacks
         Messaging.UnregisterFromMessage("ObstacleCollision", OnObstacleCollision);
@@ -135,6 +135,9 @@ public class StatsComputer : MonoBehaviour {
         playerRaceState.onWrongDirectionChanged -= OnWrongDirectionChanged;
         playerSpellController.onManaAmountChanged -= OnManaAmountChanged;
         playerSpellController.onSpellCasted -= OnSpellCasted;
+    }
+
+    public void UpdateStats() {
         // Compute new stats values
         CompleteComputationParameters();
         PlayerStats newValues = new PlayerStats {

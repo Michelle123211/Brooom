@@ -26,7 +26,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         get => currentStats;
         set { // Automatically store the previous stats when assigning new ones
             PreviousStats = currentStats;
-            currentStats = value;
+            currentStats = value.ClampedToRange();
             // Save the values into a file
             SaveSystem.SavePlayerStatistics(PreviousStats, currentStats);
             // Notify anyone interested that the current stats are different
@@ -308,5 +308,15 @@ public struct PlayerStats {
     // Returns stats names in a specific order
     public static List<string> GetListOfStatNames() {
         return new List<string> { "Endurance", "Speed", "Dexterity", "Precision", "Magic" };
+    }
+
+    public PlayerStats ClampedToRange() {
+        return new PlayerStats {
+            endurance = Mathf.Clamp(endurance, 0, 100),
+            speed = Mathf.Clamp(speed, 0, 100),
+            dexterity = Mathf.Clamp(dexterity, 0, 100),
+            precision = Mathf.Clamp(precision, 0, 100),
+            magic = Mathf.Clamp(magic, 0, 100)
+        };
     }
 }

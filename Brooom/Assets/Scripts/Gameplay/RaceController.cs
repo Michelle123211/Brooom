@@ -67,12 +67,12 @@ public class RaceController : MonoBehaviour {
     private Transform bonusParent;
     private Transform opponentParent;
 
-    private enum RaceState {
+    public enum RaceState {
         Training,
         RaceInProgress,
         RaceFinished
     }
-    private RaceState raceState = RaceState.Training; // distinguish between training and race
+    public RaceState State { get; private set; } = RaceState.Training; // distinguish between training and race
 
 
     // Called when entering the race
@@ -95,7 +95,7 @@ public class RaceController : MonoBehaviour {
     }
 
     private void StartTraining() {
-        raceState = RaceState.Training;
+        State = RaceState.Training;
         // Hide bonuses
         bonusParent = levelGenerator.transform.Find("Bonus");
         if (bonusParent != null) bonusParent.gameObject.SetActive(false);
@@ -143,7 +143,7 @@ public class RaceController : MonoBehaviour {
         }
         raceHUD.ShowCountdown("START!");
         // Actually start the race
-        raceState = RaceState.RaceInProgress;
+        State = RaceState.RaceInProgress;
         // Enable player and enable opponents actions
         foreach (var racer in racers) {
             racer.characterController.EnableActions();
@@ -154,7 +154,7 @@ public class RaceController : MonoBehaviour {
     }
 
     private IEnumerator PlayRaceEndSequence() {
-        raceState = RaceState.RaceFinished;
+        State = RaceState.RaceFinished;
         // Disable player actions make them brake
         playerRacer.characterController.DisableActions(CharacterMovementController.StopMethod.BrakeStop);
         // Start playing the sequence
@@ -163,13 +163,15 @@ public class RaceController : MonoBehaviour {
         if (endCutscene != null) {
             remainingDuration = endCutscene.duration;
         }
-        // Finish computing player statistics and update them in PlayerState
-        statsComputer.StopComputingAndUpdateStats();
+        // Finish computing player statistics
+        statsComputer.StopComputing();
         // Wait until the end of the sequence
         yield return new WaitForSeconds((float)remainingDuration);
         // Recompute racers' places
         CompleteOpponentState();
         ComputeRacerPlaces();
+        // Update player statistics in PlayerState - computation depends on the player's place
+        statsComputer.UpdateStats();
         // Show the race results
         ShowRaceResults();
     }
@@ -210,7 +212,7 @@ public class RaceController : MonoBehaviour {
             results[racer.state.place - 1] = new RaceResultData { 
                 name = racer.characterName,
                 time = time,
-                coinsReward = coinRewards[racer.state.place - 1] };
+                coinsReward = time > 0 ? coinRewards[racer.state.place - 1] : 0 };
         }
         raceResults.SetResultsTable(results);
         // Display everything
@@ -340,7 +342,7 @@ public class RaceController : MonoBehaviour {
 
     private void Update() {
         // Update state
-        switch (raceState) {
+        switch (State) {
             case RaceState.Training:
                 // Handle restart
                 if (GamePause.pauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
