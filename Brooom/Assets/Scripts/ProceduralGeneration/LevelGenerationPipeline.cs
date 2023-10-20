@@ -398,11 +398,21 @@ public class BonusSpot {
 	public bool isEmpty = true;
 	public int previousHoopIndex;
 	public float distanceFraction; // how far is the bonus spot between a pair of checkpoints (e.g. 1/4), used for linear interpolation of position
-	public BonusEffect assignedBonus;
+	public List<BonusEffect> bonusInstances;
 
 	public BonusSpot(Vector3 position, int previousHoopIndex, float distanceFraction) {
 		this.position = position;
 		this.previousHoopIndex = previousHoopIndex;
 		this.distanceFraction = distanceFraction;
+		this.bonusInstances = new List<BonusEffect>();
+	}
+
+	public bool IsBonusAvailable() {
+		if (isEmpty) return false;
+		// Check if at least one instance is available
+		foreach (var bonus in bonusInstances) {
+			if (bonus.gameObject.activeInHierarchy) return true;
+		}
+		return false;
 	}
 }

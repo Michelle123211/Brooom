@@ -196,7 +196,7 @@ public class StatsComputer : MonoBehaviour {
         totalBonusWeightSum = 0;
         foreach (var bonusSpot in RaceController.Instance.level.bonuses) {
             if (bonusSpot.isEmpty) continue;
-            totalBonusWeightSum += bonusSpot.assignedBonus.bonusWeight;
+            totalBonusWeightSum += bonusSpot.bonusInstances[0].bonusWeight;
         }
         // Obstacle collisions - value between 0 and 100 representing how well the player evades collisions
         obstacleCollisionValue = Mathf.Clamp(1 - (obstacleCollisionCount * collisionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100;
@@ -204,7 +204,7 @@ public class StatsComputer : MonoBehaviour {
         totalMana = 0;
         foreach (var bonusSpot in RaceController.Instance.level.bonuses) {
             if (bonusSpot.isEmpty) continue;
-            if (bonusSpot.assignedBonus.TryGetComponent<ManaBonusEffect>(out ManaBonusEffect manaBonus))
+            if (bonusSpot.bonusInstances[0].TryGetComponent<ManaBonusEffect>(out ManaBonusEffect manaBonus))
                 totalMana += manaBonus.manaAmount;
         }
         // Spell usage

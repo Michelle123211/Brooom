@@ -48,10 +48,9 @@ public class BonusPlacement : LevelGeneratorModule {
         BonusEffect bonusInstance = null;
         for (int i = 0; i < count; i++) {
             bonusInstance = Instantiate<BonusEffect>(bonus.bonusPrefab, leftPosition + direction * spacing * i, Quaternion.identity, bonusParent);
+            spot.bonusInstances.Add(bonusInstance);
         }
         spot.isEmpty = false;
-        // Assign an example instance into the BonusSpot
-        spot.assignedBonus = bonusInstance;
     }
 
     private void RemoveEmptySpots(LevelRepresentation level) {
