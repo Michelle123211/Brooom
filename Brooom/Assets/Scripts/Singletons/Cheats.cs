@@ -378,7 +378,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			// Handle errors
 			if (commandParts.Length != 1) message = "Invalid number of parameters, there should be none.";
 			else {
-				if (RaceController.Instance.State != RaceController.RaceState.Training) {
+				if (RaceController.Instance.State != RaceState.Training) {
 					message = "The race has already started.";
 				} else {
 					// Perform the command
@@ -401,7 +401,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			string message = string.Empty;
 			// Handle errors
 			if (commandParts.Length < 2 || commandParts.Length > 3) message = "Invalid number of parameters, there should be at least one and at most two.";
-			else if (RaceController.Instance.State != RaceController.RaceState.RaceInProgress)
+			else if (RaceController.Instance.State != RaceState.RaceInProgress)
 				message = "The race has not started yet and therefore cannot be finished.";
 			else {
 				int time = -1;
