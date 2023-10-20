@@ -51,7 +51,7 @@ public class RaceController : MonoBehaviour {
 
     // Level - to get access to track points and record racers' position within the track
     public LevelRepresentation level;
-    private float levelDifficulty; // number between 0 and 1
+    protected float levelDifficulty; // number between 0 and 1
     // Current time elapsed in the race
     [HideInInspector] public float raceTime = 0;
 
@@ -59,35 +59,30 @@ public class RaceController : MonoBehaviour {
     public RacerRepresentation playerRacer;
 
     // Related objects
-    private RaceUI raceHUD;
-    private RaceResultsUI raceResults;
-    private LevelGenerationPipeline levelGenerator;
-    private StatsComputer statsComputer;
+    protected RaceUI raceHUD;
+    protected RaceResultsUI raceResults;
+    protected LevelGenerationPipeline levelGenerator;
+    protected StatsComputer statsComputer;
 
-    private Transform bonusParent;
-    private Transform opponentParent;
+    protected Transform bonusParent;
+    protected Transform opponentParent;
 
-    public enum RaceState {
-        Training,
-        RaceInProgress,
-        RaceFinished
-    }
-    public RaceState State { get; private set; } = RaceState.Training; // distinguish between training and race
+    public RaceState State { get; protected set; } = RaceState.Training; // distinguish between training and race
 
 
     // Called when entering the race
-    public void StartRace() {
+    public virtual void StartRace() {
         // Start animation sequence
         StartCoroutine(PlayRaceStartSequence());
     }
 
     // Called when player finishes the race
-    public void EndRace() {
+    public virtual void EndRace() {
         // Start animation sequence
         StartCoroutine(PlayRaceEndSequence());
     }
 
-    public void GiveUpRace() {
+    public virtual void GiveUpRace() {
         // Decrease all stats
         statsComputer.LowerAllStatsOnRaceGivenUp();
         // Change scene
@@ -176,7 +171,7 @@ public class RaceController : MonoBehaviour {
         ShowRaceResults();
     }
 
-    private void CompleteOpponentState() {
+    protected void CompleteOpponentState() {
         // Handle case when the opponent did not finish
         foreach (var racer in racers) {
             if (racer.state.finishTime <= 0) {
@@ -193,10 +188,32 @@ public class RaceController : MonoBehaviour {
                 }
             }
         }
-
     }
 
-    private void ShowRaceResults() {
+    protected void ComputeRacerPlaces() {
+        // Sort the racers according to their place
+        racers.Sort((x, y) => {
+            // If both have finish time, the better one should be first
+            if (x.state.finishTime > 0 && y.state.finishTime > 0)
+                return (x.state.finishTime + x.state.timePenalization).CompareTo(y.state.finishTime + y.state.timePenalization);
+            // The one having finish time should be first
+            if (x.state.finishTime > 0 && y.state.finishTime <= 0) return -1; // x is first
+            if (x.state.finishTime <= 0 && y.state.finishTime > 0) return 1; // y is first
+            // The one having next hoop with higher index should be first
+            if (x.state.trackPointToPassNext != y.state.trackPointToPassNext)
+                return y.state.trackPointToPassNext.CompareTo(x.state.trackPointToPassNext);
+            // The one closer to the hoop should be first
+            float xDistance = Vector3.Distance(x.state.transform.position, level.track[x.state.trackPointToPassNext].position);
+            float yDistance = Vector3.Distance(y.state.transform.position, level.track[y.state.trackPointToPassNext].position);
+            return xDistance.CompareTo(yDistance);
+        });
+        // Let them know what their place is
+        for (int i = 0; i < racers.Count; i++) {
+            racers[i].state.UpdatePlace(i + 1);
+        }
+    }
+
+    protected virtual void ShowRaceResults() {
         // Set player's results
         raceResults.SetPlace(playerRacer.state.place, racers.Count);
         raceResults.SetTime(playerRacer.state.finishTime + playerRacer.state.timePenalization);
@@ -219,7 +236,7 @@ public class RaceController : MonoBehaviour {
         raceResults.gameObject.TweenAwareEnable();
     }
 
-    private int[] ComputeCoinRewards() {
+    protected int[] ComputeCoinRewards() {
         int[] result = new int[racers.Count];
         // Compute rewards for individual places
         float firstPlaceRaw = firstPlaceReward.Evaluate(levelDifficulty) * (firstPlaceRewardRange.y - firstPlaceRewardRange.x) + firstPlaceRewardRange.x;
@@ -233,16 +250,21 @@ public class RaceController : MonoBehaviour {
         return result;
     }
 
-    void Start()
-    {
+    protected void InitializeRelatedObjects() {
         raceHUD = FindObjectOfType<RaceUI>();
         raceResults = Utils.FindObject<RaceResultsUI>()[0];
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
         statsComputer = GetComponent<StatsComputer>();
+    }
+
+    protected void GenerateLevel() {
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
         level = levelGenerator.GenerateLevel();
         levelDifficulty = ComputeLevelDifficulty();
+    }
+
+    protected void InitializeRacers() {
         // Get references to the characters
         List<CharacterMovementController> characters = Utils.FindObject<CharacterMovementController>();
         racers = new List<RacerRepresentation>();
@@ -256,6 +278,15 @@ public class RaceController : MonoBehaviour {
             racers.Add(racer);
             if (racer.characterController.isPlayer) playerRacer = racer;
         }
+    }
+
+    void Start()
+    {
+        InitializeRelatedObjects();
+        GenerateLevel();
+        InitializeRacers();
+        // Get reference to the player
+        foreach (var racer in racers) if (racer.characterController.isPlayer) playerRacer = racer;
         // Initialize HUD
         int checkpointsTotal = 0, hoopsTotal = 0;
         foreach (var trackPoint in level.track) {
@@ -367,29 +398,6 @@ public class RaceController : MonoBehaviour {
             playerRacer.characterController.GetCurrentAltitude());
     }
 
-    private void ComputeRacerPlaces() {
-        // Sort the racers according to their place
-        racers.Sort((x, y) => {
-            // If both have finish time, the better one should be first
-            if (x.state.finishTime > 0 && y.state.finishTime > 0)
-                return (x.state.finishTime + x.state.timePenalization).CompareTo(y.state.finishTime + y.state.timePenalization);
-            // The one having finish time should be first
-            if (x.state.finishTime > 0 && y.state.finishTime <= 0) return -1; // x is first
-            if (x.state.finishTime <= 0 && y.state.finishTime > 0) return 1; // y is first
-            // The one having next hoop with higher index should be first
-            if (x.state.trackPointToPassNext != y.state.trackPointToPassNext)
-                return y.state.trackPointToPassNext.CompareTo(x.state.trackPointToPassNext);
-            // The one closer to the hoop should be first
-            float xDistance = Vector3.Distance(x.state.transform.position, level.track[x.state.trackPointToPassNext].position);
-            float yDistance = Vector3.Distance(y.state.transform.position, level.track[y.state.trackPointToPassNext].position);
-            return xDistance.CompareTo(yDistance);
-        });
-        // Let them know what their place is
-        for (int i = 0; i < racers.Count; i++) {
-            racers[i].state.UpdatePlace(i + 1);
-        }
-    }
-
     private void ReactOnCheckpointMissed() {
         // Make the screen red briefly
         raceHUD.FlashScreenColor(Color.red);
@@ -402,6 +410,12 @@ public class RaceController : MonoBehaviour {
         raceHUD.FlashScreenColor(Color.red);
 
     }
+}
+
+public enum RaceState {
+    Training,
+    RaceInProgress,
+    RaceFinished
 }
 
 [System.Serializable]
