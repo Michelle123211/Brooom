@@ -22,6 +22,10 @@ public class CharacterMovementController : MonoBehaviour {
     public float maxPitchAngle = 35;
     public float pitchResponsiveness = 0.01f;
 
+    [Header("---Components---")]
+    [Tooltip("If empty, .GetComponent() is used on the .gameObject of this component.")]
+    [SerializeField] CharacterInput characterInput;
+
 
     private bool actionsEnabled = false;
     private StopMethod actionsDisabledStop = StopMethod.NoStop;
@@ -30,7 +34,6 @@ public class CharacterMovementController : MonoBehaviour {
     [HideInInspector] public bool isPlayer = true;
 
     // Components
-    CharacterInput characterInput;
     Rigidbody rb;
     PlayerCameraController cameraController; // available only for the player (not opponents)
 
@@ -155,7 +158,8 @@ public class CharacterMovementController : MonoBehaviour {
     }
 
     private void Awake() {
-        characterInput = GetComponent<CharacterInput>();
+        if (characterInput == null)
+            characterInput = GetComponent<CharacterInput>();
         if (characterInput == null)
             Debug.LogError("An object with CharacterMovementController component must also have any component derived from CharacterInput (e.g. PlayerCharacterInput, OpponentCharacterInput).");
         rb = GetComponent<Rigidbody>();
