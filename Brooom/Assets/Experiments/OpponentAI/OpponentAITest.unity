@@ -1385,7 +1385,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 247.255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
@@ -3817,7 +3817,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 157.33002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
@@ -12357,8 +12357,65 @@ PrefabInstance:
       propertyPath: m_Name
       value: TerrainGenerator
       objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628381, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: modules.Array.size
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628381, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: modules.Array.data[16].module
+      value: 
+      objectReference: {fileID: 1330573068}
+    - target: {fileID: 9042582758647628381, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: modules.Array.data[15].isModuleEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628381, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: modules.Array.data[16].isModuleEnabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b87dd4f9d563c3499a0243e9f0a7f70, type: 3}
+--- !u!1 &1330573066 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9042582758647628373, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+    type: 3}
+  m_PrefabInstance: {fileID: 1330573065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1330573067 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3068122376443345296, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+    type: 3}
+  m_PrefabInstance: {fileID: 1330573065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1330573068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330573066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741ed0f611f971d4493fae1d934a278f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spacing: 2
+  opponentPrefabs:
+  - {fileID: 7379058528382252356, guid: 8b56d100b8391d74c9041cd5987d66f8, type: 3}
+  - {fileID: 7379058528382252356, guid: 8b56d100b8391d74c9041cd5987d66f8, type: 3}
+  - {fileID: 7379058528382252356, guid: 8b56d100b8391d74c9041cd5987d66f8, type: 3}
+  opponentsParent: {fileID: 1330573067}
+  opponentColors:
+  - {r: 0.9811321, g: 0.41189036, b: 0.41189036, a: 1}
+  - {r: 0.43147513, g: 0.8113208, b: 0.41714135, a: 1}
+  - {r: 1, g: 0.6413152, b: 0.3443396, a: 1}
+  - {r: 0.8867924, g: 0.4224813, b: 0.858365, a: 1}
+  - {r: 0.9339623, g: 0.9339623, b: 0.2951673, a: 1}
+  - {r: 0.44775718, g: 0.47563702, b: 0.735849, a: 1}
 --- !u!1 &1344390173
 GameObject:
   m_ObjectHideFlags: 0
@@ -16514,7 +16571,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 134.41998
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
@@ -18390,7 +18447,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 117.125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
