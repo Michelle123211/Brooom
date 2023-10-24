@@ -5,7 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(NavigationGoalPicker))]
 [RequireComponent(typeof(NavigationGoalExecutor))]
-public class NavigationAI : MonoBehaviour {
+public class GoalOrientedNavigation : CharacterInput {
 
 	// Parameters - may be extracted outside (e.g. to ScriptableObject)
 	[Tooltip("TIme in seconds after which the agent may try to choose another goal.")]
@@ -22,6 +22,10 @@ public class NavigationAI : MonoBehaviour {
 	private NavigationGoal currentGoal;
 
 	private float deliberationCountdown;
+
+	public override CharacterMovementValue GetMovementInput() {
+		return goalExecutor.GetCurrentMovementValue();
+	}
 
 	private NavigationGoal GetNewGoal() {
 		NavigationGoal newGoal = null;
@@ -72,5 +76,4 @@ public class NavigationAI : MonoBehaviour {
 		goalExecutor = GetComponent<NavigationGoalExecutor>();
 		goalExecutor.Initialize(agentObject);
 	}
-
 }
