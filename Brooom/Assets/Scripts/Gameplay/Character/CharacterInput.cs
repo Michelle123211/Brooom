@@ -10,7 +10,7 @@ public abstract class CharacterInput : MonoBehaviour {
 public struct CharacterMovementValue {
 	public ForwardValue forward;
 	public YawValue yaw;
-	public PitchIValue pitch;
+	public PitchValue pitch;
 }
 
 public enum ForwardValue {
@@ -25,7 +25,7 @@ public enum YawValue {
 	Right = 1
 }
 
-public enum PitchIValue { 
+public enum PitchValue { 
 	Up = -1,
 	None = 0,
 	Down = 1

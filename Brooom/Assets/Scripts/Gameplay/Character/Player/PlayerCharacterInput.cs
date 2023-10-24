@@ -16,7 +16,7 @@ public class PlayerCharacterInput : CharacterInput {
 		return new CharacterMovementValue {
 			forward = forwardInput > 0 ? ForwardValue.Forward : (forwardInput < 0 ? ForwardValue.Brake : ForwardValue.None),
 			yaw = yawInput > 0 ? YawValue.Right : (yawInput < 0 ? YawValue.Left : YawValue.None),
-			pitch = pitchInput > 0 ? PitchIValue.Down : (pitchInput < 0 ? PitchIValue.Up : PitchIValue.None)
+			pitch = pitchInput > 0 ? PitchValue.Down : (pitchInput < 0 ? PitchValue.Up : PitchValue.None)
 		};
 	}
 }

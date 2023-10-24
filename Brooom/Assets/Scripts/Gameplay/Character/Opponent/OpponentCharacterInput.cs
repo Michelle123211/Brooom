@@ -10,7 +10,7 @@ public class OpponentCharacterInput : CharacterInput {
 		return new CharacterMovementValue {
 			forward = ForwardValue.Forward,
 			yaw = YawValue.None,
-			pitch = PitchIValue.None
+			pitch = PitchValue.None
 		};
 	}
 }

@@ -22,12 +22,12 @@ public class CharacterMovementController : MonoBehaviour {
     public float maxPitchAngle = 35;
     public float pitchResponsiveness = 0.01f;
 
-    [Header("---Components---")]
+    [Header("---Other---")]
     [Tooltip("If empty, .GetComponent() is used on the .gameObject of this component.")]
     [SerializeField] CharacterInput characterInput;
+    [Tooltip("If false, the character won't move.")]
+    [SerializeField] bool actionsEnabled = false;
 
-
-    private bool actionsEnabled = false;
     private StopMethod actionsDisabledStop = StopMethod.NoStop;
 
     // Distinguish between controlling movement of the player or the opponents
@@ -183,7 +183,7 @@ public class CharacterMovementController : MonoBehaviour {
 
         // Handle disabled movement actions with braking
         if (!actionsEnabled && actionsDisabledStop == StopMethod.BrakeStop)
-            movementInput = new CharacterMovementValue { forward = ForwardValue.Brake, pitch = PitchIValue.None, yaw = YawValue.None };
+            movementInput = new CharacterMovementValue { forward = ForwardValue.Brake, pitch = PitchValue.None, yaw = YawValue.None };
 
         // Forward input
         float forwardInput = (float)movementInput.forward;

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class BasicNavigationGoalExecutor : NavigationGoalExecutor {
 
-	public override void SetGoal(NavigationGoal goal) {
+	protected override Vector3 DetermineTargetPositionFromGoal(NavigationGoal goal) {
 		throw new System.NotImplementedException();
 	}
-
 }
