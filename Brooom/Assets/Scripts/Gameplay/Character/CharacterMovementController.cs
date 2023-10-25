@@ -41,7 +41,7 @@ public class CharacterMovementController : MonoBehaviour {
 
     // Current values (for gradual change)
     float currentForwardSpeed = 0; // current speed
-    float currentYaw = 0, currentPitch = 0; // between -1 and 1
+    float currentYaw = 0, currentRoll = 0, currentPitch = 0; // between -1 and 1
     float previousForwardInput; // direction of the movement, -1, 0 or 1
 
     // Bonus speed (added on top of the current speed)
@@ -186,7 +186,7 @@ public class CharacterMovementController : MonoBehaviour {
             movementInput = new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
 
         // Forward input
-        float forwardInput = (float)movementInput.forwardMotion;
+        float forwardInput = (float)movementInput.forwardMotion * movementInput.forwardValue;
         previousForwardInput = forwardInput;
 
         // Resolve bonus speed (if any)
@@ -199,7 +199,7 @@ public class CharacterMovementController : MonoBehaviour {
         rb.velocity = transform.forward * (currentForwardSpeed + bonusSpeed); // add also the bonus speed, if any
 
         // Limiting the altitude
-        float pitchInput = (float)movementInput.pitchMotion;
+        float pitchInput = (float)movementInput.pitchMotion * movementInput.pitchValue;
         if (transform.position.y >= PlayerState.Instance.maxAltitude && pitchInput < 1) {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             if (pitchInput == -1) pitchInput = 0;
@@ -208,12 +208,13 @@ public class CharacterMovementController : MonoBehaviour {
             pitchInput = 0;
 
         // Yaw
-        float yawInput = (float)movementInput.yawMotion;
-        currentYaw += (yawInput - currentYaw) * yawResponsiveness; // change slowly, not immediately
+        float yawInput = (float)movementInput.yawMotion * movementInput.yawValue;
+        currentYaw += (yawInput - currentYaw) * (isPlayer ? yawResponsiveness : 1); // change slowly, not immediately
+        currentRoll += (yawInput - currentRoll) * yawResponsiveness;
         transform.Rotate(Vector3.up, currentYaw * turnSpeed);
         // Roll
         Vector3 eulerAngles = transform.localEulerAngles;
-        eulerAngles.z = -currentYaw * maxRollAngle;
+        eulerAngles.z = -currentRoll * maxRollAngle;
         // Pitch
         currentPitch += (pitchInput - currentPitch) * pitchResponsiveness; // change slowly, not immediately
         eulerAngles.x = currentPitch * maxPitchAngle;
