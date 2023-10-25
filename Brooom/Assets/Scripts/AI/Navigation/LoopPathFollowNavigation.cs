@@ -30,7 +30,6 @@ public class LoopPathFollowNavigation : CharacterInput {
 
 	private void Update() {
 		if (IsCloseEnough()) {
-			Debug.Log("Changing to next point.");
 			AdvanceToNextPoint();
 		}
 	}
