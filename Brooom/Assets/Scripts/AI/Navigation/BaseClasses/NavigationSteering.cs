@@ -15,5 +15,5 @@ public abstract class NavigationSteering : MonoBehaviour {
 		this.targetPosition = position;
 	}
 
-	public abstract CharacterMovementValue GetCurrentMovementValue();
+	public abstract CharacterMovementValues GetCurrentMovementValue();
 }

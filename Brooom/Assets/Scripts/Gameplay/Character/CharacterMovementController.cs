@@ -179,14 +179,14 @@ public class CharacterMovementController : MonoBehaviour {
         if (GamePause.pauseState == GamePauseState.Paused)
             return;
 
-        CharacterMovementValue movementInput = characterInput.GetMovementInput();
+        CharacterMovementValues movementInput = characterInput.GetMovementInput();
 
         // Handle disabled movement actions with braking
         if (!actionsEnabled && actionsDisabledStop == StopMethod.BrakeStop)
-            movementInput = new CharacterMovementValue { forward = ForwardValue.Brake, pitch = PitchValue.None, yaw = YawValue.None };
+            movementInput = new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
 
         // Forward input
-        float forwardInput = (float)movementInput.forward;
+        float forwardInput = (float)movementInput.forwardMotion;
         previousForwardInput = forwardInput;
 
         // Resolve bonus speed (if any)
@@ -199,7 +199,7 @@ public class CharacterMovementController : MonoBehaviour {
         rb.velocity = transform.forward * (currentForwardSpeed + bonusSpeed); // add also the bonus speed, if any
 
         // Limiting the altitude
-        float pitchInput = (float)movementInput.pitch;
+        float pitchInput = (float)movementInput.pitchMotion;
         if (transform.position.y >= PlayerState.Instance.maxAltitude && pitchInput < 1) {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             if (pitchInput == -1) pitchInput = 0;
@@ -208,7 +208,7 @@ public class CharacterMovementController : MonoBehaviour {
             pitchInput = 0;
 
         // Yaw
-        float yawInput = (float)movementInput.yaw;
+        float yawInput = (float)movementInput.yawMotion;
         currentYaw += (yawInput - currentYaw) * yawResponsiveness; // change slowly, not immediately
         transform.Rotate(Vector3.up, currentYaw * turnSpeed);
         // Roll

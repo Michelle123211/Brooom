@@ -19,50 +19,46 @@ public class BasicNavigationSteering : NavigationSteering {
 	public float badAngleThreshold = 90f;
 
 	private float elapsedTime = 0;
-	private ForwardValue lastForward = ForwardValue.None;
+	private ForwardMotion lastForward = ForwardMotion.None;
 
-	public override CharacterMovementValue GetCurrentMovementValue() {
+	public override CharacterMovementValues GetCurrentMovementValue() {
 
 		if (elapsedTime > refreshInterval) {
 			elapsedTime -= refreshInterval;
-			CharacterMovementValue movement = RecomputeMovementValue();
-			lastForward = movement.forward;
+			CharacterMovementValues movement = RecomputeMovementValue();
+			lastForward = movement.forwardMotion;
 			return movement;
 		} else {
-			return new CharacterMovementValue {
-				forward = lastForward, // we don't want to lower the speed
-				yaw = YawValue.None,
-				pitch = PitchValue.None
-			};
+			return new CharacterMovementValues(lastForward, YawMotion.None, PitchMotion.None); // don't lower the forward speed
 		}
 	}
 
-	private CharacterMovementValue RecomputeMovementValue() {
+	private CharacterMovementValues RecomputeMovementValue() {
 		Vector3 startPosition = this.agent.transform.position;
 		Vector3 targetDirection = targetPosition - startPosition;
 
-		CharacterMovementValue movement = new CharacterMovementValue();
+		CharacterMovementValues movement = new CharacterMovementValues();
 
 		// Yaw
 		float yawAngle = Vector3.SignedAngle(targetDirection, this.agent.transform.forward, Vector3.up);
-		if (yawAngle < -yawAngleThreshold) movement.yaw = YawValue.Right;
-		else if (yawAngle > yawAngleThreshold) movement.yaw = YawValue.Left;
-		else movement.yaw = YawValue.None;
+		if (yawAngle < -yawAngleThreshold) movement.yawMotion = YawMotion.Right;
+		else if (yawAngle > yawAngleThreshold) movement.yawMotion = YawMotion.Left;
+		else movement.yawMotion = YawMotion.None;
 
 		// Pitch
 		float pitchAngle = Vector3.SignedAngle(targetDirection, this.agent.transform.forward, this.agent.transform.right);
-		if (pitchAngle < -pitchAngleThreshold) movement.pitch = PitchValue.Down;
-		else if (pitchAngle > pitchAngleThreshold) movement.pitch = PitchValue.Up;
-		else movement.pitch = PitchValue.None;
+		if (pitchAngle < -pitchAngleThreshold) movement.pitchMotion = PitchMotion.Down;
+		else if (pitchAngle > pitchAngleThreshold) movement.pitchMotion = PitchMotion.Up;
+		else movement.pitchMotion = PitchMotion.None;
 
 		// Forward
 		float absYawAngle = Mathf.Abs(yawAngle);
-		if (absYawAngle < goodAngleThreshold) movement.forward = ForwardValue.Forward; // if the current direction is reasonable, go forward
-		else if (absYawAngle > badAngleThreshold) movement.forward = ForwardValue.Brake; // if it is entirely wrong, brake
-		else movement.forward = ForwardValue.None; // otherwise do nothing
+		if (absYawAngle < goodAngleThreshold) movement.forwardMotion = ForwardMotion.Forward; // if the current direction is reasonable, go forward
+		else if (absYawAngle > badAngleThreshold) movement.forwardMotion = ForwardMotion.Brake; // if it is entirely wrong, brake
+		else movement.forwardMotion = ForwardMotion.None; // otherwise do nothing
 
 
-		Debug.Log($"Current movement: ({movement.forward}, {movement.yaw}, {movement.pitch})");
+		Debug.Log($"Current movement: ({movement.forwardMotion}, {movement.yawMotion}, {movement.pitchMotion})");
 
 		return movement;
 	}

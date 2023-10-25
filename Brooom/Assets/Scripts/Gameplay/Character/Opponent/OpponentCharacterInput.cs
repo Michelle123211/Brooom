@@ -5,12 +5,8 @@ using UnityEngine;
 
 public class OpponentCharacterInput : CharacterInput {
 
-	public override CharacterMovementValue GetMovementInput() {
+	public override CharacterMovementValues GetMovementInput() {
 		// TODO: Return movement values according to the AI
-		return new CharacterMovementValue {
-			forward = ForwardValue.Forward,
-			yaw = YawValue.None,
-			pitch = PitchValue.None
-		};
+		return new CharacterMovementValues(ForwardMotion.Forward, YawMotion.None, PitchMotion.None);
 	}
 }

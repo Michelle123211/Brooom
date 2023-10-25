@@ -15,7 +15,7 @@ public class LoopPathFollowNavigation : CharacterInput {
 
 	private NavigationSteering steering;
 
-	public override CharacterMovementValue GetMovementInput() {
+	public override CharacterMovementValues GetMovementInput() {
 		return steering.GetCurrentMovementValue();
 	}
 

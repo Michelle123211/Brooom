@@ -23,7 +23,7 @@ public class GoalOrientedNavigation : CharacterInput {
 
 	private float deliberationCountdown;
 
-	public override CharacterMovementValue GetMovementInput() {
+	public override CharacterMovementValues GetMovementInput() {
 		return goalExecutor.GetCurrentMovementValue();
 	}
 
