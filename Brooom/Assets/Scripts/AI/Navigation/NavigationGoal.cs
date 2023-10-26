@@ -59,7 +59,9 @@ public class HoopGoal : TrackElementGoal {
     private Vector3 GetTargetPoint() {
         // Aim off-center according to the current agent position
         Vector3 target = this.trackPoint.position;
-        target += (agent.transform.position - target).WithZ(0).normalized * 2;
+        Scalable hoopScalable = this.trackPoint.assignedHoop.GetComponent<Scalable>();
+        float scale = hoopScalable == null ? 1 : hoopScalable.GetScale().x;
+        target += (agent.transform.position - target).WithZ(0).normalized * 2 * scale;
         return target;
     }
 }

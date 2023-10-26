@@ -13,4 +13,12 @@ public class Scalable : MonoBehaviour {
         else
             transform.localScale = scaleValue;
     }
+
+    public Vector3 GetScale() {
+        if (transformToScale != null)
+            return transformToScale.localScale;
+        else
+            return transform.localScale;
+    }
+
 }
