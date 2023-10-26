@@ -174,7 +174,7 @@ public class RaceController : MonoBehaviour {
     protected void CompleteOpponentState() {
         // Handle case when the opponent did not finish
         foreach (var racer in racers) {
-            if (racer.state.finishTime <= 0) {
+            if (!racer.state.HasFinished) {
                 // Compute the finish time proportionaly to the number of remaining hoops
                 float timeForOneHoop = raceTime;
                 if (racer.state.trackPointToPassNext > 0)
@@ -194,11 +194,11 @@ public class RaceController : MonoBehaviour {
         // Sort the racers according to their place
         racers.Sort((x, y) => {
             // If both have finish time, the better one should be first
-            if (x.state.finishTime > 0 && y.state.finishTime > 0)
+            if (x.state.HasFinished && y.state.HasFinished)
                 return (x.state.finishTime + x.state.timePenalization).CompareTo(y.state.finishTime + y.state.timePenalization);
             // The one having finish time should be first
-            if (x.state.finishTime > 0 && y.state.finishTime <= 0) return -1; // x is first
-            if (x.state.finishTime <= 0 && y.state.finishTime > 0) return 1; // y is first
+            if (x.state.HasFinished && !y.state.HasFinished) return -1; // x is first
+            if (!x.state.HasFinished && y.state.HasFinished) return 1; // y is first
             // The one having next hoop with higher index should be first
             if (x.state.trackPointToPassNext != y.state.trackPointToPassNext)
                 return y.state.trackPointToPassNext.CompareTo(x.state.trackPointToPassNext);

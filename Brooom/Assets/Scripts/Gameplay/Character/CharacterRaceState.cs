@@ -15,6 +15,7 @@ public class CharacterRaceState : MonoBehaviour {
     [HideInInspector] public int followingTrackPoint = 0; // position of the player within the track (they are before the hoop with this index)
     [HideInInspector] public int trackPointToPassNext = 0; // index of the following hoop the player should fly through
     [HideInInspector] public bool isWrongDirection = true;
+    public bool HasFinished { get => this.finishTime > 0; }
 
     // Place
     [HideInInspector] public int place;
@@ -66,7 +67,7 @@ public class CharacterRaceState : MonoBehaviour {
 
     public void OnFinishPassed() {
         // Get the current time from the RaceController and store it
-        if (finishTime <= 0 && trackPointToPassNext >= hoopsPassedArray.Length) { // only the first time and only when the player did not miss any checkpoint
+        if (!HasFinished && trackPointToPassNext >= hoopsPassedArray.Length) { // only the first time and only when the player did not miss any checkpoint
             finishTime = RaceController.Instance.raceTime;
             // Player ends the race
             if (isPlayer) RaceController.Instance.EndRace();

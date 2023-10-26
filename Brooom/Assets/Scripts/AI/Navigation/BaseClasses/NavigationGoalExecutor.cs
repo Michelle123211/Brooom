@@ -12,7 +12,8 @@ public abstract class NavigationGoalExecutor : MonoBehaviour {
 
 	public void Initialize(GameObject agent) {
 		this.agent = agent;
-		steering.Initialize(agent);
+		this.steering = GetComponent<NavigationSteering>();
+		this.steering.Initialize(agent);
 	}
 	public CharacterMovementValues GetCurrentMovementValue() {
 		return steering.GetCurrentMovementValue();

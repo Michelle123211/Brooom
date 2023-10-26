@@ -5,6 +5,7 @@ using UnityEngine;
 public class BasicNavigationGoalExecutor : NavigationGoalExecutor {
 
 	protected override Vector3 DetermineTargetPositionFromGoal(NavigationGoal goal) {
-		throw new System.NotImplementedException();
+		// TODO: Take into consideration errors depending on the goal type
+		return goal.TargetPosition;
 	}
 }

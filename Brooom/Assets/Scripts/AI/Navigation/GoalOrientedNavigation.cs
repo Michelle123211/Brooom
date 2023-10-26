@@ -16,8 +16,8 @@ public class GoalOrientedNavigation : CharacterInput {
 	[Tooltip("GameObject reference to the agent which is controlled by this AI. If null, .gameObject of this component is taken.")]
 	public GameObject agentObject;
 
-	public NavigationGoalPicker goalPicker;
-	public NavigationGoalExecutor goalExecutor;
+	private NavigationGoalPicker goalPicker;
+	private NavigationGoalExecutor goalExecutor;
 
 	private NavigationGoal currentGoal;
 
@@ -28,11 +28,13 @@ public class GoalOrientedNavigation : CharacterInput {
 	}
 
 	private NavigationGoal GetNewGoal() {
-		NavigationGoal newGoal = null;
+		NavigationGoal newGoal = goalPicker.GetGoal();
+		bool shouldBeSkipped = false;
+		if (shouldBeSkipped) newGoal = null;
 		while (newGoal == null) {
-			newGoal = goalPicker.GetGoal();
+			newGoal = goalPicker.GetAnotherGoal();
 			// TODO: Decide whether the goal should be skipped
-			bool shouldBeSkipped = false;
+			shouldBeSkipped = false;
 			if (shouldBeSkipped) newGoal = null;
 		}
 		return newGoal;
@@ -45,14 +47,16 @@ public class GoalOrientedNavigation : CharacterInput {
 	}
 
 	private void Update() {
+		if (RaceController.Instance.State != RaceState.RaceInProgress) return;
+
 		// TODO: Maybe check goal validity and completion after longer time intervals instead of every frame
 
 		deliberationCountdown -= Time.deltaTime;
-		// Wait until on of the conditions is true:
+		// Wait until one of the conditions is true:
 		// --- the current goal is no longer valid
-		bool goalValid = currentGoal.IsValid();
+		bool goalValid = currentGoal == null ? false : currentGoal.IsValid();
 		// --- the current goal has been reached
-		bool goalReached = currentGoal.IsReached();
+		bool goalReached = currentGoal == null ? false : currentGoal.IsReached();
 		// --- deliberation cooldown has been reached
 		bool shouldDeliberate = (deliberationCountdown <= 0);
 		if (!goalReached && goalValid && !shouldDeliberate) return;

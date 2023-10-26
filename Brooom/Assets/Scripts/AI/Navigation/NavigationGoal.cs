@@ -4,18 +4,19 @@ using UnityEngine;
 
 
 public abstract class NavigationGoal {
-    public NavigationGoalType type;
-    public Vector3 targetPosition;
 
     public abstract NavigationGoalType Type { get; }
+    public abstract Vector3 TargetPosition { get; }
 
     protected GameObject agent;
+    protected CharacterRaceState raceState;
 
     // If the agent is at most at this distance from the goal, the goal is considered reached
     protected const float REACHED_DISTANCE_THRESHOLD = 0.5f; // TODO: Change this to a reasonable value
 
     public NavigationGoal(GameObject agent) {
         this.agent = agent;
+        this.raceState = agent.GetComponentInChildren<CharacterRaceState>();
     }
 
     public abstract bool IsReached();
@@ -44,29 +45,30 @@ public abstract class TrackElementGoal : NavigationGoal {
 public class HoopGoal : TrackElementGoal {
     public TrackPoint trackPoint;
 
-    public override NavigationGoalType Type { get => NavigationGoalType.Hoop; }
+    public override NavigationGoalType Type => NavigationGoalType.Hoop;
+	public override Vector3 TargetPosition => GetTargetPoint();
 
-    public HoopGoal(GameObject agent, int index) : base(agent, index) {
-        this.trackPoint = RaceController.Instance.level.track[index];
-        this.targetPosition = this.trackPoint.position;
+	public HoopGoal(GameObject agent, int index) : base(agent, index) {
+        this.trackPoint = RaceController.Instance.level.track[this.index];
     }
 
     public override bool IsReached() {
-        // TODO
-        throw new System.NotImplementedException();
+        return raceState.trackPointToPassNext > this.index;
+    }
+
+    private Vector3 GetTargetPoint() {
+        // Aim off-center according to the current agent position
+        Vector3 target = this.trackPoint.position;
+        target += (agent.transform.position - target).WithZ(0).normalized * 2;
+        return target;
     }
 }
 
 public class CheckpointGoal : HoopGoal {
 
-    public override NavigationGoalType Type { get => NavigationGoalType.Checkpoint; }
+    public override NavigationGoalType Type => NavigationGoalType.Checkpoint;
 
     public CheckpointGoal(GameObject agent, int index) : base(agent, index) {
-    }
-
-    public override bool IsReached() {
-        // TODO
-        throw new System.NotImplementedException();
     }
 }
 
@@ -77,12 +79,13 @@ public class BonusGoal : TrackElementGoal {
     private float currentDistance = float.MaxValue;
 
 
-    public override NavigationGoalType Type { get => NavigationGoalType.Bonus; }
+    public override NavigationGoalType Type => NavigationGoalType.Bonus;
+    public override Vector3 TargetPosition => this.bonusSpot.bonusInstances[instanceIndex].transform.position;
 
     public BonusGoal(GameObject agent, int index) : base(agent, index) {
-        this.bonusSpot = RaceController.Instance.level.bonuses[index];
         // Choose the closest instance available
         ChooseClosestInstance();
+        this.bonusSpot = RaceController.Instance.level.bonuses[this.index];
     }
 
     public override bool IsReached() {
@@ -106,7 +109,6 @@ public class BonusGoal : TrackElementGoal {
             float distance = Vector3.Distance(agent.transform.position, bonus.transform.position);
             if (distance < this.currentDistance) {
                 this.currentDistance = distance;
-                this.targetPosition = bonus.transform.position;
                 this.instanceIndex = i;
             }
         }
@@ -116,19 +118,18 @@ public class BonusGoal : TrackElementGoal {
 public class FinishNavigationGoal : NavigationGoal {
     public FinishLine finishObject;
 
-    public override NavigationGoalType Type { get => NavigationGoalType.Finish; }
+    public override NavigationGoalType Type => NavigationGoalType.Finish; 
+    public override Vector3 TargetPosition => this.finishObject.transform.position;
 
-    public FinishNavigationGoal(GameObject agent, FinishLine finish) : base(agent) {
-        this.finishObject = finish;
+    public FinishNavigationGoal(GameObject agent) : base(agent) {
+        this.finishObject = RaceController.Instance.level.finish;
     }
 
     public override bool IsReached() {
-        // TODO
-        throw new System.NotImplementedException();
+        return this.raceState.HasFinished;
     }
 
     public override bool IsValid() {
-        // TODO: Not valid if some checkpoints were missed
-        throw new System.NotImplementedException();
+        return raceState.trackPointToPassNext >= raceState.hoopsPassedArray.Length;
     }
 }
