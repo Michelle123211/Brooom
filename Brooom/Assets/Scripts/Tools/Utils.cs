@@ -66,6 +66,31 @@ public static class Utils
     }
 
 
+    // Determines if two segments given as a + t * (b - a) and c + u * (d - c) are intersecting when projected to the XZ plane (Y = 0)
+    public static bool AreSegmentsIntersectingXZ(Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
+        // Equations taken from: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
+        float denominator = (a.x - b.x) * (c.z - d.z) - (a.z - b.z) * (c.x - d.x);
+        if (denominator == 0) return false; // there is no intersection
+        float t = ((a.x - c.x) * (c.z - d.z) - (a.z - c.z) * (c.x - d.x)) / denominator;
+        float u = ((a.x - c.x) * (a.z - b.z) - (a.z - c.z) * (a.x - b.x)) / denominator;
+        return t >= 0 && t < 1 && u > 0 && u <= 1; // end point is shared, so t < 1 (not t <= 1) and u > 0 (not u >= 0)
+    }
+
+    // Finds intersection of two lines (given by their two points) projected to the XZ plane
+    // First line ... a + t * (b - a)
+    // Second line ... c + u * (d - c)
+    public static bool TryGetLineIntersectionXZ(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out Vector3 intersection) {
+        intersection = Vector3.zero;
+        // Equations taken from: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
+        float denominator = (a.x - b.x) * (c.z - d.z) - (a.z - b.z) * (c.x - d.x);
+        if (denominator == 0) return false; // there is no intersection
+        float t = ((a.x - c.x) * (c.z - d.z) - (a.z - c.z) * (c.x - d.x)) / denominator;
+        float u = ((a.x - c.x) * (a.z - b.z) - (a.z - c.z) * (a.x - b.x)) / denominator;
+        intersection = (a + t * (b - a)).WithY(0);
+        return true;
+    }
+
+
     public static Vector3 WithX(this Vector3 v, float x)
         => new Vector3(x, v.y, v.z);
 

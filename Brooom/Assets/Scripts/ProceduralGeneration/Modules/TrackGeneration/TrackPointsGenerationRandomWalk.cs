@@ -158,23 +158,12 @@ public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {
 		if (level.track.Count < 3) return false; // there must be at least two segments
 		int lastSegmentStart = level.track.Count - 2;
 		for (int firstSegmentStart = 0; firstSegmentStart < lastSegmentStart; firstSegmentStart++) {
-			if (AreTwoSegmentsIntersecting(level.track[firstSegmentStart].position, level.track[firstSegmentStart + 1].position,
+			if (Utils.AreSegmentsIntersectingXZ(level.track[firstSegmentStart].position, level.track[firstSegmentStart + 1].position,
 										   level.track[lastSegmentStart].position, level.track[lastSegmentStart + 1].position)) {
-				//Debug.Log($"Intersection found between [{level.track[firstSegmentStart].position}, {level.track[firstSegmentStart + 1].position}] and [{level.track[lastSegmentStart].position}, {level.track[lastSegmentStart + 1].position}].");
 				return true;
 			}
 		}
 		return false;
-	}
-
-	// Determines if two segments given as a + t * (b - a) and c + u * (d - c) are intersecting when projected to the XZ plane (Y = 0)
-	private bool AreTwoSegmentsIntersecting(Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
-		// Equations taken from: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-		float t = ((a.x - c.x) * (c.z - d.z) - (a.z - c.z) * (c.x - d.x)) /
-				  ((a.x - b.x) * (c.z - d.z) - (a.z - b.z) * (c.x - d.x));
-		float u = ((a.x - c.x) * (a.z - b.z) - (a.z - c.z) * (a.x - b.x)) /
-				  ((a.x - b.x) * (c.z - d.z) - (a.z - b.z) * (c.x - d.x));
-		return t >= 0 && t < 1 && u > 0 && u <= 1; // end point is shared, so t < 1 (not t <= 1) and u > 0 (not u >= 0)
 	}
 
 	// Moves all the points so that the final track is centered around the world origin

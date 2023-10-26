@@ -46,14 +46,14 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 			Vector3 orthogonalHoopDirectionPoint1 = segmentEnd + orthogonalHoopDirection;
 			Vector3 orthogonalHoopDirectionPoint2 = segmentEnd - orthogonalHoopDirection;
 			// Find next end points (from intersections of lines)
-			nextPoint1 = FindLineIntersectionIn2D(
-				previousPoint1.x, previousPoint1.z, borderPoint1.x, borderPoint1.z,
-				orthogonalHoopDirectionPoint1.x, orthogonalHoopDirectionPoint1.z, orthogonalHoopDirectionPoint2.x, orthogonalHoopDirectionPoint2.z
-				);
-			nextPoint2 = FindLineIntersectionIn2D(
-				previousPoint2.x, previousPoint2.z, borderPoint2.x, borderPoint2.z,
-				orthogonalHoopDirectionPoint1.x, orthogonalHoopDirectionPoint1.z, orthogonalHoopDirectionPoint2.x, orthogonalHoopDirectionPoint2.z
-				);
+			Utils.TryGetLineIntersectionXZ(
+				previousPoint1, borderPoint1,
+				orthogonalHoopDirectionPoint1, orthogonalHoopDirectionPoint2,
+				out nextPoint1);
+			Utils.TryGetLineIntersectionXZ(
+				previousPoint2, borderPoint2,
+				orthogonalHoopDirectionPoint1, orthogonalHoopDirectionPoint2,
+				out nextPoint2);
 			// Instantiate borders
 			InstantiateBorder(previousPoint1, nextPoint1);//, segmentDirection);
 			InstantiateBorder(previousPoint2, nextPoint2);//, segmentDirection);
@@ -105,16 +105,5 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		if (trackPointIndex < level.track.Count - 1)
 			nextPosition = level.track[trackPointIndex + 1].position;
 		return (nextPosition - previousPosition).WithY(0); // Y = 0 to rotate only around the Y axis
-	}
-
-	// The two lines are given by two points on each
-	// First line ... points (x1, y1) and (x2, y2)
-	// Second line ... points (x3, y3) and (x4, y4)
-	private Vector3 FindLineIntersectionIn2D(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		float denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-		if (denominator == 0) return Vector3.zero; // there is no intersection
-		float x = ((x1*y2 - y1*x2) * (x3 - x4) - (x1 - x2) * (x3*y4 - y3*x4)) / denominator;
-		float z = ((x1*y2 - y1*x2) * (y3 - y4) - (y1 - y2) * (x3*y4 - y3*x4)) / denominator;
-		return new Vector3(x, 0, z);
 	}
 }
