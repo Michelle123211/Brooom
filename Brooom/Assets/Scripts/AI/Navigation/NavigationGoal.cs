@@ -121,7 +121,7 @@ public class FinishNavigationGoal : NavigationGoal {
     public FinishLine finishObject;
 
     public override NavigationGoalType Type => NavigationGoalType.Finish; 
-    public override Vector3 TargetPosition => this.finishObject.transform.position;
+    public override Vector3 TargetPosition => GetTargetPoint();
 
     public FinishNavigationGoal(GameObject agent) : base(agent) {
         this.finishObject = RaceController.Instance.level.finish;
@@ -133,5 +133,21 @@ public class FinishNavigationGoal : NavigationGoal {
 
     public override bool IsValid() {
         return raceState.trackPointToPassNext >= raceState.hoopsPassedArray.Length;
+    }
+
+    private Vector3 GetTargetPoint() {
+        Vector3 target = this.finishObject.transform.position;
+        // Find the direction from the last hoop to the finish - this is the ideal direction to take to the finish
+        Vector3 lastHoopPosition = RaceController.Instance.level.track[RaceController.Instance.level.track.Count - 1].position;
+        Vector3 targetDirection = (target - lastHoopPosition).WithY(0);
+        // Find intersection between this direction from the agent and the finish's right vector
+        if (Utils.TryGetLineIntersectionXZ(
+            this.agent.transform.position, this.agent.transform.position + targetDirection,
+            this.finishObject.transform.position, this.finishObject.transform.position + this.finishObject.transform.right,
+            out Vector3 betterTarget)) {
+            target = betterTarget;
+        }
+        // Keep the agent't Y coordinate
+        return target.WithY(this.agent.transform.position.y);
     }
 }
