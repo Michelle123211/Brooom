@@ -57,7 +57,8 @@ public class AITestRaceController : RaceController {
     }
 
 	private void Update() {
-		
+        if (State == RaceState.RaceInProgress)
+            raceTime += Time.deltaTime;
 	}
 
 	private void Start() {

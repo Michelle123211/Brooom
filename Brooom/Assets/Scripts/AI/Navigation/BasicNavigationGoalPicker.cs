@@ -12,7 +12,9 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 	public override NavigationGoal GetGoal() {
 		// TODO - take into consideration other goal types
 		int nextHoopIndex = raceState.trackPointToPassNext;
-		if (nextHoopIndex >= raceState.hoopsPassedArray.Length) {
+		if (raceState.HasFinished) {
+			return new EmptyGoal(this.agent);
+		} else if (nextHoopIndex >= raceState.hoopsPassedArray.Length) {
 			return new FinishNavigationGoal(this.agent);
 		}  else if (RaceController.Instance.level.track[nextHoopIndex].isCheckpoint) {
 			return new CheckpointGoal(this.agent, nextHoopIndex);

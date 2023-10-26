@@ -20,7 +20,11 @@ public abstract class NavigationGoalExecutor : MonoBehaviour {
 	}
 
 	public void SetGoal(NavigationGoal goal) {
-		steering.SetTargetPosition(DetermineTargetPositionFromGoal(goal));
+		if (goal.Type == NavigationGoalType.None) {
+			steering.StopSteering();
+		} else {
+			steering.SetTargetPosition(DetermineTargetPositionFromGoal(goal));
+		}
 	}
 
 	protected abstract Vector3 DetermineTargetPositionFromGoal(NavigationGoal goal);

@@ -24,10 +24,28 @@ public abstract class NavigationGoal {
 }
 
 public enum NavigationGoalType {
+    None,
     Checkpoint,
     Hoop,
     Finish,
     Bonus
+}
+
+public class EmptyGoal : NavigationGoal {
+	public override NavigationGoalType Type => NavigationGoalType.None;
+	public override Vector3 TargetPosition => this.agent.transform.position;
+
+
+    public EmptyGoal(GameObject agent) : base(agent) { 
+    }
+
+	public override bool IsReached() {
+        return false;
+	}
+
+	public override bool IsValid() {
+        return true;
+	}
 }
 
 public abstract class TrackElementGoal : NavigationGoal {

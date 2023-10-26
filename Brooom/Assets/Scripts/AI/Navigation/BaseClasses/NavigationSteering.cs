@@ -7,6 +7,8 @@ public abstract class NavigationSteering : MonoBehaviour {
 	protected GameObject agent;
 	protected Vector3 targetPosition;
 
+	protected bool isActive = true;
+
 	public void Initialize(GameObject agent) {
 		this.agent = agent;
 	}
@@ -15,5 +17,20 @@ public abstract class NavigationSteering : MonoBehaviour {
 		this.targetPosition = position;
 	}
 
-	public abstract CharacterMovementValues GetCurrentMovementValue();
+	public void StartSteering() {
+		isActive = true;
+	}
+
+	public void StopSteering() {
+		isActive = false;
+	}
+
+	public CharacterMovementValues GetCurrentMovementValue() {
+		if (isActive)
+			return GetMovementToTargetPosition();
+		else
+			return new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
+	}
+
+	protected abstract CharacterMovementValues GetMovementToTargetPosition();
 }

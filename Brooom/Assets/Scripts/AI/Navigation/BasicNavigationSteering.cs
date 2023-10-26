@@ -23,11 +23,7 @@ public class BasicNavigationSteering : NavigationSteering {
 	[Tooltip("Forward input value depending on distance to the target.")]
 	public AnimationCurve forwardInputCurveDistance;
 
-	public override CharacterMovementValues GetCurrentMovementValue() {
-		return RecomputeMovementValue();
-	}
-
-	private CharacterMovementValues RecomputeMovementValue() {
+	protected override CharacterMovementValues GetMovementToTargetPosition() {
 		Vector3 startPosition = this.agent.transform.position;
 		Vector3 targetDirection = targetPosition - startPosition;
 		float distance = Vector3.Distance(startPosition, targetPosition);
