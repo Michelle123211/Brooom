@@ -71,6 +71,7 @@ public class CharacterRaceState : MonoBehaviour {
             finishTime = RaceController.Instance.raceTime;
             // Player ends the race
             if (isPlayer) RaceController.Instance.EndRace();
+            else RaceController.Instance.OnRacerFinished(this);
         }
     }
 

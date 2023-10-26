@@ -89,6 +89,17 @@ public class RaceController : MonoBehaviour {
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
+    public void OnRacerFinished(CharacterRaceState racerState) {
+        foreach (var racer in racers) {
+            if (racer.state == racerState) {
+                racer.characterController.DisableActions(CharacterMovementController.StopMethod.BrakeStop);
+                racer.characterController.gameObject.GetComponent<FaceAnimationsController>()?.StartSmiling();
+                // TODO: Start waving animation
+                break;
+            }
+        }
+    }
+
     private void StartTraining() {
         State = RaceState.Training;
         // Hide bonuses
