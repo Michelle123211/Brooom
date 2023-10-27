@@ -45,7 +45,7 @@ public class BonusPlacement : LevelGeneratorModule {
         Vector3 direction = Vector3.Cross(forwardProjected, Vector3.up).normalized; // right vector (in the direction of a row of bonuses)
         Vector3 leftPosition = spot.position - direction * spacing * ((count - 1) / 2f);
         // Create instances of the bonus
-        BonusEffect bonusInstance = null;
+        BonusEffect bonusInstance;
         for (int i = 0; i < count; i++) {
             bonusInstance = Instantiate<BonusEffect>(bonus.bonusPrefab, leftPosition + direction * spacing * i, Quaternion.identity, bonusParent);
             spot.bonusInstances.Add(bonusInstance);

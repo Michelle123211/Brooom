@@ -21,6 +21,8 @@ public abstract class NavigationGoal {
 
     public abstract bool IsReached();
     public abstract bool IsValid();
+
+    public abstract float GetRationality();
 }
 
 public enum NavigationGoalType {
@@ -45,6 +47,11 @@ public class EmptyGoal : NavigationGoal {
 
 	public override bool IsValid() {
         return true;
+	}
+
+	public override float GetRationality() {
+        // Not reasonable at all, should be replaced by another goal
+        return 0;
 	}
 }
 
@@ -71,7 +78,7 @@ public class HoopGoal : TrackElementGoal {
     }
 
     public override bool IsReached() {
-        return raceState.trackPointToPassNext > this.index;
+        return this.raceState.trackPointToPassNext > this.index;
     }
 
     private Vector3 GetTargetPoint() {
@@ -81,6 +88,14 @@ public class HoopGoal : TrackElementGoal {
         float scale = hoopScalable == null ? 1 : hoopScalable.GetScale().x;
         target += (agent.transform.position - target).WithZ(0).normalized * 2 * scale;
         return target;
+    }
+
+    public override float GetRationality() {
+        // It is reasonable only if it is the next hoop
+        if (this.index == this.raceState.trackPointToPassNext)
+            return 1;
+        else
+            return 0;
     }
 }
 
@@ -104,13 +119,13 @@ public class BonusGoal : TrackElementGoal {
 
     public BonusGoal(GameObject agent, int index) : base(agent, index) {
         // Choose the closest instance available
-        ChooseClosestInstance();
         this.bonusSpot = RaceController.Instance.level.bonuses[this.index];
+        ChooseClosestInstance();
     }
 
     public override bool IsReached() {
-        // Simply based on distance (we have no better information)
-        return (currentDistance < REACHED_DISTANCE_THRESHOLD);
+        // If the bonus instance is not available anymore
+        return !bonusSpot.bonusInstances[instanceIndex].gameObject.activeInHierarchy;
     }
 
     public override bool IsValid() {
@@ -119,13 +134,20 @@ public class BonusGoal : TrackElementGoal {
         return (instanceIndex >= 0);
     }
 
+    public override float GetRationality() {
+        // Not rational if behind the agent
+        float angleYaw = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, Vector3.up);
+        if (angleYaw > 90f) return 0;
+        else return 1;
+    }
+
     private void ChooseClosestInstance() {
         // Closest available instance of the bonus
         this.instanceIndex = -1;
         this.currentDistance = float.MaxValue;
         for (int i = 0; i < this.bonusSpot.bonusInstances.Count; i++) {
             BonusEffect bonus = this.bonusSpot.bonusInstances[i];
-            if (!bonus.isActiveAndEnabled) continue;
+            if (!bonus.gameObject.activeInHierarchy) continue;
             float distance = Vector3.Distance(agent.transform.position, bonus.transform.position);
             if (distance < this.currentDistance) {
                 this.currentDistance = distance;
@@ -151,6 +173,14 @@ public class FinishNavigationGoal : NavigationGoal {
 
     public override bool IsValid() {
         return raceState.trackPointToPassNext >= raceState.hoopsPassedArray.Length;
+    }
+
+    public override float GetRationality() {
+        // It is reasonable only if all hoops were passed/missed
+        if (this.raceState.trackPointToPassNext >= this.raceState.hoopsPassedArray.Length)
+            return 1;
+        else
+            return 0;
     }
 
     private Vector3 GetTargetPoint() {

@@ -13,6 +13,9 @@ public class GoalOrientedNavigation : CharacterInput {
 	[Tooltip("Probability of choosing a new goal after deliberation instead of keeping the current one.")]
 	public float deliberationProbability = 0.3f;
 
+	[Tooltip("Each goal is assigned rationality between 0 (not rational) and 1. Goals with rationality below this threshold will be automatically reconsidered.")]
+	public float rationalityThreshold = 0.1f;
+
 	[Tooltip("GameObject reference to the agent which is controlled by this AI. If null, .gameObject of this component is taken.")]
 	public GameObject agentObject;
 
@@ -42,32 +45,35 @@ public class GoalOrientedNavigation : CharacterInput {
 
 	private void SetNewGoal(NavigationGoal goal) {
 		currentGoal = goal;
-		// Reset deliberation
-		deliberationCountdown = deliberationInterval;
+		deliberationCountdown = deliberationInterval; // reset deliberation
 	}
 
 	private void Update() {
 		if (RaceController.Instance.State != RaceState.RaceInProgress) return;
 
-		// TODO: Maybe check goal validity and completion after longer time intervals instead of every frame
-
 		deliberationCountdown -= Time.deltaTime;
 		// Wait until one of the conditions is true:
-		// --- the current goal is no longer valid
-		bool goalValid = currentGoal == null ? false : currentGoal.IsValid();
 		// --- the current goal has been reached
 		bool goalReached = currentGoal == null ? false : currentGoal.IsReached();
+		// --- the current goal is no longer valid
+		bool goalValid = currentGoal == null ? false : currentGoal.IsValid();
+		// --- the current goal is not rational anymore (e.g. the assigned bonus has been missed)
+		bool goalRational = currentGoal == null ? false : currentGoal.GetRationality() >= rationalityThreshold;
 		// --- deliberation cooldown has been reached
-		bool shouldDeliberate = (deliberationCountdown <= 0);
-		if (!goalReached && goalValid && !shouldDeliberate) return;
+		bool shouldDeliberate = deliberationCountdown <= 0;
+		if (!goalReached && goalValid && !shouldDeliberate && goalRational) return;
 
-		// Get new possible goal and set it se the current one (under some circumstances)
-		NavigationGoal newGoal = GetNewGoal();
-		if (!goalValid || goalReached || (shouldDeliberate && Random.value < deliberationProbability))
+		// React accordingly
+		if (goalReached) goalPicker.OnGoalReached(currentGoal);
+		if (shouldDeliberate) deliberationCountdown += deliberationInterval;
+
+		// Get new possible goal and set it as the current one (under some circumstances)
+		if (!goalValid || goalReached || !goalRational || shouldDeliberate) {
+			NavigationGoal newGoal = GetNewGoal();
 			SetNewGoal(newGoal);
-
-		// Start working on the goal
-		goalExecutor.SetGoal(currentGoal);
+			// Start working on the goal
+			goalExecutor.SetGoal(currentGoal);
+		}
 	}
 
 	private void Start() {
