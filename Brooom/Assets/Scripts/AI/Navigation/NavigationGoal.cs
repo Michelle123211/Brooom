@@ -83,11 +83,14 @@ public class HoopGoal : TrackElementGoal {
 
     private Vector3 GetTargetPoint() {
         // Aim off-center according to the current agent position
-        Vector3 target = this.trackPoint.position;
+        Vector3 agentPosition = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agent.transform.position).WithZ(0);
         Scalable hoopScalable = this.trackPoint.assignedHoop.GetComponent<Scalable>();
         float scale = hoopScalable == null ? 1 : hoopScalable.GetScale().x;
-        target += (agent.transform.position - target).WithZ(0).normalized * 2 * scale;
-        return target;
+        float radius = 2 * scale;
+        Vector3 localTarget;
+        if (agentPosition.magnitude > radius) localTarget = agentPosition.normalized * 2 * scale;
+        else localTarget = agentPosition;
+        return this.trackPoint.assignedHoop.transform.TransformPoint(localTarget);
     }
 
     public override float GetRationality() {
