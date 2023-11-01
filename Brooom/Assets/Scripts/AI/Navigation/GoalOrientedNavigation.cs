@@ -9,15 +9,15 @@ public class GoalOrientedNavigation : CharacterInput {
 
 	// Parameters - may be extracted outside (e.g. to ScriptableObject)
 	[Tooltip("TIme in seconds after which the agent may try to choose another goal.")]
-	public float deliberationInterval = 3;
-	[Tooltip("Probability of choosing a new goal after deliberation instead of keeping the current one.")]
-	public float deliberationProbability = 0.3f;
+	[SerializeField] float deliberationInterval = 3;
 
 	[Tooltip("Each goal is assigned rationality between 0 (not rational) and 1. Goals with rationality below this threshold will be automatically reconsidered.")]
-	public float rationalityThreshold = 0.1f;
+	[SerializeField] float rationalityThreshold = 0.1f;
 
 	[Tooltip("GameObject reference to the agent which is controlled by this AI. If null, .gameObject of this component is taken.")]
-	public GameObject agentObject;
+	[SerializeField] GameObject agentObject;
+
+	[SerializeField] bool debugLogs = false;
 
 	private NavigationGoalPicker goalPicker;
 	private NavigationGoalExecutor goalExecutor;
@@ -62,6 +62,13 @@ public class GoalOrientedNavigation : CharacterInput {
 		// --- deliberation cooldown has been reached
 		bool shouldDeliberate = deliberationCountdown <= 0;
 		if (!goalReached && goalValid && !shouldDeliberate && goalRational) return;
+
+		if (debugLogs) {
+			Debug.Log("-------------------");
+			Debug.Log($"Current goal: {(currentGoal == null ? "Null" : currentGoal.Type)}");
+			Debug.Log($"Reached: {goalReached}, valid: {goalValid}");
+			Debug.Log($"Rationality: {goalRational}, should deliberate: {shouldDeliberate}");
+		}
 
 		// React accordingly
 		if (goalReached) goalPicker.OnGoalReached(currentGoal);

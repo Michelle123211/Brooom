@@ -202,6 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bcfd6282635154cac9fdd9b6fda895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  yawAngleThreshold: 60
+  pitchAngleThreshold: 30
+  bonusReturnDistanceThreshold: 8
 --- !u!114 &5218156909443921414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,8 +230,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deliberationInterval: 3
-  deliberationProbability: 0.3
+  rationalityThreshold: 0.1
   agentObject: {fileID: 5026376733343906612}
+  debugLogs: 0
 --- !u!1001 &1834430513897553212
 PrefabInstance:
   m_ObjectHideFlags: 0

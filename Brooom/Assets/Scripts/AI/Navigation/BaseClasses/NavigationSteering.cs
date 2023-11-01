@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public abstract class NavigationSteering : MonoBehaviour {
 
 	protected GameObject agent;
@@ -26,9 +27,9 @@ public abstract class NavigationSteering : MonoBehaviour {
 	}
 
 	public CharacterMovementValues GetCurrentMovementValue() {
-		if (isActive)
+		if (isActive) {
 			return GetMovementToTargetPosition();
-		else
+		} else
 			return new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
 	}
 

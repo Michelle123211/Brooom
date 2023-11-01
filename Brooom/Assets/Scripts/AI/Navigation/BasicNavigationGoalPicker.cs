@@ -41,7 +41,7 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 			return trackGoal;
 		// If the agent is going in the correct direction (relative to the track orientation)
 		if (Mathf.Abs(Vector3.SignedAngle(this.agent.transform.forward, trackTarget - agentPosition, Vector3.up)) < 90f) {
-			// ... and the bonus is more or less on the way to the next traxk point, go for the bonus
+			// ... and the bonus is more or less on the way to the next track point, go for the bonus
 			if (Mathf.Abs(Vector3.SignedAngle(trackTarget - agentPosition, bonusTarget - agentPosition, Vector3.up)) < yawAngleThreshold / 2f)
 				return bonusGoal;
 			// ... otherwise don't go necessarily far just for the bonus

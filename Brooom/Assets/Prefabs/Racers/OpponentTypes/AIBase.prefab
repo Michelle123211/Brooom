@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7412540630795765729}
   - component: {fileID: 6134760467171468951}
+  - component: {fileID: 500193791181080030}
   m_Layer: 9
   m_Name: AIBase
   m_TagString: Untagged
@@ -161,3 +162,35 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  collisionsMinDistance: 3
+  collisionsMaxDistance: 30
+  directionWeightThreshold: 0.1
+  debugLogs: 0
+--- !u!114 &500193791181080030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319367836660047611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9deb63e4e1aace242b4b87180845e0cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layersToDetect:
+    serializedVersion: 2
+    m_Bits: 448
+  maxDistance: 5
+  rays:
+  - rayDirection: {x: 0, y: 0, z: 1}
+    simplifiedDirection: {x: 0, y: 0}
+  - rayDirection: {x: -0.3, y: 0, z: 1}
+    simplifiedDirection: {x: -1, y: 0}
+  - rayDirection: {x: 0.3, y: 0, z: 1}
+    simplifiedDirection: {x: 0, y: 0}
+  - rayDirection: {x: 0, y: 0.3, z: 1}
+    simplifiedDirection: {x: 0, y: 1}
+  - rayDirection: {x: 0, y: -0.15, z: 1}
+    simplifiedDirection: {x: 0, y: -1}
+  debugLogs: 1
