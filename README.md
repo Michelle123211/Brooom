@@ -53,3 +53,11 @@
 - Cutscenes - start and finish
 - Race results - coin reward, table and computation of opponents' times
 - Player stats computation
+
+**Milestone 7** (October 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone7.zip))):
+
+- GDD restructuralization
+- Pause menu
+- Cheats system (Ctrl+Alt+C shows command line) - easily extensible
+- Basis for testing track - environment, borders, hoop, bonus, moving opponent
+- Opponents' AI - design, infrastructure, basic movement (flying through hoops, picking up bonuses)
