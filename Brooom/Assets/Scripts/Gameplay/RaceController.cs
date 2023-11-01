@@ -213,9 +213,17 @@ public class RaceController : MonoBehaviour {
             // The one having next hoop with higher index should be first
             if (x.state.trackPointToPassNext != y.state.trackPointToPassNext)
                 return y.state.trackPointToPassNext.CompareTo(x.state.trackPointToPassNext);
-            // The one closer to the hoop should be first
-            float xDistance = Vector3.Distance(x.state.transform.position, level.track[x.state.trackPointToPassNext].position);
-            float yDistance = Vector3.Distance(y.state.transform.position, level.track[y.state.trackPointToPassNext].position);
+            // The one closer to the hoop or finish should be first
+            float xDistance, yDistance;
+            if (x.state.trackPointToPassNext >= level.track.Count) { // the finish line is next
+                // Get distance on the shortest line to the finish
+                xDistance = Mathf.Abs(level.finish.transform.InverseTransformPoint(x.state.transform.position).z);
+                yDistance = Mathf.Abs(level.finish.transform.InverseTransformPoint(y.state.transform.position).z);
+            } else {
+                // Get distance to the next hoop
+                xDistance = Vector3.Distance(x.state.transform.position, level.track[x.state.trackPointToPassNext].position);
+                yDistance = Vector3.Distance(y.state.transform.position, level.track[y.state.trackPointToPassNext].position);
+            }
             return xDistance.CompareTo(yDistance);
         });
         // Let them know what their place is
