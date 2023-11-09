@@ -44,8 +44,11 @@ public class GoalOrientedNavigation : CharacterInput {
 	}
 
 	private void SetNewGoal(NavigationGoal goal) {
+		Debug.Log("Goal changed.");
 		currentGoal = goal;
 		deliberationCountdown = deliberationInterval; // reset deliberation
+		// Start working on the goal
+		goalExecutor.SetGoal(currentGoal);
 	}
 
 	private void Update() {
@@ -77,9 +80,8 @@ public class GoalOrientedNavigation : CharacterInput {
 		// Get new possible goal and set it as the current one (under some circumstances)
 		if (!goalValid || goalReached || !goalRational || shouldDeliberate) {
 			NavigationGoal newGoal = GetNewGoal();
-			SetNewGoal(newGoal);
-			// Start working on the goal
-			goalExecutor.SetGoal(currentGoal);
+			if (!newGoal.IsSameAs(currentGoal))
+				SetNewGoal(newGoal);
 		}
 	}
 

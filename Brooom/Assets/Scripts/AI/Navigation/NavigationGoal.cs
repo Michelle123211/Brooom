@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,20 @@ public abstract class NavigationGoal {
     public abstract bool IsValid();
 
     public abstract float GetRationality();
+
+    public bool IsSameAs(NavigationGoal other) {
+        if (other == null) return false;
+        // Check if it is the same instance
+        if (System.Object.ReferenceEquals(this, other)) return true;
+        // Check runtime types
+        if (this.GetType() != other.GetType() || this.Type != other.Type) return false;
+        // Type-specific comparison (e.g. based on fields)
+        return IsSameAs_SameType(other);
+    }
+
+    // It may be presumed the "other" goal can be cast into the same type as the defining type
+    protected abstract bool IsSameAs_SameType(NavigationGoal other);
+
 }
 
 public enum NavigationGoalType {
@@ -53,6 +68,10 @@ public class EmptyGoal : NavigationGoal {
         // Not reasonable at all, should be replaced by another goal
         return 0;
 	}
+
+	protected override bool IsSameAs_SameType(NavigationGoal other) {
+        return true; // two empty goals are always the same
+	}
 }
 
 public abstract class TrackElementGoal : NavigationGoal {
@@ -64,6 +83,10 @@ public abstract class TrackElementGoal : NavigationGoal {
 
 	public override bool IsValid() {
         return true; // all hoops and checkpoints are valid, bonuses override this method
+	}
+
+	protected override bool IsSameAs_SameType(NavigationGoal other) {
+        return this.index == (other as TrackElementGoal).index; // the same type and the same index of the element
 	}
 }
 
@@ -201,4 +224,8 @@ public class FinishNavigationGoal : NavigationGoal {
         // Keep the agent't Y coordinate
         return target.WithY(this.agent.transform.position.y);
     }
+
+	protected override bool IsSameAs_SameType(NavigationGoal other) {
+        return true; // there is only one finish so it is always the same goal
+	}
 }
