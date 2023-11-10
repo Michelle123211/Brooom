@@ -13,6 +13,9 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 
 	private int lastBonusPickedUp = -1;
 
+	// Remember which hoops have been determined to be skipped so that they can be skipped in the next iteration too
+	private HashSet<int> skippedHoops = new HashSet<int>();
+
 	public override NavigationGoal GetGoal() {
 		if (raceState.HasFinished) return new EmptyGoal(this.agent);
 
@@ -38,11 +41,18 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 					nextBonus++;
 				}
 			}
+			// Determine whether the goal should be skipped
+			if (nextGoal.Type == NavigationGoalType.Hoop) {
+				if (skippedHoops.Contains(nextHoop)) shouldBeSkipped = true;
+				else { 
+					shouldBeSkipped = nextGoal.ShouldBeSkipped();
+					// Remember skipped hoops so that they can be skipped the next time too
+					if (shouldBeSkipped) skippedHoops.Add(nextHoop);
+				}
+			} else shouldBeSkipped = nextGoal.ShouldBeSkipped();
 			// Increase the corresponding index
 			if (nextGoal.Type == NavigationGoalType.Bonus) nextBonus++;
 			else nextHoop++;
-			// Determine whether the goal should be skipped
-			shouldBeSkipped = nextGoal.ShouldBeSkipped();
 		}
 		// Return the new goal
 		return nextGoal;
@@ -93,7 +103,7 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 		for (int i = 0; i < RaceController.Instance.level.bonuses.Count; i++) {
 			if (!IsBonusSuitableAsGoal(i)) continue;
 			// Select the closest bonus
-			float distance = Vector3.Distance(this.agent.transform.position, RaceController.Instance.level.bonuses[bonusIndex].position);
+			float distance = Vector3.Distance(this.agent.transform.position, RaceController.Instance.level.bonuses[i].position);
 			if (distance < minDistance) {
 				minDistance = distance;
 				bonusIndex = i;
