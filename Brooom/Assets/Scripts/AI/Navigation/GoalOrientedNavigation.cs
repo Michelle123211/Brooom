@@ -30,21 +30,8 @@ public class GoalOrientedNavigation : CharacterInput {
 		return goalExecutor.GetCurrentMovementValue();
 	}
 
-	private NavigationGoal GetNewGoal() {
-		NavigationGoal newGoal = goalPicker.GetGoal();
-		bool shouldBeSkipped = false;
-		if (shouldBeSkipped) newGoal = null;
-		while (newGoal == null) {
-			newGoal = goalPicker.GetAnotherGoal();
-			// TODO: Decide whether the goal should be skipped
-			shouldBeSkipped = false;
-			if (shouldBeSkipped) newGoal = null;
-		}
-		return newGoal;
-	}
-
 	private void SetNewGoal(NavigationGoal goal) {
-		Debug.Log("Goal changed.");
+		if (debugLogs) Debug.Log("Goal changed.");
 		currentGoal = goal;
 		deliberationCountdown = deliberationInterval; // reset deliberation
 		// Start working on the goal
@@ -79,7 +66,7 @@ public class GoalOrientedNavigation : CharacterInput {
 
 		// Get new possible goal and set it as the current one (under some circumstances)
 		if (!goalValid || goalReached || !goalRational || shouldDeliberate) {
-			NavigationGoal newGoal = GetNewGoal();
+			NavigationGoal newGoal = goalPicker.GetGoal();
 			if (!newGoal.IsSameAs(currentGoal))
 				SetNewGoal(newGoal);
 		}

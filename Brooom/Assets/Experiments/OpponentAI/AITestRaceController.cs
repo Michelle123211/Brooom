@@ -63,6 +63,14 @@ public class AITestRaceController : RaceController {
 
 	private void Start() {
         InitializeRelatedObjects();
+        //// TODO: Remove after DEBUG
+        //PlayerState.Instance.CurrentStats = new PlayerStats {
+        //    speed = 50,
+        //    dexterity = 50,
+        //    endurance = 50,
+        //    precision = 50,
+        //    magic = 50
+        //};
         GenerateLevel();
         InitializeRacers();
         // Hide HUD

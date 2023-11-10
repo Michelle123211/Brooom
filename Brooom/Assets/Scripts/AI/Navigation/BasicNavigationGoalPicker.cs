@@ -13,21 +13,39 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 
 	private int lastBonusPickedUp = -1;
 
-	public override NavigationGoal GetAnotherGoal() {
-		// TODO - return different goal
-		return GetGoal();
-	}
-
 	public override NavigationGoal GetGoal() {
-		// TODO - take into consideration other goal types
-
 		if (raceState.HasFinished) return new EmptyGoal(this.agent);
 
-		NavigationGoal nextTrackGoal = SelectNextTrackGoal();
-		NavigationGoal nextBonusGoal = SelectNextBonusGoal();
-
-		if (nextBonusGoal == null) return nextTrackGoal;
-		return ChooseBetterGoal(nextTrackGoal, nextBonusGoal);
+		NavigationGoal nextGoal = null;
+		// Get next bonus index and next hoop index
+		int nextBonus = SelectNextBonusIndex();
+		int nextHoop = raceState.trackPointToPassNext;
+		// Get the first next goal which should not be skipped
+		bool shouldBeSkipped = true;
+		while (shouldBeSkipped) {
+			NavigationGoal nextTrackGoal = CreateTrackGoalFromIndex(nextHoop);
+			nextGoal = nextTrackGoal;
+			if (nextBonus != -1) {
+				// Check all bonuses in front of the next hoop
+				while (nextBonus < RaceController.Instance.level.bonuses.Count 
+					&& RaceController.Instance.level.bonuses[nextBonus].previousHoopIndex < nextHoop) {
+					if (IsBonusSuitableAsGoal(nextBonus)) {
+						// Compare the bonus goal with the hoop goal (which is better or not null)
+						nextGoal = ChooseBetterGoal(nextTrackGoal, new BonusGoal(this.agent, nextBonus));
+						// If bonus goal is picked, store it and break the cycle
+						if (nextGoal.Type == NavigationGoalType.Bonus) break;
+					}
+					nextBonus++;
+				}
+			}
+			// Increase the corresponding index
+			if (nextGoal.Type == NavigationGoalType.Bonus) nextBonus++;
+			else nextHoop++;
+			// Determine whether the goal should be skipped
+			shouldBeSkipped = nextGoal.ShouldBeSkipped();
+		}
+		// Return the new goal
+		return nextGoal;
 	}
 
 	private NavigationGoal ChooseBetterGoal(NavigationGoal trackGoal, NavigationGoal bonusGoal) {
@@ -57,43 +75,48 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 	}
 
 	// Creates goal for the next hoop/checkpoint or finish
-	private NavigationGoal SelectNextTrackGoal() {
-		int nextHoopIndex = raceState.trackPointToPassNext;
-		if (nextHoopIndex >= raceState.hoopsPassedArray.Length) {
+	private NavigationGoal CreateTrackGoalFromIndex(int index) {
+		if (index >= raceState.hoopsPassedArray.Length) {
 			return new FinishNavigationGoal(this.agent);
-		} else if (RaceController.Instance.level.track[nextHoopIndex].isCheckpoint) {
-			return new CheckpointGoal(this.agent, nextHoopIndex);
+		} else if (RaceController.Instance.level.track[index].isCheckpoint) {
+			return new CheckpointGoal(this.agent, index);
 		} else {
-			return new HoopGoal(this.agent, nextHoopIndex);
+			return new HoopGoal(this.agent, index);
 		}
 	}
 
-	// Creates goal for the 
-	private NavigationGoal SelectNextBonusGoal() {
+	// Selects bonus which should be picked up next (according to distance and agent's orientation)
+	private int SelectNextBonusIndex() {
 		float minDistance = float.MaxValue;
 		int bonusIndex = -1;
-
 		// Select the closest bonus from those which are in front of the agent
 		for (int i = 0; i < RaceController.Instance.level.bonuses.Count; i++) {
-			BonusSpot bonusSpot = RaceController.Instance.level.bonuses[i];
-			if (!bonusSpot.IsBonusAvailable()) continue;
-			// Ignore the bonus which was picked up as the last one (we don't want to choose it again immediately)
-			if (i == lastBonusPickedUp) continue;
-			// Check if the bonus is in front of the agent
-			float angleYaw = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, Vector3.up);
-			float anglePitch = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, this.agent.transform.right);
-			if (Mathf.Abs(angleYaw) > yawAngleThreshold || Mathf.Abs(anglePitch) > pitchAngleThreshold)
-				continue;
+			if (!IsBonusSuitableAsGoal(i)) continue;
 			// Select the closest bonus
-			float distance = Vector3.Distance(this.agent.transform.position, bonusSpot.position);
+			float distance = Vector3.Distance(this.agent.transform.position, RaceController.Instance.level.bonuses[bonusIndex].position);
 			if (distance < minDistance) {
 				minDistance = distance;
 				bonusIndex = i;
 			}
 		}
+		// And return
+		return bonusIndex;
+	}
 
-		if (bonusIndex == -1) return null;
-		else return new BonusGoal(this.agent, bonusIndex);
+	// Determines whether the bonus with the given index is a suitable goal (regarding it's availability, position and the agent's orientation)
+	private bool IsBonusSuitableAsGoal(int bonusIndex) {
+		BonusSpot bonusSpot = RaceController.Instance.level.bonuses[bonusIndex];
+		// The bonus must be available (have at least one instance active)
+		if (!bonusSpot.IsBonusAvailable()) return false;
+		// Ignore the bonus if it was picked up as the last one (we don't want to choose it again immediately)
+		if (bonusIndex == lastBonusPickedUp) return false;
+		// Check if the bonus is in front of the agent
+		float angleYaw = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, Vector3.up);
+		float anglePitch = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, this.agent.transform.right);
+		if (Mathf.Abs(angleYaw) > yawAngleThreshold || Mathf.Abs(anglePitch) > pitchAngleThreshold)
+			return false;
+		// Otherwise it is suitable
+		return true;
 	}
 
 	public override void OnGoalReached(NavigationGoal goal) {

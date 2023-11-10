@@ -23,6 +23,7 @@ public abstract class NavigationGoalExecutor : MonoBehaviour {
 		if (goal.Type == NavigationGoalType.None) {
 			steering.StopSteering();
 		} else {
+			goal.DetermineIfShouldFail();
 			steering.SetTargetPosition(DetermineTargetPositionFromGoal(goal));
 		}
 	}

@@ -23,6 +23,12 @@ public abstract class NavigationGoal {
     public abstract bool IsReached();
     public abstract bool IsValid();
 
+    // Whether it was decided based on the racer's skills that this goal should be skipped
+    public abstract bool ShouldBeSkipped();
+
+    // Adjustment to whether it was decided based on the racer's skills that this goal should be pursued but failed
+    public abstract bool DetermineIfShouldFail();
+
     public abstract float GetRationality();
 
     public bool IsSameAs(NavigationGoal other) {
@@ -62,9 +68,17 @@ public class EmptyGoal : NavigationGoal {
 
 	public override bool IsValid() {
         return true;
-	}
+    }
 
-	public override float GetRationality() {
+    public override bool ShouldBeSkipped() {
+        return false;
+    }
+
+    public override bool DetermineIfShouldFail() {
+        return false;
+    }
+
+    public override float GetRationality() {
         // Not reasonable at all, should be replaced by another goal
         return 0;
 	}
@@ -104,6 +118,25 @@ public class HoopGoal : TrackElementGoal {
         return this.raceState.trackPointToPassNext > this.index;
     }
 
+    public override bool ShouldBeSkipped() {
+        // TODO: Based on Precision stat
+        return false;
+    }
+
+    public override bool DetermineIfShouldFail() {
+        // TODO: Based on Dexterity stat
+        // TODO: Get target point farther from the center
+        return false;
+    }
+
+    public override float GetRationality() {
+        // It is reasonable only if it is the next hoop
+        if (this.index == this.raceState.trackPointToPassNext)
+            return 1;
+        else
+            return 0;
+    }
+
     private Vector3 GetTargetPoint() {
         // Aim off-center according to the current agent position
         Vector3 agentPosition = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agent.transform.position).WithZ(0);
@@ -115,14 +148,6 @@ public class HoopGoal : TrackElementGoal {
         else localTarget = agentPosition;
         return this.trackPoint.assignedHoop.transform.TransformPoint(localTarget);
     }
-
-    public override float GetRationality() {
-        // It is reasonable only if it is the next hoop
-        if (this.index == this.raceState.trackPointToPassNext)
-            return 1;
-        else
-            return 0;
-    }
 }
 
 public class CheckpointGoal : HoopGoal {
@@ -130,6 +155,17 @@ public class CheckpointGoal : HoopGoal {
     public override NavigationGoalType Type => NavigationGoalType.Checkpoint;
 
     public CheckpointGoal(GameObject agent, int index) : base(agent, index) {
+    }
+
+    public override bool ShouldBeSkipped() {
+        // Checkpoint cannot be skipped
+        return false;
+    }
+
+    public override bool DetermineIfShouldFail() {
+        // TODO: Based on Dexterity stat
+        // TODO: Get target point farther from the center
+        return false;
     }
 }
 
@@ -158,6 +194,19 @@ public class BonusGoal : TrackElementGoal {
         // At least one instance must be available
         ChooseClosestInstance();
         return (instanceIndex >= 0);
+    }
+
+    public override bool ShouldBeSkipped() {
+        // TODO: Based on the bonus type...
+        // TODO: ... speed bonus - based on average of Speed and Precision stats
+        // TODO: ... mana bonus - based on its rationality and average of Precision and Magic stats
+        // TODO: ... other - based on Precision stat
+        return false;
+    }
+
+    public override bool DetermineIfShouldFail() {
+        // TODO: Based on Dexterity stat
+        return false;
     }
 
     public override float GetRationality() {
@@ -201,12 +250,26 @@ public class FinishNavigationGoal : NavigationGoal {
         return raceState.trackPointToPassNext >= raceState.hoopsPassedArray.Length;
     }
 
+    public override bool ShouldBeSkipped() {
+        // Finish cannot be skipped
+        return false;
+    }
+
+    public override bool DetermineIfShouldFail() {
+        // Finish cannot be failed
+        return false;
+    }
+
     public override float GetRationality() {
         // It is reasonable only if all hoops were passed/missed
         if (this.raceState.trackPointToPassNext >= this.raceState.hoopsPassedArray.Length)
             return 1;
         else
             return 0;
+    }
+
+    protected override bool IsSameAs_SameType(NavigationGoal other) {
+        return true; // there is only one finish so it is always the same goal
     }
 
     private Vector3 GetTargetPoint() {
@@ -224,8 +287,4 @@ public class FinishNavigationGoal : NavigationGoal {
         // Keep the agent't Y coordinate
         return target.WithY(this.agent.transform.position.y);
     }
-
-	protected override bool IsSameAs_SameType(NavigationGoal other) {
-        return true; // there is only one finish so it is always the same goal
-	}
 }
