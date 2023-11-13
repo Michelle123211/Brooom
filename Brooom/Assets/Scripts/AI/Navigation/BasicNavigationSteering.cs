@@ -38,8 +38,13 @@ public class BasicNavigationSteering : NavigationSteering {
 	private RaycastCollisionDetection collisionDetection;
 
 	protected override CharacterMovementValues GetMovementToTargetPosition() {
+		// TODO: Determine if the agent should continue in the same direction (according to the dexterity mistake)
 		CharacterMovementValues movement = ComputeMovementValues();
-		return AdjustMovementToAvoidCollisions(movement);
+		movement = AdjustMovementToAvoidCollisions(movement);
+		// Slow down if probability of speed mistakes is high - just half the speed
+		if (Random.value < agentSkillLevel.GetSpeedMistakeProbability())
+			movement.forwardValue /= 2;
+		return movement;
 	}
 
 	private CharacterMovementValues ComputeMovementValues() {

@@ -40,25 +40,25 @@ public class AISkillLevel : MonoBehaviour {
 	// Returns probability that the agent makes a mistake relevant for the Speed stat (e.g. slow down, skip speed bonus)
 	public float GetSpeedMistakeProbability() {
 		// TODO: Implement
-		return 0;
+		return (100 - currentStatsValues.speed) / 100f;
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Dexterity stat (e.g. not change direction, collide with obstacles, miss bonus/hoop)
 	public float GetDexterityMistakeProbability() {
 		// TODO: Implement
-		return 0;
+		return (100 - currentStatsValues.dexterity) / 100f;
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Precision stat (e.g. skip bonus/hoop, collide with obstacles)
 	public float GetPrecisionMistakeProbability() {
 		// TODO: Implement
-		return 0;
+		return (100 - currentStatsValues.precision) / 100f;
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Magic stat (e.g. skip mana bonus, prolonged dealy before cast, not cast diverse spells)
 	public float GetMagicMistakeProbability() {
 		// TODO: Implement
-		return 0;
+		return (100 - currentStatsValues.magic) / 100f;
 	}
 
 	private void ApplySkillLevelStatsModifications(SkillLevelParameters parameters) {
