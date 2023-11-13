@@ -20,8 +20,8 @@ public class OpponentsGeneration : LevelGeneratorModule {
 	public override void Generate(LevelRepresentation level) {
 		// Prepare list of skill levels to choose from
 		List<AISkillLevel.RelationToPlayer> remainingSkillLevels = new List<AISkillLevel.RelationToPlayer>();
-		// Instantiate and place the opponents
 		foreach (var skillLevel in skillLevels) remainingSkillLevels.Add(skillLevel);
+		// Instantiate and place the opponents
 		for (int i = 0; i < opponentsCount; i++) {
 			// Compute the position on the start line (given by the index) - if the opponent count is odd, there is one more to the left of the player
 			int offset = i - ((opponentsCount + 1) / 2);

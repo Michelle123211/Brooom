@@ -12403,11 +12403,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741ed0f611f971d4493fae1d934a278f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillLevels: 020000000100000000000000
   spacing: 2
   opponentPrefabs:
-  - {fileID: 7379058528382252356, guid: 8b56d100b8391d74c9041cd5987d66f8, type: 3}
   - {fileID: 9156550832366962808, guid: 2357675cb4f84624c9da4e441f92108c, type: 3}
-  - {fileID: 7379058528382252356, guid: 8b56d100b8391d74c9041cd5987d66f8, type: 3}
+  - {fileID: 9156550832366962808, guid: 2357675cb4f84624c9da4e441f92108c, type: 3}
+  - {fileID: 9156550832366962808, guid: 2357675cb4f84624c9da4e441f92108c, type: 3}
   opponentsParent: {fileID: 1330573067}
   opponentColors:
   - {r: 0.9811321, g: 0.41189036, b: 0.41189036, a: 1}

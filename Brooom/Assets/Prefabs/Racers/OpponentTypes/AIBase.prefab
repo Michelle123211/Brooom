@@ -46,6 +46,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c77e90b6c74f142b20c36ca93867f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillLevelParameters:
+  - skillLevel: 2
+    speedChange: 0
+    dexterityChange: 0
+    precisionChange: 0
+    magicChange: 0
+  - skillLevel: 1
+    speedChange: 0.1
+    dexterityChange: 0.1
+    precisionChange: 0.1
+    magicChange: 0.1
+  - skillLevel: 0
+    speedChange: 0.25
+    dexterityChange: 0.25
+    precisionChange: 0.25
+    magicChange: 0.25
+  - skillLevel: 3
+    speedChange: -0.1
+    dexterityChange: -0.1
+    precisionChange: -0.1
+    magicChange: -0.1
+  - skillLevel: 4
+    speedChange: -0.25
+    dexterityChange: -0.25
+    precisionChange: -0.25
+    magicChange: -0.25
 --- !u!114 &6134760467171468951
 MonoBehaviour:
   m_ObjectHideFlags: 0
