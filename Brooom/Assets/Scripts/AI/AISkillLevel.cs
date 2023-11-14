@@ -17,6 +17,20 @@ public class AISkillLevel : MonoBehaviour {
 	[Tooltip("All available skill levels (relatively to player) and their corresponding stats modifications.")]
 	[SerializeField] List<SkillLevelParameters> skillLevelParameters;
 
+	[Header("Maximum probabilities")]
+	[Tooltip("The probability of making mistakes related to the Speed stat is mapped from original [0, 100] to [0, this number]. This time agents may not make mistakes all the time (not to look too suspicious).")]
+	[Range(0, 1)]
+	[SerializeField] float maxSpeedMistakeProbability = 0.8f;
+	[Tooltip("The probability of making mistakes related to the Dexterity stat is mapped from original [0, 100] to [0, this number]. This time agents may not make mistakes all the time (not to look too suspicious).")]
+	[Range(0, 1)]
+	[SerializeField] float maxDexterityMistakeProbability = 0.5f;
+	[Tooltip("The probability of making mistakes related to the Precision stat is mapped from original [0, 100] to [0, this number]. This time agents may not make mistakes all the time (not to look too suspicious).")]
+	[Range(0, 1)]
+	[SerializeField] float maxPrecisionMistakeProbability = 0.8f;
+	[Tooltip("The probability of making mistakes related to the Magic stat is mapped from original [0, 100] to [0, this number]. This time agents may not make mistakes all the time (not to look too suspicious).")]
+	[Range(0, 1)]
+	[SerializeField] float maxMagicMistakeProbability = 0.75f;
+
 	// Initial values which determine the agent's skill level
 	private PlayerStats baseStatsValues;
 	// Currently used values (derived from the initial values based on distance to the player - rubber banding)
@@ -39,26 +53,26 @@ public class AISkillLevel : MonoBehaviour {
 
 	// Returns probability that the agent makes a mistake relevant for the Speed stat (e.g. slow down, skip speed bonus)
 	public float GetSpeedMistakeProbability() {
-		// TODO: Implement
-		return (100 - currentStatsValues.speed) / 100f;
+		// Complement of the speed value mapped between 0 and maxSpeedMistakeProbability
+		return Utils.RemapRange((100 - currentStatsValues.speed) / 100f, 0, 100, 0, maxSpeedMistakeProbability);
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Dexterity stat (e.g. not change direction, collide with obstacles, miss bonus/hoop)
 	public float GetDexterityMistakeProbability() {
-		// TODO: Implement
-		return (100 - currentStatsValues.dexterity) / 100f;
+		// Complement of the dexterity value mapped between 0 and maxDexterityMistakeProbability
+		return Utils.RemapRange((100 - currentStatsValues.dexterity) / 100f, 0, 100, 0, maxDexterityMistakeProbability);
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Precision stat (e.g. skip bonus/hoop, collide with obstacles)
 	public float GetPrecisionMistakeProbability() {
-		// TODO: Implement
-		return (100 - currentStatsValues.precision) / 100f;
+		// Complement of the precision value mapped between 0 and maxPrecisionMistakeProbability
+		return Utils.RemapRange((100 - currentStatsValues.precision) / 100f, 0, 100, 0, maxPrecisionMistakeProbability);
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Magic stat (e.g. skip mana bonus, prolonged dealy before cast, not cast diverse spells)
 	public float GetMagicMistakeProbability() {
-		// TODO: Implement
-		return (100 - currentStatsValues.magic) / 100f;
+		// Complement of the magic value mapped between 0 and maxMagicMistakeProbability
+		return Utils.RemapRange((100 - currentStatsValues.magic) / 100f, 0, 100, 0, maxMagicMistakeProbability);
 	}
 
 	private void ApplySkillLevelStatsModifications(SkillLevelParameters parameters) {

@@ -25,6 +25,13 @@ public static class Utils
     }
 
     // Remaps the value from one range to another
+    public static int RemapRange(int value, int fromMin, int fromMax, int toMin, int toMax) {
+        float newValue = (float)(value - fromMin) / (fromMax - fromMin); // from (fromMin, fromMax) to (0, 1)
+        newValue = newValue * (toMax - toMin) + toMin; // from (0, 1) to (toMin, toMax)
+        return Mathf.RoundToInt(newValue);
+    }
+
+    // Remaps the value from one range to another
     public static float RemapRange(float value, float fromMin, float fromMax, float toMin, float toMax) {
         value = (value - fromMin) / (fromMax - fromMin); // from (fromMin, fromMax) to (0, 1)
         value = value * (toMax - toMin) + toMin; // from (0, 1) to (toMin, toMax)

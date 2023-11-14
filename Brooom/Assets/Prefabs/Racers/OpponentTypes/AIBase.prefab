@@ -72,6 +72,10 @@ MonoBehaviour:
     dexterityChange: -0.25
     precisionChange: -0.25
     magicChange: -0.25
+  maxSpeedMistakeProbability: 0.8
+  maxDexterityMistakeProbability: 0.5
+  maxPrecisionMistakeProbability: 0.8
+  maxMagicMistakeProbability: 0.75
 --- !u!114 &6134760467171468951
 MonoBehaviour:
   m_ObjectHideFlags: 0
