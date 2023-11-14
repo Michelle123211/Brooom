@@ -34,6 +34,10 @@ public class BasicNavigationSteering : NavigationSteering {
 	[SerializeField] float directionWeightThreshold = 0.1f;
 	[SerializeField] bool debugLogs = false;
 
+	[Header("Skill-based mistakes")]
+	[Tooltip("The curve describes mapping from speed mistake probability to percentage of maximum speed which is used to go forward.")]
+	[SerializeField] AnimationCurve speedBasedOnMistakeProbability;
+
 
 	private RaycastCollisionDetection collisionDetection;
 
@@ -41,9 +45,10 @@ public class BasicNavigationSteering : NavigationSteering {
 		// TODO: Determine if the agent should continue in the same direction (according to the dexterity mistake)
 		CharacterMovementValues movement = ComputeMovementValues();
 		movement = AdjustMovementToAvoidCollisions(movement);
-		// Slow down if probability of speed mistakes is high - just half the speed
-		if (Random.value < agentSkillLevel.GetSpeedMistakeProbability())
-			movement.forwardValue /= 2;
+		// Slow down based on the probability of speed mistakes
+		if (movement.forwardMotion == ForwardMotion.Forward) {
+			movement.forwardValue *= speedBasedOnMistakeProbability.Evaluate(agentSkillLevel.GetSpeedMistakeProbability());
+		}
 		return movement;
 	}
 

@@ -54,25 +54,25 @@ public class AISkillLevel : MonoBehaviour {
 	// Returns probability that the agent makes a mistake relevant for the Speed stat (e.g. slow down, skip speed bonus)
 	public float GetSpeedMistakeProbability() {
 		// Complement of the speed value mapped between 0 and maxSpeedMistakeProbability
-		return Utils.RemapRange((100 - currentStatsValues.speed) / 100f, 0, 100, 0, maxSpeedMistakeProbability);
+		return (100 - currentStatsValues.speed) / 100f * maxSpeedMistakeProbability;
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Dexterity stat (e.g. not change direction, collide with obstacles, miss bonus/hoop)
 	public float GetDexterityMistakeProbability() {
 		// Complement of the dexterity value mapped between 0 and maxDexterityMistakeProbability
-		return Utils.RemapRange((100 - currentStatsValues.dexterity) / 100f, 0, 100, 0, maxDexterityMistakeProbability);
+		return (100 - currentStatsValues.dexterity) / 100f * maxDexterityMistakeProbability;
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Precision stat (e.g. skip bonus/hoop, collide with obstacles)
 	public float GetPrecisionMistakeProbability() {
 		// Complement of the precision value mapped between 0 and maxPrecisionMistakeProbability
-		return Utils.RemapRange((100 - currentStatsValues.precision) / 100f, 0, 100, 0, maxPrecisionMistakeProbability);
+		return (100 - currentStatsValues.precision) / 100f * maxPrecisionMistakeProbability;
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Magic stat (e.g. skip mana bonus, prolonged dealy before cast, not cast diverse spells)
 	public float GetMagicMistakeProbability() {
 		// Complement of the magic value mapped between 0 and maxMagicMistakeProbability
-		return Utils.RemapRange((100 - currentStatsValues.magic) / 100f, 0, 100, 0, maxMagicMistakeProbability);
+		return (100 - currentStatsValues.magic) / 100f * maxMagicMistakeProbability;
 	}
 
 	private void ApplySkillLevelStatsModifications(SkillLevelParameters parameters) {
