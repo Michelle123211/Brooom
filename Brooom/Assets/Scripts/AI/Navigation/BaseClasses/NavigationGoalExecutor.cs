@@ -10,6 +10,8 @@ public abstract class NavigationGoalExecutor : MonoBehaviour {
 
 	protected NavigationSteering steering;
 
+	protected NavigationGoal currentGoal;
+
 	public void Initialize(GameObject agent) {
 		this.agent = agent;
 		this.steering = GetComponent<NavigationSteering>();
@@ -20,10 +22,10 @@ public abstract class NavigationGoalExecutor : MonoBehaviour {
 	}
 
 	public void SetGoal(NavigationGoal goal) {
+		currentGoal = goal;
 		if (goal.Type == NavigationGoalType.None) {
 			steering.StopSteering();
 		} else {
-			goal.DetermineIfShouldFail();
 			steering.SetTargetPosition(DetermineTargetPositionFromGoal(goal));
 		}
 	}

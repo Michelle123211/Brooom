@@ -42,7 +42,6 @@ public class BasicNavigationSteering : NavigationSteering {
 	private RaycastCollisionDetection collisionDetection;
 
 	protected override CharacterMovementValues GetMovementToTargetPosition() {
-		// TODO: Determine if the agent should continue in the same direction (according to the dexterity mistake)
 		CharacterMovementValues movement = ComputeMovementValues();
 		movement = AdjustMovementToAvoidCollisions(movement);
 		// Slow down based on the probability of speed mistakes
