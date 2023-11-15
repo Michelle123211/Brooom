@@ -8,10 +8,11 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 
 	[Header("Movement")]
 	[Tooltip("The curve describes mapping from speed mistake probability to percentage of maximum speed which is used to go forward.")]
-	public AnimationCurve speedBasedOnMistakeProbability;
+	public AnimationCurve speedModifierCurve;
 	[Tooltip("The curve describes mapping from dexterity mistake probability to duration of not changing the direction to a new goal (the original direction is kept for this amount of seconds).")]
 	public AnimationCurve keepDirectionDurationCurve;
-	// TODO: Avoiding collisions
+	[Tooltip("The curve describes weight (between 0 and 1) of the direction to avoid collision based on the probability of mistake (average of dexterity and precision mistake probabilities).")]
+	public AnimationCurve collisionAvoidanceWeightCurve;
 
 	//[Header("Hoops and checkpoints")]
 	// TODO: Skip hoop/checkpoint

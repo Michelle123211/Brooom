@@ -42,7 +42,7 @@ public class BasicNavigationSteering : NavigationSteering {
 		movement = AdjustMovementToAvoidCollisions(movement);
 		// Slow down based on the probability of speed mistakes
 		if (movement.forwardMotion == ForwardMotion.Forward) {
-			movement.forwardValue *= agentSkillLevel.mistakesParameters.speedBasedOnMistakeProbability.Evaluate(agentSkillLevel.GetSpeedMistakeProbability());
+			movement.forwardValue *= agentSkillLevel.mistakesParameters.speedModifierCurve.Evaluate(agentSkillLevel.GetSpeedMistakeProbability());
 		}
 		return movement;
 	}
@@ -81,6 +81,24 @@ public class BasicNavigationSteering : NavigationSteering {
 	}
 
 	private CharacterMovementValues AdjustMovementToAvoidCollisions(CharacterMovementValues movement) {
+		FlightDirection direction = GetCollisionAvoidanceDirection();
+		// If the direction to avoid collisions has no weight, simply continue in the original direction
+		if (direction.weight == 0) return movement;
+		// Get collision avoidance weight based on mistake probabilities
+		float mistakeProbability = (agentSkillLevel.GetDexterityMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
+		float avoidanceWeight = agentSkillLevel.mistakesParameters.collisionAvoidanceWeightCurve.Evaluate(mistakeProbability);
+		// Combine direction to target with the direction to avoid collisions (weighted average)
+		float yaw = ((int)movement.yawMotion * movement.yawValue + direction.direction.x * direction.weight * avoidanceWeight) / (1f + avoidanceWeight);
+		float pitch = ((int)movement.pitchMotion * movement.pitchValue + direction.direction.y * direction.weight * avoidanceWeight) / (1f + avoidanceWeight);
+		movement.yawMotion = (YawMotion)Mathf.RoundToInt(yaw / Mathf.Abs(yaw));
+		movement.yawValue = Mathf.Abs(yaw);
+		movement.pitchMotion = (PitchMotion)Mathf.RoundToInt(pitch / Mathf.Abs(pitch));
+		movement.pitchValue = Mathf.Abs(pitch);
+		// Return the new movement values
+		return movement;
+	}
+
+	private FlightDirection GetCollisionAvoidanceDirection() {
 		Vector3 startPosition = this.agent.transform.position;
 		Vector3 targetDirection3 = (targetPosition - startPosition);
 		Vector2 targetDirection = new Vector2(targetDirection3.x, targetDirection3.y).normalized; // only left/right, up/down
@@ -88,7 +106,7 @@ public class BasicNavigationSteering : NavigationSteering {
 
 		List<CollisionInfo> collisions = collisionDetection.GetListOfCollisions();
 		// If there are no collisions to avoid, simply continue in the original direction
-		if (collisions == null || collisions.Count == 0) return movement;
+		if (collisions == null || collisions.Count == 0) return new FlightDirection(Vector3.zero, 0);
 		if (debugLogs)
 			Debug.Log("Collisions detected.");
 		// Create list of all possible directions (only left/right, up/down)
@@ -118,26 +136,18 @@ public class BasicNavigationSteering : NavigationSteering {
 				possibleDirections.RemoveAt(i);
 		}
 		// If not possible to avoid collisions, keep the direction to the target as is
-		if (possibleDirections.Count == 0) return movement;
+		if (possibleDirections.Count == 0) return new FlightDirection(Vector3.zero, 0);
 		// From the remaining directions choose the one which is closest to the direction to target
 		FlightDirection closestDirection = null;
 		float closestDistance = float.MaxValue;
-		foreach (var direction in possibleDirections) { 
+		foreach (var direction in possibleDirections) {
 			float directionDistance = Vector2.Distance(direction.direction.normalized, targetDirection);
 			if (directionDistance < closestDistance) {
 				closestDistance = directionDistance;
 				closestDirection = direction;
 			}
 		}
-		// Combine direction to target with the direction to avoid collisions (take their average)
-		float yaw = ((int)movement.yawMotion * movement.yawValue + closestDirection.direction.x * closestDirection.weight) / 2f;
-		float pitch = ((int)movement.pitchMotion * movement.pitchValue + closestDirection.direction.y * closestDirection.weight) / 2f;
-		movement.yawMotion = (YawMotion)Mathf.RoundToInt(yaw / Mathf.Abs(yaw));
-		movement.yawValue = Mathf.Abs(yaw);
-		movement.pitchMotion = (PitchMotion)Mathf.RoundToInt(pitch / Mathf.Abs(pitch));
-		movement.pitchValue = Mathf.Abs(pitch);
-
-		return movement;
+		return closestDirection;
 	}
 
 	private void Start() {
@@ -150,8 +160,11 @@ internal class FlightDirection {
 	public Vector2 direction; // omiting forward direction (just left/right, up/down)
 	public float weight;
 
-	public FlightDirection(Vector2 direction) {
+	public FlightDirection(Vector2 direction) : this(direction, 1) {
+	}
+
+	public FlightDirection(Vector2 direction, float weight) {
 		this.direction = direction;
-		weight = 1;
+		this.weight = weight;
 	}
 }
