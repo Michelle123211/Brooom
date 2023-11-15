@@ -72,10 +72,7 @@ MonoBehaviour:
     dexterityChange: -0.25
     precisionChange: -0.25
     magicChange: -0.25
-  maxSpeedMistakeProbability: 0.8
-  maxDexterityMistakeProbability: 0.5
-  maxPrecisionMistakeProbability: 0.8
-  maxMagicMistakeProbability: 0.75
+  mistakesParameters: {fileID: 11400000, guid: bfccf459c65abd64dab72c53f3c4e8ff, type: 2}
 --- !u!114 &6134760467171468951
 MonoBehaviour:
   m_ObjectHideFlags: 0

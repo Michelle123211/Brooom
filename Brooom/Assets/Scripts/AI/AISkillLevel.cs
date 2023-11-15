@@ -14,6 +14,9 @@ public class AISkillLevel : MonoBehaviour {
 		Worse
 	}
 
+	[Tooltip("Parameters of different kinds of mistakes the agents may make.")]
+	public AISkillBasedMistakesParameters mistakesParameters;
+
 	[Tooltip("All available skill levels (relatively to player) and their corresponding stats modifications.")]
 	[SerializeField] List<SkillLevelParameters> skillLevelParameters;
 

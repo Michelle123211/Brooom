@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class BasicNavigationGoalExecutor : NavigationGoalExecutor {
 
-	[Header("Skill-based mistakes")]
-	[Tooltip("The curve describes mapping from dexterity mistake probability to duration of not changing the direction to a new goal (the original direction is kept for this amount of seconds).")]
-	[SerializeField] AnimationCurve keepDirectionDurationCurve;
-
 	private AISkillLevel agentSkillLevel;
 
 	protected override Vector3 DetermineTargetPositionFromGoal(NavigationGoal goal) {
@@ -23,7 +19,7 @@ public class BasicNavigationGoalExecutor : NavigationGoalExecutor {
 
 	private IEnumerator SetTargetPositionAfterKeepingDirection(NavigationGoal goal) {
 		// Wait for a while
-		float keepDirectionDuration = keepDirectionDurationCurve.Evaluate(agentSkillLevel.GetDexterityMistakeProbability());
+		float keepDirectionDuration = agentSkillLevel.mistakesParameters.keepDirectionDurationCurve.Evaluate(agentSkillLevel.GetDexterityMistakeProbability());
 		yield return new WaitForSeconds(keepDirectionDuration);
 		// Set the correct target position
 		if (goal.IsSameAs(currentGoal)) // the goal has not been changed in the meantime
