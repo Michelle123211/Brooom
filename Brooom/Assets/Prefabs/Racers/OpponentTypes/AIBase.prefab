@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c77e90b6c74f142b20c36ca93867f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mistakesParameters: {fileID: 11400000, guid: bfccf459c65abd64dab72c53f3c4e8ff, type: 2}
   skillLevelParameters:
   - skillLevel: 2
     speedChange: 0
@@ -72,7 +73,6 @@ MonoBehaviour:
     dexterityChange: -0.25
     precisionChange: -0.25
     magicChange: -0.25
-  mistakesParameters: {fileID: 11400000, guid: bfccf459c65abd64dab72c53f3c4e8ff, type: 2}
 --- !u!114 &6134760467171468951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,30 +206,6 @@ MonoBehaviour:
   collisionsMaxDistance: 30
   directionWeightThreshold: 0.1
   debugLogs: 0
-  speedBasedOnMistakeProbability:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &500193791181080030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,7 +221,7 @@ MonoBehaviour:
   layersToDetect:
     serializedVersion: 2
     m_Bits: 448
-  maxDistance: 5
+  maxDistance: 8
   rays:
   - rayDirection: {x: 0, y: 0, z: 1}
     simplifiedDirection: {x: 0, y: 0}

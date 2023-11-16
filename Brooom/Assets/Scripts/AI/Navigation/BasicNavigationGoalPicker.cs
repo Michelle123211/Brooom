@@ -13,8 +13,9 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 
 	private int lastBonusPickedUp = -1;
 
-	// Remember which hoops have been determined to be skipped so that they can be skipped in the next iteration too
+	// Remember which hoops/bonuses have been determined to be skipped so that they can be skipped in the next iteration too
 	private HashSet<int> skippedHoops = new HashSet<int>();
+	private HashSet<int> skippedBonuses = new HashSet<int>();
 
 	public override NavigationGoal GetGoal() {
 		if (raceState.HasFinished) return new EmptyGoal(this.agent);
@@ -42,14 +43,25 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 				}
 			}
 			// Determine whether the goal should be skipped
+			HashSet<int> skippedGoals = null;
+			int goalIndex = -1;
 			if (nextGoal.Type == NavigationGoalType.Hoop) {
-				if (skippedHoops.Contains(nextHoop)) shouldBeSkipped = true;
-				else { 
+				skippedGoals = skippedHoops;
+				goalIndex = nextHoop;
+			} else if (nextGoal.Type == NavigationGoalType.Bonus) {
+				skippedGoals = skippedBonuses;
+				goalIndex = nextBonus;
+			}
+			if (skippedGoals != null && goalIndex >= 0) { // hoop or bonus
+				if (skippedGoals.Contains(goalIndex)) shouldBeSkipped = true;
+				else {
 					shouldBeSkipped = nextGoal.ShouldBeSkipped();
-					// Remember skipped hoops so that they can be skipped the next time too
-					if (shouldBeSkipped) skippedHoops.Add(nextHoop);
+					// Remember skipped elements so that they can be skipped the next time too
+					if (shouldBeSkipped) skippedGoals.Add(goalIndex);
 				}
-			} else shouldBeSkipped = nextGoal.ShouldBeSkipped();
+			} else { // other bonus type
+				shouldBeSkipped = nextGoal.ShouldBeSkipped();
+			}
 			// Increase the corresponding index
 			if (nextGoal.Type == NavigationGoalType.Bonus) nextBonus++;
 			else nextHoop++;
