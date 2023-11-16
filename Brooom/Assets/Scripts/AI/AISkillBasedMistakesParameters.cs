@@ -20,6 +20,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 
 	//[Header("Bonuses")]
 	// TODO: Skip speed bonus
+	// TODO: Skip mana bonus
 	// TODO: Skip bonus
 	// TODO: Miss bonus
 

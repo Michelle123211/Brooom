@@ -131,7 +131,10 @@ public class HoopGoal : TrackElementGoal {
 
     public override float GetRationality() {
         // It is reasonable only if it is the next hoop
-        if (this.index == this.raceState.trackPointToPassNext)
+        if (this.index != this.raceState.trackPointToPassNext)
+            return 0;
+        // And in a reasonable position relative to the agent
+        if (Mathf.Abs(Vector3.SignedAngle(this.agent.transform.forward, RaceController.Instance.level.track[index].position - this.agent.transform.position, Vector3.up)) < 70f)
             return 1;
         else
             return 0;
@@ -166,6 +169,14 @@ public class CheckpointGoal : HoopGoal {
         // TODO: Based on Dexterity stat
         // TODO: Get target point farther from the center
         return false;
+    }
+
+    public override float GetRationality() {
+        // It is reasonable only if it is the next hoop
+        if (this.index == this.raceState.trackPointToPassNext)
+            return 1;
+        else
+            return 0;
     }
 }
 
@@ -210,9 +221,9 @@ public class BonusGoal : TrackElementGoal {
     }
 
     public override float GetRationality() {
-        // Not rational if behind the agent
+        // Not rational if too far from the current direction of the agent
         float angleYaw = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, Vector3.up);
-        if (angleYaw > 90f) return 0;
+        if (Mathf.Abs(angleYaw) > 60f) return 0;
         else return 1;
     }
 
