@@ -210,23 +210,25 @@ public class BonusGoal : TrackElementGoal {
     }
 
     public override bool ShouldBeSkipped() {
-        // Based on the bonus type...
         BonusEffect bonus = bonusSpot.bonusInstances[0];
+        float mistakeProbability, skipProbability;
+        // Based on the bonus type...
         // ... speed bonus - based on average of Speed and Precision stats
         if (bonus.GetType() == typeof(SpeedBonusEffect)) {
-            float mistakeProbability = (agentSkillLevel.GetSpeedMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
-            float skipProbability = agentSkillLevel.mistakesParameters.speedBonusSkipCurve.Evaluate(mistakeProbability);
-            return (UnityEngine.Random.value < skipProbability);
+            mistakeProbability = (agentSkillLevel.GetSpeedMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
+            skipProbability = agentSkillLevel.mistakesParameters.speedBonusSkipCurve.Evaluate(mistakeProbability);
         }
-        // TODO: ... mana bonus - based on its rationality and average of Precision and Magic stats
+        // ... mana bonus - based on average of Magic and Precision stats
         else if (bonus.GetType() == typeof(ManaBonusEffect)) {
-
+            mistakeProbability = (agentSkillLevel.GetMagicMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
+            skipProbability = agentSkillLevel.mistakesParameters.manaBonusSkipCurve.Evaluate(mistakeProbability);
         }
-        // TODO: ... other - based on Precision stat
-        else { 
-            
+        // ... other - based on Precision stat
+        else {
+            mistakeProbability = agentSkillLevel.GetPrecisionMistakeProbability();
+            skipProbability = agentSkillLevel.mistakesParameters.bonusSkipCurve.Evaluate(mistakeProbability);
         }
-        return false;
+        return (UnityEngine.Random.value < skipProbability);
     }
 
     public override bool DetermineIfShouldFail() {
@@ -235,6 +237,7 @@ public class BonusGoal : TrackElementGoal {
     }
 
     public override float GetRationality() {
+        // TODO: Mana bonus rationality based on current mana amount
         // Not rational if too far from the current direction of the agent
         float angleYaw = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, Vector3.up);
         if (Mathf.Abs(angleYaw) > 60f) return 0;
