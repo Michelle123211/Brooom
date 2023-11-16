@@ -31,7 +31,7 @@ public class GoalOrientedNavigation : CharacterInput {
 	}
 
 	private void SetNewGoal(NavigationGoal goal) {
-		if (debugLogs) Debug.Log("Goal changed.");
+		if (debugLogs) Debug.Log($"Goal changed to {goal.Type}.");
 		currentGoal = goal;
 		deliberationCountdown = deliberationInterval; // reset deliberation
 		// Start working on the goal

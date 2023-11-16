@@ -10,6 +10,7 @@ public abstract class NavigationGoal {
     public abstract Vector3 TargetPosition { get; }
 
     protected GameObject agent;
+    protected AISkillLevel agentSkillLevel;
     protected CharacterRaceState raceState;
 
     // If the agent is at most at this distance from the goal, the goal is considered reached
@@ -17,6 +18,7 @@ public abstract class NavigationGoal {
 
     public NavigationGoal(GameObject agent) {
         this.agent = agent;
+        this.agentSkillLevel = agent.GetComponentInChildren<AISkillLevel>();
         this.raceState = agent.GetComponentInChildren<CharacterRaceState>();
     }
 
@@ -208,10 +210,22 @@ public class BonusGoal : TrackElementGoal {
     }
 
     public override bool ShouldBeSkipped() {
-        // TODO: Based on the bonus type...
-        // TODO: ... speed bonus - based on average of Speed and Precision stats
+        // Based on the bonus type...
+        BonusEffect bonus = bonusSpot.bonusInstances[0];
+        // ... speed bonus - based on average of Speed and Precision stats
+        if (bonus.GetType() == typeof(SpeedBonusEffect)) {
+            float mistakeProbability = (agentSkillLevel.GetSpeedMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
+            float skipProbability = agentSkillLevel.mistakesParameters.speedBonusSkipCurve.Evaluate(mistakeProbability);
+            return (UnityEngine.Random.value < skipProbability);
+        }
         // TODO: ... mana bonus - based on its rationality and average of Precision and Magic stats
+        else if (bonus.GetType() == typeof(ManaBonusEffect)) {
+
+        }
         // TODO: ... other - based on Precision stat
+        else { 
+            
+        }
         return false;
     }
 
