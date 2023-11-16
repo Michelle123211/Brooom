@@ -121,8 +121,10 @@ public class HoopGoal : TrackElementGoal {
     }
 
     public override bool ShouldBeSkipped() {
-        // TODO: Based on Precision stat
-        return false;
+        // Based on Precision stat
+        float mistakeProbability = agentSkillLevel.GetPrecisionMistakeProbability();
+        float skipProbability = agentSkillLevel.mistakesParameters.hoopSkipCurve.Evaluate(mistakeProbability);
+        return (UnityEngine.Random.value < skipProbability);
     }
 
     public override bool DetermineIfShouldFail() {
