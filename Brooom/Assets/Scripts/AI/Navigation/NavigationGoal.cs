@@ -112,6 +112,8 @@ public class HoopGoal : TrackElementGoal {
     public override NavigationGoalType Type => NavigationGoalType.Hoop;
 	public override Vector3 TargetPosition => GetTargetPoint();
 
+    private float targetPositionMistakeOffset = 0f;
+
 	public HoopGoal(GameObject agent, int index) : base(agent, index) {
         this.trackPoint = RaceController.Instance.level.track[this.index];
     }
@@ -128,9 +130,12 @@ public class HoopGoal : TrackElementGoal {
     }
 
     public override bool DetermineIfShouldFail() {
-        // TODO: Based on Dexterity stat
-        // TODO: Get target point farther from the center
-        return false;
+        // Based on Dexterity stat
+        float mistakeProbability = agentSkillLevel.GetDexterityMistakeProbability();
+        // Determine target point offset
+        if (!trackPoint.isCheckpoint) // checkpoints are never missed (to make it easier)
+            targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.hoopCheckpointMissCurve.Evaluate(mistakeProbability);
+        return (targetPositionMistakeOffset == 0);
     }
 
     public override float GetRationality() {
@@ -153,6 +158,8 @@ public class HoopGoal : TrackElementGoal {
         Vector3 localTarget;
         if (agentPosition.magnitude > radius) localTarget = agentPosition.normalized * 2 * scale;
         else localTarget = agentPosition;
+        // Add offset based on mistake
+        localTarget += localTarget.normalized * 2.5f * targetPositionMistakeOffset;
         return this.trackPoint.assignedHoop.transform.TransformPoint(localTarget);
     }
 }

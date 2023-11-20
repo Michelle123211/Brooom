@@ -38,7 +38,7 @@ public class AISkillLevel : MonoBehaviour {
 			}
 		}
 		//baseStatsValues.dexterity = 50;
-		//baseStatsValues.precision = 50;
+		baseStatsValues.precision = 100;
 		//baseStatsValues.speed = 50;
 		currentStatsValues = baseStatsValues;
 	}
