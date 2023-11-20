@@ -9,7 +9,7 @@ public class GoalOrientedNavigation : CharacterInput {
 
 	// Parameters - may be extracted outside (e.g. to ScriptableObject)
 	[Tooltip("TIme in seconds after which the agent may try to choose another goal.")]
-	[SerializeField] float deliberationInterval = 3;
+	[SerializeField] float deliberationInterval = 6;
 
 	[Tooltip("Each goal is assigned rationality between 0 (not rational) and 1. Goals with rationality below this threshold will be automatically reconsidered.")]
 	[SerializeField] float rationalityThreshold = 0.1f;
