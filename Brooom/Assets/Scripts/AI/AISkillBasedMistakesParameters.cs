@@ -17,8 +17,8 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[Header("Hoops and checkpoints")]
 	[Tooltip("The curve describes probability of skipping a hoop (checkpoint cannot be skipped) based on the precision mistake probability.")]
 	public AnimationCurve hoopSkipCurve;
-	[Tooltip("The curve describes distance (normalized) from the ideal target position of a hoop/checkpoint based on the dexterity mistake probability.")]
-	public AnimationCurve hoopCheckpointMissCurve;
+	[Tooltip("The curve describes distance from the ideal target position of a hoop based on the dexterity mistake probability.")]
+	public AnimationCurve hoopMissCurve;
 
 	[Header("Bonuses")]
 	[Tooltip("The curve describes probability of skipping a speed bonus based on the probability of corresponding mistake (average of speed and precision mistake probabilities).")]
@@ -27,7 +27,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve manaBonusSkipCurve;
 	[Tooltip("The curve describes probability of skipping a bonus (other than speed and mana) based on the precision mistake probability.")]
 	public AnimationCurve bonusSkipCurve;
-	[Tooltip("The curve describes distance (normalized) from the bonus centre which is used as the target position based on the dexterity mistake probability.")]
+	[Tooltip("The curve describes distance from the bonus centre which is used as the target position based on the dexterity mistake probability.")]
 	public AnimationCurve bonusMissCurve;
 
 }

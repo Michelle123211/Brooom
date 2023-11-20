@@ -133,7 +133,7 @@ public class HoopGoal : TrackElementGoal {
         // Based on Dexterity stat
         float mistakeProbability = agentSkillLevel.GetDexterityMistakeProbability();
         // Determine target point offset
-        targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.hoopCheckpointMissCurve.Evaluate(mistakeProbability);
+        targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.hoopMissCurve.Evaluate(mistakeProbability);
         return (targetPositionMistakeOffset == 0);
     }
 
@@ -149,6 +149,7 @@ public class HoopGoal : TrackElementGoal {
     }
 
     private Vector3 GetTargetPoint() {
+        // TODO: Take into consideration agent's orientation (not only position)
         // Aim off-center according to the current agent position
         Vector3 agentPosition = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agent.transform.position).WithZ(0);
         Scalable hoopScalable = this.trackPoint.assignedHoop.GetComponent<Scalable>();
@@ -158,7 +159,7 @@ public class HoopGoal : TrackElementGoal {
         if (agentPosition.magnitude > radius) localTarget = agentPosition.normalized * 2 * scale;
         else localTarget = agentPosition;
         // Add offset based on mistake
-        localTarget += localTarget.normalized * 2.5f * targetPositionMistakeOffset;
+        localTarget += localTarget.normalized * targetPositionMistakeOffset;
         return this.trackPoint.assignedHoop.transform.TransformPoint(localTarget);
     }
 }
@@ -193,12 +194,14 @@ public class CheckpointGoal : HoopGoal {
 public class BonusGoal : TrackElementGoal {
     public BonusSpot bonusSpot;
 
+    protected float targetPositionMistakeOffset = 0f;
+
     private int instanceIndex = 0;
     private float currentDistance = float.MaxValue;
 
 
     public override NavigationGoalType Type => NavigationGoalType.Bonus;
-    public override Vector3 TargetPosition => this.bonusSpot.bonusInstances[instanceIndex].transform.position;
+    public override Vector3 TargetPosition => GetTargetPoint();
 
     public BonusGoal(GameObject agent, int index) : base(agent, index) {
         // Choose the closest instance available
@@ -240,8 +243,11 @@ public class BonusGoal : TrackElementGoal {
     }
 
     public override bool DetermineIfShouldFail() {
-        // TODO: Based on Dexterity stat
-        return false;
+        // Based on Dexterity stat
+        float mistakeProbability = agentSkillLevel.GetDexterityMistakeProbability();
+        // Determine target point offset
+        targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.bonusMissCurve.Evaluate(mistakeProbability);
+        return (targetPositionMistakeOffset == 0);
     }
 
     public override float GetRationality() {
@@ -265,6 +271,12 @@ public class BonusGoal : TrackElementGoal {
                 this.instanceIndex = i;
             }
         }
+    }
+
+    private Vector3 GetTargetPoint() {
+        // Aim off-center based on mistake
+        Vector3 offset = UnityEngine.Random.onUnitSphere * targetPositionMistakeOffset;
+        return (this.bonusSpot.bonusInstances[instanceIndex].transform.position + offset);
     }
 }
 
