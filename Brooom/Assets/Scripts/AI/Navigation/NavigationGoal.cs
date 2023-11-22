@@ -113,9 +113,11 @@ public class HoopGoal : TrackElementGoal {
 	public override Vector3 TargetPosition => GetTargetPoint();
 
     protected float targetPositionMistakeOffset = 0f;
+    protected Plane trackPointPlane;
 
 	public HoopGoal(GameObject agent, int index) : base(agent, index) {
         this.trackPoint = RaceController.Instance.level.track[this.index];
+        this.trackPointPlane = new Plane(this.trackPoint.assignedHoop.transform.forward, this.trackPoint.position);
     }
 
     public override bool IsReached() {
@@ -149,15 +151,31 @@ public class HoopGoal : TrackElementGoal {
     }
 
     private Vector3 GetTargetPoint() {
-        // TODO: Take into consideration agent's orientation (not only position)
-        // Aim off-center according to the current agent position
-        Vector3 agentPosition = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agent.transform.position).WithZ(0);
+        // Aim off-center according to the current agent position and orientation
+
+        // Find intersection of the agent's forward vector and the track point plane
+        Ray agentForwardRay = new Ray(this.agent.transform.position, this.agent.transform.forward);
+        float intersectionDistance;
+        Vector3 localTarget;
+        if (trackPointPlane.Raycast(agentForwardRay, out intersectionDistance)) {
+            // There is an intersection
+            localTarget = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agentForwardRay.GetPoint(intersectionDistance)).WithZ(0);
+        } else {
+            // Either no intersection or opposite direction (https://docs.unity3d.com/ScriptReference/Plane.Raycast.html)
+            if (intersectionDistance < 0) { // oppoiste direction
+                // Take the intersection in local coordinates and invert it
+                localTarget = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agentForwardRay.GetPoint(intersectionDistance)).WithZ(0);
+                localTarget *= -1f;
+            } else { 
+                // Use only the agent's position
+                localTarget = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agent.transform.position).WithZ(0);
+            }
+        }
+        // Choose target point inside of the hoop
         Scalable hoopScalable = this.trackPoint.assignedHoop.GetComponent<Scalable>();
         float scale = hoopScalable == null ? 1 : hoopScalable.GetScale().x;
         float radius = 2 * scale;
-        Vector3 localTarget;
-        if (agentPosition.magnitude > radius) localTarget = agentPosition.normalized * 2 * scale;
-        else localTarget = agentPosition;
+        if (localTarget.magnitude > radius) localTarget = localTarget.normalized * 2 * scale;
         // Add offset based on mistake
         localTarget += localTarget.normalized * targetPositionMistakeOffset;
         return this.trackPoint.assignedHoop.transform.TransformPoint(localTarget);

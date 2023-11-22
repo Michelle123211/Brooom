@@ -37,9 +37,10 @@ public class AISkillLevel : MonoBehaviour {
 				}
 			}
 		}
-		//baseStatsValues.dexterity = 50;
+		// TODO: Remove when DEBUG done
+		baseStatsValues.dexterity = 100;
 		baseStatsValues.precision = 100;
-		//baseStatsValues.speed = 50;
+		baseStatsValues.speed = 50;
 		currentStatsValues = baseStatsValues;
 	}
 
