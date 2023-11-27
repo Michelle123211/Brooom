@@ -1,0 +1,49 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public abstract class SkillLevelImplementation : MonoBehaviour {
+
+	protected CharacterRaceState agentRaceState;
+
+	private float[] trackPointDistanceSum;
+	protected float[] TrackPointDistanceSum { // sum of distances between track points up to the given index
+		get {
+			if (trackPointDistanceSum == null) { // precompute sums of track point distances
+				trackPointDistanceSum = new float[RaceController.Instance.level.track.Count + 1];
+				for (int i = 0; i < trackPointDistanceSum.Length; i++) {
+					if (i == 0) // from start to the first hoop
+						trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.level.playerStartPosition, RaceController.Instance.level.track[i].position);
+					else {
+						if (i == RaceController.Instance.level.track.Count) // from the last hoop to finish
+							trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.level.finish.transform.position, RaceController.Instance.level.track[i - 1].position);
+						else // from a hoop to another hoop
+							trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.level.track[i - 1].position, RaceController.Instance.level.track[i].position);
+						trackPointDistanceSum[i] += trackPointDistanceSum[i - 1];
+					}
+				}
+			}
+			return trackPointDistanceSum;
+		}
+	}
+	
+	public void Initialize(CharacterRaceState agentRaceState) {
+		this.agentRaceState = agentRaceState;
+	}
+
+	public abstract PlayerStats GetInitialStats(AISkillLevel.RelationToPlayer skillLevelRelativeToPlayer);
+	public abstract PlayerStats GetCurrentStats();
+
+	protected float GetNormalizedDistanceRaced(CharacterRaceState raceState) {
+		float distanceRaced;
+		// Sum up distances between all track points reached (+ the following one)
+		distanceRaced = TrackPointDistanceSum[raceState.followingTrackPoint];
+		// Subtract distance between the agent and the following track point
+		if (raceState.followingTrackPoint == RaceController.Instance.level.track.Count) {
+			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceController.Instance.level.finish.transform.position);
+		} else {
+			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceController.Instance.level.track[raceState.followingTrackPoint].position);
+		}
+		return distanceRaced;
+	}
+}
