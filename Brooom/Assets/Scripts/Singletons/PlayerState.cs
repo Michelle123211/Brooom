@@ -325,8 +325,12 @@ public struct PlayerStats {
         };
     }
 
-    // Returns stats names in a specific order
-    public static List<string> GetListOfStatNames() {
+	public override string ToString() {
+        return $"(E: {endurance}, S: {speed}, D: {dexterity}, P: {precision}, M: {magic})";
+	}
+
+	// Returns stats names in a specific order
+	public static List<string> GetListOfStatNames() {
         return new List<string> { "Endurance", "Speed", "Dexterity", "Precision", "Magic" };
     }
 

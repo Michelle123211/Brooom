@@ -91,16 +91,21 @@ public class AISkillLevel : MonoBehaviour {
 		if (trackPointDistanceSum == null) PrecomputeTrackPointDistanceSums();
 		// Compute currentStatsValues from rubber banding
 		float distanceDifference = 
-			GetNormalizedDistanceRaced(transform.parent.GetComponent<CharacterRaceState>()) // difference between player's...
-			- GetNormalizedDistanceRaced(transform.parent.GetComponent<CharacterRaceState>()); // ... and agent's distance raced
+			GetNormalizedDistanceRaced(transform.parent.GetComponent<CharacterRaceState>()) // difference between agent's...
+			- GetNormalizedDistanceRaced(RaceController.Instance.playerRacer.state); // ... and player's distance raced
+		Debug.Log($"Difference: {distanceDifference}");
 		AnimationCurve modifierCurve = mistakesParameters.skillLevelBasedOnDistance; // stats modifier is determined by a curve
 		distanceDifference = Mathf.Clamp(distanceDifference, modifierCurve.keys[0].time, modifierCurve.keys[modifierCurve.length - 1].time);
 		float modifier = modifierCurve.Evaluate(distanceDifference);
+		Debug.Log($"Modifier: {modifier}");
+		Debug.Log($"Base values: {baseStatsValues}");
 		if (distanceDifference < 0) { // increase stats (= decrease amount of mistakes)
 			currentStatsValues = baseStatsValues + baseStatsValues.GetComplement() * modifier;
 		} else { // decrease stats (= increase amount of mistakes)
 			currentStatsValues = baseStatsValues - baseStatsValues * modifier;
 		}
+		Debug.Log($"Current values: {currentStatsValues}");
+		Debug.Log("-----------------------");
 	}
 
 	private void PrecomputeTrackPointDistanceSums() {
