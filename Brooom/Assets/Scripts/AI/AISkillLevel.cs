@@ -20,10 +20,15 @@ public class AISkillLevel : MonoBehaviour {
 	[Tooltip("All available skill levels (relatively to player) and their corresponding stats modifications.")]
 	[SerializeField] List<SkillLevelParameters> skillLevelParameters;
 
+	[Tooltip("Curve describing skill level change based on distance from the player.")]
+	[SerializeField] AnimationCurve skillLevelBasedOnDistance;
+
 	// Initial values which determine the agent's skill level
 	private PlayerStats baseStatsValues;
 	// Currently used values (derived from the initial values based on distance to the player - rubber banding)
 	private PlayerStats currentStatsValues;
+
+	private float[] trackPointDistanceSum;
 
 
 	public void Initialize(RelationToPlayer skillLevelRelativeToPlayer) {
@@ -37,10 +42,6 @@ public class AISkillLevel : MonoBehaviour {
 				}
 			}
 		}
-		// TODO: Remove when DEBUG done
-		baseStatsValues.dexterity = 100;
-		baseStatsValues.precision = 100;
-		baseStatsValues.speed = 50;
 		currentStatsValues = baseStatsValues;
 	}
 
@@ -89,8 +90,47 @@ public class AISkillLevel : MonoBehaviour {
 	}
 
 	private void Update() {
-		// TODO: Compute currentStatsValues from rubber banding
-		float distance = Vector3.Distance(transform.position.WithY(0), RaceController.Instance.playerRacer.characterController.transform.position.WithY(0));
+		// Precompute sums of track point distances
+		if (trackPointDistanceSum == null) PrecomputeTrackPointDistanceSums();
+		// Compute currentStatsValues from rubber banding
+		float distanceRaced = GetNormalizedDistanceRaced(transform.parent.GetComponent<CharacterRaceState>());
+		float distanceRacedPlayer = GetNormalizedDistanceRaced(RaceController.Instance.playerRacer.state);
+		float difference = distanceRaced - distanceRacedPlayer;
+		difference = Mathf.Clamp(difference, skillLevelBasedOnDistance.keys[0].time, skillLevelBasedOnDistance.keys[skillLevelBasedOnDistance.length - 1].time);
+		float modifier = skillLevelBasedOnDistance.Evaluate(difference);
+		if (difference < 0) { // increase stats (= decrease amount of mistakes)
+			currentStatsValues = baseStatsValues + baseStatsValues.GetComplement() * modifier;
+		} else { // decrease stats (= increase amount of mistakes)
+			currentStatsValues = baseStatsValues - baseStatsValues * modifier;
+		}
+	}
+
+	private void PrecomputeTrackPointDistanceSums() {
+		trackPointDistanceSum = new float[RaceController.Instance.level.track.Count + 1];
+		for (int i = 0; i < trackPointDistanceSum.Length; i++) {
+			if (i == 0) // from start to the first hoop
+				trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.level.playerStartPosition, RaceController.Instance.level.track[i].position);
+			else {
+				if (i == RaceController.Instance.level.track.Count) // from the last hoop to finish
+					trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.level.finish.transform.position, RaceController.Instance.level.track[i - 1].position);
+				else // from a hoop to another hoop
+					trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.level.track[i - 1].position, RaceController.Instance.level.track[i].position);
+				trackPointDistanceSum[i] += trackPointDistanceSum[i - 1];
+			}
+		}
+	}
+
+	private float GetNormalizedDistanceRaced(CharacterRaceState raceState) {
+		float distanceRaced;
+		// Sum up distances between all track points reached (+ the following one)
+		distanceRaced = trackPointDistanceSum[raceState.followingTrackPoint];
+		// Subtract distance between the agent and the following track point
+		if (raceState.followingTrackPoint == RaceController.Instance.level.track.Count) {
+			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceController.Instance.level.finish.transform.position);
+		} else {
+			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceController.Instance.level.track[raceState.followingTrackPoint].position);
+		}
+		return distanceRaced;
 	}
 
 }

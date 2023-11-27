@@ -305,11 +305,6 @@ public struct PlayerStats {
         return new List<float> { endurance, speed, dexterity, precision, magic };
     }
 
-    // Returns stats names in a specific order
-    public static List<string> GetListOfStatNames() {
-        return new List<string> { "Endurance", "Speed", "Dexterity", "Precision", "Magic" };
-    }
-
     public PlayerStats ClampedToRange() {
         return new PlayerStats {
             endurance = Mathf.Clamp(endurance, 0, 100),
@@ -319,4 +314,55 @@ public struct PlayerStats {
             magic = Mathf.Clamp(magic, 0, 100)
         };
     }
+
+    public PlayerStats GetComplement() {
+        return new PlayerStats {
+            endurance = 100 - endurance,
+            speed = 100 - speed,
+            dexterity = 100 - dexterity,
+            precision = 100 - precision,
+            magic = 100 - magic
+        };
+    }
+
+    // Returns stats names in a specific order
+    public static List<string> GetListOfStatNames() {
+        return new List<string> { "Endurance", "Speed", "Dexterity", "Precision", "Magic" };
+    }
+
+	#region Operator overloads
+	public static PlayerStats operator +(PlayerStats a, PlayerStats b) {
+        return new PlayerStats {
+            endurance = a.endurance + b.endurance,
+            speed = a.speed + b.speed,
+            dexterity = a.dexterity + b.dexterity,
+            precision = a.precision + b.precision,
+            magic = a.magic + b.magic
+        }.ClampedToRange();
+    }
+
+    public static PlayerStats operator -(PlayerStats a, PlayerStats b) {
+        return new PlayerStats {
+            endurance = a.endurance - b.endurance,
+            speed = a.speed - b.speed,
+            dexterity = a.dexterity - b.dexterity,
+            precision = a.precision - b.precision,
+            magic = a.magic - b.magic
+        }.ClampedToRange();
+    }
+
+    public static PlayerStats operator *(PlayerStats a, float b) {
+        return new PlayerStats {
+            endurance = Mathf.RoundToInt(a.endurance * b),
+            speed = Mathf.RoundToInt(a.speed * b),
+            dexterity = Mathf.RoundToInt(a.dexterity * b),
+            precision = Mathf.RoundToInt(a.precision * b),
+            magic = Mathf.RoundToInt(a.magic * b)
+        }.ClampedToRange();
+    }
+
+    public static PlayerStats operator *(float a, PlayerStats b) {
+        return b * a;
+    }
+	#endregion
 }
