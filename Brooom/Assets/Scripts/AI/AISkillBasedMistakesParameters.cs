@@ -30,4 +30,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[Tooltip("The curve describes distance from the bonus centre which is used as the target position based on the dexterity mistake probability.")]
 	public AnimationCurve bonusMissCurve;
 
+	[Header("Rubber banding")]
+	[Tooltip("Curve describing skill level change based on distance from the player. The value determines stats modifier in case of positive distance (e.g. stats multiplied by 0.9f), and mistakes modifier in case of negative distance (e.g. stats increased by the stats complement multiplied by 0.9f).")]
+	public AnimationCurve skillLevelBasedOnDistance;
 }

@@ -20,9 +20,6 @@ public class AISkillLevel : MonoBehaviour {
 	[Tooltip("All available skill levels (relatively to player) and their corresponding stats modifications.")]
 	[SerializeField] List<SkillLevelParameters> skillLevelParameters;
 
-	[Tooltip("Curve describing skill level change based on distance from the player.")]
-	[SerializeField] AnimationCurve skillLevelBasedOnDistance;
-
 	// Initial values which determine the agent's skill level
 	private PlayerStats baseStatsValues;
 	// Currently used values (derived from the initial values based on distance to the player - rubber banding)
@@ -93,12 +90,13 @@ public class AISkillLevel : MonoBehaviour {
 		// Precompute sums of track point distances
 		if (trackPointDistanceSum == null) PrecomputeTrackPointDistanceSums();
 		// Compute currentStatsValues from rubber banding
-		float distanceRaced = GetNormalizedDistanceRaced(transform.parent.GetComponent<CharacterRaceState>());
-		float distanceRacedPlayer = GetNormalizedDistanceRaced(RaceController.Instance.playerRacer.state);
-		float difference = distanceRaced - distanceRacedPlayer;
-		difference = Mathf.Clamp(difference, skillLevelBasedOnDistance.keys[0].time, skillLevelBasedOnDistance.keys[skillLevelBasedOnDistance.length - 1].time);
-		float modifier = skillLevelBasedOnDistance.Evaluate(difference);
-		if (difference < 0) { // increase stats (= decrease amount of mistakes)
+		float distanceDifference = 
+			GetNormalizedDistanceRaced(transform.parent.GetComponent<CharacterRaceState>()) // difference between player's...
+			- GetNormalizedDistanceRaced(transform.parent.GetComponent<CharacterRaceState>()); // ... and agent's distance raced
+		AnimationCurve modifierCurve = mistakesParameters.skillLevelBasedOnDistance; // stats modifier is determined by a curve
+		distanceDifference = Mathf.Clamp(distanceDifference, modifierCurve.keys[0].time, modifierCurve.keys[modifierCurve.length - 1].time);
+		float modifier = modifierCurve.Evaluate(distanceDifference);
+		if (distanceDifference < 0) { // increase stats (= decrease amount of mistakes)
 			currentStatsValues = baseStatsValues + baseStatsValues.GetComplement() * modifier;
 		} else { // decrease stats (= increase amount of mistakes)
 			currentStatsValues = baseStatsValues - baseStatsValues * modifier;
