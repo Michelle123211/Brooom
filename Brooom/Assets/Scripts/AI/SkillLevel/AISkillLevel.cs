@@ -6,12 +6,12 @@ using UnityEngine;
 // Contains all parameters and computations related to mistakes made by AI agents
 public class AISkillLevel : MonoBehaviour {
 
-	public enum RelationToPlayer {
-		Better,
-		SlightlyBetter,
-		RoughlyTheSame,
-		SlightlyWorse,
-		Worse
+	public enum SkillType {
+		Best,
+		Good,
+		Average,
+		Bad,
+		Worst
 	}
 
 	[Tooltip("Parameters of different kinds of mistakes the agents may make.")]
@@ -24,7 +24,7 @@ public class AISkillLevel : MonoBehaviour {
 	private PlayerStats currentStatsValues;
 
 
-	public void Initialize(RelationToPlayer skillLevelRelativeToPlayer) {
+	public void Initialize(SkillType skillLevelRelativeToPlayer) {
 		skillLevelImplementation.Initialize(transform.parent.GetComponent<CharacterRaceState>());
 		currentStatsValues = skillLevelImplementation.GetInitialStats(skillLevelRelativeToPlayer);
 	}
@@ -61,9 +61,9 @@ public class AISkillLevel : MonoBehaviour {
 }
 
 [System.Serializable]
-internal class SkillLevelParameters {
+internal class SkillLevelModifiers {
 	[Tooltip("Skill level in relation to the player for which the following changes are applied.")]
-	public AISkillLevel.RelationToPlayer skillLevel;
+	public AISkillLevel.SkillType skillLevel;
 
 	[Tooltip("Change of the player's Speed parameter in percents (from -1 to 1). The new value is then used for the AI agent.")]
 	[Range(-1, 1)]
@@ -79,5 +79,27 @@ internal class SkillLevelParameters {
 
 	[Tooltip("Change of the player's Magic parameter in percents (from -1 to 1). The new value is then used for the AI agent.")]
 	[Range(-1, 1)]
+	public float magicChange;
+}
+
+[System.Serializable]
+internal class SkillLevelPercentages {
+	[Tooltip("Skill level for which the following changes are applied.")]
+	public AISkillLevel.SkillType skillLevel;
+
+	[Tooltip("Percentage of the max Speed value (between 0 and 1) which is used for the AI agent.")]
+	[Range(0, 1)]
+	public float speedChange;
+
+	[Tooltip("Percentage of the max Dexterity value (between 0 and 1) which is used for the AI agent.")]
+	[Range(0, 1)]
+	public float dexterityChange;
+
+	[Tooltip("Percentage of the max Precision value (between 0 and 1) which is used for the AI agent.")]
+	[Range(0, 1)]
+	public float precisionChange;
+
+	[Tooltip("Percentage of the max Magic value (between 0 and 1) which is used for the AI agent.")]
+	[Range(0, 1)]
 	public float magicChange;
 }

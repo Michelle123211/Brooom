@@ -6,7 +6,7 @@ public class MaxStatsSkillLevel : SkillLevelImplementation {
 
 	private PlayerStats currentStats;
 
-	public override PlayerStats GetInitialStats(AISkillLevel.RelationToPlayer skillLevelRelativeToPlayer) {
+	public override PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType) {
 		currentStats = new PlayerStats {
 			endurance = 100,
 			speed = 100,

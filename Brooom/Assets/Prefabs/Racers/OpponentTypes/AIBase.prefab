@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 474429799473366435}
   - component: {fileID: 1180592906144922872}
   m_Layer: 9
-  m_Name: CloseToPlayerStats
+  m_Name: FixedCloseToPlayerStats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,6 +44,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4413e74b5e965134bbbc0880dfdd98ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillLevelParameters:
+  - skillLevel: 2
+    speedChange: 0
+    dexterityChange: 0
+    precisionChange: 0
+    magicChange: 0
+  - skillLevel: 1
+    speedChange: 0.4
+    dexterityChange: 0.4
+    precisionChange: 0.4
+    magicChange: 0.4
+  - skillLevel: 0
+    speedChange: 0.75
+    dexterityChange: 0.75
+    precisionChange: 0.75
+    magicChange: 0.75
+  - skillLevel: 3
+    speedChange: -0.4
+    dexterityChange: -0.4
+    precisionChange: -0.4
+    magicChange: -0.4
+  - skillLevel: 4
+    speedChange: -0.75
+    dexterityChange: -0.75
+    precisionChange: -0.75
+    magicChange: -0.75
 --- !u!1 &4319367836660047611
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,6 +102,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 474429799473366435}
+  - {fileID: 2057976497043230685}
   - {fileID: 4294990956215537622}
   - {fileID: 5237037944332692424}
   - {fileID: 7707876468921854905}
@@ -95,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mistakesParameters: {fileID: 11400000, guid: bfccf459c65abd64dab72c53f3c4e8ff, type: 2}
-  skillLevelImplementation: {fileID: 6367859879729226993}
+  skillLevelImplementation: {fileID: 8768972409929694954}
 --- !u!114 &6134760467171468951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +284,76 @@ MonoBehaviour:
   - rayDirection: {x: 0, y: -0.15, z: 1}
     simplifiedDirection: {x: 0, y: -1}
   debugLogs: 1
+--- !u!1 &5591735328203877228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2057976497043230685}
+  - component: {fileID: 8768972409929694954}
+  m_Layer: 9
+  m_Name: FixedStats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2057976497043230685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5591735328203877228}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7412540630795765729}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8768972409929694954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5591735328203877228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f417db01b94374997eb99d9fa2d2eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillLevelParameters:
+  - skillLevel: 2
+    speedChange: 0.6
+    dexterityChange: 0.6
+    precisionChange: 0.6
+    magicChange: 0.6
+  - skillLevel: 1
+    speedChange: 0.8
+    dexterityChange: 0.8
+    precisionChange: 0.8
+    magicChange: 0.8
+  - skillLevel: 0
+    speedChange: 1
+    dexterityChange: 1
+    precisionChange: 1
+    magicChange: 1
+  - skillLevel: 3
+    speedChange: 0.4
+    dexterityChange: 0.4
+    precisionChange: 0.4
+    magicChange: 0.4
+  - skillLevel: 4
+    speedChange: 0.2
+    dexterityChange: 0.2
+    precisionChange: 0.2
+    magicChange: 0.2
 --- !u!1 &5677043936722255560
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,7 +384,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7412540630795765729}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6367859879729226993
 MonoBehaviour:
@@ -308,25 +405,25 @@ MonoBehaviour:
     precisionChange: 0
     magicChange: 0
   - skillLevel: 1
-    speedChange: 0.1
-    dexterityChange: 0.1
-    precisionChange: 0.1
-    magicChange: 0.1
+    speedChange: 0.4
+    dexterityChange: 0.4
+    precisionChange: 0.4
+    magicChange: 0.4
   - skillLevel: 0
-    speedChange: 0.25
-    dexterityChange: 0.25
-    precisionChange: 0.25
-    magicChange: 0.25
+    speedChange: 0.75
+    dexterityChange: 0.75
+    precisionChange: 0.75
+    magicChange: 0.75
   - skillLevel: 3
-    speedChange: -0.1
-    dexterityChange: -0.1
-    precisionChange: -0.1
-    magicChange: -0.1
+    speedChange: -0.4
+    dexterityChange: -0.4
+    precisionChange: -0.4
+    magicChange: -0.4
   - skillLevel: 4
-    speedChange: -0.25
-    dexterityChange: -0.25
-    precisionChange: -0.25
-    magicChange: -0.25
+    speedChange: -0.75
+    dexterityChange: -0.75
+    precisionChange: -0.75
+    magicChange: -0.75
   statsModificationBasedOnDistance:
     serializedVersion: 2
     m_Curve:
@@ -408,7 +505,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7412540630795765729}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2455519055377695863
 MonoBehaviour:
@@ -452,7 +549,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7412540630795765729}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8436267209104439647
 MonoBehaviour:

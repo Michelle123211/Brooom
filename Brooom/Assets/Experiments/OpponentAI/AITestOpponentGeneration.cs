@@ -5,7 +5,7 @@ using UnityEngine;
 public class AITestOpponentGeneration : LevelGeneratorModule {
 
 	[Tooltip("Skill levels of the opponents.")]
-	public List<AISkillLevel.RelationToPlayer> skillLevels;
+	public List<AISkillLevel.SkillType> skillLevels;
 	[Tooltip("Space between the racers on the start line.")]
 	public float spacing = 2;
 	[Tooltip("Prefabs of the opponents.")]
@@ -19,7 +19,7 @@ public class AITestOpponentGeneration : LevelGeneratorModule {
 		if (opponentPrefabs == null) return;
 		int opponentsCount = opponentPrefabs.Count;
 		// Prepare list of skill levels to choose from
-		List<AISkillLevel.RelationToPlayer> remainingSkillLevels = new List<AISkillLevel.RelationToPlayer>();
+		List<AISkillLevel.SkillType> remainingSkillLevels = new List<AISkillLevel.SkillType>();
 		foreach (var skillLevel in skillLevels) remainingSkillLevels.Add(skillLevel);
 		// Instantiate and place the opponents
 		for (int i = 0; i < opponentsCount; i++) {
@@ -34,7 +34,7 @@ public class AITestOpponentGeneration : LevelGeneratorModule {
 				int skillLevelIndex = Random.Range(0, remainingSkillLevels.Count);
 				opponent.GetComponentInChildren<AISkillLevel>().Initialize(remainingSkillLevels[skillLevelIndex]);
 				remainingSkillLevels.RemoveAt(skillLevelIndex);
-			} else opponent.GetComponentInChildren<AISkillLevel>().Initialize(AISkillLevel.RelationToPlayer.RoughlyTheSame);
+			} else opponent.GetComponentInChildren<AISkillLevel>().Initialize(AISkillLevel.SkillType.Average);
 			// Randomize the opponent (appearance, name, broom upgrades, equipped spells, minimap icon color)
 			opponent.Randomize(opponentColors[i % opponentColors.Length]);
 		}

@@ -31,7 +31,7 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 		this.agentRaceState = agentRaceState;
 	}
 
-	public abstract PlayerStats GetInitialStats(AISkillLevel.RelationToPlayer skillLevelRelativeToPlayer);
+	public abstract PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType);
 	public abstract PlayerStats GetCurrentStats();
 
 	protected float GetNormalizedDistanceRaced(CharacterRaceState raceState) {
@@ -46,4 +46,13 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 		}
 		return distanceRaced;
 	}
+
+	protected int GetModifiedStatValue(int initialValue, float percentageChange) {
+		if (percentageChange < 0) { // Decreasing the value - subtract percentage of the stat value
+			return Mathf.RoundToInt(initialValue - initialValue * percentageChange);
+		} else { // Increasing the value - add percentage of the mistakes (stat value complement)
+			return Mathf.RoundToInt(initialValue + (100 - initialValue) * percentageChange);
+		}
+	}
+
 }

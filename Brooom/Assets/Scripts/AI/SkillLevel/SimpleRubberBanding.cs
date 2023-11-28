@@ -5,7 +5,7 @@ using UnityEngine;
 public class SimpleRubberBanding : SkillLevelImplementation {
 
 	[Tooltip("All available skill levels (relatively to player) and their corresponding stats modifications.")]
-	[SerializeField] List<SkillLevelParameters> skillLevelParameters;
+	[SerializeField] List<SkillLevelModifiers> skillLevelParameters;
 
 	[Tooltip("Curve describing stats values modification based on distance from the player. The value determines stats modifier in case of positive distance (e.g. stats multiplied by 0.9f), and mistakes modifier in case of negative distance (e.g. stats increased by the stats complement multiplied by 0.9f).")]
 	[SerializeField] AnimationCurve statsModificationBasedOnDistance;
@@ -13,12 +13,12 @@ public class SimpleRubberBanding : SkillLevelImplementation {
 	private PlayerStats baseStatsValues;
 	private PlayerStats currentStatsValues;
 
-	public override PlayerStats GetInitialStats(AISkillLevel.RelationToPlayer skillLevelRelativeToPlayer) {
+	public override PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType) {
 		baseStatsValues = PlayerState.Instance.CurrentStats;
-		// Modify the baseStatsValues based on the skillLevelRelativeToPlayer
+		// Modify the baseStatsValues based on the skillLevelType
 		if (skillLevelParameters != null) {
 			foreach (var level in skillLevelParameters) {
-				if (level.skillLevel == skillLevelRelativeToPlayer) {
+				if (level.skillLevel == skillLevelType) {
 					ApplySkillLevelStatsModifications(level);
 					break;
 				}
@@ -45,7 +45,7 @@ public class SimpleRubberBanding : SkillLevelImplementation {
 		return currentStatsValues;
 	}
 
-	private void ApplySkillLevelStatsModifications(SkillLevelParameters parameters) {
+	private void ApplySkillLevelStatsModifications(SkillLevelModifiers parameters) {
 		// Modify the stats according to the parameters
 		// ... speed
 		baseStatsValues.speed = GetModifiedStatValue(baseStatsValues.speed, parameters.speedChange);
@@ -55,14 +55,6 @@ public class SimpleRubberBanding : SkillLevelImplementation {
 		baseStatsValues.precision = GetModifiedStatValue(baseStatsValues.precision, parameters.precisionChange);
 		// ... magic
 		baseStatsValues.magic = GetModifiedStatValue(baseStatsValues.magic, parameters.magicChange);
-	}
-
-	private int GetModifiedStatValue(int initialValue, float percentageChange) {
-		if (percentageChange < 0) { // Decreasing the value - subtract percentage of the stat value
-			return Mathf.RoundToInt(initialValue - initialValue * percentageChange);
-		} else { // Increasing the value - add percentage of the mistakes (stat value complement)
-			return Mathf.RoundToInt(initialValue + (100 - initialValue) * percentageChange);
-		}
 	}
 
 }
