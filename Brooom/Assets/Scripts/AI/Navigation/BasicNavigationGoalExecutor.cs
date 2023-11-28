@@ -19,7 +19,7 @@ public class BasicNavigationGoalExecutor : NavigationGoalExecutor {
 
 	private IEnumerator SetTargetPositionAfterKeepingDirection(NavigationGoal goal) {
 		// Wait for a while
-		float keepDirectionDuration = agentSkillLevel.mistakesParameters.keepDirectionDurationCurve.Evaluate(agentSkillLevel.GetDexterityMistakeProbability());
+		float keepDirectionDuration = agentSkillLevel.mistakesParameters.KeepDirectionDurationCurve.Evaluate(agentSkillLevel.GetDexterityMistakeProbability());
 		yield return new WaitForSeconds(keepDirectionDuration);
 		// Set the correct target position
 		if (goal.IsSameAs(currentGoal)) // the goal has not been changed in the meantime

@@ -42,7 +42,7 @@ public class BasicNavigationSteering : NavigationSteering {
 		movement = AdjustMovementToAvoidCollisions(movement);
 		// Slow down based on the probability of speed mistakes
 		if (movement.forwardMotion == ForwardMotion.Forward) {
-			movement.forwardValue *= agentSkillLevel.mistakesParameters.speedModifierCurve.Evaluate(agentSkillLevel.GetSpeedMistakeProbability());
+			movement.forwardValue *= agentSkillLevel.mistakesParameters.SpeedModifierCurve.Evaluate(agentSkillLevel.GetSpeedMistakeProbability());
 		}
 		return movement;
 	}
@@ -86,7 +86,7 @@ public class BasicNavigationSteering : NavigationSteering {
 		if (direction.weight == 0) return movement;
 		// Get collision avoidance weight based on mistake probabilities
 		float mistakeProbability = (agentSkillLevel.GetDexterityMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
-		float avoidanceWeight = agentSkillLevel.mistakesParameters.collisionAvoidanceWeightCurve.Evaluate(mistakeProbability);
+		float avoidanceWeight = agentSkillLevel.mistakesParameters.CollisionAvoidanceWeightCurve.Evaluate(mistakeProbability);
 		// Combine direction to target with the direction to avoid collisions (weighted average)
 		float yaw = ((int)movement.yawMotion * movement.yawValue + direction.direction.x * direction.weight * avoidanceWeight) / (1f + avoidanceWeight);
 		float pitch = ((int)movement.pitchMotion * movement.pitchValue + direction.direction.y * direction.weight * avoidanceWeight) / (1f + avoidanceWeight);

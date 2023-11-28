@@ -127,7 +127,7 @@ public class HoopGoal : TrackElementGoal {
     public override bool ShouldBeSkipped() {
         // Based on Precision stat
         float mistakeProbability = agentSkillLevel.GetPrecisionMistakeProbability();
-        float skipProbability = agentSkillLevel.mistakesParameters.hoopSkipCurve.Evaluate(mistakeProbability);
+        float skipProbability = agentSkillLevel.mistakesParameters.HoopSkipCurve.Evaluate(mistakeProbability);
         return (UnityEngine.Random.value < skipProbability);
     }
 
@@ -135,7 +135,7 @@ public class HoopGoal : TrackElementGoal {
         // Based on Dexterity stat
         float mistakeProbability = agentSkillLevel.GetDexterityMistakeProbability();
         // Determine target point offset
-        targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.hoopMissCurve.Evaluate(mistakeProbability);
+        targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.HoopMissCurve.Evaluate(mistakeProbability);
         return (targetPositionMistakeOffset == 0);
     }
 
@@ -245,17 +245,17 @@ public class BonusGoal : TrackElementGoal {
         // ... speed bonus - based on average of Speed and Precision stats
         if (bonus.GetType() == typeof(SpeedBonusEffect)) {
             mistakeProbability = (agentSkillLevel.GetSpeedMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
-            skipProbability = agentSkillLevel.mistakesParameters.speedBonusSkipCurve.Evaluate(mistakeProbability);
+            skipProbability = agentSkillLevel.mistakesParameters.SpeedBonusSkipCurve.Evaluate(mistakeProbability);
         }
         // ... mana bonus - based on average of Magic and Precision stats
         else if (bonus.GetType() == typeof(ManaBonusEffect)) {
             mistakeProbability = (agentSkillLevel.GetMagicMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
-            skipProbability = agentSkillLevel.mistakesParameters.manaBonusSkipCurve.Evaluate(mistakeProbability);
+            skipProbability = agentSkillLevel.mistakesParameters.ManaBonusSkipCurve.Evaluate(mistakeProbability);
         }
         // ... other - based on Precision stat
         else {
             mistakeProbability = agentSkillLevel.GetPrecisionMistakeProbability();
-            skipProbability = agentSkillLevel.mistakesParameters.bonusSkipCurve.Evaluate(mistakeProbability);
+            skipProbability = agentSkillLevel.mistakesParameters.BonusSkipCurve.Evaluate(mistakeProbability);
         }
         return (UnityEngine.Random.value < skipProbability);
     }
@@ -264,7 +264,7 @@ public class BonusGoal : TrackElementGoal {
         // Based on Dexterity stat
         float mistakeProbability = agentSkillLevel.GetDexterityMistakeProbability();
         // Determine target point offset
-        targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.bonusMissCurve.Evaluate(mistakeProbability);
+        targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.BonusMissCurve.Evaluate(mistakeProbability);
         return (targetPositionMistakeOffset == 0);
     }
 

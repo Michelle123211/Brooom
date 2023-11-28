@@ -20,6 +20,7 @@ public class FixedSkillLevel : SkillLevelImplementation {
 				}
 			}
 		}
+		Debug.Log($"Initial values: {currentStatsValues}");
 		// And return
 		return currentStatsValues;
 	}
@@ -31,13 +32,13 @@ public class FixedSkillLevel : SkillLevelImplementation {
 	private void ApplySkillLevelStatsValues(SkillLevelPercentages parameters) {
 		// Modify the stats according to the parametersS
 		// ... speed
-		currentStatsValues.speed = GetModifiedStatValue(100, parameters.speedChange);
+		currentStatsValues.speed = Mathf.RoundToInt(100f * parameters.speedChange);
 		// ... dexterity
-		currentStatsValues.dexterity = GetModifiedStatValue(100, parameters.dexterityChange);
+		currentStatsValues.dexterity = Mathf.RoundToInt(100f * parameters.dexterityChange);
 		// ... precision
-		currentStatsValues.precision = GetModifiedStatValue(100, parameters.precisionChange);
+		currentStatsValues.precision = Mathf.RoundToInt(100f * parameters.precisionChange);
 		// ... magic
-		currentStatsValues.magic = GetModifiedStatValue(100, parameters.magicChange);
+		currentStatsValues.magic = Mathf.RoundToInt(100f * parameters.magicChange);
 	}
 
 }
