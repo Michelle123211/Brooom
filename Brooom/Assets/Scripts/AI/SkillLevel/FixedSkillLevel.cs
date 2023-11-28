@@ -20,7 +20,6 @@ public class FixedSkillLevel : SkillLevelImplementation {
 				}
 			}
 		}
-		Debug.Log($"Initial values: {currentStatsValues}");
 		// And return
 		return currentStatsValues;
 	}
