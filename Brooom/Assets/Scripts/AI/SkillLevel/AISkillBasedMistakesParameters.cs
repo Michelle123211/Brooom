@@ -120,9 +120,4 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 			else return constantZeroCurve;
 		}
 	}
-
-
-	[Header("Rubber banding")]
-	[Tooltip("Curve describing skill level change based on distance from the player. The value determines stats modifier in case of positive distance (e.g. stats multiplied by 0.9f), and mistakes modifier in case of negative distance (e.g. stats increased by the stats complement multiplied by 0.9f).")]
-	public AnimationCurve SkillLevelBasedOnDistance;
 }
