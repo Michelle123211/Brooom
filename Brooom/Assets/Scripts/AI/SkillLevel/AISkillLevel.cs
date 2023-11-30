@@ -20,6 +20,8 @@ public class AISkillLevel : MonoBehaviour {
 	[Tooltip("Implementation which is used to compute stats values.")]
 	[SerializeField] SkillLevelImplementation skillLevelImplementation;
 
+	[SerializeField] bool debugLogs = false;
+
 	// Currently used values (derived from the initial values based on distance to the player - rubber banding)
 	private PlayerStats currentStatsValues;
 
@@ -55,7 +57,8 @@ public class AISkillLevel : MonoBehaviour {
 
 	private void Update() {
 		currentStatsValues = skillLevelImplementation.GetCurrentStats();
-		Debug.Log($"Current values: {currentStatsValues}");
+		if (debugLogs)
+			Debug.Log($"Current values: {currentStatsValues}");
 	}
 
 }

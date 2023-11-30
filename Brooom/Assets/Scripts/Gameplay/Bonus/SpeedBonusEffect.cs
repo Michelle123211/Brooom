@@ -7,9 +7,9 @@ using UnityEngine;
 public class SpeedBonusEffect : BonusEffect
 {
 	[Tooltip("How much speed is added on top of the normal speed.")]
-	public float speedAdded = 10;
+	public float speedAdded = 5;
 	[Tooltip("Duration of the effect in seconds.")]
-	public float duration = 8;
+	public float duration = 4;
 	[Tooltip("An icon which will be used in the UI of effects affecting the player.")]
 	[SerializeField] Sprite speedIcon;
 
