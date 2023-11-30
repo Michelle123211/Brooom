@@ -214,8 +214,7 @@ public class BonusGoal : TrackElementGoal {
 
     protected float targetPositionMistakeOffset = 0f;
 
-    private int instanceIndex = 0;
-    private float currentDistance = float.MaxValue;
+    private int instanceIndex = -1;
 
 
     public override NavigationGoalType Type => NavigationGoalType.Bonus;
@@ -224,7 +223,7 @@ public class BonusGoal : TrackElementGoal {
     public BonusGoal(GameObject agent, int index) : base(agent, index) {
         // Choose the closest instance available
         this.bonusSpot = RaceController.Instance.level.bonuses[this.index];
-        ChooseClosestInstance();
+        ChooseRandomInstance();
     }
 
     public override bool IsReached() {
@@ -233,8 +232,10 @@ public class BonusGoal : TrackElementGoal {
     }
 
     public override bool IsValid() {
-        // At least one instance must be available
-        ChooseClosestInstance();
+        // The current instance must be available
+        if (instanceIndex != -1 && bonusSpot.bonusInstances[instanceIndex].gameObject.activeInHierarchy) return true;
+        // Or at least one instance must be available
+        ChooseRandomInstance();
         return (instanceIndex >= 0);
     }
 
@@ -276,17 +277,24 @@ public class BonusGoal : TrackElementGoal {
         else return 1;
     }
 
-    private void ChooseClosestInstance() {
-        // Closest available instance of the bonus
+    private void ChooseRandomInstance() {
         this.instanceIndex = -1;
-        this.currentDistance = float.MaxValue;
+        // Count all available instances
+        int availableInstanceCount = 0;
         for (int i = 0; i < this.bonusSpot.bonusInstances.Count; i++) {
             BonusEffect bonus = this.bonusSpot.bonusInstances[i];
-            if (!bonus.gameObject.activeInHierarchy) continue;
-            float distance = Vector3.Distance(agent.transform.position, bonus.transform.position);
-            if (distance < this.currentDistance) {
-                this.currentDistance = distance;
-                this.instanceIndex = i;
+            if (bonus.gameObject.activeInHierarchy) availableInstanceCount++;
+        }
+        // Select a random one
+        int randomIndex = UnityEngine.Random.Range(0, availableInstanceCount);
+        // Choose the instance index accordingly
+        for (int i = 0; i < this.bonusSpot.bonusInstances.Count; i++) {
+            BonusEffect bonus = this.bonusSpot.bonusInstances[i];
+            if (bonus.gameObject.activeInHierarchy) {
+                if (randomIndex == 0) { // the current instance was chosen
+                    this.instanceIndex = i;
+                    return;
+                } else randomIndex--; // move to the next one
             }
         }
     }
