@@ -31,9 +31,7 @@ public class SimpleRubberBanding : SkillLevelImplementation {
 
 	public override PlayerStats GetCurrentStats() {
 		// Compute current stats values from rubber banding
-		float distanceDifference =
-			GetNormalizedDistanceRaced(this.agentRaceState) // difference between agent's...
-			- GetNormalizedDistanceRaced(RaceController.Instance.playerRacer.state); // ... and player's distance raced
+		float distanceDifference = GetDistanceBetweenAgentAndPlayer();
 		AnimationCurve modifierCurve = statsModificationBasedOnDistance; // stats modifier is determined by a curve
 		distanceDifference = Mathf.Clamp(distanceDifference, modifierCurve.keys[0].time, modifierCurve.keys[modifierCurve.length - 1].time);
 		float modifier = modifierCurve.Evaluate(distanceDifference);

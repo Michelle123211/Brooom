@@ -62,7 +62,7 @@ public class AISkillLevel : MonoBehaviour {
 
 [System.Serializable]
 internal class SkillLevelModifiers {
-	[Tooltip("Skill level in relation to the player for which the following changes are applied.")]
+	[Tooltip("Skill level for which the following changes are applied.")]
 	public AISkillLevel.SkillType skillLevel;
 
 	[Tooltip("Change of the player's Speed parameter in percents (from -1 to 1). The new value is then used for the AI agent.")]

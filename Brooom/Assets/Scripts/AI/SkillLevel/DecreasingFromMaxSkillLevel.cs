@@ -24,9 +24,7 @@ public class DecreasingFromMaxSkillLevel : SkillLevelImplementation {
 	}
 
 	public override PlayerStats GetCurrentStats() {
-		float distanceDifference =
-			GetNormalizedDistanceRaced(this.agentRaceState) // difference between agent's...
-			- GetNormalizedDistanceRaced(RaceController.Instance.playerRacer.state); // ... and player's distance raced
+		float distanceDifference = GetDistanceBetweenAgentAndPlayer();
 		// Stats modifier is determined by a curve
 		AnimationCurve modifierCurve = statsModificationBasedOnDistance;
 		// If the agent is in front of the player, decrease stats accordingly

@@ -368,5 +368,16 @@ public struct PlayerStats {
     public static PlayerStats operator *(float a, PlayerStats b) {
         return b * a;
     }
-	#endregion
+
+    public static PlayerStats operator /(PlayerStats a, float b) {
+        if (b == 0) throw new DivideByZeroException();
+        return new PlayerStats {
+            endurance = Mathf.RoundToInt(a.endurance / b),
+            speed = Mathf.RoundToInt(a.speed / b),
+            dexterity = Mathf.RoundToInt(a.dexterity / b),
+            precision = Mathf.RoundToInt(a.precision / b),
+            magic = Mathf.RoundToInt(a.magic / b)
+        }.ClampedToRange();
+    }
+    #endregion
 }

@@ -34,7 +34,8 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 	public abstract PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType);
 	public abstract PlayerStats GetCurrentStats();
 
-	protected float GetNormalizedDistanceRaced(CharacterRaceState raceState) {
+	// For the given racer, returns approximate reached distance in the track
+	protected float GetDistanceRaced(CharacterRaceState raceState) {
 		float distanceRaced;
 		// Sum up distances between all track points reached (+ the following one)
 		distanceRaced = TrackPointDistanceSum[raceState.followingTrackPoint];
@@ -45,6 +46,24 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceController.Instance.level.track[raceState.followingTrackPoint].position);
 		}
 		return distanceRaced;
+	}
+
+	// For the given racer, returns fraction of the track reached so far (normalized between 0 and 1)
+	protected float GetNormalizedDistanceRaced(CharacterRaceState raceState) {
+		// Get distance reached so far
+		float distanceRaced = GetDistanceRaced(raceState);
+		// Get total length of the track
+		float totalDistance = TrackPointDistanceSum[TrackPointDistanceSum.Length - 1];
+		float normalizedDistance = distanceRaced / totalDistance;
+		// Clamp to (0, 1) - in case the racer is still before the first hoop but farther from it then the start (do the distance is negative)
+		normalizedDistance = Mathf.Clamp(normalizedDistance, 0, 1);
+		return normalizedDistance;
+	}
+
+	protected float GetDistanceBetweenAgentAndPlayer() {
+		// Compute difference between agent's and player's distance raced
+		float distanceDifference = GetDistanceRaced(this.agentRaceState) - GetDistanceRaced(RaceController.Instance.playerRacer.state);
+		return distanceDifference;
 	}
 
 	protected int GetModifiedStatValue(int initialValue, float percentageChange) {
