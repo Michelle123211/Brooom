@@ -18,15 +18,22 @@ public abstract class ScriptedRubberBanding : SkillLevelImplementation {
 	};
 	protected AnimationCurve desiredDistanceCurve = AnimationCurve.Constant(0, 1, 0);
 
+	private PlayerStats temporaryStatsValues; // stats values used as a reference for tweening the values in the last segment of race
+
 	public override PlayerStats GetCurrentStats() {
 		float raceFraction = GetNormalizedDistanceRaced(RaceController.Instance.playerRacer.state);
 		// Maximum stats in the first 5 % of the race
 		if (raceFraction < 0.05f) {
 			currentStatsValues = maxStatsValues;
+			temporaryStatsValues = currentStatsValues;
 		}
-		// Converge to the initial values in the last 20 % of the race
-		else if (raceFraction > 0.8f) {
-			currentStatsValues = ((currentStatsValues / 5) * 4) + (baseStatsValues / 5);
+		// Converge to the initial values in the last 10 % of the race
+		else if (raceFraction > 0.9f) {
+			float modifier = (raceFraction - 0.9f) * 10f;
+			if (baseStatsValues.speed > temporaryStatsValues.speed) // stats are clamped between 0 and 100 so we need to multiply by a positive number and then either add or subtract
+				currentStatsValues = temporaryStatsValues + (modifier * (baseStatsValues - temporaryStatsValues));
+			else
+				currentStatsValues = temporaryStatsValues - (modifier * (temporaryStatsValues - baseStatsValues));
 		}
 		// Otherwise adjust stats according to the distance from the player
 		else {
@@ -37,7 +44,10 @@ public abstract class ScriptedRubberBanding : SkillLevelImplementation {
 			float difference = actualDistance - desiredDistance;
 			difference = Mathf.Clamp(difference, statsChangeCurve.keys[0].time, statsChangeCurve.keys[statsChangeCurve.length - 1].time);
 			// Apply modifications to the stats values accordingly
-			currentStatsValues = baseStatsValues + maxStatsValues * statsChangeCurve.Evaluate(difference);
+			float modifier = statsChangeCurve.Evaluate(difference);
+			if (modifier >= 0) currentStatsValues = baseStatsValues + maxStatsValues * modifier;
+			else currentStatsValues = baseStatsValues - maxStatsValues * Mathf.Abs(modifier); // stats are clamped between 0 and 100 so we need to multiply by a positive number and then subtract
+			temporaryStatsValues = currentStatsValues;
 		}
 		return currentStatsValues;
 	}

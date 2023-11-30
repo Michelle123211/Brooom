@@ -27,8 +27,7 @@ public class DecreasingFromMaxSkillLevel : SkillLevelImplementation {
 		float distanceDifference = GetDistanceBetweenAgentAndPlayer();
 		// Stats modifier is determined by a curve
 		AnimationCurve modifierCurve = statsModificationBasedOnDistance;
-		// If the agent is in front of the player, decrease stats accordingly
-		// Otherwise keep them at maximum
+		// If the agent is in front of the player, decrease stats accordingly, otherwise keep them at maximum
 		distanceDifference = Mathf.Clamp(distanceDifference, modifierCurve.keys[0].time, modifierCurve.keys[modifierCurve.length - 1].time);
 		float modifier = modifierCurve.Evaluate(distanceDifference);
 		currentStatsValues = baseStatsValues * modifier;
