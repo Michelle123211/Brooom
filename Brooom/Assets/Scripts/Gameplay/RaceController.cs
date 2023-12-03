@@ -197,6 +197,11 @@ public class RaceController : MonoBehaviour {
                     float missedHoopsInFuture = Mathf.RoundToInt((level.track.Count - racer.state.trackPointToPassNext) * missedHoopsPercentage);
                     racer.state.timePenalization += (missedHoopsInFuture * missedHoopPenalization);
                 }
+                // If the final time is lower than the player's one, increase it
+                float timeDifference = (playerRacer.state.finishTime + playerRacer.state.timePenalization) - (racer.state.finishTime + racer.state.timePenalization);
+                if (timeDifference > 0) {
+                    racer.state.finishTime += (timeDifference + UnityEngine.Random.Range(5f, 15f));
+                }
             }
         }
     }
