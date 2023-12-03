@@ -16423,7 +16423,7 @@ MonoBehaviour:
   finalHoopScale: 0.4
   initialHoopDistanceRange: {x: 40, y: 50}
   finalHoopDistanceRange: {x: 80, y: 100}
-  missedHoopPenalization: 5
+  missedHoopPenalization: 10
   firstPlaceReward:
     serializedVersion: 2
     m_Curve:

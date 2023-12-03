@@ -36,7 +36,7 @@ public class RaceController : MonoBehaviour {
 
     [Header("Penalizations")]
     [Tooltip("How many seconds are added to the time when player misses a hoop.")]
-    public int missedHoopPenalization = 5;
+    public int missedHoopPenalization = 10;
 
     [Header("Coins")]
     [Tooltip("Curve describing first place reward depending on the track difficulty.")]

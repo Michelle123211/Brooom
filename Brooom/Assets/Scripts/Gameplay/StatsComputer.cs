@@ -292,7 +292,6 @@ public class StatsComputer : MonoBehaviour {
             if (speedSampleCountdown < 0) {
                 speedSampleCountdown += speedSamplingInterval;
                 currentSpeedSum += Mathf.Max(playerRepresentation.characterController.GetCurrentSpeed() - speedLowerBound, 0); // subtracting so the speed from broom upgrade has larger weight
-                Debug.Log($"Current speed: {playerRepresentation.characterController.GetCurrentSpeed()} - {speedLowerBound} = {Mathf.Max(playerRepresentation.characterController.GetCurrentSpeed() - speedLowerBound, 0)}");
                 maxSpeedSum += Mathf.Max(CharacterMovementController.MAX_SPEED - speedLowerBound, 0);
             }
             // --- sample distance from "ideal" trajectory between hoops in regular intervals
