@@ -4,7 +4,13 @@ using UnityEngine;
 
 public abstract class SkillLevelImplementation : MonoBehaviour {
 
+	[Tooltip("Curve describing fraction of maximum speed which is added to the agent's current maximum speed based on distance from the player. Positive distance means the agent is in front of the player.")]
+	[SerializeField] protected AnimationCurve maxSpeedAddedBasedOnDistance;
+
 	protected CharacterRaceState agentRaceState;
+	protected CharacterMovementController agentMovementController;
+
+	protected float initialMaxSpeedFraction = -1;
 
 	private float[] trackPointDistanceSum;
 	protected float[] TrackPointDistanceSum { // sum of distances between track points up to the given index
@@ -27,12 +33,23 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 		}
 	}
 	
-	public void Initialize(CharacterRaceState agentRaceState) {
+	public void Initialize(CharacterRaceState agentRaceState, CharacterMovementController agentMovementController) {
 		this.agentRaceState = agentRaceState;
+		this.agentMovementController = agentMovementController;
 	}
 
 	public abstract PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType);
 	public abstract PlayerStats GetCurrentStats();
+
+	// Allows to set higher maximum speed if the AI agent is too far behind the player
+	public virtual void AdjustCurrentMaximumSpeed() {
+		if (initialMaxSpeedFraction < 0) initialMaxSpeedFraction = agentMovementController.GetMaxSpeed() / CharacterMovementController.MAX_SPEED;
+		float distanceDifference = GetDistanceBetweenAgentAndPlayer();
+		// Max speed increment is determined by a curve
+		distanceDifference = Mathf.Clamp(distanceDifference, maxSpeedAddedBasedOnDistance.keys[0].time, maxSpeedAddedBasedOnDistance.keys[maxSpeedAddedBasedOnDistance.length - 1].time);
+		float maxSpeedAdded = maxSpeedAddedBasedOnDistance.Evaluate(distanceDifference);
+		agentMovementController.SetMaxSpeed(initialMaxSpeedFraction + maxSpeedAdded);
+	}
 
 	// For the given racer, returns approximate reached distance in the track
 	protected float GetDistanceRaced(CharacterRaceState raceState) {

@@ -27,7 +27,7 @@ public class AISkillLevel : MonoBehaviour {
 
 
 	public void Initialize(SkillType skillLevelRelativeToPlayer) {
-		skillLevelImplementation.Initialize(transform.parent.GetComponent<CharacterRaceState>());
+		skillLevelImplementation.Initialize(transform.parent.GetComponent<CharacterRaceState>(), transform.parent.GetComponent<CharacterMovementController>());
 		currentStatsValues = skillLevelImplementation.GetInitialStats(skillLevelRelativeToPlayer);
 	}
 
@@ -56,9 +56,13 @@ public class AISkillLevel : MonoBehaviour {
 	}
 
 	private void Update() {
+		// Rubber banding to adjust to the player...
+		// ... difficulty-based (skill-based)
 		currentStatsValues = skillLevelImplementation.GetCurrentStats();
 		if (debugLogs)
 			Debug.Log($"Current values: {currentStatsValues}");
+		// ... power-based
+		skillLevelImplementation.AdjustCurrentMaximumSpeed();
 	}
 
 }

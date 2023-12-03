@@ -78,7 +78,7 @@ public class CharacterMovementController : MonoBehaviour {
     public void SetPitchResponsiveness(float responsiveness) {
         this.pitchResponsiveness = responsiveness;
     }
-    // Parameter is number between 0 and 1 describing current maximum speed as a fraction of the maximum possible speed, which is currently 20
+    // Parameter is number between 0 and 1 describing current maximum speed as a fraction of the maximum possible speed, which is currently 16
     public void SetMaxSpeed(float maxSpeed) {
         this.maxSpeed = maxSpeed * MAX_SPEED;
     }
