@@ -53,6 +53,7 @@ public class StatsComputer : MonoBehaviour {
     private int playerPlace; // Endurance
     private int totalRacers; // Endurance
 
+    private float speedLowerBound; // Speed
     private double currentSpeedSum, maxSpeedSum; // Speed
     private float speedSampleCountdown; // Speed
 
@@ -93,6 +94,7 @@ public class StatsComputer : MonoBehaviour {
 
         totalRacers = RaceController.Instance.racers.Count;
 
+        speedLowerBound = Mathf.Max((playerRepresentation.characterController.initialMaxSpeed - 0.15f) * CharacterMovementController.MAX_SPEED, 0f);
         currentSpeedSum = 0; maxSpeedSum = 0;
         speedSampleCountdown = speedSamplingInterval;
 
@@ -289,8 +291,9 @@ public class StatsComputer : MonoBehaviour {
             speedSampleCountdown -= Time.deltaTime;
             if (speedSampleCountdown < 0) {
                 speedSampleCountdown += speedSamplingInterval;
-                currentSpeedSum += playerRepresentation.characterController.GetCurrentSpeed();
-                maxSpeedSum += CharacterMovementController.MAX_SPEED;
+                currentSpeedSum += Mathf.Max(playerRepresentation.characterController.GetCurrentSpeed() - speedLowerBound, 0); // subtracting so the speed from broom upgrade has larger weight
+                Debug.Log($"Current speed: {playerRepresentation.characterController.GetCurrentSpeed()} - {speedLowerBound} = {Mathf.Max(playerRepresentation.characterController.GetCurrentSpeed() - speedLowerBound, 0)}");
+                maxSpeedSum += Mathf.Max(CharacterMovementController.MAX_SPEED - speedLowerBound, 0);
             }
             // --- sample distance from "ideal" trajectory between hoops in regular intervals
             distanceSampleCountdown -= Time.deltaTime;

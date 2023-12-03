@@ -7,12 +7,12 @@ using DG.Tweening;
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterMovementController : MonoBehaviour {
 
-    public static float MAX_SPEED = 20; // TODO: Use it everywhere (e.g. in the broom upgrades)
+    public static float MAX_SPEED = 16; // TODO: Use it everywhere (e.g. in the broom upgrades)
 
     // Parameters
     [Header("Forward movement")]
-    [Tooltip("Number between 0 and 1 describing initial speed as a fraction of the maximum possible speed, which is currently 20.")]
-    public float initialMaxSpeed = 0.5f;
+    [Tooltip("Number between 0 and 1 describing initial speed as a fraction of the maximum possible speed, which is currently 16.")]
+    public float initialMaxSpeed = 0.75f;
     public float forwardResponsiveness = 0.01f;
     [Header("Yaw and Roll")]
     public float turnSpeed = 2;
