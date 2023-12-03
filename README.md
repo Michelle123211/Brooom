@@ -61,3 +61,13 @@
 - Cheats system (Ctrl+Alt+C shows command line) - easily extensible
 - Basis for testing track - environment, borders, hoop, bonus, moving opponent
 - Opponents' AI - design, infrastructure, basic movement (flying through hoops, picking up bonuses)
+
+**Milestone 8** (November 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone8.zip))):
+
+- Finished opponents' AI - adjusting to player:
+  - Making different types of mistakes based on stats
+  - Skill-based rubber banding - stats (and mistakes) based on the player, race scripts
+  - Power-based rubber banding - artificially increasing max speed
+- Debugging
+- Balancing (speed bonus, placing bonuses, speed broom upgrade, missed hoop penalization)
+- Testing
