@@ -47,7 +47,9 @@ public class AITestRaceController : RaceController {
             // If the total time is too big, make them DNF instead
             results[racer.state.place - 1] = new RaceResultData {
                 name = racer.characterName,
+                color = racer.state.assignedColor,
                 time = time,
+                penalization = racer.state.timePenalization,
                 coinsReward = 0
             };
         }

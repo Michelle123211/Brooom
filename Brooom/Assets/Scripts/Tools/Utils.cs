@@ -47,7 +47,7 @@ public static class Utils
         if (minutes > 0)
             return $"{minutes}:{seconds.ToString("D2")}.{miliseconds.ToString("D3")}";
         else
-            return $"{seconds}.{miliseconds}";
+            return $"{seconds}.{miliseconds.ToString("D3")}";
     } 
 
 

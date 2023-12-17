@@ -250,9 +250,11 @@ public class RaceController : MonoBehaviour {
             // If the total time is too big, make them DNF instead
             if (time > (playerRacer.state.finishTime + playerRacer.state.timePenalization) * 6)
                 time = -1;
-            results[racer.state.place - 1] = new RaceResultData { 
+            results[racer.state.place - 1] = new RaceResultData {
                 name = racer.characterName,
+                color = racer.state.assignedColor,
                 time = time,
+                penalization = racer.state.timePenalization,
                 coinsReward = time > 0 ? coinRewards[racer.state.place - 1] : 0 };
         }
         raceResults.SetResultsTable(results);

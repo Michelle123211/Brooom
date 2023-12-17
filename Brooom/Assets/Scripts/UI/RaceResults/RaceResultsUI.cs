@@ -103,7 +103,9 @@ public class RaceResultsUI : MonoBehaviour {
 }
 
 public struct RaceResultData {
+    public Color color;
     public string name;
     public float time;
+    public float penalization;
     public int coinsReward;
 }

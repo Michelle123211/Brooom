@@ -5,6 +5,9 @@ using System;
 using DG.Tweening;
 
 public class CharacterRaceState : MonoBehaviour {
+    // Assigned color on the minimap
+    [HideInInspector] public Color assignedColor;
+
     // Hoops/checkpoints
     [HideInInspector] public int checkpointsPassed = 0;
     [HideInInspector] public int hoopsPassed = 0;

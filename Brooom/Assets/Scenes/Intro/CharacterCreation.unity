@@ -925,7 +925,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 36
-  m_CharacterLimit: 20
+  m_CharacterLimit: 18
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -2307,7 +2307,6 @@ MonoBehaviour:
   outfitOptions: {fileID: 322335952}
   shoesOptions: {fileID: 1774847789}
   continueButton: {fileID: 1709560412}
-  namesFilename: names.txt
 --- !u!1 &1458622215
 GameObject:
   m_ObjectHideFlags: 0
