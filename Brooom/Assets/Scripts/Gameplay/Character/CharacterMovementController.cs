@@ -23,6 +23,8 @@ public class CharacterMovementController : MonoBehaviour {
     public float pitchResponsiveness = 0.01f;
 
     [Header("---Other---")]
+    [Tooltip("Roll rangle of this transform is changed when turning. The Transform should therefore be a parent of all the visual components. If empty, local transform is used instead.")]
+    [SerializeField] Transform transformToRoll;
     [Tooltip("If empty, .GetComponent() is used on the .gameObject of this component.")]
     [SerializeField] CharacterInput characterInput;
     [Tooltip("If false, the character won't move.")]
@@ -213,12 +215,13 @@ public class CharacterMovementController : MonoBehaviour {
         currentRoll += (yawInput - currentRoll) * yawResponsiveness;
         transform.Rotate(Vector3.up, currentYaw * turnSpeed);
         // Roll
-        Vector3 eulerAngles = transform.localEulerAngles;
+        Vector3 eulerAngles = transformToRoll.localEulerAngles;
         eulerAngles.z = -currentRoll * maxRollAngle;
+        transformToRoll.localEulerAngles = eulerAngles;
         // Pitch
+        eulerAngles = transform.localEulerAngles;
         currentPitch += (pitchInput - currentPitch) * pitchResponsiveness; // change slowly, not immediately
         eulerAngles.x = currentPitch * maxPitchAngle;
-
         transform.localEulerAngles = eulerAngles;
     }
 }
