@@ -12,6 +12,11 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	[Tooltip("Probability of placing elements on the borders of regions. May be used to make it sparse there.")]
 	public float regionBorderProbability = 0.5f;
 
+	[Tooltip("Width (in the X axis) of the rectangular region around the player start position which should be considered start line and should be populated only with short enough elements.")]
+	public float startLineSpanX = 12f;
+	[Tooltip("Height (in the Z axis) of the rectangular region around the player start position which should be considered start line and should be populated only with short enough elements.")]
+	public float startLineSpanZ = 6f;
+
 	[Tooltip("An object which will be parent of all the environment objects in the hierarchy.")]
 	public Transform environmentParent;
 
@@ -25,7 +30,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	private int tileSizeInPoints;
 
 	public override void Generate(LevelRepresentation level) {
-		// Remove any previously instantiated bonuses
+		// Remove any previously instantiated elements
 		UtilsMonoBehaviour.RemoveAllChildren(environmentParent);
 		// Compute number of tiles
 		tileSizeInPoints = Mathf.RoundToInt(gridTileSize / level.pointOffset); // convert to size measured in terrain points
@@ -87,6 +92,11 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 			return;
 		// Select random variant of the element type
 		int variantIndex = Random.Range(0, element.elementPrefabs.Count);
+		GameObject elementVariant = element.elementPrefabs[variantIndex];
+		// If the spot is too close to the start line and the element is too tall, it cannot be spawned
+		if (IsCloseToStartLine(level, spotX, spotY) && !CanBeSpawnedAtStartLine(level, elementVariant, spotX, spotY)) {
+			return;
+		}
 		// Compute parameters
 		Vector3 position = level.terrain[spotX, spotY].position;
 		if (element.specificHeightRange) {
@@ -100,7 +110,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 			if (!element.canBeOnRegionBorder || Random.value > regionBorderProbability) return;
 		}
 		// Instantiate with parameters
-		GameObject instance = Instantiate(element.elementPrefabs[variantIndex], position, rotation, environmentParent);
+		GameObject instance = Instantiate(elementVariant, position, rotation, environmentParent);
 		instance.transform.localScale *= scale;
 		// Set shadows on/off
 		MeshRenderer meshRenderer = instance.GetComponentInChildren<MeshRenderer>();
@@ -109,6 +119,20 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		} else {
 			meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
 		}
+	}
+	
+	// Checks whether the given grid point is within the rectangular region of start line
+	private bool IsCloseToStartLine(LevelRepresentation level, int spotX, int spotY) {
+		Vector3 difference = level.playerStartPosition - level.terrain[spotX, spotY].position;
+		return Mathf.Abs(difference.x) < (startLineSpanX / 2) && Mathf.Abs(difference.z) < (startLineSpanZ / 2);
+	}
+
+	// Checks whether the given element is short enough to be spawned on the given position assuming it is within the rectangular start line region
+	private bool CanBeSpawnedAtStartLine(LevelRepresentation level, GameObject elementVariant, int spotX, int spotY) {
+		MeshFilter meshFilter = elementVariant.GetComponentInChildren<MeshFilter>();
+		float elementHeight = meshFilter.sharedMesh.bounds.size.y;
+		float allowedHeight = (level.playerStartPosition - level.terrain[spotX, spotY].position).y;
+		return elementHeight < allowedHeight;
 	}
 }
 
