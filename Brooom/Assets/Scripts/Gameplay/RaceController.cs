@@ -124,6 +124,7 @@ public class RaceController : MonoBehaviour {
         }
         // Place the player + disable actions
         playerRacer.characterController.ResetPosition(level.playerStartPosition);
+        playerRacer.characterController.GetComponent<PlayerCameraController>().ResetCameras();
         playerRacer.characterController.DisableActions();
         // Prepare HUD
         raceTime = 0;

@@ -117,6 +117,9 @@ public class CharacterMovementController : MonoBehaviour {
         currentPitch = 0;
 
         previousForwardInput = 0;
+
+        transformToRoll.localEulerAngles = transformToRoll.localEulerAngles.WithZ(0);
+        currentRoll = 0;
     }
 
     public float[] GetValuesForDisplay() {

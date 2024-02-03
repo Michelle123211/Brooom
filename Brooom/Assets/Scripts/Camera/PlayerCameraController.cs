@@ -21,7 +21,9 @@ public class PlayerCameraController : MonoBehaviour {
     public float zoomDuration = 1f;
 
     [Header("Views")]
-    [Tooltip("Whether it is possible to switch between different views.")]
+    [Tooltip("A virtual camera looking back behind the player.")]
+    CinemachineVirtualCamera backVirtualCamera;
+    [Tooltip("Whether it is possible to switch between different views (except the back view which is always enabled).")]
     public bool enableViewSwitch = false;
     [Tooltip("A list of virtual cameras to switch between (in the exact order, index 0 is the default one).")]
     public List<CinemachineVirtualCamera> virtualCameras;
@@ -38,6 +40,19 @@ public class PlayerCameraController : MonoBehaviour {
     // Current camera view
     private CinemachineVirtualCamera currentCamera;
     private int currentCameraIndex = 0;
+
+    // Resets rotations of all cameras available
+    public void ResetCameras() {
+        // Reset rotation
+        rotationX = 0f;
+        rotationY = 0f;
+        foreach (var camera in virtualCameras) {
+            camera.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+        if (backVirtualCamera != null) backVirtualCamera.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        // Reset zoom
+        ZoomIn(false);
+    }
 
     // Changes the camera's FOV to zoom in/out
     public void ZoomIn(bool zoomIn) {
