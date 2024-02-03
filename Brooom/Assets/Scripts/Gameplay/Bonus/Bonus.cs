@@ -23,10 +23,8 @@ public class Bonus : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.layer == LayerMask.NameToLayer("Characters")) {
-            // Get the CharacterMovementController component
-            CharacterMovementController character = other.GetComponent<CharacterMovementController>(); // try the colliding object
-            if (character == null)
-                character = other.transform.parent.GetComponent<CharacterMovementController>(); // otherwise try the parent object
+            // Get the CharacterMovementController component on the root object
+            CharacterMovementController character = other.transform.parent.parent.GetComponent<CharacterMovementController>();
             if (character == null)
                 Debug.LogWarning("OnTriggerEnter() in bonus object is invoked but no CharacterMovementController was found.");
             // Invoke the specific event

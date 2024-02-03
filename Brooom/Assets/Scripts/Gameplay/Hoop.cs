@@ -51,7 +51,7 @@ public class Hoop : MonoBehaviour {
         }
         // If there are 2 triggers active simultaneously, the races has passed through the hoop
         if (activeTriggersCount.GetValueOrDefault(instanceID) == 2) {
-            otherObject.transform.parent.GetComponent<CharacterRaceState>()?.OnHoopPassed(index);
+            otherObject.transform.parent.parent.GetComponent<CharacterRaceState>()?.OnHoopPassed(index); // root object has CharacterRaceState component
         }
     }
 

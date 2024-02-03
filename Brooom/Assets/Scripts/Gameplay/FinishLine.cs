@@ -11,6 +11,6 @@ public class FinishLine : MonoBehaviour {
 
     public void OnFinishLineTriggerEntered(Collider otherObject) {
         if (!isActive) return;
-        otherObject.transform.parent.GetComponent<CharacterRaceState>()?.OnFinishPassed();
+        otherObject.transform.parent.parent.GetComponent<CharacterRaceState>()?.OnFinishPassed(); // root object has CharacterRaceState component
     }
 }
