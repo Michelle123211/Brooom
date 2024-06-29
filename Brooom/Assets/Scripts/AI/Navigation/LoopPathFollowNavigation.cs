@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(NavigationSteering))]
+[RequireComponent(typeof(BasicNavigationSteering))]
 public class LoopPathFollowNavigation : CharacterInput {
 
 	[Tooltip("Points on the path to follow, will be looped.")]

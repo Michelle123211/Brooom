@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(NavigationSteering))]
+[RequireComponent(typeof(SkillBasedNavigationSteering))]
 public abstract class NavigationGoalExecutor : MonoBehaviour {
 
 	protected GameObject agent;

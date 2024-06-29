@@ -6,14 +6,13 @@ using UnityEngine;
 public abstract class NavigationSteering : MonoBehaviour {
 
 	protected GameObject agent;
-	protected AISkillLevel agentSkillLevel;
 	protected Vector3 targetPosition;
 
 	protected bool isActive = true;
 
 	public void Initialize(GameObject agent) {
 		this.agent = agent;
-		this.agentSkillLevel = agent.GetComponentInChildren<AISkillLevel>();
+		InitializeDerivedType();
 	}
 
 	public void SetTargetPosition(Vector3 position) {
@@ -34,6 +33,8 @@ public abstract class NavigationSteering : MonoBehaviour {
 		} else
 			return new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
 	}
+
+	protected virtual void InitializeDerivedType() { }
 
 	protected abstract CharacterMovementValues GetMovementToTargetPosition();
 }
