@@ -23,8 +23,8 @@ public class CharacterMovementController : MonoBehaviour {
     public float pitchResponsiveness = 0.01f;
 
     [Header("---Other---")]
-    [Tooltip("Roll rangle of this transform is changed when turning. The Transform should therefore be a parent of all the visual components. If empty, local transform is used instead.")]
-    [SerializeField] Transform transformToRoll;
+    [Tooltip("Roll and pitch angle of this transform is changed when turning. The Transform should therefore be a parent of all the visual components. If empty, local transform is used instead.")]
+    [SerializeField] Transform characterTransform;
     [Tooltip("If empty, .GetComponent() is used on the .gameObject of this component.")]
     [SerializeField] CharacterInput characterInput;
     [Tooltip("If false, the character won't move.")]
@@ -114,11 +114,11 @@ public class CharacterMovementController : MonoBehaviour {
 
         currentForwardSpeed = 0;
         currentYaw = 0;
-        currentPitch = 0;
 
         previousForwardInput = 0;
 
-        transformToRoll.localEulerAngles = transformToRoll.localEulerAngles.WithZ(0);
+        characterTransform.localEulerAngles = characterTransform.localEulerAngles.WithX(0).WithZ(0);
+        currentPitch = 0;
         currentRoll = 0;
     }
 
@@ -201,7 +201,7 @@ public class CharacterMovementController : MonoBehaviour {
         // Forward
         currentForwardSpeed += ((forwardInput * maxSpeed) - currentForwardSpeed) * forwardResponsiveness; // change slowly, not immediately
         if (currentForwardSpeed < 0) currentForwardSpeed = 0; // not allowing reverse, only brake
-        rb.velocity = transform.forward * (currentForwardSpeed + bonusSpeed); // add also the bonus speed, if any
+        rb.velocity = characterTransform.forward * (currentForwardSpeed + bonusSpeed); // add also the bonus speed, if any
 
         // Limiting the altitude
         float pitchInput = (float)movementInput.pitchMotion * movementInput.pitchValue;
@@ -218,13 +218,11 @@ public class CharacterMovementController : MonoBehaviour {
         currentRoll += (yawInput - currentRoll) * yawResponsiveness;
         transform.Rotate(Vector3.up, currentYaw * turnSpeed);
         // Roll
-        Vector3 eulerAngles = transformToRoll.localEulerAngles;
+        Vector3 eulerAngles = characterTransform.localEulerAngles;
         eulerAngles.z = -currentRoll * maxRollAngle;
-        transformToRoll.localEulerAngles = eulerAngles;
         // Pitch
-        eulerAngles = transform.localEulerAngles;
         currentPitch += (pitchInput - currentPitch) * pitchResponsiveness; // change slowly, not immediately
         eulerAngles.x = currentPitch * maxPitchAngle;
-        transform.localEulerAngles = eulerAngles;
+        characterTransform.localEulerAngles = eulerAngles;
     }
 }

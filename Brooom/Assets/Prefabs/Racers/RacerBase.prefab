@@ -58,7 +58,7 @@ MonoBehaviour:
   maxRollAngle: 30
   maxPitchAngle: 35
   pitchResponsiveness: 0.01
-  transformToRoll: {fileID: 6748921469749432186}
+  characterTransform: {fileID: 6748921469749432186}
   characterInput: {fileID: 0}
   actionsEnabled: 0
   isPlayer: 1
