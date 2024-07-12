@@ -5,16 +5,45 @@ using System;
 using DG.Tweening;
 
 
-[System.Serializable]
-public class Spell {
+public enum SpellCategory {
+    Invalid,
+    SelfCast,
+    OpponentCurse,
+    EnvironmentManipulation,
+    ObjectApparition
+}
+
+public enum SpellTargetType { 
+    Invalid,
+    Self,
+    Opponent,
+    Direction,
+    Object
+}
+
+
+public class Spell : MonoBehaviour {
     public string identifier = string.Empty; // usually spell name without spaces
+    public string spellName = string.Empty;
     public Sprite icon;
+    // Spell description and target description is obtained from localization tables
 
     public int coinsCost = 250;
     public int manaCost = 20;
     public float cooldown = 10; // how long it takes to recharge the spell
 
-    // TODO: Effect of the spell, ...
+    public SpellCategory category = SpellCategory.Invalid;
+    public SpellTargetType targetType = SpellTargetType.Invalid;
+    public string spellTargetTag; // tag of the target object in case of SpellTargetType.Object
+
+    [Tooltip("A SpellEffectController component which is responsible for controlling the visual and actual effect of casting the spell.")]
+    [SerializeField] private SpellEffectController effectController;
+
+    public void CastSpell(SpellTarget spellTarget) {
+        // Create a separate instance of the spell effect controller (so it could be casted by several racers at once)
+        SpellEffectController effect = Instantiate<SpellEffectController>(effectController);
+        effect.InvokeSpellEffect(this, spellTarget);
+    }
 }
 
 // Spell assigned to a slot and used in a race
@@ -33,8 +62,8 @@ public class SpellInRace {
         this.charge = charge;
     }
 
-    public void CastSpell() {
-        // TODO: Invoke effect of the spell
+    public void CastSpell(SpellTarget spellTarget) {
+        spell.CastSpell(spellTarget);
         DOTween.To(() => charge, x => charge = x, 0, 0.3f);
     }
 

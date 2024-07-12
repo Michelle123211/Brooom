@@ -84,6 +84,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     #region Spells
     [HideInInspector] public Spell[] equippedSpells; // spells assigned to slots
     [HideInInspector] public Dictionary<string, bool> spellAvailability; // whether the spell is unlocked (purchased) or not
+    [HideInInspector] public Dictionary<string, bool> spellCast; // whether the spell has been used already or never
     [HideInInspector] public int availableSpellCount = 0; // number of purchased spells
 
     public void EquipSpell(Spell spell, int slotIndex) {
@@ -185,10 +186,11 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         });
         // ...broom upgrades
         SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.broomUpgradeLevels });
-        // ...purchased and equipped spells
+        // ...purchased, equipped and used spells
         SaveSystem.SaveSpells(new SpellsSaveData { 
             EquippedSpells = this.equippedSpells,
-            SpellsAvailability = this.spellAvailability
+            SpellsAvailability = this.spellAvailability,
+            SpellsUsage = this.spellCast
         });
         // Save AchievementManager data
         AchievementManager.Instance.SaveAchievementsProgress();
@@ -203,7 +205,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         // ...broom upgrades
         BroomUpgradesSaveData broomUpgrades = SaveSystem.LoadBroomUpgrades();
         LoadFromSavedBroomUpgrades(broomUpgrades);
-        // ...purchased and equipped spells
+        // ...purchased, equipped and used spells
         SpellsSaveData spells = SaveSystem.LoadSpells();
         LoadFromSavedSpells(spells);
         // Load AchievementManager data
@@ -244,6 +246,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         if (spells != null) { 
             if (spells.EquippedSpells != null) this.equippedSpells = spells.EquippedSpells;
             if (spells.SpellsAvailability != null) this.spellAvailability = spells.SpellsAvailability;
+            if (spells.SpellsUsage != null) this.spellCast = spells.SpellsUsage;
         }
     }
 
@@ -263,6 +266,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         // ...spells
         equippedSpells = new Spell[4];
         spellAvailability = new Dictionary<string, bool>(); // TODO: Initialize all spells to false
+        spellCast = new Dictionary<string, bool>(); // TODO: Initialize all spells to false
         // ...broom upgrades
         maxAltitude = 15f;
         broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>();

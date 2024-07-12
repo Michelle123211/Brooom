@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpellsSaveData {
 	#region Purchased spells
 	// Spells availability stored in array (which is serializable by JsonUtility as opposed to Dictionary)
-	public string[] spellsAvailabilityArray = null; // each string sontains spell identifier and availability separated by |
+	public string[] spellsAvailabilityArray = null; // each string contains spell identifier and availability separated by |
 
     // Property with getter/setter converting Dictionary<string, bool> to array of strings and vice versa
     public Dictionary<string, bool> SpellsAvailability {
@@ -78,6 +78,21 @@ public class SpellsSaveData {
             i++;
         }
         return equippedSpellsIdentifiers;
+    }
+    #endregion
+
+    #region Used spells
+    // Spells usage stored in array (which is serializable by JsonUtility as opposed to Dictionary)
+    public string[] spellsUsageArray = null; // each string contains spell identifier and whether it was used already separated by |
+
+    // Property with getter/setter converting Dictionary<string, bool> to array of strings and vice versa
+    public Dictionary<string, bool> SpellsUsage {
+        get {
+            return GetDictionaryOfSpells(spellsUsageArray);
+        }
+        set {
+            spellsUsageArray = GetArrayOfSpells(value);
+        }
     }
     #endregion
 }
