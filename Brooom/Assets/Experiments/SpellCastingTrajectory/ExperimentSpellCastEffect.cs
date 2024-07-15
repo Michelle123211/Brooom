@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExperimentSpellCastEffect : VisualSpellEffect {
+public class ExperimentSpellCastEffect : VisualEffect {
 
 
 	[Tooltip("Speed in which the spell is travelling to the target.")]

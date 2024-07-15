@@ -69,7 +69,7 @@ public abstract class ReversibleSpellEffect : SpellEffect {
     [SerializeField] protected float effectDuration = 0;
 
     [Tooltip("A visual effect used for indicating that the target is being affected by the spell.")]
-    [SerializeField] private VisualSpellEffect spellInfluenceVisualEffect;
+    [SerializeField] private VisualEffect spellInfluenceVisualEffect;
 
     private bool isComplete = false;
 

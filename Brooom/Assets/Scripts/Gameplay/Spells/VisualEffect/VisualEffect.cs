@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // A common interface for any visual effect related to casting a spell
-public abstract class VisualSpellEffect : MonoBehaviour {
+public abstract class VisualEffect : MonoBehaviour {
 
     public bool isPlaying = false;
 

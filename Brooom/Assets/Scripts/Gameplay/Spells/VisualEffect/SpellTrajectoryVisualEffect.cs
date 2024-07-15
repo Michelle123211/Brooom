@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpellTrajectoryVisualEffect : VisualSpellEffect {
+public abstract class SpellTrajectoryVisualEffect : VisualEffect {
 
 	[Tooltip("Speed in which the spell is travelling to the target.")]
 	[SerializeField] private float spellSpeed = 7;

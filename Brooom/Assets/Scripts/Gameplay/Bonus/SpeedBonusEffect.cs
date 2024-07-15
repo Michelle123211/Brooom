@@ -15,7 +15,7 @@ public class SpeedBonusEffect : BonusEffect
 
 	public override void ApplyBonusEffect(CharacterMovementController character) {
 		character.SetBonusSpeed(speedAdded, duration);
-		character.GetComponent<EffectibleCharacter>()?.AddEffect(new CharacterEffect(speedIcon, duration));
+		character.GetComponent<EffectibleCharacter>()?.AddEffect(new CharacterEffect(speedIcon, duration, true));
 	}
 
 	public override bool IsAvailable() {
