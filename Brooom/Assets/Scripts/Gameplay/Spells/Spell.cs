@@ -36,12 +36,12 @@ public class Spell : MonoBehaviour {
     public SpellTargetType targetType = SpellTargetType.Invalid;
     public string spellTargetTag; // tag of the target object in case of SpellTargetType.Object
 
-    [Tooltip("A SpellEffectController component which is responsible for controlling the visual and actual effect of casting the spell.")]
-    [SerializeField] private SpellEffectController effectController;
+    [Tooltip("A prefab of SpellEffectController component which is responsible for controlling the visual and actual effect of casting the spell.")]
+    [SerializeField] private SpellEffectController effectControllerPrefab;
 
     public void CastSpell(SpellTarget spellTarget) {
         // Create a separate instance of the spell effect controller (so it could be casted by several racers at once)
-        SpellEffectController effect = Instantiate<SpellEffectController>(effectController);
+        SpellEffectController effect = Instantiate<SpellEffectController>(effectControllerPrefab);
         effect.InvokeSpellEffect(this, spellTarget);
     }
 }

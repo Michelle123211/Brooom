@@ -30,3 +30,14 @@ public abstract class VisualEffect : MonoBehaviour {
 	}
 
 }
+
+public abstract class SelfDestructiveVisualEffect : VisualEffect {
+
+	protected override void StopPlaying_Internal() {
+        StopPlayingBeforeDestruction_Internal();
+        Destroy(gameObject);
+	}
+
+    protected abstract void StopPlayingBeforeDestruction_Internal();
+
+}

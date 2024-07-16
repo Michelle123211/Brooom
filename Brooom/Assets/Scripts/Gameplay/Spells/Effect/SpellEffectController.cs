@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class SpellEffectController : MonoBehaviour {
 
-    [Tooltip("Whether it is a positive or a negative spell.")]
-    [SerializeField] protected bool isPositive = true;
-
     [Tooltip("A component derived from SpellEffect which is responsible for applying the actual spell effect.")]
     [SerializeField] private SpellEffect actualSpellEffect;
 
@@ -25,10 +22,12 @@ public class SpellEffectController : MonoBehaviour {
 	}
     private SpellCastState currentState = SpellCastState.NOT_STARTED;
 
+    private Spell spell;
     private SpellTarget spellTarget;
 
 
     public void InvokeSpellEffect(Spell spell, SpellTarget spellTarget) {
+        this.spell = spell;
         this.spellTarget = spellTarget;
         // Based on the spell target handle the visual effect of casting the spell (if it is not null)
         if (spell.targetType != SpellTargetType.Self && spellTrajectoryVisualEffect != null) {
@@ -53,7 +52,7 @@ public class SpellEffectController : MonoBehaviour {
             if (targetHitVisualEffect != null)
                 targetHitVisualEffect.StartPlaying();
             currentState = SpellCastState.EFFECT;
-            actualSpellEffect.ApplySpellEffect(spellTarget);
+            actualSpellEffect.ApplySpellEffect(spell, spellTarget);
         }
         // Handle the actual functional spell effect
         if (currentState == SpellCastState.EFFECT) {
