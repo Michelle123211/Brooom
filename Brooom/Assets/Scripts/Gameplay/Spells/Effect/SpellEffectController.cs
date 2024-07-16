@@ -11,7 +11,7 @@ public class SpellEffectController : MonoBehaviour {
     [Tooltip("A visual effect used when the spell is casted towards its target.")]
     [SerializeField] private SpellTrajectoryVisualEffect spellTrajectoryVisualEffect;
     [Tooltip("A visual effect used when the spell hits its target (it may be even the racer casting the spell).")]
-    [SerializeField] private VisualEffect targetHitVisualEffect;
+    [SerializeField] private CustomVisualEffect targetHitVisualEffect;
 
     private enum SpellCastState {
         NOT_STARTED,

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // A common interface for any visual effect related to casting a spell
-public abstract class VisualEffect : MonoBehaviour {
+public abstract class CustomVisualEffect : MonoBehaviour {
 
     public bool isPlaying = false;
 
@@ -31,7 +31,7 @@ public abstract class VisualEffect : MonoBehaviour {
 
 }
 
-public abstract class SelfDestructiveVisualEffect : VisualEffect {
+public abstract class SelfDestructiveVisualEffect : CustomVisualEffect {
 
 	protected override void StopPlaying_Internal() {
         StopPlayingBeforeDestruction_Internal();

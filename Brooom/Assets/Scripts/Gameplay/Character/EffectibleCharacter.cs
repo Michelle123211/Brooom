@@ -13,7 +13,7 @@ public class EffectibleCharacter : MonoBehaviour
     [Tooltip("A parent object of all visual effect instances corresponding to effects acting on the character (e.g. particles).")]
     [SerializeField] private Transform visualEffectsParent;
 
-    public void AddEffect(CharacterEffect effect, VisualEffect visualEffectPrefab = null) {
+    public void AddEffect(CharacterEffect effect, CustomVisualEffect visualEffectPrefab = null) {
         // If there is already the same effect, increase only the duration
         foreach (var existingEffect in effects) {
             if (existingEffect == effect) {
@@ -24,7 +24,7 @@ public class EffectibleCharacter : MonoBehaviour
         // Otherwise add the new effect, setup its visual effect (if any) and call its start action
         effects.Add(effect);
         if (visualEffectPrefab != null) {
-            VisualEffect visualEffectInstance = Instantiate<VisualEffect>(visualEffectPrefab, visualEffectsParent);
+            CustomVisualEffect visualEffectInstance = Instantiate<CustomVisualEffect>(visualEffectPrefab, visualEffectsParent);
             effect.SetupVisualEffect(visualEffectInstance);
         }
         onNewEffectAdded?.Invoke(effect);
@@ -59,7 +59,7 @@ public class CharacterEffect {
 
     public Action onEffectStart;
     public Action onEffectEnd;
-    private VisualEffect visualEffect;
+    private CustomVisualEffect visualEffect;
 
     public CharacterEffect(Sprite icon, float duration, bool isPositive) {
         this.Icon = icon;
@@ -77,7 +77,7 @@ public class CharacterEffect {
 
     public bool IsFinished() => TimeLeft < 0;
 
-    public void SetupVisualEffect(VisualEffect visualEffect) {
+    public void SetupVisualEffect(CustomVisualEffect visualEffect) {
         this.visualEffect = visualEffect;
         // Register callbacks for starting/stopping the visual effect
         onEffectStart += StartPlayingVisualEffect;
