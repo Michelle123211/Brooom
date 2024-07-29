@@ -37,10 +37,10 @@ public class SpellEditor : Editor {
         SpellTargetType targetType = (SpellTargetType)targetTypeProperty.enumValueIndex;
         if (targetType == SpellTargetType.Object) {
             SerializedProperty tagProperty = serializedObject.FindProperty("spellTargetTag");
-            tagProperty.stringValue = EditorGUILayout.TagField("Target object tag", tagProperty.stringValue);
+            tagProperty.stringValue = EditorGUILayout.TagField(new GUIContent("Target object tag", tagProperty.tooltip), tagProperty.stringValue);
             serializedObject.ApplyModifiedProperties();
         }
-        //EditorGUILayout.LabelField(serializedObject.FindProperty("spellTargetTag").stringValue); // for debug
+        //EditorGUILayout.LabelField(serializedObject.FindProperty("<SpellTargetTag>k__BackingField").stringValue); // for debug
     }
 
     private void DisplaySpellEffectProperties() {

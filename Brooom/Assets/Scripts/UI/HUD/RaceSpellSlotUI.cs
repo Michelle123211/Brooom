@@ -30,21 +30,21 @@ public class RaceSpellSlotUI : MonoBehaviour {
 
 	public void Initialize(SpellInRace spell) {
 		assignedSpell = spell;
-		isEmpty = (spell == null || spell.spell == null || string.IsNullOrEmpty(spell.spell.identifier));
+		isEmpty = (spell == null || spell.Spell == null || string.IsNullOrEmpty(spell.Spell.Identifier));
 		// Register callbacks
 		if (!isEmpty) {
 			assignedSpell.onBecomesAvailable += ChangeToAvailable;
 			assignedSpell.onBecomesUnavailable += ChangeToUnavailable;
 		}
 		// Change icon
-		spellSlotUI.Initialize(isEmpty ? null : spell.spell);
+		spellSlotUI.Initialize(isEmpty ? null : spell.Spell);
 		fillImage.sprite = backgroundImage.sprite;
 		// Initialize image fill, scale and alpha of the overlay
 		fillImage.fillAmount = 0;
 		transform.localScale = Vector3.one * unavailableScale;
 		unavailableOverlay.color = unavailableOverlay.color.WithA(unavailableOverlayAlpha);
 		// Change to available if necessary
-		if (!isEmpty && assignedSpell.isAvailable)
+		if (!isEmpty && assignedSpell.IsAvailable)
 			ChangeToAvailable();
 
 		isInitialized = true;
@@ -80,7 +80,7 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	private void Update() {
 		if (!isEmpty) {
 			// Change image fill based on charge
-			fillImage.fillAmount = assignedSpell.charge;
+			fillImage.fillAmount = assignedSpell.Charge;
 		}
 	}
 

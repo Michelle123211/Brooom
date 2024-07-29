@@ -30,7 +30,7 @@ public class SpellEffectController : MonoBehaviour {
         this.spell = spell;
         this.spellTarget = spellTarget;
         // Based on the spell target handle the visual effect of casting the spell (if it is not null)
-        if (spell.targetType != SpellTargetType.Self && spellTrajectoryVisualEffect != null) {
+        if (spell.TargetType != SpellTargetType.Self && spellTrajectoryVisualEffect != null) {
             currentState = SpellCastState.CAST;
             // Cast spell
             spellTrajectoryVisualEffect.transform.position = transform.position;
@@ -43,7 +43,7 @@ public class SpellEffectController : MonoBehaviour {
 	private void Update() {
         // Handle finishing casting the spell
         if (currentState == SpellCastState.CAST) {
-            if (!spellTrajectoryVisualEffect.isPlaying) {
+            if (!spellTrajectoryVisualEffect.IsPlaying) {
                 currentState = SpellCastState.HIT;
             }
         }

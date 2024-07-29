@@ -73,8 +73,8 @@ public class SpellsSaveData {
         string[] equippedSpellsIdentifiers = new string[equippedSpells.Length];
         int i = 0;
         foreach (var spell in equippedSpells) {
-            if (spell == null || string.IsNullOrEmpty(spell.identifier)) equippedSpellsIdentifiers[i] = "empty";
-            else equippedSpellsIdentifiers[i] = spell.identifier;
+            if (spell == null || string.IsNullOrEmpty(spell.Identifier)) equippedSpellsIdentifiers[i] = "empty";
+            else equippedSpellsIdentifiers[i] = spell.Identifier;
             i++;
         }
         return equippedSpellsIdentifiers;

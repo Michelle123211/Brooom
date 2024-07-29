@@ -23,18 +23,52 @@ public enum SpellTargetType {
 
 
 public class Spell : MonoBehaviour {
-    public string identifier = string.Empty; // usually spell name without spaces
-    public string spellName = string.Empty;
-    public Sprite icon;
+    [Tooltip("Spell's identifier, usually a spell name without spaces.")]
+    [SerializeField]
+    private string identifier = string.Empty; // usually spell name without spaces
+    public string Identifier { get => identifier; private set => identifier = value; }
+
+    [Tooltip("Human-readable spell name.")]
+    [SerializeField]
+    private string spellName = string.Empty;
+    public string SpellName { get => spellName; private set => spellName = value; }
+
+    [Tooltip("Spell icon used everywhere in the UI to represent the given spell, e.g. in HUD, shop etc.")]
+    [SerializeField]
+    private Sprite icon;
+    public Sprite Icon { get => icon; private set => icon = value; }
+
     // Spell description and target description is obtained from localization tables
 
-    public int coinsCost = 250;
-    public int manaCost = 20;
-    public float cooldown = 10; // how long it takes to recharge the spell
+    [Tooltip("How much it costs to unlock the spell in the shop.")]
+    [SerializeField]
+    private int coinsCost = 250;
+    public int CoinsCost { get => coinsCost; private set => coinsCost = value; }
 
-    public SpellCategory category = SpellCategory.Invalid;
-    public SpellTargetType targetType = SpellTargetType.Invalid;
-    public string spellTargetTag; // tag of the target object in case of SpellTargetType.Object
+    [Tooltip("How much it costs to cast the spell.")]
+    [SerializeField]
+    private int manaCost = 20;
+    public int ManaCost { get => manaCost; private set => manaCost = value; }
+
+    [Tooltip("For how long you have to wait before the spell is charged again and ready to be casted.")]
+    [SerializeField]
+    private float cooldown = 10f; // how long it takes to recharge the spell
+    public float Cooldown { get => cooldown; private set => cooldown = value; }
+
+    [Tooltip("Spells are divided into several different categories.")]
+    [SerializeField]
+    private SpellCategory category = SpellCategory.Invalid;
+    public SpellCategory Category { get => category; private set => category = value; }
+
+    [Tooltip("What is the spell casted at, e.g. opponent, general direction etc.")]
+    [SerializeField]
+    private SpellTargetType targetType = SpellTargetType.Invalid;
+    public SpellTargetType TargetType { get => targetType; private set => targetType = value; }
+
+    [Tooltip("If the spell is casted at objects, only objects with the given tag are considered.")]
+    [SerializeField]
+    private string spellTargetTag = string.Empty; // tag of the target object in case of SpellTargetType.Object
+    public string SpellTargetTag { get => spellTargetTag; private set => spellTargetTag = value; }
 
     [Tooltip("A prefab of SpellEffectController component which is responsible for controlling the visual and actual effect of casting the spell.")]
     [SerializeField] private SpellEffectController effectControllerPrefab;
@@ -48,41 +82,41 @@ public class Spell : MonoBehaviour {
 
 // Spell assigned to a slot and used in a race
 public class SpellInRace {
-    public Spell spell;
-    public float charge = 1; // percentage but between 0 and 1
+    public Spell Spell { get; private set; }
+    public float Charge { get; private set; } = 1; // percentage but between 0 and 1
+
+    public bool IsAvailable { get; private set; } = false; // is fully charged and there is enough mana
 
     // Callbacks on changes
-    public Action onBecomesAvailable;
-    public Action onBecomesUnavailable;
-
-    public bool isAvailable = false; // is fully charged and there is enough mana
+    public event Action onBecomesAvailable;
+    public event Action onBecomesUnavailable;
 
     public SpellInRace(Spell spell, float charge = 1) {
-        this.spell = spell;
-        this.charge = charge;
+        this.Spell = spell;
+        this.Charge = charge;
     }
 
     public void CastSpell(SpellTarget spellTarget) {
-        spell.CastSpell(spellTarget);
-        DOTween.To(() => charge, x => charge = x, 0, 0.3f);
+        Spell.CastSpell(spellTarget);
+        DOTween.To(() => Charge, x => Charge = x, 0, 0.3f);
     }
 
     public void Recharge() {
-        DOTween.To(() => charge, x => charge = x, 1, 0.3f);
+        DOTween.To(() => Charge, x => Charge = x, 1, 0.3f);
     }
 
     public void UpdateCharge(float timeDelta) {
-        if (spell == null) return;
-        this.charge = Mathf.Clamp(this.charge + (timeDelta / spell.cooldown), 0, 1);
+        if (Spell == null) return;
+        this.Charge = Mathf.Clamp(this.Charge + (timeDelta / Spell.Cooldown), 0, 1);
     }
 
     public bool IsSpellAvailable(int currentMana) {
         if (IsEmpty()) return false;
-        return this.charge >= 1 && currentMana >= spell.manaCost; // fully charged and enough mana
+        return this.Charge >= 1 && currentMana >= Spell.ManaCost; // fully charged and enough mana
     }
 
     public bool IsEmpty() {
-        return spell == null || string.IsNullOrEmpty(spell.identifier);
+        return Spell == null || string.IsNullOrEmpty(Spell.Identifier);
     }
 
     public void UpdateAvailability(int currentMana) {
@@ -90,10 +124,10 @@ public class SpellInRace {
         // Check if the state changed
         bool becomesAvailable = false;
         bool becomesUnavailable = false;
-        if (newAvailability != isAvailable) {
+        if (newAvailability != IsAvailable) {
             becomesAvailable = newAvailability;
             becomesUnavailable = !newAvailability;
-            isAvailable = newAvailability;
+            IsAvailable = newAvailability;
         }
         // Invoke callbacks
         if (becomesAvailable) onBecomesAvailable?.Invoke();
@@ -101,6 +135,6 @@ public class SpellInRace {
     }
 
     public void Reset() {
-        charge = 1; // it is fully charged at the beginning
+        Charge = 1; // it is fully charged at the beginning
     }
 }

@@ -27,15 +27,15 @@ public class ShopSpellSlotUI : MonoBehaviour
 
     public void PurchaseSpell() {
         // Check if the player has enough coins
-        if (!PlayerState.Instance.ChangeCoinsAmount(-assignedSpell.coinsCost)) return;
-        PlayerState.Instance.UnlockSpell(assignedSpell.identifier);
+        if (!PlayerState.Instance.ChangeCoinsAmount(-assignedSpell.CoinsCost)) return;
+        PlayerState.Instance.UnlockSpell(assignedSpell.Identifier);
         // Update the UI
         ChangeToUnlockedd();
         // TODO: If it is the first purchased spell, start a tutorial
     }
 
 	public void UpdateUI() {
-        if (PlayerState.Instance.spellAvailability.TryGetValue(assignedSpell.identifier, out bool unlocked) && unlocked) {
+        if (PlayerState.Instance.spellAvailability.TryGetValue(assignedSpell.Identifier, out bool unlocked) && unlocked) {
             ChangeToUnlockedd();
         } else {
             ChangeToLocked();
@@ -50,8 +50,8 @@ public class ShopSpellSlotUI : MonoBehaviour
 
     private void ChangeToLocked() {
         // Show price + overlay
-        priceText.text = assignedSpell.coinsCost.ToString();
-        if (PlayerState.Instance.coins < assignedSpell.coinsCost) // change to red if not enough coins
+        priceText.text = assignedSpell.CoinsCost.ToString();
+        if (PlayerState.Instance.coins < assignedSpell.CoinsCost) // change to red if not enough coins
             priceText.color = Color.red; // TODO: Change to using a different color (not so aggressive, e.g. from a color palette)
         unavailableOverlay.SetActive(true);
     }

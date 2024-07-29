@@ -38,9 +38,9 @@ public class SpellController : MonoBehaviour {
 	public void CastCurrentlySelectedSpell() {
 		if (selectedSpell != -1) {
 			SpellInRace currentSpell = spellSlots[selectedSpell];
-			if (currentSpell.charge >= 1 && currentMana >= currentSpell.spell.manaCost) {
+			if (currentSpell.Charge >= 1 && currentMana >= currentSpell.Spell.ManaCost) {
 				currentSpell.CastSpell(new SpellTarget { source = gameObject }); // TODO: Pass correct parameters (target + position)
-				ChangeManaAmount(-currentSpell.spell.manaCost);
+				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
 				onSpellCasted?.Invoke(selectedSpell);
 				if (isPlayer) Messaging.SendMessage("SpellCasted");
@@ -91,7 +91,7 @@ public class SpellController : MonoBehaviour {
 		if (isPlayer) {
 			// Initialize equipped spells from PlayerState
 			for (int i = 0; i < spellSlots.Length; i++) {
-				if (PlayerState.Instance.equippedSpells[i] == null || string.IsNullOrEmpty(PlayerState.Instance.equippedSpells[i].identifier)) {
+				if (PlayerState.Instance.equippedSpells[i] == null || string.IsNullOrEmpty(PlayerState.Instance.equippedSpells[i].Identifier)) {
 					spellSlots[i] = null;
 				} else {
 					spellSlots[i] = new SpellInRace(PlayerState.Instance.equippedSpells[i]);

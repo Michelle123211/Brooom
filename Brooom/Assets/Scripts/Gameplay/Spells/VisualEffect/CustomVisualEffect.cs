@@ -6,14 +6,14 @@ using UnityEngine;
 // A common interface for any visual effect related to casting a spell
 public abstract class CustomVisualEffect : MonoBehaviour {
 
-    public bool isPlaying = false;
+    public bool IsPlaying { get; private set; } = false;
 
     public void StartPlaying() {
-        isPlaying = true;
+        IsPlaying = true;
         StartPlaying_Internal();
     }
     public void StopPlaying() {
-        isPlaying = false;
+        IsPlaying = false;
         StopPlaying_Internal();
     }
 
@@ -23,9 +23,9 @@ public abstract class CustomVisualEffect : MonoBehaviour {
     protected abstract bool UpdatePlaying_Internal(float deltaTime);
 
 	private void Update() {
-        if (isPlaying) {
-            isPlaying = UpdatePlaying_Internal(Time.deltaTime);
-            if (!isPlaying) StopPlaying_Internal();
+        if (IsPlaying) {
+            IsPlaying = UpdatePlaying_Internal(Time.deltaTime);
+            if (!IsPlaying) StopPlaying_Internal();
         }
 	}
 

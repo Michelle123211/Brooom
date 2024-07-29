@@ -28,22 +28,22 @@ public class SpellSlotUI : MonoBehaviour
 
 	public void Initialize(Spell spell) {
 		this.assignedSpell = spell;
-		bool isEmpty = spell == null || string.IsNullOrEmpty(spell.identifier);
+		bool isEmpty = spell == null || string.IsNullOrEmpty(spell.Identifier);
 		// Set icon
 		if (isEmpty)
 			spellImage.sprite = emptySlotSprite;
-		else if (spell.icon == null)
+		else if (spell.Icon == null)
 			spellImage.sprite = missingIconSprite;
 		else
-			spellImage.sprite = spell.icon;
+			spellImage.sprite = spell.Icon;
 		// Set tooltip contents
 		if (!isEmpty) {
-			string keyPrefix = $"Spell{spell.identifier}";
-			tooltip.texts.topLeft = $"~~{spell.spellName}~~";
-			tooltip.texts.topRight = $"=={LocalizationManager.Instance.GetLocalizedString("SpellInfoMana")}: {spell.manaCost}==";
+			string keyPrefix = $"Spell{spell.Identifier}";
+			tooltip.texts.topLeft = $"~~{spell.SpellName}~~";
+			tooltip.texts.topRight = $"=={LocalizationManager.Instance.GetLocalizedString("SpellInfoMana")}: {spell.ManaCost}==";
 			tooltip.texts.mainTop = LocalizationManager.Instance.GetLocalizedString($"{keyPrefix}Description");
 			tooltip.texts.mainBottom = $"**{LocalizationManager.Instance.GetLocalizedString("SpellInfoTarget")}:** {LocalizationManager.Instance.GetLocalizedString($"{keyPrefix}Target")}";
-			tooltip.texts.bottomRight = $"&&{LocalizationManager.Instance.GetLocalizedString("SpellInfoCooldown")} {spell.cooldown} s&&";
+			tooltip.texts.bottomRight = $"&&{LocalizationManager.Instance.GetLocalizedString("SpellInfoCooldown")} {spell.Cooldown} s&&";
 			tooltip.isLocalized = false;
 		} else { // if the spell is null, use default values
 			tooltip.texts = defaultText;
