@@ -73,6 +73,10 @@ public class Spell : MonoBehaviour {
     [Tooltip("A prefab of SpellEffectController component which is responsible for controlling the visual and actual effect of casting the spell.")]
     [SerializeField] private SpellEffectController effectControllerPrefab;
 
+    public void InitializeSpellEffectController(SpellEffectController spellEffectController) {
+        effectControllerPrefab = spellEffectController;
+    }
+
     public void CastSpell(SpellTarget spellTarget) {
         // Create a separate instance of the spell effect controller (so it could be casted by several racers at once)
         SpellEffectController effect = Instantiate<SpellEffectController>(effectControllerPrefab);

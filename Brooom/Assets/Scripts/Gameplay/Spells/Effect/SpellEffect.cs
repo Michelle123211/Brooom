@@ -12,6 +12,7 @@ public abstract class SpellEffect : MonoBehaviour {
     public void ApplySpellEffect(Spell spell, SpellTarget spellTarget) {
         this.spell = spell;
         this.spellTarget = spellTarget;
+        ApplySpellEffect_Internal();
     }
 
     protected abstract void ApplySpellEffect_Internal();
