@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SpellTrajectoryVisualEffect : CustomVisualEffect {
+public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 
 	[Tooltip("Speed in which the spell is travelling to the target.")]
 	[SerializeField] private float spellSpeed = 7;
@@ -16,7 +16,7 @@ public abstract class SpellTrajectoryVisualEffect : CustomVisualEffect {
 	[Tooltip("A component representing particles which are left behind while the spell is travelling to its target.")]
 	[SerializeField] private ParticleSystem spellCastParticles;
 	[Tooltip("A color used for the visual effect")]
-	[SerializeField] private Color spellCastColor;
+	[SerializeField] private Color spellCastColor = Color.white;
 	
 	private GameObject sourceObject;
 	private GameObject targetObject;

@@ -18,14 +18,29 @@ public class SpellEditor : Editor {
     }
 
     private void DisplayBasicProperties() {
+        // Get serialized properties
+        SerializedProperty identifierProperty = serializedObject.FindProperty("identifier");
+        SerializedProperty nameProperty = serializedObject.FindProperty("spellName");
+        SerializedProperty iconProperty = serializedObject.FindProperty("icon");
+        SerializedProperty coinsProperty = serializedObject.FindProperty("coinsCost");
+        SerializedProperty manaProperty = serializedObject.FindProperty("manaCost");
+        SerializedProperty cooldownProperty = serializedObject.FindProperty("cooldown");
+        SerializedProperty categoryProperty = serializedObject.FindProperty("category");
+        // Draw properties
         EditorGUILayout.LabelField("Basic properties", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("identifier"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("spellName"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("icon"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("coinsCost"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("manaCost"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("cooldown"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("category"));
+        EditorGUILayout.PropertyField(identifierProperty);
+        EditorGUILayout.PropertyField(nameProperty);
+        EditorGUILayout.PropertyField(iconProperty);
+        EditorGUILayout.PropertyField(coinsProperty);
+        EditorGUILayout.PropertyField(manaProperty);
+        EditorGUILayout.PropertyField(cooldownProperty);
+        EditorGUILayout.PropertyField(categoryProperty);
+        // Display errors/warning if some of the properties are invalid
+        if (string.IsNullOrEmpty(identifierProperty.stringValue) || string.IsNullOrEmpty(nameProperty.stringValue) ||
+            iconProperty.objectReferenceValue == null || coinsProperty.intValue <= 0 || manaProperty.intValue <= 0 ||
+            cooldownProperty.floatValue <= 0 || (SpellCategory)categoryProperty.enumValueIndex == SpellCategory.Invalid) {
+            EditorGUILayout.HelpBox("Please make sure all fields have valid values.", MessageType.Error);
+        }
     }
 
     private void DisplayTargetProperties() {
@@ -34,18 +49,27 @@ public class SpellEditor : Editor {
         SerializedProperty targetTypeProperty = serializedObject.FindProperty("targetType");
         EditorGUILayout.PropertyField(targetTypeProperty);
         // Target tag (only if target type is object)
+        SerializedProperty tagProperty = serializedObject.FindProperty("spellTargetTag");
         SpellTargetType targetType = (SpellTargetType)targetTypeProperty.enumValueIndex;
         if (targetType == SpellTargetType.Object) {
-            SerializedProperty tagProperty = serializedObject.FindProperty("spellTargetTag");
             tagProperty.stringValue = EditorGUILayout.TagField(new GUIContent("Target object tag", tagProperty.tooltip), tagProperty.stringValue);
             serializedObject.ApplyModifiedProperties();
         }
         //EditorGUILayout.LabelField(serializedObject.FindProperty("<SpellTargetTag>k__BackingField").stringValue); // for debug
+        
+        // Display errors/warning if some of the properties are invalid
+        if (targetType == SpellTargetType.Invalid || (targetType == SpellTargetType.Object && string.IsNullOrEmpty(tagProperty.stringValue))) {
+            EditorGUILayout.HelpBox("Please make sure all fields have valid values.", MessageType.Error);
+        }
     }
 
     private void DisplaySpellEffectProperties() {
         EditorGUILayout.LabelField("Spell effect", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("effectControllerPrefab"));
+        SerializedProperty effectControllerProperty = serializedObject.FindProperty("effectControllerPrefab");
+        EditorGUILayout.PropertyField(effectControllerProperty);
+        if (effectControllerProperty.objectReferenceValue == null) {
+            EditorGUILayout.HelpBox("A SpellEffectController component must be assigned to the 'Effect Controller Prefab' field.", MessageType.Error);
+        }
     }
 
 }
