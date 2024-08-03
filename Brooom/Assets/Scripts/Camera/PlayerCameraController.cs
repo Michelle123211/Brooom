@@ -22,7 +22,7 @@ public class PlayerCameraController : MonoBehaviour {
 
     [Header("Views")]
     [Tooltip("A virtual camera looking back behind the player.")]
-    CinemachineVirtualCamera backVirtualCamera;
+    public CinemachineVirtualCamera backVirtualCamera;
     [Tooltip("Whether it is possible to switch between different views (except the back view which is always enabled).")]
     public bool enableViewSwitch = false;
     [Tooltip("A list of virtual cameras to switch between (in the exact order, index 0 is the default one).")]
@@ -40,18 +40,20 @@ public class PlayerCameraController : MonoBehaviour {
     // Current camera view
     private CinemachineVirtualCamera currentCamera;
     private int currentCameraIndex = 0;
+    private bool isBackViewOn = false;
 
     // Resets rotations of all cameras available
-    public void ResetCameras() {
+    public void ResetCameras(bool rotationOnly = false) {
         // Reset rotation
         rotationX = 0f;
         rotationY = 0f;
         foreach (var camera in virtualCameras) {
             camera.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         }
-        if (backVirtualCamera != null) backVirtualCamera.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        // Back view camera (backVirtualCamera) cannot be rotated so no reset is needed
         // Reset zoom
-        ZoomIn(false);
+        if (!rotationOnly)
+            ZoomIn(false);
     }
 
     // Changes the camera's FOV to zoom in/out
@@ -70,6 +72,33 @@ public class PlayerCameraController : MonoBehaviour {
         }
     }
 
+    private void SwitchCameraIfNecessary() {
+        // Handle switching the view
+        if (GamePause.pauseState != GamePauseState.Running) return;
+        if (enableViewSwitch && InputManager.Instance.GetBoolValue("View")) {
+            int previousCameraIndex = currentCameraIndex;
+            currentCameraIndex++;
+            if (currentCameraIndex == virtualCameras.Count)
+                currentCameraIndex = 0;
+            currentCamera = virtualCameras[currentCameraIndex];
+            virtualCameras[currentCameraIndex].gameObject.SetActive(true);
+            virtualCameras[previousCameraIndex].gameObject.SetActive(false);
+        }
+        // Handle switching to the back view
+        if (InputManager.Instance.GetBoolValue("BackView")) {
+            if (isBackViewOn) { // switch to a front camera
+                currentCamera = virtualCameras[currentCameraIndex];
+                virtualCameras[currentCameraIndex].gameObject.SetActive(true);
+                backVirtualCamera.gameObject.SetActive(false);
+            } else { // switch to a back camera and reset the front one
+                currentCamera = backVirtualCamera;
+                backVirtualCamera.gameObject.SetActive(true);
+                virtualCameras[currentCameraIndex].gameObject.SetActive(false);
+                ResetCameras(true);
+            }
+            isBackViewOn = !isBackViewOn;
+        }
+    }
 
     // Start is called before the first frame update
     void Start() {
@@ -95,18 +124,10 @@ public class PlayerCameraController : MonoBehaviour {
 
     void LateUpdate()
     {
-        // Handle switching the view
-        if (enableViewSwitch) {
-			if (GamePause.pauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("View")) {
-				int previousCameraIndex = currentCameraIndex;
-				currentCameraIndex++;
-				if (currentCameraIndex == virtualCameras.Count)
-					currentCameraIndex = 0;
-				currentCamera = virtualCameras[currentCameraIndex];
-				virtualCameras[currentCameraIndex].gameObject.SetActive(true);
-				virtualCameras[previousCameraIndex].gameObject.SetActive(false);
-			}
-		}
+        SwitchCameraIfNecessary();
+
+        // Back view camera cannot be rotated
+        if (isBackViewOn) return;
 
         // Gradually increase the sensitivity over the first "sensitivityEaseInDuration" seconds
         //  - at first the camera is following the mouse very slowly so it prevents quick jump at the beginning

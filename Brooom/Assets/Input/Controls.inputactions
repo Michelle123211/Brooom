@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "BackView",
+                    "type": "Button",
+                    "id": "79bc1ecb-48aa-45af-8fd6-061feb6b712a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "CastSpell",
                     "type": "Button",
                     "id": "367e4e03-7bac-4686-bbf3-20a6d6128ec8",
@@ -272,6 +281,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a1ef2960-e4c3-4296-925a-a660fdb7c8ac",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "BackView",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
