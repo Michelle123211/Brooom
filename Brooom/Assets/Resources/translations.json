@@ -490,6 +490,56 @@
     "Czech": "Dobití"
   },
   {
+    "Key": "SpellTargetInvalid",
+    "English": "Invalid",
+    "Czech": "Neplatný"
+  },
+  {
+    "Key": "SpellTargetSelf",
+    "English": "Self",
+    "Czech": "Sám hráč"
+  },
+  {
+    "Key": "SpellTargetOpponent",
+    "English": "Opponent",
+    "Czech": "Soupeř"
+  },
+  {
+    "Key": "SpellTargetDirection",
+    "English": "Direction",
+    "Czech": "Směr"
+  },
+  {
+    "Key": "SpellTargetObject",
+    "English": "Object",
+    "Czech": "Objekt"
+  },
+  {
+    "Key": "SpellCategoryInvalid",
+    "English": "Invalid",
+    "Czech": "Neplatná"
+  },
+  {
+    "Key": "SpellCategorySelfCast",
+    "English": "Self-enchantment",
+    "Czech": "Okouzlení sebe sama"
+  },
+  {
+    "Key": "SpellCategoryOpponentCurse",
+    "English": "Opponent curse",
+    "Czech": "Prokletí soupeře"
+  },
+  {
+    "Key": "SpellCategoryEnvironmentManipulation",
+    "English": "Environment manipulation",
+    "Czech": "Manipulace s prostředím"
+  },
+  {
+    "Key": "SpellCategoryObjectApparition",
+    "English": "Object apparition",
+    "Czech": "Přičarování objektu"
+  },
+  {
     "Key": "ResultsLabelTitle",
     "English": "RACE COMPLETE!",
     "Czech": "ZÁVOD DOKONČEN!"
@@ -807,11 +857,6 @@
   {},
   {},
   {
-    "Key": "SpellTestName",
-    "English": "Spell name",
-    "Czech": "Název kouzla"
-  },
-  {
     "Key": "SpellTestDescription",
     "English": "This is description of what the spell ~~does~~.",
     "Czech": "Toto je popis toho, co kouzlo ~~dělá~~."
@@ -820,5 +865,125 @@
     "Key": "SpellTestTarget",
     "English": "Self, opponents, hoops.",
     "Czech": "Samotný hráč, soupeři, obruče."
+  },
+  {
+    "Key": "SpellVeloxDescription",
+    "English": "The spell temporarily increases the player's speed, similarly to speed bonus.",
+    "Czech": "Kouzlo hráče dočasně zrychlí, podobně jako po sebrání zrychlujícího bonusu."
+  },
+  {
+    "Key": "SpellVeloxTarget",
+    "English": "Self",
+    "Czech": "Samotný hráč"
+  },
+  {
+    "Key": "SpellTranslatioDescription",
+    "English": "The spell moves the player a bit further in the direction it was casted in.",
+    "Czech": "Kouzlo hráče přemístí kus ve směru seslání."
+  },
+  {
+    "Key": "SpellTranslatioTarget",
+    "English": "Position/direction",
+    "Czech": "Pozice/směr"
+  },
+  {
+    "Key": "SpellRelaxatioDescription",
+    "English": "The spell immediately removes any negative effect affecting the player.",
+    "Czech": "Kouzlo ihned odstraní veškeré negativní efekty působící na hráče."
+  },
+  {
+    "Key": "SpellRelaxatioTarget",
+    "English": "Self",
+    "Czech": "Samotný hráč"
+  },
+  {
+    "Key": "SpellCongelatioDescription",
+    "English": "The spell temporarily freezes the opponent in place.",
+    "Czech": "Kouzlo na krátkou dobu zmrazí soupeře na místě."
+  },
+  {
+    "Key": "SpellCongelatioTarget",
+    "English": "Opponent",
+    "Czech": "Soupeř"
+  },
+  {
+    "Key": "SpellConfusioneDescription",
+    "English": "The spell temporarily confuses the opponent who then cannot control the broom.",
+    "Czech": "Kouzlo na krátkou dobu omráčí soupeře, který tak nebude moct vůbec ovládat koště."
+  },
+  {
+    "Key": "SpellConfusioneTarget",
+    "English": "Opponent",
+    "Czech": "Soupeř"
+  },
+  {
+    "Key": "SpellPermutandoDescription",
+    "English": "Using the spell, the player switches places with the chosen opponent.",
+    "Czech": "Po použití kouzla si hráč okamžitě prohodí místo se zvoleným soupeřem."
+  },
+  {
+    "Key": "SpellPermutandoTarget",
+    "English": "Opponent",
+    "Czech": "Soupeř"
+  },
+  {
+    "Key": "SpellFlanteDescription",
+    "English": "The spell blows the opponent away in the direction it was casted in.",
+    "Czech": "Kouzlo odvane soupeře kus ve směru seslání."
+  },
+  {
+    "Key": "SpellFlanteTarget",
+    "English": "Opponent + direction",
+    "Czech": "Soupeř + směr"
+  },
+  {
+    "Key": "SpellAttractioDescription",
+    "English": "The spell pulls the bonus right to the player.",
+    "Czech": "Kouzlo přitáhne bonus přímo k hráči."
+  },
+  {
+    "Key": "SpellAttractioTarget",
+    "English": "Bonus",
+    "Czech": "Bonus"
+  },
+  {
+    "Key": "SpellMovereCirculisDescription",
+    "English": "The spell permanently moves the hoop to a position in front of the player.",
+    "Czech": "Kouzlo natrvalo přesune obruč na místo kus před hráčem."
+  },
+  {
+    "Key": "SpellMovereCirculisTarget",
+    "English": "Hoop (not a checkpoint)",
+    "Czech": "Obruč (ne kontrolní bod)"
+  },
+  {
+    "Key": "SpellMateriaMuriDescription",
+    "English": "The spell materializes a wall in the direction it was casted in.",
+    "Czech": "Kouzlo vyčaruje zeď na místo ve směru seslání."
+  },
+  {
+    "Key": "SpellMateriaMuriTarget",
+    "English": "Position/direction",
+    "Czech": "Pozice/směr"
+  },
+  {
+    "Key": "SpellTemereCommodumDescription",
+    "English": "The spell materializes a random bonus in the direction it was casted in.",
+    "Czech": "Kouzlo vyčaruje náhodný bonus ve směru seslání."
+  },
+  {
+    "Key": "SpellTemereCommodumTarget",
+    "English": "Position/direction",
+    "Czech": "Pozice/směr"
+  },
+  {
+    "Key": "SpellNubesMalignaDescription",
+    "English": "The spell materializes a colored cloud with negative effect in the direction it was casted in.",
+    "Czech": "Kouzlo vyčaruje ve směru seslání barevný oblak s negativními účinky."
+  },
+  {
+    "Key": "SpellNubesMalignaTarget",
+    "English": "Position/direction",
+    "Czech": "Pozice/směr"
   }
 ]
