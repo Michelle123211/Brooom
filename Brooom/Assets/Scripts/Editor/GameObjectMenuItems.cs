@@ -23,18 +23,22 @@ public class GameObjectMenuItems : MonoBehaviour {
 	// Adds a menu item to create a spell prefab containing a few basic components
 	[MenuItem("Assets/Create/Spell System/Spell", priority = 10)]
 	public static void CreateSpellPrefab(MenuCommand menuCommand) {
-		int i = Resources.FindObjectsOfTypeAll<Spell>().Length;
-		string assetPath = $"Assets/Resources/Spells/SpellPrefab{i+1}.prefab";
-		// Create game objects
-		GameObject spell = new GameObject("Spell");
-		GameObject spellEffect = new GameObject("SpellEffect");
-		spellEffect.transform.parent = spell.transform;
-		// Add components and connect them
-		Spell spellComponent = spell.AddComponent<Spell>();
-		SpellEffectController spellEffectController = spellEffect.AddComponent<SpellEffectController>();
-		spellComponent.InitializeSpellEffectController(spellEffectController);
-		// Save the prefab and remove the original template
-		PrefabUtility.SaveAsPrefabAsset(spell, assetPath);
-		DestroyImmediate(spell);
+		// Get an asset name
+		string name = AssetNameDialogEditor.ShowDialog();
+		if (string.IsNullOrEmpty(name)) // Asset name dialog was cancelled
+			return;
+		// Get the original spell prefab
+		string prefabPath = "Assets/Prefabs/Spells/SpellPrefab.prefab";
+		GameObject originalPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+		if (originalPrefab == null) Debug.Log("Prefab is null.");
+		// Create an instance and save it as a prefab variant
+		GameObject prefabInstance = PrefabUtility.InstantiatePrefab(originalPrefab) as GameObject;
+		if (prefabInstance == null) Debug.Log("Prefab instance is null.");
+		string assetPath = $"Assets/Resources/Spells/{name}.prefab";
+		GameObject prefabVariant = PrefabUtility.SaveAsPrefabAsset(prefabInstance, assetPath);
+		// Remove the original template
+		DestroyImmediate(prefabInstance);
+		// Open the newly created asset in the Project window
+		ProjectWindowUtil.ShowCreatedAsset(prefabVariant);
 	}
 }
