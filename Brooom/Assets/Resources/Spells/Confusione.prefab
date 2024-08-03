@@ -62,11 +62,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3038390880512021731, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: actualSpellEffect
+      value: 
+      objectReference: {fileID: 2226856083289056264}
     - target: {fileID: 5902524730656025028, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: m_Name
       value: Confusione
       objectReference: {fileID: 0}
+    - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 21300000, guid: c7f381483fb41f14e935b2d6d9fec62f,
+        type: 3}
     - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: category
@@ -104,3 +115,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37a7184ac9c9925488a0a7e3237d7faf, type: 3}
+--- !u!1 &618589282758713574 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1962015856555265724, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1418581837837200986}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2226856083289056264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618589282758713574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a46c4e8632b824183d22bcd2d67b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDuration: 4
+  spellInfluenceVisualEffectPrefab: {fileID: 0}
+  isPositive: 0

@@ -112,15 +112,15 @@ public abstract class RacerAffectingSpellEffect : ReversibleSpellEffect {
         if (spellTarget.target == null || targetRacer == null)
             throw new System.NotSupportedException($"{nameof(RacerAffectingSpellEffect)} and derived classes may be used only for spells casted at other racers.");
         // Add the spell among effects affecting the target racer (+ add the visual effect)
+        CharacterEffect characterEffect = new CharacterEffect(spell.Icon, effectDuration, isPositive);
+        characterEffect.onEffectStart += StartSpellEffect_Internal;
+        characterEffect.onEffectEnd += StopSpellEffect_Internal;
         targetRacer.AddEffect(new CharacterEffect(spell.Icon, effectDuration, isPositive), spellInfluenceVisualEffectPrefab);
-        // Start the actual effect
-        StartSpellEffect_Internal();
 	}
 
 	protected override void EndSpellEffect() {
         // Removing the effect from the character effects is handled automatically
-        // Just stop the actual effect
-        StopSpellEffect_Internal();
+        // The actual effect is stopped at the same time as well
 	}
 
     protected abstract void StartSpellEffect_Internal();

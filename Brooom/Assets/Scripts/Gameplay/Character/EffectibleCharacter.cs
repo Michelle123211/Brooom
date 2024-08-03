@@ -38,6 +38,15 @@ public class EffectibleCharacter : MonoBehaviour
         }
     }
 
+    public void ResetAllNegativeEffects() {
+        for (int i = effects.Count - 1; i >= 0; i--) {
+            if (!effects[i].IsPositive) {
+                effects[i].onEffectEnd?.Invoke(); // reverse the effects if any
+                effects.RemoveAt(i);
+            }
+        }
+    }
+
 
     private void Update() {
         // Update effects

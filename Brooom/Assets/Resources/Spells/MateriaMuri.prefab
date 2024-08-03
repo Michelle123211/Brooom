@@ -62,11 +62,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3038390880512021731, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: actualSpellEffect
+      value: 
+      objectReference: {fileID: 8887117165154335237}
     - target: {fileID: 5902524730656025028, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: m_Name
       value: MateriaMuri
       objectReference: {fileID: 0}
+    - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 04f2711270cd5b64099d2ca2f99529de,
+        type: 3}
     - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: category
@@ -104,3 +115,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37a7184ac9c9925488a0a7e3237d7faf, type: 3}
+--- !u!1 &3577619505535189504 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1962015856555265724, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+    type: 3}
+  m_PrefabInstance: {fileID: 3070393893612031164}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8887117165154335237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3577619505535189504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 589a568f9fcc6c645912b6acdab4daa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

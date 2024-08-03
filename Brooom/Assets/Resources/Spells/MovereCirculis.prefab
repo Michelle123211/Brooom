@@ -62,11 +62,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3038390880512021731, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: actualSpellEffect
+      value: 
+      objectReference: {fileID: 7964433584751478661}
     - target: {fileID: 5902524730656025028, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: m_Name
       value: MovereCirculis
       objectReference: {fileID: 0}
+    - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 428de70370df69d45bd4c0025b7ba36e,
+        type: 3}
     - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: category
@@ -109,3 +120,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37a7184ac9c9925488a0a7e3237d7faf, type: 3}
+--- !u!1 &5682436083204079812 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1962015856555265724, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+    type: 3}
+  m_PrefabInstance: {fileID: 6189751855108902520}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7964433584751478661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5682436083204079812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba1790fa8299d94e982a12c902d4dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDuration: 4

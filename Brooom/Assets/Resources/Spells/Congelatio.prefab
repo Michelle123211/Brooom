@@ -62,11 +62,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3038390880512021731, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: actualSpellEffect
+      value: 
+      objectReference: {fileID: 7778553714474197462}
     - target: {fileID: 5902524730656025028, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: m_Name
       value: Congelatio
       objectReference: {fileID: 0}
+    - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 2da2d15ce082e12448ac493c55a33f0f,
+        type: 3}
     - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: category
@@ -90,7 +101,7 @@ PrefabInstance:
     - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: spellName
-      value: Congelation
+      value: Congelatio
       objectReference: {fileID: 0}
     - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
@@ -104,3 +115,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37a7184ac9c9925488a0a7e3237d7faf, type: 3}
+--- !u!1 &9066756501388835076 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1962015856555265724, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+    type: 3}
+  m_PrefabInstance: {fileID: 7415717774902147000}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7778553714474197462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9066756501388835076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b5a9bf5932009a4fad96fd563d9729a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectDuration: 4
+  spellInfluenceVisualEffectPrefab: {fileID: 0}
+  isPositive: 0

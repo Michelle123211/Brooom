@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Spell for speeding up temporarily
 public class VeloxSpellEffect : RacerAffectingSpellEffect {
 
 	[Tooltip("How much speed is added on top of the normal speed.")]
