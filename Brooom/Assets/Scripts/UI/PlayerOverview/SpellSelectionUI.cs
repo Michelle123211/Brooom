@@ -37,6 +37,12 @@ public class SpellSelectionUI : MonoBehaviour {
 		// Add an empty slot (Initialize with null) so that it can be chosen as well
 		SpellSelectionSlotUI slot = Instantiate<SpellSelectionSlotUI>(spellSelectionSlotPrefab, spellSelectionParent);
 		slot.Initialize(null, this);
-		// TODO: Fill the grid with all unlocked spells
+		// TODO: Fill the grid with all unlocked spells - check that the following is working
+		foreach (var spell in SpellManager.Instance.AllSpells) {
+			if (PlayerState.Instance.IsSpellPurchased(spell.Identifier)) {
+				SpellSelectionSlotUI spellSlot = Instantiate<SpellSelectionSlotUI>(spellSelectionSlotPrefab, spellSelectionParent);
+				spellSlot.Initialize(spell, this);
+			}
+		}
 	}
 }

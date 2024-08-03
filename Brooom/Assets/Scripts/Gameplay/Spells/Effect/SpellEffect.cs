@@ -30,7 +30,7 @@ public abstract class OneShotSpellEffect : SpellEffect {
 public abstract class DurativeSpellEffect : SpellEffect {
 
     [Tooltip("Duration for which the spell takes effect in seconds.")]
-    [SerializeField] protected float effectDuration = 0;
+    [SerializeField] protected float effectDuration = 4;
 
     private float currentTime = -1;
 
@@ -72,7 +72,7 @@ public abstract class DurativeSpellEffect : SpellEffect {
 public abstract class ReversibleSpellEffect : SpellEffect {
 
     [Tooltip("Duration for which the spell takes effect in seconds.")]
-    [SerializeField] protected float effectDuration = 0;
+    [SerializeField] protected float effectDuration = 4;
 
     private bool isComplete = false;
 

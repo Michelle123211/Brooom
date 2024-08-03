@@ -39,7 +39,7 @@ public class SpellController : MonoBehaviour {
 		if (selectedSpell != -1) {
 			SpellInRace currentSpell = spellSlots[selectedSpell];
 			if (currentSpell.Charge >= 1 && currentMana >= currentSpell.Spell.ManaCost) {
-				currentSpell.CastSpell(new SpellTarget { source = gameObject }); // TODO: Pass correct parameters (target + position)
+				currentSpell.CastSpell(new SpellTarget { source = gameObject, target = gameObject }); // TODO: Pass correct parameters (target + position)
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
 				onSpellCasted?.Invoke(selectedSpell);

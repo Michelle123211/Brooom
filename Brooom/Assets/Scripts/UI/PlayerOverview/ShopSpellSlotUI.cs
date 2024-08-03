@@ -30,19 +30,19 @@ public class ShopSpellSlotUI : MonoBehaviour
         if (!PlayerState.Instance.ChangeCoinsAmount(-assignedSpell.CoinsCost)) return;
         PlayerState.Instance.UnlockSpell(assignedSpell.Identifier);
         // Update the UI
-        ChangeToUnlockedd();
+        ChangeToUnlocked();
         // TODO: If it is the first purchased spell, start a tutorial
     }
 
 	public void UpdateUI() {
-        if (PlayerState.Instance.spellAvailability.TryGetValue(assignedSpell.Identifier, out bool unlocked) && unlocked) {
-            ChangeToUnlockedd();
+        if (PlayerState.Instance.IsSpellPurchased(assignedSpell.Identifier)) { 
+            ChangeToUnlocked();
         } else {
             ChangeToLocked();
         }
     }
 
-	private void ChangeToUnlockedd() {
+	private void ChangeToUnlocked() {
         // Hide price + overlay
         priceParent.SetActive(false);
         unavailableOverlay.SetActive(false);

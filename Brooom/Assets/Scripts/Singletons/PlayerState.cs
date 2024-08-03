@@ -93,9 +93,12 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         SaveSystem.SaveEquippedSpells(this.equippedSpells);
     }
 
+    public bool IsSpellPurchased(string spellIdentifier) {
+        return (spellAvailability.TryGetValue(spellIdentifier, out bool isPurchased) && isPurchased);
+    }
+
     public void UnlockSpell(string spellIdentifier) {
-        bool isKnown = spellAvailability.ContainsKey(spellIdentifier);
-        if (!isKnown || (isKnown && !spellAvailability[spellIdentifier]))
+        if (!IsSpellPurchased(spellIdentifier))
             availableSpellCount++;
         spellAvailability[spellIdentifier] = true;
         // Check if all spells are purchased
@@ -255,7 +258,13 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     private void LoadFromSavedSpells(SpellsSaveData spells) {
         if (spells != null) { 
             if (spells.EquippedSpells != null) this.equippedSpells = spells.EquippedSpells;
-            if (spells.SpellsAvailability != null) this.spellAvailability = spells.SpellsAvailability;
+            availableSpellCount = 0;
+            if (spells.SpellsAvailability != null) { 
+                this.spellAvailability = spells.SpellsAvailability;
+                foreach (var isSpellAvailable in this.spellAvailability.Values) {
+                    if (isSpellAvailable) availableSpellCount++;
+                }
+            }
             if (spells.SpellsUsage != null) this.spellCast = spells.SpellsUsage;
         }
     }
