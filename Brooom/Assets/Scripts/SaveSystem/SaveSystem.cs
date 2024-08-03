@@ -282,6 +282,25 @@ public class SaveSystem
         // Return only the equipped spells
         return spellsData.EquippedSpells;
     }
+
+    public static void SaveCastedSpells(Dictionary<string, bool> spellsUsage) {
+        // Load everything
+        SpellsSaveData spellsData = LoadSpells();
+        if (spellsData == null) spellsData = new SpellsSaveData(); // if there is no save file, use default values
+        // Override only the casted spells
+        spellsData.SpellsUsage = spellsUsage;
+        // Save it back
+        SaveSpells(spellsData);
+    }
+
+    public static Dictionary<string, bool> LoadCastedSpells() {
+        // Load everything
+        SpellsSaveData spellsData = LoadSpells();
+        // If there is no saved state, return null
+        if (spellsData == null) return null;
+        // Return only the casted spells
+        return spellsData.SpellsUsage;
+    }
     #endregion
 
     #region Achievements

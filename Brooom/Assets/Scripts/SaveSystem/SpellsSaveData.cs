@@ -4,6 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class SpellsSaveData {
+
 	#region Purchased spells
 	// Spells availability stored in array (which is serializable by JsonUtility as opposed to Dictionary)
 	public string[] spellsAvailabilityArray = null; // each string contains spell identifier and availability separated by |
@@ -62,8 +63,7 @@ public class SpellsSaveData {
         int i = 0;
         foreach (var spell in equippedSpellsIdentifiers) {
             if (spell == "empty") equippedSpells[i] = null;
-            // TODO: Get Spell instance given by the identifier from a Dictionary somewhere
-            else equippedSpells[i] = new Spell();
+            else equippedSpells[i] = SpellManager.Instance.GetSpellFromIdentifier(spell);
             i++;
         }
         return equippedSpells;

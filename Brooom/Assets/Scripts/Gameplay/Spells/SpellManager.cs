@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class SpellManager : MonoBehaviourSingleton<SpellManager>, ISingleton {
 
-	Dictionary<string, Spell> spells; // spell identifier => spell instance
+	public List<Spell> AllSpells { get; private set; }
+	Dictionary<string, Spell> spellsDictionary; // spell identifier => spell instance
 
 	public Spell GetSpellFromIdentifier(string identifier) {
-		if (!spells.TryGetValue(identifier, out Spell spell))
+		if (!spellsDictionary.TryGetValue(identifier, out Spell spell))
 			return null;
 		else
 			return spell;
@@ -15,15 +16,17 @@ public class SpellManager : MonoBehaviourSingleton<SpellManager>, ISingleton {
 
 	#region Singleton initialization
 	public void AwakeSingleton() {
-	}
-
-	public void InitializeSingleton() {
-		spells = new Dictionary<string, Spell>();
+		AllSpells = new List<Spell>();
+		spellsDictionary = new Dictionary<string, Spell>();
 		// Load all spells
 		Spell[] spellsLoaded = Resources.LoadAll<Spell>("Spells/");
 		foreach (var spell in spellsLoaded) {
-			spells.Add(spell.Identifier, spell);
+			AllSpells.Add(spell);
+			spellsDictionary.Add(spell.Identifier, spell);
 		}
+	}
+
+	public void InitializeSingleton() {
 	}
 
 	// Persistent singleton

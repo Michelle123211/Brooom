@@ -111,6 +111,16 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         // Notify anyone interested that all the spells have been purchased
         if (allUnlocked) Messaging.SendMessage("AllSpellsPurchased");
     }
+
+    public void MarkSpellAsUsed(string spellIdentifier) {
+        bool isKnown = spellCast.ContainsKey(spellIdentifier);
+        if (!isKnown || (isKnown && !spellCast[spellIdentifier])) {
+            spellCast[spellIdentifier] = true;
+            // Save value into a file
+            SaveSystem.SaveCastedSpells(spellCast);
+            Debug.Log($"Spell {spellIdentifier} used for the first time.");
+        }
+    }
     #endregion
 
     #region Broom Upgrades
@@ -265,8 +275,12 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         coins = 0;
         // ...spells
         equippedSpells = new Spell[4];
-        spellAvailability = new Dictionary<string, bool>(); // TODO: Initialize all spells to false
-        spellCast = new Dictionary<string, bool>(); // TODO: Initialize all spells to false
+        spellAvailability = new Dictionary<string, bool>();
+        spellCast = new Dictionary<string, bool>();
+        foreach (var spell in SpellManager.Instance.AllSpells) { // Initialize all spells to false
+            spellAvailability[spell.Identifier] = false;
+            spellCast[spell.Identifier] = false;
+        }
         // ...broom upgrades
         maxAltitude = 15f;
         broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>();

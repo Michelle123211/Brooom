@@ -43,7 +43,10 @@ public class SpellController : MonoBehaviour {
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
 				onSpellCasted?.Invoke(selectedSpell);
-				if (isPlayer) Messaging.SendMessage("SpellCasted");
+				if (isPlayer) {
+					Messaging.SendMessage("SpellCasted", currentSpell.Spell.Identifier);
+					PlayerState.Instance.MarkSpellAsUsed(currentSpell.Spell.Identifier);
+				}
 			}
 		}
 	}

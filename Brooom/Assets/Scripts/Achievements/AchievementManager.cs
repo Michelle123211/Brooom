@@ -287,7 +287,7 @@ class SpellsData : AchievementData {
 		}
 	}
 
-	private void OnSpellCasted() {
+	private void OnSpellCasted(string spellIdentifier) {
 		spellsCasted++;
 		SaveData();
 	}
