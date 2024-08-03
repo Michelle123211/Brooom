@@ -87,11 +87,7 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 			data.UnregisterCallbacks();
 	}
 
-	// Persistent singleton
-	protected override void SetSingletonOptions() {
-		Options = (int)SingletonOptions.CreateNewGameObject | (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances;
-	}
-
+	#region Singleton initialization
 	public void AwakeSingleton() {
 	}
 
@@ -102,6 +98,12 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 		// Load all achievements
 		LoadAchievementsProgress();
 	}
+
+	// Persistent singleton
+	protected override void SetSingletonOptions() {
+		Options = (int)SingletonOptions.CreateNewGameObject | (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances;
+	}
+	#endregion
 }
 
 // Enum for different types of recorded values (with default empty option)
