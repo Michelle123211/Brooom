@@ -21,7 +21,6 @@ public class ParticlesSelfDestructiveVisualEffect : SelfDestructiveVisualEffect 
 
 	protected override void StopPlayingBeforeDestruction_Internal() {
 		particles.Stop();
-		Debug.Log($"{nameof(StopPlayingBeforeDestruction_Internal)} is called");
 	}
 
 	protected override bool UpdatePlaying_Internal(float deltaTime) {
