@@ -115,7 +115,7 @@ public abstract class RacerAffectingSpellEffect : ReversibleSpellEffect {
         CharacterEffect characterEffect = new CharacterEffect(spell.Icon, effectDuration, isPositive);
         characterEffect.onEffectStart += StartSpellEffect_Internal;
         characterEffect.onEffectEnd += StopSpellEffect_Internal;
-        targetRacer.AddEffect(new CharacterEffect(spell.Icon, effectDuration, isPositive), spellInfluenceVisualEffectPrefab);
+        targetRacer.AddEffect(characterEffect, spellInfluenceVisualEffectPrefab);
 	}
 
 	protected override void EndSpellEffect() {

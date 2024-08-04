@@ -90,7 +90,7 @@ public class CharacterEffect {
         this.visualEffect = visualEffect;
         // Register callbacks for starting/stopping the visual effect
         onEffectStart += StartPlayingVisualEffect;
-        onEffectEnd -= StopPlayingVisualEffect;
+        onEffectEnd += StopPlayingVisualEffect;
     }
 
     // Equality override based solely on icon
