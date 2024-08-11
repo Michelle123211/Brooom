@@ -25,10 +25,14 @@ public class SpellEffectController : MonoBehaviour {
     private Spell spell;
     private SpellTarget spellTarget;
 
+    // A parent of all visual effects affecting the racer who casted the spell
+    private Transform characterVisualEffectsParent = null;
+
 
     public void InvokeSpellEffect(Spell spell, SpellTarget spellTarget) {
         this.spell = spell;
         this.spellTarget = spellTarget;
+        this.characterVisualEffectsParent = spellTarget.source.transform.Find("VisualEffects");
         // Based on the spell target handle the visual effect of casting the spell (if it is not null)
         if (spell.TargetType != SpellTargetType.Self && spellTrajectoryVisualEffect != null) {
             currentState = SpellCastState.CAST;
@@ -56,12 +60,28 @@ public class SpellEffectController : MonoBehaviour {
         }
         // Handle the actual functional spell effect
         if (currentState == SpellCastState.EFFECT) {
-            if (actualSpellEffect.IsComplete()) {
+            if (IsSpellFinished()) {
                 currentState = SpellCastState.FINISHED;
                 // Schedule destroying this spell instance
                 Destroy(gameObject, 1f);
             }
         }
 	}
+
+	private void LateUpdate() {
+        // Update position to follow the target if the target is self
+        if (currentState == SpellCastState.EFFECT && spell.TargetType == SpellTargetType.Self) {
+            transform.position = characterVisualEffectsParent.position;
+        }
+	}
+
+	private bool IsSpellFinished() {
+        // The actual spell effect must finish
+        if (!actualSpellEffect.IsComplete()) return false;
+        // All visual effects must stop playing
+        if (spellTrajectoryVisualEffect != null && spellTrajectoryVisualEffect.IsPlaying) return false;
+        if (targetHitVisualEffect != null && targetHitVisualEffect.IsPlaying) return false;
+        return true;
+    }
 
 }

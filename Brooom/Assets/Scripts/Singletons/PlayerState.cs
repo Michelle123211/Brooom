@@ -121,7 +121,6 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             spellCast[spellIdentifier] = true;
             // Save value into a file
             SaveSystem.SaveCastedSpells(spellCast);
-            Debug.Log($"Spell {spellIdentifier} used for the first time.");
         }
     }
     #endregion
