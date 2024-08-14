@@ -17,10 +17,13 @@ public class ObjectGrowingVisualEffect : CustomVisualEffect {
 
 	float currentTimeNormalized;
 
+	MeshRenderer objectMeshRenderer;
+
 	protected override void StartPlaying_Internal() {
 		currentTimeNormalized = 0;
 		objectToGrow.localScale = initialScale;
 		objectToGrow.gameObject.SetActive(true);
+		objectMeshRenderer = objectToGrow.GetComponent<MeshRenderer>();
 	}
 
 	protected override void StopPlaying_Internal() {
@@ -34,7 +37,8 @@ public class ObjectGrowingVisualEffect : CustomVisualEffect {
 		currentTimeNormalized = Mathf.Clamp(currentTimeNormalized, 0f, 1f);
 		// Update effect
 		objectToGrow.localScale = initialScale + tweeningCurve.Evaluate(currentTimeNormalized) * (targetScale - initialScale); // set scale
-		// TODO: pass normalized time to shader to affect it if needed
+		// TODO: Move to a better place so it is not dependent on a specific shader
+		objectMeshRenderer.material.SetFloat("_CurrentTime", currentTimeNormalized); // pass normalized time to shader to affect it
 		return !shouldStop;
 	}
 }
