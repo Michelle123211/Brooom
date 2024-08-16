@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectGrowingVisualEffect : CustomVisualEffect {
+public class ObjectGrowingVisualEffect : DurativeVisualEffect {
 
 	[Tooltip("An object whose scale will be changed.")]
 	[SerializeField] Transform objectToGrow;
@@ -12,33 +12,18 @@ public class ObjectGrowingVisualEffect : CustomVisualEffect {
 	[SerializeField] Vector3 targetScale;
 	[Tooltip("A curve determining how to tween between the initial scale and the target scale over the duration. All values should be normalized between 0 and 1.")]
 	[SerializeField] AnimationCurve tweeningCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-	[Tooltip("How long it takes to reach the target scale.")]
-	[SerializeField] float duration;
 
-	float currentTimeNormalized;
-
-	MeshRenderer objectMeshRenderer;
-
-	protected override void StartPlaying_Internal() {
-		currentTimeNormalized = 0;
+	protected override void StartPlaying_AfterDurativeInit() {
 		objectToGrow.localScale = initialScale;
 		objectToGrow.gameObject.SetActive(true);
-		objectMeshRenderer = objectToGrow.GetComponent<MeshRenderer>();
 	}
 
-	protected override void StopPlaying_Internal() {
+	protected override void StopPlaying_AfterDurativeFinish() {
 		objectToGrow.gameObject.SetActive(false);
 	}
 
-	protected override bool UpdatePlaying_Internal(float deltaTime) {
-		// Update time
-		currentTimeNormalized += (deltaTime / duration);
-		bool shouldStop = currentTimeNormalized >= 1f;
-		currentTimeNormalized = Mathf.Clamp(currentTimeNormalized, 0f, 1f);
-		// Update effect
-		objectToGrow.localScale = initialScale + tweeningCurve.Evaluate(currentTimeNormalized) * (targetScale - initialScale); // set scale
-		// TODO: Move to a better place so it is not dependent on a specific shader
-		objectMeshRenderer.material.SetFloat("_CurrentTime", currentTimeNormalized); // pass normalized time to shader to affect it
-		return !shouldStop;
+	protected override void UpdatePlaying_WithNormalizedTime(float currentTimeNormalized) {
+		// Set scale
+		objectToGrow.localScale = initialScale + tweeningCurve.Evaluate(currentTimeNormalized) * (targetScale - initialScale);
 	}
 }
