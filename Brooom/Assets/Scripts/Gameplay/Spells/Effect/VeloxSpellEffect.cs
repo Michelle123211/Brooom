@@ -10,7 +10,7 @@ public class VeloxSpellEffect : RacerAffectingSpellEffect {
 	public float speedAdded = 5;
 
 	protected override void StartSpellEffect_Internal() {
-		CharacterMovementController targetRacer = spellTarget.target.GetComponent<CharacterMovementController>();
+		CharacterMovementController targetRacer = spellTarget.TargetObject.GetComponent<CharacterMovementController>();
 		if (targetRacer == null)
 			throw new System.NotSupportedException($"{nameof(VeloxSpellEffect)} may be used only on opponents with {nameof(CharacterMovementController)} component.");
 		targetRacer.SetBonusSpeed(speedAdded, effectDuration);

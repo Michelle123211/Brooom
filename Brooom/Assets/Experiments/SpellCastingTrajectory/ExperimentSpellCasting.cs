@@ -22,7 +22,7 @@ public class ExperimentSpellCasting : MonoBehaviour
             // Cast spell
             spellObject = Instantiate<ExperimentSpellCastEffect>(spellCastObjectPrefab);
             spellObject.transform.position = transform.position;
-            spellObject.InitializeStartAndTarget(new SpellTarget { source = gameObject, target = targetObject });
+            spellObject.InitializeStartAndTarget(new SpellTarget { SourceObject = gameObject, TargetObject = targetObject });
             spellObject.StartPlaying();
         }
     }

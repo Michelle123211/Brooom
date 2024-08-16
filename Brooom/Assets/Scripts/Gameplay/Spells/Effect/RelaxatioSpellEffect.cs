@@ -8,7 +8,7 @@ public class RelaxatioSpellEffect : OneShotSpellEffect {
 
 	protected override void ApplySpellEffect_Internal() {
 		// Reset all negative effects currently affecting the racer
-		EffectibleCharacter racer = spellTarget.source.GetComponent<EffectibleCharacter>();
+		EffectibleCharacter racer = spellTarget.SourceObject.GetComponent<EffectibleCharacter>();
 		if (racer == null)
 			throw new System.NotSupportedException($"{nameof(RelaxatioSpellEffect)} may be used only on racer with {nameof(EffectibleCharacter)} component.");
 		racer.ResetAllNegativeEffects();

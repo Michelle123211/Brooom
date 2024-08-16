@@ -23,11 +23,11 @@ public class ExperimentSpellCastEffect : CustomVisualEffect {
 
 
 	public void InitializeStartAndTarget(SpellTarget spellTarget) {
-		this.sourceObject = spellTarget.source;
-		if (spellTarget.target != null)
-			this.targetObject = spellTarget.target;
+		this.sourceObject = spellTarget.SourceObject;
+		if (spellTarget.TargetObject != null)
+			this.targetObject = spellTarget.TargetObject;
 		else
-			this.targetPosition = spellTarget.position;
+			this.targetPosition = spellTarget.TargetPosition;
 	}
 
 	protected override void StartPlaying_Internal() {

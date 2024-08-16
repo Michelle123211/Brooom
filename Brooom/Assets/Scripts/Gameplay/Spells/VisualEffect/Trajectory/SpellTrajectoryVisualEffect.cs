@@ -17,26 +17,22 @@ public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 	[SerializeField] private ParticleSystem spellCastParticles;
 	[Tooltip("A color used for the visual effect")]
 	[SerializeField] private Color spellCastColor = Color.white;
-	
-	private GameObject sourceObject;
-	private GameObject targetObject;
-	private Vector3 targetPosition;
+
+	private SpellTarget spellTarget;
+	private bool isInitialized = false;
 
 	private float currentTime = 0;
 
 
 	public void InitializeStartAndTarget(SpellTarget spellTarget) {
-		this.sourceObject = spellTarget.source;
-		if (spellTarget.target != null)
-			this.targetObject = spellTarget.target;
-		else
-			this.targetPosition = spellTarget.position;
+		this.spellTarget = spellTarget;
+		isInitialized = true;
 	}
 
 	protected override void StartPlaying_Internal() {
-		if (sourceObject == null)
+		if (!isInitialized)
 			throw new System.NotSupportedException("SpellTrajectoryVisualEffect must be initialized using the InitializeStartAndTarget method before playing.");
-		transform.position = sourceObject.transform.position;
+		transform.position = spellTarget.GetCastPoint();
 		currentTime = 0;
 		spellTrajectory.ResetTrajectory();
 		// TODO: Set color to every material (object with visual representation, trail, particles)
@@ -55,15 +51,15 @@ public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 			spellCastTrail.emitting = false;
 		if (spellCastParticles != null) // disable particles
 			spellCastParticles.Stop();
-		sourceObject = null;
-		targetObject = null;
+		isInitialized = false;
 	}
 
 	protected override bool UpdatePlaying_Internal(float deltaTime) {
 		// Update variables
-		if (targetObject != null) targetPosition = targetObject.transform.position;
+		Vector3 startPosition = spellTarget.GetCastPoint();
+		Vector3 targetPosition = spellTarget.GetTargetPoint();
 		currentTime += deltaTime;
-		float totalDistance = Vector3.Distance(sourceObject.transform.position, targetPosition);
+		float totalDistance = Vector3.Distance(startPosition, targetPosition);
 		float currentDistance = currentTime * spellSpeed;
 		// Check if complete
 		bool isComplete = false;
@@ -73,9 +69,9 @@ public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 		}
 		// Compute a world position out of the next trajectory point
 		SpellTrajectoryPoint trajectoryPoint = spellTrajectory.GetNextTrajectoryPoint(currentDistance);
-		Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, (targetPosition - sourceObject.transform.position));
+		Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, (targetPosition - startPosition));
 		Vector3 currentPosition = new Vector3(trajectoryPoint.offset.x, trajectoryPoint.offset.y, trajectoryPoint.distanceFromStart);
-		currentPosition = sourceObject.transform.position + (rotation * currentPosition);
+		currentPosition = startPosition + (rotation * currentPosition);
 		// Move the object to the given point
 		transform.position = currentPosition;
 		return !isComplete;

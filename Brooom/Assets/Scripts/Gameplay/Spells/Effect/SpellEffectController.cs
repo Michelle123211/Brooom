@@ -25,14 +25,10 @@ public class SpellEffectController : MonoBehaviour {
     private Spell spell;
     private SpellTarget spellTarget;
 
-    // A parent of all visual effects affecting the racer who casted the spell
-    private Transform characterVisualEffectsParent = null;
-
 
     public void InvokeSpellEffect(Spell spell, SpellTarget spellTarget) {
         this.spell = spell;
         this.spellTarget = spellTarget;
-        this.characterVisualEffectsParent = spellTarget.source.transform.Find("VisualEffects");
         // Based on the spell target handle the visual effect of casting the spell (if it is not null)
         if (spell.TargetType != SpellTargetType.Self && spellTrajectoryVisualEffect != null) {
             currentState = SpellCastState.CAST;
@@ -71,7 +67,7 @@ public class SpellEffectController : MonoBehaviour {
 	private void LateUpdate() {
         // Update position to follow the target if the target is self
         if (currentState == SpellCastState.EFFECT && spell.TargetType == SpellTargetType.Self) {
-            transform.position = characterVisualEffectsParent.position;
+            transform.position = spellTarget.GetCastPoint();
         }
 	}
 

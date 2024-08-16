@@ -39,7 +39,7 @@ public class SpellController : MonoBehaviour {
 		if (selectedSpell != -1) {
 			SpellInRace currentSpell = spellSlots[selectedSpell];
 			if (currentSpell.Charge >= 1 && currentMana >= currentSpell.Spell.ManaCost) {
-				currentSpell.CastSpell(new SpellTarget { source = gameObject, target = gameObject }); // TODO: Pass correct parameters (target + position)
+				currentSpell.CastSpell(new SpellTarget { SourceObject = gameObject, TargetObject = gameObject }); // TODO: Pass correct parameters (target + position)
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
 				onSpellCasted?.Invoke(selectedSpell);
@@ -108,7 +108,46 @@ public class SpellController : MonoBehaviour {
 }
 
 public struct SpellTarget {
-	public GameObject source;
-	public GameObject target;
-	public Vector3 position;
+
+	private SpellCastPoint castPoint;
+	private GameObject sourceObject;
+	public GameObject SourceObject {
+		get => sourceObject;
+		set {
+			sourceObject = value;
+			castPoint = sourceObject.GetComponentInChildren<SpellCastPoint>();
+		}
+	}
+
+	private SpellTargetPoint targetPoint;
+	private GameObject targetObject;
+	public GameObject TargetObject { 
+		get => targetObject;
+		set {
+			targetObject = value;
+			targetPoint = targetObject.GetComponentInChildren<SpellTargetPoint>();
+		}
+	}
+
+	private Vector3 targetPosition;
+	public Vector3 TargetPosition {
+		get => targetPosition;
+		set {
+			targetPosition = value;
+			targetObject = null;
+		}
+	}
+
+	public Vector3 GetCastPoint() {
+		if (castPoint != null) return castPoint.GetAbsolutePosition();
+		else return sourceObject.transform.position;
+	}
+
+	public Vector3 GetTargetPoint() {
+		if (targetObject != null) {
+			if (targetPoint != null) return targetPoint.GetAbsolutePosition();
+			else return targetObject.transform.position;
+		} else return TargetPosition;
+	}
+
 }
