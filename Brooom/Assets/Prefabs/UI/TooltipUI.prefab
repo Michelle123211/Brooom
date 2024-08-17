@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.3
+  delay: 0
   destroy: 0
   enable: 1
   loop: 0
@@ -917,7 +918,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 880, y: 42}
-  m_SizeDelta: {x: 170.72, y: 0}
+  m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &7666545515450142960
 MonoBehaviour:

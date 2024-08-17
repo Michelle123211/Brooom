@@ -41,7 +41,7 @@ public class TooltipPanel : MonoBehaviour
         float widthTop = ComputeSectionWidth(textFields.topSection);
         float widthMain = ComputeSectionWidth(textFields.mainSection, false);
         float widthBottom = ComputeSectionWidth(textFields.bottomSection);
-        float width =  Mathf.Max(widthTop, widthMain, widthBottom);
+        float width = Mathf.Max(widthTop, widthMain, widthBottom); // add a little margin
         if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
         // Respect the maximum width set in the tooltip style
         if (width > maxWidth) {
@@ -58,7 +58,7 @@ public class TooltipPanel : MonoBehaviour
             else if (field.preferredWidth > width) width = field.preferredWidth;
         }
         width += 20; // added padding
-        if (isHorizontal && width == 0) width += 40; // added spacing (to ensure enough space between the parts)
+        if (isHorizontal && section.Length > 0) width += 15 * (section.Length - 1); // added spacing (to ensure enough space between the parts)
         return width;
     }
 
