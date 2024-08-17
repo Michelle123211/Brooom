@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnvironmentElementsPlacement : LevelGeneratorModule {
+
+	[Header("Basic parameters")]
+
 	[Tooltip("The level is divided into a grid of tiles and within each tile a spot for environment element is randomly selected.")]
 	public int gridTileSize = 5;
 
@@ -12,10 +15,16 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	[Tooltip("Probability of placing elements on the borders of regions. May be used to make it sparse there.")]
 	public float regionBorderProbability = 0.5f;
 
+	[Header("Start line parameters")]
+
 	[Tooltip("Width (in the X axis) of the rectangular region around the player start position which should be considered start line and should be populated only with short enough elements.")]
-	public float startLineSpanX = 12f;
+	public float startLineSpanX = 20f;
 	[Tooltip("Height (in the Z axis) of the rectangular region around the player start position which should be considered start line and should be populated only with short enough elements.")]
-	public float startLineSpanZ = 6f;
+	public float startLineSpanZ = 14f;
+	[Tooltip("Environment elements near start line should end at least this many units below the racers.")]
+	public float minVerticalSpacing = 10f;
+
+	[Header("Environment elements")]
 
 	[Tooltip("An object which will be parent of all the environment objects in the hierarchy.")]
 	public Transform environmentParent;
@@ -124,14 +133,14 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	// Checks whether the given grid point is within the rectangular region of start line
 	private bool IsCloseToStartLine(LevelRepresentation level, int spotX, int spotY) {
 		Vector3 difference = level.playerStartPosition - level.terrain[spotX, spotY].position;
-		return Mathf.Abs(difference.x) < (startLineSpanX / 2) && Mathf.Abs(difference.z) < (startLineSpanZ / 2);
+		return Mathf.Abs(difference.x) < (startLineSpanX / 2f) && Mathf.Abs(difference.z) < (startLineSpanZ / 2f);
 	}
 
 	// Checks whether the given element is short enough to be spawned on the given position assuming it is within the rectangular start line region
 	private bool CanBeSpawnedAtStartLine(LevelRepresentation level, GameObject elementVariant, int spotX, int spotY) {
 		MeshFilter meshFilter = elementVariant.GetComponentInChildren<MeshFilter>();
 		float elementHeight = meshFilter.sharedMesh.bounds.size.y;
-		float allowedHeight = (level.playerStartPosition - level.terrain[spotX, spotY].position).y;
+		float allowedHeight = (level.playerStartPosition.y - level.terrain[spotX, spotY].position.y) - minVerticalSpacing; // at least several units below the racers
 		return elementHeight < allowedHeight;
 	}
 }

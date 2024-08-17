@@ -739,8 +739,9 @@ MonoBehaviour:
   gridTileSize: 5
   levelBorderWidth: 4
   regionBorderProbability: 0.55
-  startLineSpanX: 15
-  startLineSpanZ: 8
+  startLineSpanX: 20
+  startLineSpanZ: 14
+  minVerticalSpacing: 10
   environmentParent: {fileID: 7380596193040418889}
   defaultElements:
     name: Default elements
