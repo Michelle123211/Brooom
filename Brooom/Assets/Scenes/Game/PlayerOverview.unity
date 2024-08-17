@@ -3580,6 +3580,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 479021232}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &479021234 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2967696767868944567, guid: d87a2418ea4c77148b8f2a4eaba76f83,
+    type: 3}
+  m_PrefabInstance: {fileID: 479021232}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2bbd2a1838d7d43bea2871abba7d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &484174846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7743,6 +7755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboard: {fileID: 1415490837}
   statsGraph: {fileID: 1787257481}
+  equippedSpells: {fileID: 479021234}
   achievements: {fileID: 195112016}
   oldStatsColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 0.5019608}
   newStatsColor: {r: 0, g: 0.47646856, b: 1, a: 0.6}

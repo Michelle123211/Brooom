@@ -10,7 +10,11 @@ public class EquippedSpellsUI : MonoBehaviour {
 	[Tooltip("An object containing a list of spells from which we can select one for a slot.")]
 	[SerializeField] SpellSelectionUI spellSelection;
 
-	private void Start() {
+	private void OnEnable() {
+		UpdateUI();
+	}
+
+	public void UpdateUI() {
 		// Remove all existing equipped spell slots
 		UtilsMonoBehaviour.RemoveAllChildren(equippedSpellsParent);
 		// Instantiate new equipped spell slots

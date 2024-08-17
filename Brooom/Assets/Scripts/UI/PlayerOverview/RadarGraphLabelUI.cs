@@ -33,7 +33,7 @@ public class RadarGraphLabelUI : MonoBehaviour
         currentFormat = format;
         // Reset all labels (just to make sure)
         SetEmptyValueChange();
-        // Choose the best text field (according to where aroudn the graph the label is)
+        // Choose the best text field (according to where around the graph the label is)
         currentTextField = ChooseValueChangeTextField();
         // Tween the value change
         currentValue = 0;

@@ -6,6 +6,7 @@ public class PlayerOverviewUI : MonoBehaviour
 {
     [SerializeField] LeaderboardUI leaderboard;
     [SerializeField] RadarGraphUI statsGraph;
+    [SerializeField] EquippedSpellsUI equippedSpells;
     [SerializeField] AchievementsUI achievements;
     [SerializeField] Color oldStatsColor;
     [SerializeField] Color newStatsColor;
@@ -21,6 +22,7 @@ public class PlayerOverviewUI : MonoBehaviour
     public void UpdateUI() {
         int place = leaderboard.GetPlayerPlaceAndUpdateUI();
         UpdateGraph();
+        equippedSpells.UpdateUI();
         achievements.UpdateUI();
 
         // Show game ending (with a short delay) if the player is on the first place
