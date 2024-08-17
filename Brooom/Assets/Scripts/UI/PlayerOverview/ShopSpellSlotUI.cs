@@ -44,7 +44,7 @@ public class ShopSpellSlotUI : MonoBehaviour
 
 	private void ChangeToUnlocked() {
         // Hide price + overlay
-        ShowHidePrice(false);
+        ShowOrHidePrice(false);
         unavailableOverlay.SetActive(false);
     }
 
@@ -53,11 +53,11 @@ public class ShopSpellSlotUI : MonoBehaviour
         priceText.text = assignedSpell.CoinsCost.ToString();
         if (PlayerState.Instance.coins < assignedSpell.CoinsCost) // change to red if not enough coins
             priceText.color = Color.red; // TODO: Change to using a different color (not so aggressive, e.g. from a color palette)
-        ShowHidePrice(true);
+        ShowOrHidePrice(true);
         unavailableOverlay.SetActive(true);
     }
 
-    private void ShowHidePrice(bool show = true) {
+    private void ShowOrHidePrice(bool show = true) {
         for (int i = 0; i < priceParent.transform.childCount; i++) {
             priceParent.GetChild(i).gameObject.SetActive(show);
         }

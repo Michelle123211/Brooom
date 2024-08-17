@@ -45,11 +45,12 @@ public class ShopUI : MonoBehaviour
 	private void InitializeSpells() {
 		// Remove all existing spell slots
 		UtilsMonoBehaviour.RemoveAllChildren(spellsParent);
-		// TODO: Instantiate new spell slots - check that the following is working
+		// Instantiate new spell slots
 		spells.Clear();
 		foreach (var spell in SpellManager.Instance.AllSpells) {
 			ShopSpellSlotUI spellSlot = Instantiate<ShopSpellSlotUI>(spellSlotPrefab, spellsParent);
 			spellSlot.Initialize(spell);
+			spells.Add(spellSlot);
 		}
 	}
 
