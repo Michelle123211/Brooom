@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aaa66c0b76cfd14e8e39334f510d201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  priceParent: {fileID: 5549733640210954511}
+  priceParent: {fileID: 5549733640210954508}
   priceText: {fileID: 1238563001716452948}
   unavailableOverlay: {fileID: 5115165411435546208}
 --- !u!114 &5549733640341444293
@@ -589,6 +589,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PriceLabel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2474414513076959215, guid: e0c06a013d94bbd4eaa056db267f5191,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0c06a013d94bbd4eaa056db267f5191, type: 3}

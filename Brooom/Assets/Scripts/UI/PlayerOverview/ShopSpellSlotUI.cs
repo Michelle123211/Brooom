@@ -7,8 +7,8 @@ using TMPro;
 public class ShopSpellSlotUI : MonoBehaviour
 {
     [Header("UI Elements")]
-    [Tooltip("An object containing all UI elements for the spell price. Will be hidden if the spell has been already purchased.")]
-    [SerializeField] GameObject priceParent;
+    [Tooltip("An object containing all UI elements for the spell price. Its children will be hidden if the spell has been already purchased.")]
+    [SerializeField] Transform priceParent;
     [Tooltip("A label used to display price of the spell.")]
     [SerializeField] TextMeshProUGUI priceText;
     [Tooltip("An overlay object used to change visuals when the spell has not been purchased yet.")]
@@ -44,7 +44,7 @@ public class ShopSpellSlotUI : MonoBehaviour
 
 	private void ChangeToUnlocked() {
         // Hide price + overlay
-        priceParent.SetActive(false);
+        ShowHidePrice(false);
         unavailableOverlay.SetActive(false);
     }
 
@@ -53,7 +53,14 @@ public class ShopSpellSlotUI : MonoBehaviour
         priceText.text = assignedSpell.CoinsCost.ToString();
         if (PlayerState.Instance.coins < assignedSpell.CoinsCost) // change to red if not enough coins
             priceText.color = Color.red; // TODO: Change to using a different color (not so aggressive, e.g. from a color palette)
+        ShowHidePrice(true);
         unavailableOverlay.SetActive(true);
+    }
+
+    private void ShowHidePrice(bool show = true) {
+        for (int i = 0; i < priceParent.transform.childCount; i++) {
+            priceParent.GetChild(i).gameObject.SetActive(show);
+        }
     }
 
     private void Awake() {
