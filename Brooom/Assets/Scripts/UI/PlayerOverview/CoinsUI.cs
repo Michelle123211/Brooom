@@ -12,7 +12,7 @@ public class CoinsUI : MonoBehaviour
 	private int lastValue = 0;
 
 	public void RefreshCoinsAmount() {
-		UpdateCoinsAmount(lastValue, PlayerState.Instance.coins);
+		UpdateCoinsAmount(lastValue, PlayerState.Instance.Coins);
 	}
 
 	private void UpdateCoinsAmount(int oldValue, int newValue) {
@@ -25,7 +25,7 @@ public class CoinsUI : MonoBehaviour
 		// Register callback
 		PlayerState.Instance.onCoinsAmountChanged += UpdateCoinsAmount;
 		// Initialize
-		UpdateCoinsAmount(0, PlayerState.Instance.coins);
+		UpdateCoinsAmount(0, PlayerState.Instance.Coins);
 	}
 
 	private void OnDisable() {

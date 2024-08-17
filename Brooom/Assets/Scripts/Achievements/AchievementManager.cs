@@ -579,7 +579,7 @@ class CoinsData : AchievementData {
 	private void OnCoinsAmountChanged(int delta) {
 		if (delta > 0) // gain
 			totalCoinsGain += delta;
-		int currentCoins = PlayerState.Instance.coins;
+		int currentCoins = PlayerState.Instance.Coins;
 		if (currentCoins > maxCoins) maxCoins = currentCoins;
 		SaveData();
 	}

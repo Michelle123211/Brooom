@@ -85,7 +85,7 @@ public class BroomUpgradeRowUI : MonoBehaviour
         } else {
             int price = assignedUpgrade.CoinsCostOfEachLevel[assignedUpgrade.CurrentLevel];
             priceText.text = price.ToString();
-            if (PlayerState.Instance.coins < price) { // change to red if not enough coins
+            if (PlayerState.Instance.Coins < price) { // change to red if not enough coins
                 buyButton.interactable = false;
                 priceText.color = Color.red; // TODO: Change to using a different color (not so aggressive, e.g. from a color palette)
             }

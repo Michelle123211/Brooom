@@ -351,9 +351,10 @@ public class RaceController : MonoBehaviour {
         float hoopScale = Mathf.Lerp(initialHoopScale, finalHoopScale, PlayerState.Instance.CurrentStats.precision / 100f);
         // ... distance between adjacent hoops from Speed
         Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.CurrentStats.speed / 100f);
-        // ... available regions from Endurance
+        // ... default available regions
         foreach (var region in defaultRegions)
             PlayerState.Instance.regionsAvailability[region] = true;
+        // ... available regions from Endurance
         foreach (var regionWithValue in regionsUnlockedByEndurance)
             PlayerState.Instance.SetRegionAvailability(
                 regionWithValue.region, 

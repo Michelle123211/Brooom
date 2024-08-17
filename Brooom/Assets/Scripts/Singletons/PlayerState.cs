@@ -36,7 +36,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     #endregion
 
     #region Character Customization
-    public CharacterCustomizationOptions customizationOptions;
+    public CharacterCustomizationOptions customizationOptions; // set in the Inspector
 
     private CharacterCustomizationData characterCustomization = null;
     public CharacterCustomizationData CharacterCustomization {
@@ -63,17 +63,18 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     #endregion
 
     #region Coins
-    public int coins = 0; // TODO: Change to property when debugging is done (with private setter, public getter)
+    public int Coins { get; private set; } = 0;
     public Action<int, int> onCoinsAmountChanged; // callback invoked whenever the amount of coins changes, parameters are old amount and new amount
+
     // Returns true if the transaction could be performed (there was enough coins)
     public bool ChangeCoinsAmount(int delta) {
-        int newAmount = coins + delta;
+        int newAmount = Coins + delta;
         if (newAmount < 0) return false;
         if (newAmount > 999_999) newAmount = 999_999; // cannot go over 999 999
-        int oldAmount = coins;
-        coins = newAmount;
+        int oldAmount = Coins;
+        Coins = newAmount;
         // Save the value into a file
-        SaveSystem.SaveCoins(coins);
+        SaveSystem.SaveCoins(Coins);
         // Notify anyone interested that the coins amount changed
         onCoinsAmountChanged?.Invoke(oldAmount, newAmount);
         Messaging.SendMessage("CoinsChanged", newAmount - oldAmount);
@@ -126,7 +127,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     #endregion
 
     #region Broom Upgrades
-    public float maxAltitude = 15f; // Maximum Y coordinate the player can fly up to
+    [HideInInspector] public float maxAltitude = 15f; // Maximum Y coordinate the player can fly up to
     private Dictionary<string, Tuple<int, int>> broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>(); // current and maximum level for each upgrade
     private bool broomUpgradesLoaded = false; // if the data is loaded from a saved state
 
@@ -137,7 +138,6 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         if (!broomUpgradesLoaded) {
             BroomUpgradesSaveData broomUpgrades = SaveSystem.LoadBroomUpgrades();
             LoadFromSavedBroomUpgrades(broomUpgrades);
-            broomUpgradesLoaded = true;
         }
         if (broomUpgradeLevels.ContainsKey(upgradeName))
             return broomUpgradeLevels[upgradeName].Item1;
@@ -169,10 +169,12 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 	#endregion
 
 	#region Mana + available regions
-	[Tooltip("The maximum amount of mana the player can have at once.")]
-    public int maxManaAmount = 100;
+    [field: SerializeField]
+    [Tooltip("The maximum amount of mana the player can have at once.")]
+    public int MaxManaAmount { get; private set; } = 100;
 
-    public Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>();
+    public Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>(); // not persistently stored, recomputed whenever a level is generated
+
     public void SetRegionAvailability(LevelRegionType region, bool availability) {
         if (regionsAvailability.ContainsKey(region) && availability && !regionsAvailability[region]) { // a new region became available
             // Notify anyone interested that a new region has been unlocked
@@ -193,7 +195,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
                 previousStats = this.PreviousStats,
                 currentStats = this.currentStats
             },
-            coins = this.coins,
+            coins = this.Coins,
             KnownOpponents = this.knownOpponents
         });
         // ...broom upgrades
@@ -241,7 +243,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             CurrentStats = savedState.stats.previousStats;
             CurrentStats = savedState.stats.currentStats;
 
-            coins = savedState.coins;
+            Coins = savedState.coins;
 
             knownOpponents = savedState.KnownOpponents;
         }
@@ -280,7 +282,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         // ...character customization
         characterCustomization = null;
         // ...coins
-        coins = 0;
+        Coins = 0;
         // ...spells
         equippedSpells = new Spell[4];
         spellAvailability = new Dictionary<string, bool>();
@@ -289,6 +291,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             spellAvailability[spell.Identifier] = false;
             spellCast[spell.Identifier] = false;
         }
+        availableSpellCount = 0;
         // ...broom upgrades
         maxAltitude = 15f;
         broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>();

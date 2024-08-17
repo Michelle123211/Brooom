@@ -177,10 +177,10 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			else if (!int.TryParse(commandParts[1], out int amount)) message = "Invalid parameter, an integer is required.";
 			// Perform the command
 			else {
-				int oldValue = PlayerState.Instance.coins;
+				int oldValue = PlayerState.Instance.Coins;
 				PlayerState.Instance.ChangeCoinsAmount(amount);
 				success = true;
-				message = $"The amount of coins has been changed from {oldValue} to {PlayerState.Instance.coins}.";
+				message = $"The amount of coins has been changed from {oldValue} to {PlayerState.Instance.Coins}.";
 			}
 			// Return the result
 			return new CommandParseResult {

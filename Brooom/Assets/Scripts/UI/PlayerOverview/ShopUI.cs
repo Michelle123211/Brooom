@@ -34,7 +34,7 @@ public class ShopUI : MonoBehaviour
 		// Initialize
 		InitializeSpells();
 		InitializeBroomUpgrades();
-		UpdateUI(0, PlayerState.Instance.coins);
+		UpdateUI(0, PlayerState.Instance.Coins);
 	}
 
 	private void OnDisable() {

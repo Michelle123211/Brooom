@@ -87,7 +87,7 @@ public class SpellController : MonoBehaviour {
 	private void Awake() {
 		isPlayer = CompareTag("Player");
 		// Initialize data fields
-		maxMana = PlayerState.Instance.maxManaAmount;
+		maxMana = PlayerState.Instance.MaxManaAmount;
 		currentMana = 0;
 		spellSlots = new SpellInRace[PlayerState.Instance.equippedSpells.Length];
 		selectedSpell = -1;

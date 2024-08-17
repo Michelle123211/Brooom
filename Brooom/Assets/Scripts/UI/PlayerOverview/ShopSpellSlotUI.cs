@@ -51,7 +51,7 @@ public class ShopSpellSlotUI : MonoBehaviour
     private void ChangeToLocked() {
         // Show price + overlay
         priceText.text = assignedSpell.CoinsCost.ToString();
-        if (PlayerState.Instance.coins < assignedSpell.CoinsCost) // change to red if not enough coins
+        if (PlayerState.Instance.Coins < assignedSpell.CoinsCost) // change to red if not enough coins
             priceText.color = Color.red; // TODO: Change to using a different color (not so aggressive, e.g. from a color palette)
         ShowOrHidePrice(true);
         unavailableOverlay.SetActive(true);

@@ -55,7 +55,7 @@ public class Broom : MonoBehaviour
 	}
 
 	public void RandomizeState() {
-		// // Choose random level of broom upgrades
+		// Choose random level of broom upgrades
 		int levelsTotal = 0;
 		foreach (var upgrade in upgradesAvailable)
 			levelsTotal += (upgrade.MaxLevel - upgrade.CurrentLevel);
