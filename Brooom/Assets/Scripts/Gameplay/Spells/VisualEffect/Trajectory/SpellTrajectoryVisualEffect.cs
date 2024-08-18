@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 
 	[Tooltip("Speed in which the spell is travelling to the target.")]
-	[SerializeField] private float spellSpeed = 7;
+	[SerializeField] private float spellSpeed = 20;
     [Tooltip("A component used to compute spell trajectory between the racer casting it and the target.")]
     [SerializeField] private SpellTrajectoryComputer spellTrajectory;
 
