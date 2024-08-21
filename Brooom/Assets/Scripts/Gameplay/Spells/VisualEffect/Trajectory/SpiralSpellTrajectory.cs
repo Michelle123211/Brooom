@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpiralSpellTrajectory : SpellTrajectoryComputer {
 
 	[Tooltip("Radius of the offset from the direct line.")]
-	[SerializeField] protected float radius = 0.5f;
+	[SerializeField] protected float radius = 0.3f;
 	[Tooltip("How fast the point travels on a circle.")]
 	[SerializeField] protected float frequency = 2f;
 
