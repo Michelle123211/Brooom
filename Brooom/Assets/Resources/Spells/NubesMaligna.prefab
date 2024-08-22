@@ -50,6 +50,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
+      propertyPath: baseColor.b
+      value: 0.87636375
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: baseColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: baseColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: emissionColor.b
+      value: 2.6352942
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: emissionColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: emissionColor.r
+      value: 2.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
       propertyPath: effectControllerPrefab
       value: 
       objectReference: {fileID: 7968610805978454959}

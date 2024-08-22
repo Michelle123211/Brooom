@@ -21,6 +21,8 @@ public class SpellEditor : Editor {
         // Get serialized properties
         SerializedProperty identifierProperty = serializedObject.FindProperty("identifier");
         SerializedProperty nameProperty = serializedObject.FindProperty("spellName");
+        SerializedProperty baseColorProperty = serializedObject.FindProperty("baseColor");
+        SerializedProperty emissionColorProperty = serializedObject.FindProperty("emissionColor");
         SerializedProperty iconProperty = serializedObject.FindProperty("icon");
         SerializedProperty coinsProperty = serializedObject.FindProperty("coinsCost");
         SerializedProperty manaProperty = serializedObject.FindProperty("manaCost");
@@ -30,6 +32,8 @@ public class SpellEditor : Editor {
         EditorGUILayout.LabelField("Basic properties", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(identifierProperty);
         EditorGUILayout.PropertyField(nameProperty);
+        EditorGUILayout.PropertyField(baseColorProperty);
+        EditorGUILayout.PropertyField(emissionColorProperty);
         EditorGUILayout.PropertyField(iconProperty);
         EditorGUILayout.PropertyField(coinsProperty);
         EditorGUILayout.PropertyField(manaProperty);

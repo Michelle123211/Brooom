@@ -50,6 +50,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
+      propertyPath: baseColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: baseColor.g
+      value: 0.28231797
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: baseColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: emissionColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: emissionColor.g
+      value: 0.47985908
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: emissionColor.r
+      value: 2.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
       propertyPath: effectControllerPrefab
       value: 
       objectReference: {fileID: 4808130818381499142}
@@ -143,20 +173,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1138805104816573215}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5220358784839359874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8334222203170148697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cec7052a80192f24fab5ca2f74eaf631, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 0.3
-  frequency: 2
 --- !u!114 &675313897571213712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,3 +187,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brickWallPrefab: {fileID: 3346218570256823322, guid: 96f5b4040b032c742a54115c636dc66d,
     type: 3}
+--- !u!114 &5220358784839359874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334222203170148697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec7052a80192f24fab5ca2f74eaf631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.3
+  frequency: 2

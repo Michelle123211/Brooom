@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 254239043938748860, guid: a58588be6d18d874d87d1def514b4542,
         type: 3}
       propertyPath: m_Name
-      value: Velox2
+      value: Velox
       objectReference: {fileID: 0}
     - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
         type: 3}
@@ -47,6 +47,36 @@ PrefabInstance:
         type: 3}
       propertyPath: targetType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
+        type: 3}
+      propertyPath: baseColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
+        type: 3}
+      propertyPath: baseColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
+        type: 3}
+      propertyPath: baseColor.r
+      value: 0.02745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
+        type: 3}
+      propertyPath: emissionColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
+        type: 3}
+      propertyPath: emissionColor.g
+      value: 2.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
+        type: 3}
+      propertyPath: emissionColor.r
+      value: 0.10980392
       objectReference: {fileID: 0}
     - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
         type: 3}

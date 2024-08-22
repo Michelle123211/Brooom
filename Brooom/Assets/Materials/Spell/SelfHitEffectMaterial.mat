@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VeloxHitEffectMaterial
+  m_Name: SelfHitEffectMaterial
   m_Shader: {fileID: -6465566751694194690, guid: f2d1d447f7ab6c046a05ae12cdf8ddbf,
     type: 3}
   m_ValidKeywords: []
@@ -120,6 +120,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Transparency: 0.3
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -128,5 +129,5 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0.10980392, g: 2.9960785, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SphereColor: {r: 0.02745098, g: 1, b: 0, a: 0.3137255}
+    - _SphereColor: {r: 0.02745098, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []

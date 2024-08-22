@@ -23,6 +23,9 @@ public enum SpellTargetType {
 
 
 public class Spell : MonoBehaviour {
+
+    // In the following lines, the field is declared explicitly instead of an auto-implemented property to work more easily with a custom editor
+
     [Tooltip("Spell's identifier, usually a spell name without spaces.")]
     [SerializeField]
     private string identifier = string.Empty; // usually spell name without spaces
@@ -32,6 +35,17 @@ public class Spell : MonoBehaviour {
     [SerializeField]
     private string spellName = string.Empty;
     public string SpellName { get => spellName; private set => spellName = value; }
+
+    [Tooltip("Color assigned to the spell, will be used for different visual effects when casting the spell.")]
+    [SerializeField]
+    private Color baseColor;
+    public Color BaseColor { get; private set; }
+
+    [Tooltip("Color assigned to the spell, will be used for emission of different visual effects when casting the spell.")]
+    [SerializeField]
+    [ColorUsage(true, true)]
+    private Color emissionColor;
+    public Color EmissionColor { get; private set; }
 
     [Tooltip("Spell icon used everywhere in the UI to represent the given spell, e.g. in HUD, shop etc.")]
     [SerializeField]
