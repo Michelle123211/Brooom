@@ -39,13 +39,13 @@ public class Spell : MonoBehaviour {
     [Tooltip("Color assigned to the spell, will be used for different visual effects when casting the spell.")]
     [SerializeField]
     private Color baseColor;
-    public Color BaseColor { get; private set; }
+    public Color BaseColor { get => baseColor; private set => baseColor = value; }
 
     [Tooltip("Color assigned to the spell, will be used for emission of different visual effects when casting the spell.")]
     [SerializeField]
     [ColorUsage(true, true)]
     private Color emissionColor;
-    public Color EmissionColor { get; private set; }
+    public Color EmissionColor { get => emissionColor; private set => emissionColor = value; }
 
     [Tooltip("Spell icon used everywhere in the UI to represent the given spell, e.g. in HUD, shop etc.")]
     [SerializeField]
