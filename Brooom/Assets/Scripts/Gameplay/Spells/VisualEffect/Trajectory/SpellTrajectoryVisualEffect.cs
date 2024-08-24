@@ -34,28 +34,14 @@ public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 		transform.position = castParameters.GetCastPoint();
 		currentTime = 0;
 		spellTrajectory.ResetTrajectory();
-		// Set material color and enable everything (object with visual representation, trail, particles)
-		Color color = castParameters.Spell.EmissionColor;
+		// Enable everything (object with visual representation, trail, particles)
 		if (spellCastVisual != null) { // enable visual
-			spellCastVisual.GetComponent<MeshRenderer>().material.SetColor("_Color", color);
 			spellCastVisual.SetActive(true);
 		}
 		if (spellCastTrail != null) { // enable trail
-			spellCastTrail.material.SetColor("_Color", color);
 			spellCastTrail.emitting = true;
 		}
 		if (spellCastParticles != null) { // enable particles
-			// Set start color
-			ParticleSystem.MainModule mainModule = spellCastParticles.main;
-			mainModule.startColor = color.WithA(0.75f); // TODO: Change the alpha value if necessary (based on sprites used)
-			// Set color over lifetime
-			Gradient gradient = new Gradient();
-			gradient.SetKeys(
-				new GradientColorKey[] { new GradientColorKey(color, 0f), new GradientColorKey(color, 1f) },
-				new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0f, 1f) });
-			ParticleSystem.ColorOverLifetimeModule colorOverLifetimeModule = spellCastParticles.colorOverLifetime;
-			colorOverLifetimeModule.color = gradient;
-			// Play
 			spellCastParticles.Play();
 		}
 	}

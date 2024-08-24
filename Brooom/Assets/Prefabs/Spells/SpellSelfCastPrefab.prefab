@@ -72,6 +72,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpellSelfCastPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 1748155213104871826}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.data[0].overrideA
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.data[1].colorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.data[0].shaderParameterName
+      value: _SphereColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.data[1].shaderParameterName
+      value: _OutlineColor
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37a7184ac9c9925488a0a7e3237d7faf, type: 3}
 --- !u!4 &1769688588996367285 stripped
@@ -149,6 +184,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba177057856b57d4e8d03beb4ab1b6e2, type: 3}
+--- !u!23 &1748155213104871826 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7852609497758774254, guid: ba177057856b57d4e8d03beb4ab1b6e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 8410651922878024316}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3116981078957806480 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6915592350089419244, guid: ba177057856b57d4e8d03beb4ab1b6e2,

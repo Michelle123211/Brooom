@@ -93,6 +93,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flante
       objectReference: {fileID: 0}
+    - target: {fileID: 4386988748926995188, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: spellIdentifier
+      value: Flante
+      objectReference: {fileID: 0}
     - target: {fileID: 5581139391021219865, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
       propertyPath: actualSpellEffect

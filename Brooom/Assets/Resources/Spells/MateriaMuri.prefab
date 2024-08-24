@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
       propertyPath: emissionColor.g
-      value: 0.47985908
+      value: 0.4862745
       objectReference: {fileID: 0}
     - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
@@ -91,6 +91,11 @@ PrefabInstance:
     - target: {fileID: 3942692724976909630, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
       propertyPath: m_Name
+      value: MateriaMuri
+      objectReference: {fileID: 0}
+    - target: {fileID: 4386988748926995188, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: spellIdentifier
       value: MateriaMuri
       objectReference: {fileID: 0}
     - target: {fileID: 5581139391021219865, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,

@@ -10001,6 +10001,91 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpellWithTrajectoryPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedParticles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].renderer
+      value: 
+      objectReference: {fileID: 1369622024112759784}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[1].renderer
+      value: 
+      objectReference: {fileID: 7172474936520375527}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedParticles.Array.data[0].particles
+      value: 
+      objectReference: {fileID: 4136099673412023248}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedParticles.Array.data[1].particles
+      value: 
+      objectReference: {fileID: 1140474342695341087}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedParticles.Array.data[0].colorParameter.colorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedParticles.Array.data[0].colorParameter.overrideR
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedParticles.Array.data[1].colorParameter.colorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[1].shaderParameters.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.data[0].colorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.data[1].colorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[1].shaderParameters.Array.data[0].colorType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.data[0].shaderParameterName
+      value: _Color
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[0].shaderParameters.Array.data[1].shaderParameterName
+      value: _Color
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611020210320956942, guid: 37a7184ac9c9925488a0a7e3237d7faf,
+        type: 3}
+      propertyPath: affectedRenderers.Array.data[1].shaderParameters.Array.data[0].shaderParameterName
+      value: _Color
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37a7184ac9c9925488a0a7e3237d7faf, type: 3}
 --- !u!4 &3296438466353702711 stripped
