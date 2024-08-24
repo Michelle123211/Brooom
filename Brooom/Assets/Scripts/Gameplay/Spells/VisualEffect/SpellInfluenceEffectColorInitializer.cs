@@ -15,7 +15,7 @@ public class SpellInfluenceEffectColorInitializer : MonoBehaviour {
 		Color color = spell.BaseColor;
 		// Set start color
 		ParticleSystem.MainModule mainModule = particles.main;
-		mainModule.startColor = color.WithA(0.5f);
+		mainModule.startColor = color.WithA(0.5f); // TODO: Change the alpha value if necessary (based on sprites used)
 		// Set color over lifetime
 		Gradient gradient = new Gradient();
 		gradient.SetKeys(
