@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2280600211358353915}
   - component: {fileID: 2280600211358353916}
-  - component: {fileID: 141928191345706125}
+  - component: {fileID: 3314356971586026169}
   - component: {fileID: 2280600211358353917}
   - component: {fileID: 2280600211358353914}
   m_Layer: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   particles: {fileID: 2280600211358353917}
   hasFixedDuration: 0
   duration: 0
---- !u!114 &141928191345706125
+--- !u!114 &3314356971586026169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,11 +59,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 2280600211358353912}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c34145f7a252b0a4fbb40affa6b3e1a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 73ab5ce6910f35149ad99a3a52f9bb56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particles: {fileID: 2280600211358353917}
   spellIdentifier: 
+  affectedRenderers: []
+  affectedParticles:
+  - particles: {fileID: 2280600211358353917}
+    colorParameter:
+      colorType: 0
+      overrideR: 0
+      customRValue: 0
+      overrideG: 0
+      customGValue: 0
+      overrideB: 0
+      customBValue: 0
+      overrideA: 1
+      customAValue: 0.5
 --- !u!198 &2280600211358353917
 ParticleSystem:
   m_ObjectHideFlags: 0
