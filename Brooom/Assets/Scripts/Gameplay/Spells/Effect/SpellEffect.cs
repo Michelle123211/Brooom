@@ -4,14 +4,12 @@ using UnityEngine;
 
 public abstract class SpellEffect : MonoBehaviour {
 
-    protected Spell spell;
-    protected SpellTarget spellTarget;
+    protected SpellCastParameters castParameters;
 
     public abstract bool IsComplete();
 
-    public void ApplySpellEffect(Spell spell, SpellTarget spellTarget) {
-        this.spell = spell;
-        this.spellTarget = spellTarget;
+    public void ApplySpellEffect(SpellCastParameters castParameters) {
+        this.castParameters = castParameters;
         ApplySpellEffect_Internal();
     }
 
@@ -108,11 +106,11 @@ public abstract class RacerAffectingSpellEffect : ReversibleSpellEffect {
 
 	protected override void StartSpellEffect() {
         EffectibleCharacter targetRacer = null;
-        if (spellTarget.TargetObject != null) targetRacer = spellTarget.TargetObject.GetComponent<EffectibleCharacter>();
-        if (spellTarget.TargetObject == null || targetRacer == null)
+        if (castParameters.TargetObject != null) targetRacer = castParameters.TargetObject.GetComponent<EffectibleCharacter>();
+        if (castParameters.TargetObject == null || targetRacer == null)
             throw new System.NotSupportedException($"{nameof(RacerAffectingSpellEffect)} and derived classes may be used only for spells casted at other racers.");
         // Add the spell among effects affecting the target racer (+ add the visual effect)
-        CharacterEffect characterEffect = new CharacterEffect(spell.Icon, effectDuration, isPositive);
+        CharacterEffect characterEffect = new CharacterEffect(castParameters.Spell.Icon, effectDuration, isPositive);
         characterEffect.onEffectStart += StartSpellEffect_Internal;
         characterEffect.onEffectEnd += StopSpellEffect_Internal;
         targetRacer.AddEffect(characterEffect, spellInfluenceVisualEffectPrefab);

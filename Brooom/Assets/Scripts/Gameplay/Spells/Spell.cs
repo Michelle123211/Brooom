@@ -91,10 +91,10 @@ public class Spell : MonoBehaviour {
         effectControllerPrefab = spellEffectController;
     }
 
-    public void CastSpell(SpellTarget spellTarget) {
+    public void CastSpell(SpellCastParameters castParameters) {
         // Create a separate instance of the spell effect controller (so it could be casted by several racers at once)
-        SpellEffectController effect = Instantiate<SpellEffectController>(effectControllerPrefab, spellTarget.GetCastPoint(), Quaternion.identity);
-        effect.InvokeSpellEffect(this, spellTarget);
+        SpellEffectController effect = Instantiate<SpellEffectController>(effectControllerPrefab, castParameters.GetCastPoint(), Quaternion.identity);
+        effect.InvokeSpellEffect(castParameters);
     }
 }
 
@@ -114,8 +114,8 @@ public class SpellInRace {
         this.Charge = charge;
     }
 
-    public void CastSpell(SpellTarget spellTarget) {
-        Spell.CastSpell(spellTarget);
+    public void CastSpell(SpellCastParameters castParameters) {
+        Spell.CastSpell(castParameters);
         DOTween.To(() => Charge, x => Charge = x, 0, 0.3f);
     }
 

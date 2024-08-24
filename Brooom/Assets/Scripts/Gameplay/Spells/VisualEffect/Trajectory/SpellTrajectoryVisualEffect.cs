@@ -15,33 +15,35 @@ public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 	[SerializeField] private TrailRenderer spellCastTrail;
 	[Tooltip("A component representing particles which are left behind while the spell is travelling to its target.")]
 	[SerializeField] private ParticleSystem spellCastParticles;
-	[Tooltip("A color used for the visual effect")]
-	[SerializeField] private Color spellCastColor = Color.white;
 
-	private SpellTarget spellTarget;
+	private SpellCastParameters castParameters;
 	private bool isInitialized = false;
 
 	private float currentTime = 0;
 
 
-	public void InitializeStartAndTarget(SpellTarget spellTarget) {
-		this.spellTarget = spellTarget;
+	public void InitializeStartAndTarget(SpellCastParameters castParameters) {
+		this.castParameters = castParameters;
 		isInitialized = true;
 	}
 
 	protected override void StartPlaying_Internal() {
 		if (!isInitialized)
 			throw new System.NotSupportedException("SpellTrajectoryVisualEffect must be initialized using the InitializeStartAndTarget method before playing.");
-		transform.position = spellTarget.GetCastPoint();
+		// Initialization
+		transform.position = castParameters.GetCastPoint();
 		currentTime = 0;
 		spellTrajectory.ResetTrajectory();
-		// TODO: Set color to every material (object with visual representation, trail, particles)
-		if (spellCastVisual != null) // enable visual
+		// TODO: Set material color and enable everything (object with visual representation, trail, particles)
+		if (spellCastVisual != null) { // enable visual
 			spellCastVisual.SetActive(true);
-		if (spellCastTrail != null) // enable trail
+		}
+		if (spellCastTrail != null) { // enable trail
 			spellCastTrail.emitting = true;
-		if (spellCastParticles != null) // enable particles
+		}
+		if (spellCastParticles != null) { // enable particles
 			spellCastParticles.Play();
+		}
 	}
 
 	protected override void StopPlaying_Internal() {
@@ -56,8 +58,8 @@ public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 
 	protected override bool UpdatePlaying_Internal(float deltaTime) {
 		// Update variables
-		Vector3 startPosition = spellTarget.GetCastPoint();
-		Vector3 targetPosition = spellTarget.GetTargetPoint();
+		Vector3 startPosition = castParameters.GetCastPoint();
+		Vector3 targetPosition = castParameters.GetTargetPoint();
 		currentTime += deltaTime;
 		float totalDistance = Vector3.Distance(startPosition, targetPosition);
 		float currentDistance = currentTime * spellSpeed;

@@ -41,9 +41,9 @@ public class SpellController : MonoBehaviour {
 			if (currentSpell.Charge >= 1 && currentMana >= currentSpell.Spell.ManaCost) {
 				// TODO: Pass correct parameters (source, target)
 				if (currentSpell.Spell.Category == SpellCategory.SelfCast)
-					currentSpell.CastSpell(new SpellTarget { SourceObject = gameObject, TargetObject = gameObject });
+					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject = gameObject });
 				else
-					currentSpell.CastSpell(new SpellTarget { SourceObject = gameObject, TargetPosition = transform.position + transform.forward * 30 });
+					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetPosition = transform.position + transform.forward * 30 });
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
 				onSpellCasted?.Invoke(selectedSpell);
@@ -111,7 +111,9 @@ public class SpellController : MonoBehaviour {
 	}
 }
 
-public struct SpellTarget {
+public struct SpellCastParameters {
+
+	public Spell Spell { get; set; }
 
 	private SpellCastPoint castPoint;
 	private GameObject sourceObject;

@@ -22,19 +22,17 @@ public class SpellEffectController : MonoBehaviour {
 	}
     private SpellCastState currentState = SpellCastState.NOT_STARTED;
 
-    private Spell spell;
-    private SpellTarget spellTarget;
+    private SpellCastParameters castParameters;
 
 
-    public void InvokeSpellEffect(Spell spell, SpellTarget spellTarget) {
-        this.spell = spell;
-        this.spellTarget = spellTarget;
+    public void InvokeSpellEffect(SpellCastParameters castParameters) {
+        this.castParameters = castParameters;
         // Based on the spell target handle the visual effect of casting the spell (if it is not null)
-        if (spell.TargetType != SpellTargetType.Self && spellTrajectoryVisualEffect != null) {
+        if (castParameters.Spell.TargetType != SpellTargetType.Self && spellTrajectoryVisualEffect != null) {
             currentState = SpellCastState.CAST;
             // Cast spell
             spellTrajectoryVisualEffect.transform.position = transform.position;
-            spellTrajectoryVisualEffect.InitializeStartAndTarget(spellTarget);
+            spellTrajectoryVisualEffect.InitializeStartAndTarget(castParameters);
             spellTrajectoryVisualEffect.StartPlaying();
         } else
             currentState = SpellCastState.HIT;
@@ -52,7 +50,7 @@ public class SpellEffectController : MonoBehaviour {
             if (targetHitVisualEffect != null)
                 targetHitVisualEffect.StartPlaying();
             currentState = SpellCastState.EFFECT;
-            actualSpellEffect.ApplySpellEffect(spell, spellTarget);
+            actualSpellEffect.ApplySpellEffect(castParameters);
         }
         // Handle the actual functional spell effect
         if (currentState == SpellCastState.EFFECT) {
@@ -66,8 +64,8 @@ public class SpellEffectController : MonoBehaviour {
 
 	private void LateUpdate() {
         // Update position to follow the target if the target is self
-        if (currentState == SpellCastState.EFFECT && spell.TargetType == SpellTargetType.Self) {
-            transform.position = spellTarget.GetCastPoint();
+        if (currentState == SpellCastState.EFFECT && castParameters.Spell.TargetType == SpellTargetType.Self) {
+            transform.position = castParameters.GetCastPoint();
         }
 	}
 

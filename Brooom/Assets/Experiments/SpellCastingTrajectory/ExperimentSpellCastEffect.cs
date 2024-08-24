@@ -22,12 +22,12 @@ public class ExperimentSpellCastEffect : CustomVisualEffect {
 	private float currentTime = 0;
 
 
-	public void InitializeStartAndTarget(SpellTarget spellTarget) {
-		this.sourceObject = spellTarget.SourceObject;
-		if (spellTarget.TargetObject != null)
-			this.targetObject = spellTarget.TargetObject;
+	public void InitializeStartAndTarget(SpellCastParameters castParameters) {
+		this.sourceObject = castParameters.SourceObject;
+		if (castParameters.TargetObject != null)
+			this.targetObject = castParameters.TargetObject;
 		else
-			this.targetPosition = spellTarget.TargetPosition;
+			this.targetPosition = castParameters.TargetPosition;
 	}
 
 	protected override void StartPlaying_Internal() {
