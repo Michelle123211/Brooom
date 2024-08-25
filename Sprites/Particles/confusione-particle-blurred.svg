@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733335"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
+   sodipodi:docname="confusione-particle-blurred.svg"
+   inkscape:export-filename="C:\Diplomka\Brooom\Brooom\Sprites\Particles\confusione-particle-blurred.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="true"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="1.466344"
+     inkscape:cx="166.05926"
+     inkscape:cy="131.61987"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-1088"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Blur"
+       id="filter3290"
+       x="-0.25474527"
+       y="-0.25474184"
+       width="1.5094915"
+       height="1.5094232">
+      <feGaussianBlur
+         stdDeviation="5 5"
+         result="blur"
+         id="feGaussianBlur3288" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Blur"
+       id="filter1002"
+       x="-0.02889952"
+       y="-0.030219161"
+       width="1.057799"
+       height="1.0604383">
+      <feGaussianBlur
+         stdDeviation="2.5 2.5"
+         result="blur"
+         id="feGaussianBlur1000" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="star"
+       style="fill:#ffffff;stroke-width:0.999999;stroke-linecap:round;stroke-dasharray:3.99999, 3.99999;filter:url(#filter1002)"
+       id="path1036"
+       inkscape:flatsided="false"
+       sodipodi:sides="5"
+       sodipodi:cx="49.101711"
+       sodipodi:cy="53.19352"
+       sodipodi:r1="109.11491"
+       sodipodi:r2="54.557453"
+       sodipodi:arg1="0.92729522"
+       sodipodi:arg2="1.5556137"
+       inkscape:rounded="0.08"
+       inkscape:randomized="0"
+       d="m 114.57065,140.48544 c -4.6374,3.47806 -58.844558,-32.82876 -64.640645,-32.74076 -5.796088,0.088 -58.8759693,38.02385 -63.616832,34.68819 -4.740862,-3.33565 13.03804242,-66.109148 11.1632539,-71.594359 -1.8747886,-5.485212 -54.3564999,-44.24436 -52.6491099,-49.783963 1.70739,-5.539602 66.902516,-8.028936 71.53992,-11.5069893 4.637405,-3.4780536 25.281805,-65.3683627 31.077893,-65.4563697 5.796087,-0.08801 28.309986,61.146996 33.050848,64.4826521 4.740862,3.3356559 69.981512,3.8444899 71.856302,9.3297019 1.87479,5.485211 -49.40598,45.819858 -51.11337,51.35946 -1.707391,5.539602 17.96915,67.744387 13.33174,71.222437 z"
+       transform="matrix(0.23986459,0,0,0.23986459,22.210566,23.464733)"
+       inkscape:transform-center-x="0.12278936"
+       inkscape:transform-center-y="-2.3822126" />
+  </g>
+</svg>

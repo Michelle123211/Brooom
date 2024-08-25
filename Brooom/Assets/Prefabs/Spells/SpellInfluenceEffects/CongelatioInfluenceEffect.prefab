@@ -1,21 +1,16 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1619769223105529549
+--- !u!1001 &7860527401399891100
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 141928191345706125, guid: ecb08d184c6f68341b7cacab055c09c5,
-        type: 3}
-      propertyPath: spellIdentifier
-      value: Velox
-      objectReference: {fileID: 0}
     - target: {fileID: 2280600211358353912, guid: ecb08d184c6f68341b7cacab055c09c5,
         type: 3}
       propertyPath: m_Name
-      value: VeloxInfluenceEffect
+      value: CongelatioInfluenceEffect
       objectReference: {fileID: 0}
     - target: {fileID: 2280600211358353915, guid: ecb08d184c6f68341b7cacab055c09c5,
         type: 3}
@@ -76,12 +71,12 @@ PrefabInstance:
         type: 3}
       propertyPath: UVModule.sprites.Array.data[0].sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 9cdf28bb22ec2ac459895759fbb551e7,
+      objectReference: {fileID: 21300000, guid: 2126082d0381c6a4186e77b13ec4e3d9,
         type: 3}
     - target: {fileID: 3314356971586026169, guid: ecb08d184c6f68341b7cacab055c09c5,
         type: 3}
       propertyPath: spellIdentifier
-      value: Velox
+      value: Congelatio
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecb08d184c6f68341b7cacab055c09c5, type: 3}

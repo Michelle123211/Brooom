@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733335"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
+   sodipodi:docname="materia-muri-particle-blurred.svg"
+   inkscape:export-filename="C:\Diplomka\Brooom\Brooom\Sprites\Particles\materia-muri-particle-blurred.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="true"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="1.466344"
+     inkscape:cx="166.05926"
+     inkscape:cy="131.61987"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Blur"
+       id="filter3290"
+       x="-0.25474527"
+       y="-0.25474184"
+       width="1.5094915"
+       height="1.5094232">
+      <feGaussianBlur
+         stdDeviation="5 5"
+         result="blur"
+         id="feGaussianBlur3288" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Blur"
+       id="filter831"
+       x="-0.053296282"
+       y="-0.066839245"
+       width="1.1065926"
+       height="1.1336785">
+      <feGaussianBlur
+         stdDeviation="1 1"
+         result="blur"
+         id="feGaussianBlur829" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1703"
+       transform="matrix(1.0921595,0,0,1.0921595,-3.6773312,-3.7730259)"
+       style="filter:url(#filter831)">
+      <g
+         id="g1670"
+         transform="translate(0,0.23600788)">
+        <rect
+           style="fill:#ffffff;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:1.05833, 1.05833"
+           id="rect1471"
+           width="20.93074"
+           height="9.924058"
+           x="11.860288"
+           y="29.265512"
+           ry="3.0674469" />
+        <rect
+           style="fill:#ffffff;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:1.05833, 1.05833"
+           id="rect1471-9"
+           width="20.93074"
+           height="9.924058"
+           x="35.960831"
+           y="29.265512"
+           ry="3.0674469" />
+      </g>
+      <rect
+         style="fill:#ffffff;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:1.05833, 1.05833"
+         id="rect1471-3"
+         width="20.93074"
+         height="9.924058"
+         x="23.910559"
+         y="16.510025"
+         ry="3.0674469" />
+      <rect
+         style="fill:#ffffff;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-dasharray:1.05833, 1.05833"
+         id="rect1471-39"
+         width="20.93074"
+         height="9.924058"
+         x="23.910559"
+         y="42.493015"
+         ry="3.0674469" />
+    </g>
+  </g>
+</svg>

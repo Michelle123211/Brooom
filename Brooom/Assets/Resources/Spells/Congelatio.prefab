@@ -93,6 +93,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Congelatio
       objectReference: {fileID: 0}
+    - target: {fileID: 4136099673412023248, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2126082d0381c6a4186e77b13ec4e3d9,
+        type: 3}
     - target: {fileID: 4386988748926995188, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
       propertyPath: spellIdentifier
@@ -193,7 +199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectDuration: 4
-  spellInfluenceVisualEffectPrefab: {fileID: 0}
+  spellInfluenceVisualEffectPrefab: {fileID: 8264217232118660448, guid: 0a2f44c53eaee16458531cea152102a5,
+    type: 3}
   isPositive: 0
 --- !u!114 &3832833945539866151 stripped
 MonoBehaviour:
