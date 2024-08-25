@@ -40,10 +40,32 @@ public class SpellController : MonoBehaviour {
 			SpellInRace currentSpell = spellSlots[selectedSpell];
 			if (currentSpell.Charge >= 1 && currentMana >= currentSpell.Spell.ManaCost) {
 				// TODO: Pass correct parameters (source, target)
-				if (currentSpell.Spell.Category == SpellCategory.SelfCast)
+				if (currentSpell.Spell.Category == SpellCategory.SelfCast) {
 					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject = gameObject });
-				else
+				} else if (currentSpell.Spell.Category == SpellCategory.ObjectApparition) {
 					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetPosition = transform.position + transform.forward * 30 });
+				} else if (currentSpell.Spell.Category == SpellCategory.OpponentCurse) {
+					// Find tis racer
+					RacerRepresentation thisRacer = null;
+					foreach (var racer in RaceController.Instance.racers) {
+						if (racer.characterController.gameObject == gameObject) {
+							thisRacer = racer;
+							break;
+						}
+					}
+					// Find the closest racer in front of this racer
+					float minDist = float.MaxValue;
+					CharacterMovementController bestTarget = null;
+					foreach (var racer in RaceController.Instance.racers) {
+						float dist = Vector3.Distance(racer.characterController.transform.position, transform.position);
+						if (racer != thisRacer && dist < minDist && RaceController.Instance.CompareRacers(racer, thisRacer) < 0) {
+							minDist = dist;
+							bestTarget = racer.characterController;
+						}
+					}
+					if (bestTarget != null)
+						currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject =  bestTarget.gameObject });
+				}
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
 				onSpellCasted?.Invoke(selectedSpell);

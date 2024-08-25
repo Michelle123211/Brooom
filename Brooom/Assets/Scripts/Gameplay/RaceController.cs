@@ -100,6 +100,30 @@ public class RaceController : MonoBehaviour {
         }
     }
 
+    public int CompareRacers(RacerRepresentation x, RacerRepresentation y) {
+        // If both have finish time, the better one should be first
+        if (x.state.HasFinished && y.state.HasFinished)
+            return (x.state.finishTime + x.state.timePenalization).CompareTo(y.state.finishTime + y.state.timePenalization);
+        // The one having finish time should be first
+        if (x.state.HasFinished && !y.state.HasFinished) return -1; // x is first
+        if (!x.state.HasFinished && y.state.HasFinished) return 1; // y is first
+        // The one having next hoop with higher index should be first
+        if (x.state.trackPointToPassNext != y.state.trackPointToPassNext)
+            return y.state.trackPointToPassNext.CompareTo(x.state.trackPointToPassNext);
+        // The one closer to the hoop or finish should be first
+        float xDistance, yDistance;
+        if (x.state.trackPointToPassNext >= level.track.Count) { // the finish line is next
+            // Get distance on the shortest line to the finish
+            xDistance = Mathf.Abs(level.finish.transform.InverseTransformPoint(x.state.transform.position).z);
+            yDistance = Mathf.Abs(level.finish.transform.InverseTransformPoint(y.state.transform.position).z);
+        } else {
+            // Get distance to the next hoop
+            xDistance = Vector3.Distance(x.state.transform.position, level.track[x.state.trackPointToPassNext].position);
+            yDistance = Vector3.Distance(y.state.transform.position, level.track[y.state.trackPointToPassNext].position);
+        }
+        return xDistance.CompareTo(yDistance);
+    }
+
     private void StartTraining() {
         State = RaceState.Training;
         // Hide bonuses
@@ -209,29 +233,7 @@ public class RaceController : MonoBehaviour {
 
     protected void ComputeRacerPlaces() {
         // Sort the racers according to their place
-        racers.Sort((x, y) => {
-            // If both have finish time, the better one should be first
-            if (x.state.HasFinished && y.state.HasFinished)
-                return (x.state.finishTime + x.state.timePenalization).CompareTo(y.state.finishTime + y.state.timePenalization);
-            // The one having finish time should be first
-            if (x.state.HasFinished && !y.state.HasFinished) return -1; // x is first
-            if (!x.state.HasFinished && y.state.HasFinished) return 1; // y is first
-            // The one having next hoop with higher index should be first
-            if (x.state.trackPointToPassNext != y.state.trackPointToPassNext)
-                return y.state.trackPointToPassNext.CompareTo(x.state.trackPointToPassNext);
-            // The one closer to the hoop or finish should be first
-            float xDistance, yDistance;
-            if (x.state.trackPointToPassNext >= level.track.Count) { // the finish line is next
-                // Get distance on the shortest line to the finish
-                xDistance = Mathf.Abs(level.finish.transform.InverseTransformPoint(x.state.transform.position).z);
-                yDistance = Mathf.Abs(level.finish.transform.InverseTransformPoint(y.state.transform.position).z);
-            } else {
-                // Get distance to the next hoop
-                xDistance = Vector3.Distance(x.state.transform.position, level.track[x.state.trackPointToPassNext].position);
-                yDistance = Vector3.Distance(y.state.transform.position, level.track[y.state.trackPointToPassNext].position);
-            }
-            return xDistance.CompareTo(yDistance);
-        });
+        racers.Sort((x, y) => CompareRacers(x, y));
         // Let them know what their place is
         for (int i = 0; i < racers.Count; i++) {
             racers[i].state.UpdatePlace(i + 1);
