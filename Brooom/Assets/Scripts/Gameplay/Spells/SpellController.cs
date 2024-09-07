@@ -64,7 +64,9 @@ public class SpellController : MonoBehaviour {
 						}
 					}
 					if (bestTarget != null)
-						currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject =  bestTarget.gameObject });
+						currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject = bestTarget.gameObject });
+				} else if (currentSpell.Spell.Category == SpellCategory.EnvironmentManipulation) {
+					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetPosition = transform.position + transform.forward * 30 });
 				}
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted

@@ -109,6 +109,11 @@ PrefabInstance:
       propertyPath: actualSpellEffect
       value: 
       objectReference: {fileID: 675313897571213712}
+    - target: {fileID: 7172474936520375527, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: m_MinVertexDistance
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 8370288038926683854, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
       propertyPath: m_RootOrder

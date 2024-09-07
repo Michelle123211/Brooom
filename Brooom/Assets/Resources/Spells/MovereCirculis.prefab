@@ -114,6 +114,11 @@ PrefabInstance:
       propertyPath: actualSpellEffect
       value: 
       objectReference: {fileID: 1463193121443678097}
+    - target: {fileID: 7172474936520375527, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
+      propertyPath: m_MinVertexDistance
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 8370288038926683854, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
       propertyPath: m_RootOrder
@@ -201,8 +206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceece623f13668948942ca77c0fdc287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.5
-  frequency: 2
+  radius: 0.2
+  frequency: 1
   minRadius: 0
   pulseFrequency: 1
 --- !u!114 &1463193121443678097
