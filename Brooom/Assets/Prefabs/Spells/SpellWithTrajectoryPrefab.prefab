@@ -4913,12 +4913,12 @@ TrailRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 0
+    numCapVertices: 5
     alignment: 0
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.05
   m_Autodestruct: 0
   m_Emitting: 1
 --- !u!1 &565052003317795141
@@ -9934,21 +9934,6 @@ PrefabInstance:
     - target: {fileID: 1402735234152864308, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1402735234152864308, guid: 37a7184ac9c9925488a0a7e3237d7faf,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1402735234152864308, guid: 37a7184ac9c9925488a0a7e3237d7faf,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1402735234152864308, guid: 37a7184ac9c9925488a0a7e3237d7faf,
-        type: 3}
-      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1402735234152864308, guid: 37a7184ac9c9925488a0a7e3237d7faf,
