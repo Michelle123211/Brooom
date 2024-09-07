@@ -65,6 +65,7 @@ public class SpellController : MonoBehaviour {
 					}
 					if (bestTarget != null)
 						currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject = bestTarget.gameObject });
+					else Debug.Log("No suitable target racer found.");
 				} else if (currentSpell.Spell.Category == SpellCategory.EnvironmentManipulation) {
 					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetPosition = transform.position + transform.forward * 30 });
 				}

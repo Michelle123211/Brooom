@@ -5084,8 +5084,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particles: {fileID: 1140474342695341087}
-  hasFixedDuration: 0
-  duration: 0
+  hasFixedDuration: 1
+  duration: -1
 --- !u!198 &1140474342695341087
 ParticleSystem:
   m_ObjectHideFlags: 0
