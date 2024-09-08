@@ -185,7 +185,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 		// Spell commands
 		InitializeSpellCommand(); // spell - unlock all spells or only the given one
-		InitializeManaCommand(); // TODO: mana - change mana amount
+		InitializeManaCommand(); // mana - change mana amount or enable/disable unlimited mana, available only in Race
 		InitializeRechargeCommand(); // TODO: recharge - change spell cooldown
 
 		// Race commands
@@ -360,7 +360,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	private void InitializeSpellCommand() {
 		// spell - unlock all spells or only the given one
 		// Get list of available spells
-		StringBuilder helpMessage = new StringBuilder($"Unlocks all spells or only the given one. Usage 'spell all' or 'spell <spellIdentifier>', e.g. 'spell {SpellManager.Instance.AllSpells[0].Identifier}'.\nAvailable spells: ");
+		StringBuilder helpMessage = new StringBuilder($"Unlocks all spells or only the given one. Usage: 'spell all' or 'spell <spellIdentifier>', e.g. 'spell {SpellManager.Instance.AllSpells[0].Identifier}'.\nAvailable spells: ");
 		for (int i = 0; i < SpellManager.Instance.AllSpells.Count; i++) {
 			helpMessage.Append(SpellManager.Instance.AllSpells[i].Identifier);
 			if (i < SpellManager.Instance.AllSpells.Count - 1)
@@ -395,7 +395,52 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		}));
 	}
-	private void InitializeManaCommand() { // TODO
+	private void InitializeManaCommand() {
+		// mana - change mana amount or enable/disable unlimited mana, available only in Race
+		void FillManaUp(int currentValue) {
+			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+			if (playerSpellController != null) {
+				if (playerSpellController.currentMana < playerSpellController.maxMana)
+					playerSpellController.ChangeManaAmount(playerSpellController.maxMana - currentValue);
+			}
+		}
+		commands.Add(new CheatCommand("mana", "Changes mana amount or enables/disables unlimited mana. Usage: 'mana <amount>' for a specific amount, e.g. 'mana 80', or 'mana max' for maximum amount, or 'mana off' or 'mana on' to enable/disable unlimited mana.",
+			(commandParts) => {
+				bool success = false;
+				string message = string.Empty;
+				SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+				// Handle errors
+				if (commandParts.Length != 2) message = "Invalid number of parameters, one is needed.";
+				else if (playerSpellController == null) message = "A suitable target has not been found.";
+				else if (commandParts[1] == "on") {
+					// Disable unlimited mana
+					playerSpellController.onManaAmountChanged -= FillManaUp;
+					return new CommandParseResult { isSuccessful = true, message = "Unlimited mana has been disabled." };
+				} else if (commandParts[1] == "off") {
+					// Enable unlimited mana
+					playerSpellController.onManaAmountChanged += FillManaUp;
+					FillManaUp(playerSpellController.currentMana);
+					return new CommandParseResult { isSuccessful = true, message = "Unlimited mana has been enabled." };
+				} else if (commandParts[1] == "max") {
+					// Fill mana up
+					FillManaUp(playerSpellController.currentMana);
+					return new CommandParseResult { isSuccessful = true, message = "Mana has been filled up." };
+				} else {
+					// Change mana amount
+					if (int.TryParse(commandParts[1], out int manaAmount)) {
+						playerSpellController.ChangeManaAmount(manaAmount - playerSpellController.currentMana);
+						return new CommandParseResult { isSuccessful = true, message = $"Mana amount has been changed to {manaAmount}." };
+					} else {
+						return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, amount must be an integer." };
+					}
+				}
+				// Return the result
+				return new CommandParseResult {
+					isSuccessful = success,
+					message = message
+				};
+			},
+			enabledScenes: new Scene[] { Scene.Race }));
 	}
 	private void InitializeRechargeCommand() { // TODO
 	}
@@ -526,6 +571,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		foreach (var command in initializationCommands) {
 			ProcessCommand(command);
 		}
+		Utils.TweenAwareDisable(messageArea); // hide message area
 	}
 
 	private void ProcessSceneInitializationCommands() {
@@ -538,6 +584,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				}
 			}
 		}
+		Utils.TweenAwareDisable(messageArea); // hide message area
 	}
 
 	private void Update() {
