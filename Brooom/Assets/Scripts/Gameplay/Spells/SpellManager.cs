@@ -24,6 +24,10 @@ public class SpellManager : MonoBehaviourSingleton<SpellManager>, ISingleton {
 			return spell;
 	}
 
+	public bool CheckIfSpellExists(string identifier) {
+		return spellsDictionary.TryGetValue(identifier, out Spell _);
+	}
+
 	private void LoadAllSpells() {
 		allSpells = new List<Spell>();
 		spellsDictionary = new Dictionary<string, Spell>();

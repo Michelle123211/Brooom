@@ -165,29 +165,30 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		commandField.caretPosition = commandField.text.Length;
 	}
 
+	#region Initialization
 	private void InitializeCommandList() {
 		commands = new List<CheatCommand>();
-		// TODO
-		// coins - change coins amount
-		commands.Add(new CheatCommand("coins", "Adds this amount of coins to the current amount. Usage: 'coins <amount>', e.g. 'coins 1000', 'coins -100'.", (commandParts) => {
-			bool success = false;
-			string message = string.Empty;
-			// Handle errors
-			if (commandParts.Length != 2) message = "Invalid number of parameters, one is required.";
-			else if (!int.TryParse(commandParts[1], out int amount)) message = "Invalid parameter, an integer is required.";
-			// Perform the command
-			else {
-				int oldValue = PlayerState.Instance.Coins;
-				PlayerState.Instance.ChangeCoinsAmount(amount);
-				success = true;
-				message = $"The amount of coins has been changed from {oldValue} to {PlayerState.Instance.Coins}.";
-			}
-			// Return the result
-			return new CommandParseResult {
-				isSuccessful = success,
-				message = message
-			};
-		}));
+
+		// Basic commands
+		InitializeSceneCommand(); // scene - change scene
+		InitializeStatsCommand(); // stats - change player statistics values
+
+		// Shop commands
+		InitializeCoinsCommand(); // coins - change coins amount
+		InitializeUpgradeCommand(); // upgrade - upgrade the broom, available in Main Menu, Tutorial, Player Overview, Race and Testing Track
+
+		// Spell commands
+		InitializeSpellCommand(); // spell - unlock all spells or only the given one
+		InitializeManaCommand(); // TODO: mana - change mana amount
+		InitializeRechargeCommand(); // TODO: recharge - change spell cooldown
+
+		// Race commands
+		InitializeSpeedCommand(); // speed - change maximum speed, available only in Race and Testing Track
+		InitializeStartCommand(); // start - quick race start, available only in Race
+		InitializeFinishCommand(); // finish - quick race finish, available only in Race
+	}
+
+	private void InitializeSceneCommand() {
 		// scene - change scene
 		commands.Add(new CheatCommand("scene", "Changes the current scene to the given one. Usage: 'scene <sceneName>', e.g. 'scene PlayerOverview'.\nAvailable scenes: MainMenu, CharacterCreation, Tutorial, Race, PlayerOverview, TestingTrack, Ending, Start, Exit.", (commandParts) => {
 			bool success = false;
@@ -207,6 +208,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		}));
+	}
+	private void InitializeStatsCommand() {
 		// stats - change player statistics values
 		commands.Add(new CheatCommand("stats", "Changes values of individual player statistics or all of them at once. Statistics not specified will be left without change. Usage: 'stats all=<0-100>', e.g. 'stats all=40', or 'stats (<statLetter>=<0-100>){1,5}', e.g. 'stats m=45', 'stats e=83 p=21'.\nAvailable stats: e (endurance), s (speed), d (dexterity), p (precision), m (magic).", (commandParts) => {
 			// Handle errors
@@ -279,8 +282,33 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				};
 			}
 		}));
+	}
+
+	private void InitializeCoinsCommand() {
+		// coins - change coins amount
+		commands.Add(new CheatCommand("coins", "Adds this amount of coins to the current amount. Usage: 'coins <amount>', e.g. 'coins 1000', 'coins -100'.", (commandParts) => {
+			bool success = false;
+			string message = string.Empty;
+			// Handle errors
+			if (commandParts.Length != 2) message = "Invalid number of parameters, one is required.";
+			else if (!int.TryParse(commandParts[1], out int amount)) message = "Invalid parameter, an integer is required.";
+			// Perform the command
+			else {
+				int oldValue = PlayerState.Instance.Coins;
+				PlayerState.Instance.ChangeCoinsAmount(amount);
+				success = true;
+				message = $"The amount of coins has been changed from {oldValue} to {PlayerState.Instance.Coins}.";
+			}
+			// Return the result
+			return new CommandParseResult {
+				isSuccessful = success,
+				message = message
+			};
+		}));
+	}
+	private void InitializeUpgradeCommand() {
 		// upgrade - upgrade the broom
-		commands.Add(new CheatCommand("upgrade", "Unlocks all broom upgrades or only levels up the given one. Usage: 'unlock all' or 'unlock <upgradeIdentifier>', e.g. 'unlock Speed'.\nAvailable upgrades: Speed, Control, Elevation..", (commandParts) => {
+		commands.Add(new CheatCommand("upgrade", "Unlocks all broom upgrades or only levels up the given one. Usage: 'upgrade all' or 'upgrade <upgradeIdentifier>', e.g. 'upgrade Speed'.\nAvailable upgrades: Speed, Control, Elevation.", (commandParts) => {
 			bool success = false;
 			string message = string.Empty;
 			// Handle errors
@@ -321,21 +349,33 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.MainMenu, Scene.Tutorial })); // broom must be available
-		// PARTIAL: spell - unlock all spells or only the given one
-		commands.Add(new CheatCommand("spell", "Unlocks all spells or only the given one. Usage 'spell all' or 'spell <spellIdentifier>'.\nAvailable spells: .", (commandParts) => {
+	}
+
+	private void InitializeSpellCommand() {
+		// spell - unlock all spells or only the given one
+		// Get list of available spells
+		StringBuilder helpMessage = new StringBuilder($"Unlocks all spells or only the given one. Usage 'spell all' or 'spell <spellIdentifier>', e.g. 'spell {SpellManager.Instance.AllSpells[0].Identifier}'.\nAvailable spells: ");
+		for (int i = 0; i < SpellManager.Instance.AllSpells.Count; i++) {
+			helpMessage.Append(SpellManager.Instance.AllSpells[i].Identifier);
+			if (i < SpellManager.Instance.AllSpells.Count - 1)
+				helpMessage.Append(", ");
+		}
+		helpMessage.Append(".");
+		// Add command
+		commands.Add(new CheatCommand("spell", helpMessage.ToString(), (commandParts) => {
 			bool success = false;
 			string message = string.Empty;
 			// Handle errors
 			if (commandParts.Length != 2) message = "Invalid number of parameters, one is needed.";
 			else if (commandParts[1] == "all") {
 				// Unlock all spells
-				foreach (var spell in PlayerState.Instance.spellAvailability) {
-					if (!spell.Value) PlayerState.Instance.UnlockSpell(spell.Key);
+				foreach (var spell in SpellManager.Instance.AllSpells) {
+					PlayerState.Instance.UnlockSpell(spell.Identifier);
 				}
 				return new CommandParseResult { isSuccessful = true, message = "All spells have been unlocked." };
 			} else {
 				// Unlock only the given spell
-				if (PlayerState.Instance.spellAvailability.ContainsKey(commandParts[1])) { // if the spell exists
+				if (SpellManager.Instance.CheckIfSpellExists(commandParts[1])) { // if the spell exists
 					PlayerState.Instance.UnlockSpell(commandParts[1]);
 					return new CommandParseResult { isSuccessful = true, message = $"Spell '{commandParts[1]}' has been unlocked." };
 				} else {
@@ -348,6 +388,13 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		}));
+	}
+	private void InitializeManaCommand() { // TODO
+	}
+	private void InitializeRechargeCommand() { // TODO
+	}
+
+	private void InitializeSpeedCommand() {
 		// speed - change maximum speed, available only in Race
 		commands.Add(new CheatCommand("speed", "Changes the maximum speed. Usage: 'speed <value>', e.g. 'speed 30', 'speed 10'.", (commandParts) => {
 			bool success = false;
@@ -371,6 +418,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		},
 		enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack }));
+	}
+	private void InitializeStartCommand() {
 		// start - quick race start, available only in Race
 		commands.Add(new CheatCommand("start", "Immediately goes from training to race. Usage: 'start'.", (commandParts) => {
 			bool success = false;
@@ -395,6 +444,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		},
 		enabledScenes: new Scene[] { Scene.Race }));
+	}
+	private void InitializeFinishCommand() {
 		// finish - quick race finish, available only in Race
 		commands.Add(new CheatCommand("finish", "Immediately finishes the race with the given parameters. Usage: 'finish time=<finishTimeInSeconds> (missed=<numberOfHoopsMissed>)?', e.g. 'finish time=65', 'finish time=137 missed=3'.", (commandParts) => {
 			bool success = false;
@@ -463,6 +514,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		},
 		enabledScenes: new Scene[] { Scene.Race }));
 	}
+	#endregion
 
 	private void Update() {
 		if (cheatsEnabled) {
