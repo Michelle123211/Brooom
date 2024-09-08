@@ -6,27 +6,33 @@ using DG.Tweening;
 
 public class PlayerCameraController : MonoBehaviour {
     [Tooltip("How long in seconds does it take to ease in the sensitivity after start (to prevent quick jump at the beginning).")]
-    public float sensitivityEaseInDuration = 1f;
+    [SerializeField] float sensitivityEaseInDuration = 1f;
+
     [Header("Rotation limits")]
     [Tooltip("The maximum angle (in absolute value) the camera may rotate in the X axis.")]
-    public float maxAngleX = 60;
+    [SerializeField] float maxAngleX = 60;
     [Tooltip("The maximum angle (in absolute value) the camera may rotate in the Y axis.")]
-    public float maxAngleY = 120;
+    [SerializeField] float maxAngleY = 120;
+
     [Header("Zoom")]
     [Tooltip("Default FOV.")]
-    public float defaultFOV = 60;
+    [SerializeField] float defaultFOV = 60;
     [Tooltip("FOV used when zoomed in.")]
-    public float zoomedInFOV = 55;
+    [SerializeField] float zoomedInFOV = 55;
     [Tooltip("How long in seconds it takes to zoom in/out.")]
-    public float zoomDuration = 1f;
+    [SerializeField] float zoomDuration = 1f;
+
+    [Header("Reset")]
+    [Tooltip("How long in seconds it takes for the camera to tween into its default orientation.")]
+    [SerializeField] float resetDuration = 0.4f;
 
     [Header("Views")]
     [Tooltip("A virtual camera looking back behind the player.")]
-    public CinemachineVirtualCamera backVirtualCamera;
+    [SerializeField] CinemachineVirtualCamera backVirtualCamera;
     [Tooltip("Whether it is possible to switch between different views (except the back view which is always enabled).")]
-    public bool enableViewSwitch = false;
+    [SerializeField] bool enableViewSwitch = false;
     [Tooltip("A list of virtual cameras to switch between (in the exact order, index 0 is the default one).")]
-    public List<CinemachineVirtualCamera> virtualCameras;
+    [SerializeField] List<CinemachineVirtualCamera> virtualCameras;
 
 
     // Current rotation of the camera
@@ -41,6 +47,8 @@ public class PlayerCameraController : MonoBehaviour {
     private CinemachineVirtualCamera currentCamera;
     private int currentCameraIndex = 0;
     private bool isBackViewOn = false;
+
+    private bool isResetting = false;
 
     // Resets rotations of all cameras available
     public void ResetCameras(bool rotationOnly = false) {
@@ -100,6 +108,20 @@ public class PlayerCameraController : MonoBehaviour {
         }
     }
 
+    public void ResetCameraIfNecessary() {
+        if (isResetting || !InputManager.Instance.GetBoolValue("ResetView"))
+            return;
+        // Reset rotation
+        isResetting = true;
+        currentSensitivity = 0; // disable camera movement while the tween is running
+        foreach (var camera in virtualCameras) {
+            DOTween.To(() => rotationX, x => rotationX = x, 0f, resetDuration).SetEase(Ease.InOutCubic);
+            DOTween.To(() => rotationY, y => rotationY = y, 0f, resetDuration).SetEase(Ease.InOutCubic)
+                .OnComplete(() => { currentSensitivity = SettingsUI.mouseSensitivity; isResetting = false; }); // enable camera movement again
+        }
+        // Back view camera (backVirtualCamera) cannot be rotated so no reset is needed
+    }
+
     // Start is called before the first frame update
     void Start() {
         // Lock the cursor to the center of the screen and hide it
@@ -124,7 +146,9 @@ public class PlayerCameraController : MonoBehaviour {
 
     void LateUpdate()
     {
+        // React to player input
         SwitchCameraIfNecessary();
+        ResetCameraIfNecessary();
 
         // Back view camera cannot be rotated
         if (isBackViewOn) return;

@@ -78,6 +78,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "ResetView",
+                    "type": "Button",
+                    "id": "4731a9d7-b442-4808-b6ce-96094082f93d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Restart",
                     "type": "Button",
                     "id": "084aa1a0-2d55-4091-bc1c-a021e5ea7523",
@@ -292,6 +301,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "BackView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "faa61d73-1f26-4c6f-ab66-3a8797e92b8c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ResetView",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
