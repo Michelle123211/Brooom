@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	public string currentScene = Scene.Start.ToString();
 
 	[SerializeField] private Animator animator;
+
+	public event Action onSceneLoaded;
 
 	// Loads scene with the given name (using fade in/out and loading screen) - one parameter variant to be used in UnityEvent
 	public void LoadScene(string sceneName) {
@@ -55,6 +58,8 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		}
 		// Reset previous LoadingIn trigger in case it stayed set
 		animator.ResetTrigger("LoadingIn");
+		// Call registered callbacks
+		onSceneLoaded?.Invoke();
 	}
 
 	public void InitializeSingleton() {

@@ -15,6 +15,12 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	[Tooltip("How many previous commands are remembered.")]
 	[SerializeField] int historyLength;
 
+	[Space]
+	[Tooltip("Cheats which will be automatically processed when the game is started.")]
+	[SerializeField] List<string> initializationCommands;
+	[Tooltip("Cheats which will be automatically processed whenever the corresponding scene is loaded.")]
+	[SerializeField] List<CheatsForSceneInitialization> sceneInitializationCommands;
+
 	[Header("UI elements")]
 	[SerializeField] TMP_InputField commandField;
 	[SerializeField] TextMeshProUGUI messageField;
@@ -516,6 +522,24 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 	#endregion
 
+	private void ProcessInitializationCommands() {
+		foreach (var command in initializationCommands) {
+			ProcessCommand(command);
+		}
+	}
+
+	private void ProcessSceneInitializationCommands() {
+		// Process commands for the current scene
+		string currentScene = SceneLoader.Instance.currentScene;
+		foreach (var sceneCommands in sceneInitializationCommands) {
+			if (sceneCommands.scene.ToString() == currentScene) {
+				foreach (var command in sceneCommands.commands) {
+					ProcessCommand(command);
+				}
+			}
+		}
+	}
+
 	private void Update() {
 		if (cheatsEnabled) {
 			// Handle input
@@ -549,6 +573,9 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		foreach (var command in commands) {
 			commandsDictionary.Add(command.commandName, command);
 		}
+		// Register callbacks
+		Messaging.RegisterForMessage("GameStarted", ProcessInitializationCommands);
+		SceneLoader.Instance.onSceneLoaded += ProcessSceneInitializationCommands;
 	}
 
 	protected override void SetSingletonOptions() {
@@ -595,4 +622,10 @@ public class CheatCommand {
 public class CommandParseResult {
 	public bool isSuccessful;
 	public string message;
+}
+
+[System.Serializable]
+public struct CheatsForSceneInitialization {
+	public Scene scene;
+	public List<string> commands;
 }

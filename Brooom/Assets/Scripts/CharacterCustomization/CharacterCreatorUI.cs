@@ -39,6 +39,7 @@ public class CharacterCreatorUI : MonoBehaviour
         PlayerState.Instance.CharacterCustomization = currentCustomization;
         // Set flag that the game was started
         PlayerPrefs.SetString("GameStarted", "true");
+        Messaging.SendMessage("GameStarted");
         // Change scene
         SceneLoader.Instance.LoadScene(Scene.Tutorial);
     }

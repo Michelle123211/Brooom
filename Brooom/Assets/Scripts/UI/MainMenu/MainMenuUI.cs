@@ -12,7 +12,7 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] GameObject startButtonText;
     [Tooltip("Text of the button to continue playing from previously saved state which is hidden when no saved state exists.")]
     [SerializeField] GameObject continueButtonText;
-    [Tooltip("Button to start the game again from the beginning (and not prebiously saved state)  which is hidden when no saved state exists.")]
+    [Tooltip("Button to start the game again from the beginning (and not previously saved state) which is hidden when no saved state exists.")]
     [SerializeField] GameObject startAgainButton;
 
     private bool saveExists = false;
@@ -21,6 +21,7 @@ public class MainMenuUI : MonoBehaviour
         // If there is any previously saved state, load it here
         if (saveExists) {
             PlayerState.Instance.LoadSavedState();
+            Messaging.SendMessage("GameStarted");
             // Load the PlayerOverview scene
             SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
         } else {

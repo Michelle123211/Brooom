@@ -182,6 +182,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cheatsEnabled: 1
   historyLength: 10
+  initializationCommands: []
+  sceneInitializationCommands:
+  - scene: 3
+    commands:
+    - start
   commandField: {fileID: 1812760457202051083}
   messageField: {fileID: 5562000415053220144}
   messageArea: {fileID: 4696947064982229980}
