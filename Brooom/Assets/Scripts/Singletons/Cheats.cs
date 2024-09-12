@@ -186,7 +186,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		// Spell commands
 		InitializeSpellCommand(); // spell - unlock all spells or only the given one
 		InitializeManaCommand(); // mana - change mana amount or enable/disable unlimited mana, available only in Race
-		InitializeRechargeCommand(); // TODO: recharge - change spell cooldown
+		InitializeRechargeCommand(); // recharge - change spells' charge or enable/disable cooldown, available only in Race
 
 		// Race commands
 		InitializeSpeedCommand(); // speed - change maximum speed, available only in Race and Testing Track
@@ -397,20 +397,16 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 	private void FillManaUp() {
 		SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
-		if (playerSpellController != null) {
-			if (playerSpellController.CurrentMana < playerSpellController.MaxMana) {
-				playerSpellController.ChangeManaAmount(playerSpellController.MaxMana - playerSpellController.CurrentMana);
-			}
+		if (playerSpellController.CurrentMana < playerSpellController.MaxMana) {
+			playerSpellController.ChangeManaAmount(playerSpellController.MaxMana - playerSpellController.CurrentMana);
 		}
 	}
 	private void InitializeManaCommand() {
 		// mana - change mana amount or enable/disable unlimited mana, available only in Race
-		void ScheduleFillingManaUp(int currentValue) {
+		void ScheduleFillingManaUp(int currentManaValue) { // the parameter must be there because this method is used as a callback on mana value change
 			// Schedule filling mana up so that it is done independently of the current callbacks being invoked
 			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
-			if (playerSpellController != null) {
-				Invoke(nameof(FillManaUp), 0.1f);
-			}
+			Invoke(nameof(FillManaUp), 0.1f);
 		}
 		commands.Add(new CheatCommand("mana", "Changes mana amount or enables/disables unlimited mana. Usage: 'mana <amount>' for a specific amount, e.g. 'mana 80', or 'mana max' for maximum amount, or 'mana off' or 'mana on' to enable/disable unlimited mana.",
 			(commandParts) => {
@@ -440,7 +436,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 						playerSpellController.ChangeManaAmount(manaAmount - playerSpellController.CurrentMana);
 						return new CommandParseResult { isSuccessful = true, message = $"Mana amount has been changed to {manaAmount}." };
 					} else {
-						return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, amount must be an integer." };
+						return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter '{commandParts[1]}', amount must be an integer." };
 					}
 				}
 				// Return the result
@@ -451,7 +447,44 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			},
 			enabledScenes: new Scene[] { Scene.Race }));
 	}
-	private void InitializeRechargeCommand() { // TODO
+	private void InitializeRechargeCommand() {
+		// recharge - change spells' charge or enable/disable cooldown, available only in Race
+		void RechargeAllSpells(int spellCastedIndex) { // the parameter must be there because this method is used as a callback on spell casted
+			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+			playerSpellController.RechargeAllSpells();
+		}
+		commands.Add(new CheatCommand("recharge", "Changes spells' charge or enables/disables cooldown. Usage: 'recharge all' to immediately recharge all spells, or 'recharge on' or 'recharge off' to enable/disable spells' cooldown.",
+			(commandParts) => {
+				bool success = false;
+				string message = string.Empty;
+				SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+				// Handle errors
+				if (commandParts.Length != 2) message = "Invalid number of parameters, one is needed.";
+				else if (playerSpellController == null) message = "A suitable target has not been found.";
+				else if (commandParts[1] == "all") {
+					// Immediately recharge all spells
+					playerSpellController.RechargeAllSpells();
+					return new CommandParseResult { isSuccessful = true, message = "All spells have been recharged." };
+				} else if (commandParts[1] == "on") {
+					// Enable spells' cooldown
+					playerSpellController.onSpellCasted -= RechargeAllSpells;
+					return new CommandParseResult { isSuccessful = true, message = "Spells' cooldown has been enabled." };
+				} else if (commandParts[1] == "off") {
+					// Disable spells' cooldown
+					playerSpellController.onSpellCasted -= RechargeAllSpells; // try to unregister in case it wal already registered
+					playerSpellController.onSpellCasted += RechargeAllSpells;
+					playerSpellController.RechargeAllSpells();
+					return new CommandParseResult { isSuccessful = true, message = "Spells' cooldown has been disabled." };
+				} else {
+					return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter '{commandParts[1]}', only 'all', 'on' and 'off' can be used." };
+				}
+				// Return the result
+				return new CommandParseResult {
+					isSuccessful = success,
+					message = message
+				};
+			},
+			enabledScenes: new Scene[] { Scene.Race }));
 	}
 
 	private void InitializeSpeedCommand() {
