@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Initializes visual effect colors (shaders, particles) based on spell identifier
 public class SpellEffectColorInitializer : MonoBehaviour {
 
 	[Tooltip("Target color will be initialized based on color assigned to a spell with the given identifier.")]
