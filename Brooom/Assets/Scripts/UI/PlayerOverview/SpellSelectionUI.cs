@@ -13,6 +13,27 @@ public class SpellSelectionUI : MonoBehaviour {
 	// Called from individual slots with equipped spells
 	public void ShowSelectionForSlot(EquippedSpellSlotUI slot) {
 		this.lastTargetSlot = slot;
+		// Delete all existing slots from the grid
+		UtilsMonoBehaviour.RemoveAllChildren(spellSelectionParent);
+		// Add an empty slot (Initialize with null) so that it can be chosen as well
+		CreateSlot(null);
+		// Fill the grid with all unlocked spells except the ones which are already assigned in a different slot
+		foreach (var spell in SpellManager.Instance.AllSpells) {
+			if (PlayerState.Instance.IsSpellPurchased(spell.Identifier)) {
+				// Make sure the spell is not assigned in any other slot
+				bool isAssigned = false;
+				for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
+					if (i == lastTargetSlot.slotIndex) continue; // slot for which selection is displayed
+					if (PlayerState.Instance.equippedSpells[i] == null) continue; // empty slot
+					if (PlayerState.Instance.equippedSpells[i].Identifier == spell.Identifier) { // is assigned in a different slot
+						isAssigned = true;
+						break;
+					}
+				}
+				// Add spell slot if it can be selected
+				if (!isAssigned) CreateSlot(spell);
+			}
+		}
 		gameObject.TweenAwareEnable();
 	}
 
@@ -31,18 +52,9 @@ public class SpellSelectionUI : MonoBehaviour {
 		gameObject.TweenAwareDisable();
 	}
 
-	private void OnEnable() {
-		// Delete all existing slots from the grid
-		UtilsMonoBehaviour.RemoveAllChildren(spellSelectionParent);
-		// Add an empty slot (Initialize with null) so that it can be chosen as well
-		SpellSelectionSlotUI slot = Instantiate<SpellSelectionSlotUI>(spellSelectionSlotPrefab, spellSelectionParent);
-		slot.Initialize(null, this);
-		// TODO: Fill the grid with all unlocked spells - check that the following is working
-		foreach (var spell in SpellManager.Instance.AllSpells) {
-			if (PlayerState.Instance.IsSpellPurchased(spell.Identifier)) {
-				SpellSelectionSlotUI spellSlot = Instantiate<SpellSelectionSlotUI>(spellSelectionSlotPrefab, spellSelectionParent);
-				spellSlot.Initialize(spell, this);
-			}
-		}
+	// Adds a slot for the given spell into the selection grid
+	private void CreateSlot(Spell spell) {
+		SpellSelectionSlotUI spellSlot = Instantiate<SpellSelectionSlotUI>(spellSelectionSlotPrefab, spellSelectionParent);
+		spellSlot.Initialize(spell, this);
 	}
 }

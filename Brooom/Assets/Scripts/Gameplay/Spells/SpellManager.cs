@@ -29,6 +29,7 @@ public class SpellManager : MonoBehaviourSingleton<SpellManager>, ISingleton {
 	}
 
 	private void LoadAllSpells() {
+		// Find all spells available
 		allSpells = new List<Spell>();
 		spellsDictionary = new Dictionary<string, Spell>();
 		Spell[] spellsLoaded = Resources.LoadAll<Spell>("Spells/");
@@ -36,6 +37,11 @@ public class SpellManager : MonoBehaviourSingleton<SpellManager>, ISingleton {
 			allSpells.Add(spell);
 			spellsDictionary.Add(spell.Identifier, spell);
 		}
+		// Sort spells first according to category, then according to their cost
+		allSpells.Sort((a, b) => {
+			if (a.Category != b.Category) return a.Category.CompareTo(b.Category);
+			return a.CoinsCost.CompareTo(b.CoinsCost);
+		});
 	}
 
 	#region Singleton initialization

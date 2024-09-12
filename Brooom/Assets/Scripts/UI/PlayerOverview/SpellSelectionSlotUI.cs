@@ -14,15 +14,12 @@ public class SpellSelectionSlotUI : MonoBehaviour
         this.assignedSpell = spell;
         this.spellSelection = parent;
         // Update spell icon
-        spellSlotUI?.Initialize(spell);
+        spellSlotUI = GetComponentInChildren<SpellSlotUI>();
+        spellSlotUI.Initialize(spell);
     }
 
     public void AssignSpellToSlot() {
         // After clicking on any spell, assign it to a slot (including empty slot, assignedSpell = null)
         spellSelection.AssignSpellAndHide(assignedSpell);
     }
-
-	private void Awake() {
-        spellSlotUI = GetComponentInChildren<SpellSlotUI>();
-	}
 }
