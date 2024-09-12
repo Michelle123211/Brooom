@@ -395,13 +395,21 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		}));
 	}
+	private void FillManaUp() {
+		SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+		if (playerSpellController != null) {
+			if (playerSpellController.CurrentMana < playerSpellController.MaxMana) {
+				playerSpellController.ChangeManaAmount(playerSpellController.MaxMana - playerSpellController.CurrentMana);
+			}
+		}
+	}
 	private void InitializeManaCommand() {
 		// mana - change mana amount or enable/disable unlimited mana, available only in Race
-		void FillManaUp(int currentValue) {
+		void ScheduleFillingManaUp(int currentValue) {
+			// Schedule filling mana up so that it is done independently of the current callbacks being invoked
 			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 			if (playerSpellController != null) {
-				if (playerSpellController.currentMana < playerSpellController.maxMana)
-					playerSpellController.ChangeManaAmount(playerSpellController.maxMana - currentValue);
+				Invoke(nameof(FillManaUp), 0.1f);
 			}
 		}
 		commands.Add(new CheatCommand("mana", "Changes mana amount or enables/disables unlimited mana. Usage: 'mana <amount>' for a specific amount, e.g. 'mana 80', or 'mana max' for maximum amount, or 'mana off' or 'mana on' to enable/disable unlimited mana.",
@@ -414,21 +422,22 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				else if (playerSpellController == null) message = "A suitable target has not been found.";
 				else if (commandParts[1] == "on") {
 					// Disable unlimited mana
-					playerSpellController.onManaAmountChanged -= FillManaUp;
+					playerSpellController.onManaAmountChanged -= ScheduleFillingManaUp;
 					return new CommandParseResult { isSuccessful = true, message = "Unlimited mana has been disabled." };
 				} else if (commandParts[1] == "off") {
 					// Enable unlimited mana
-					playerSpellController.onManaAmountChanged += FillManaUp;
-					FillManaUp(playerSpellController.currentMana);
+					playerSpellController.onManaAmountChanged -= ScheduleFillingManaUp; // try to unregister in case it wal already registered
+					playerSpellController.onManaAmountChanged += ScheduleFillingManaUp;
+					FillManaUp();
 					return new CommandParseResult { isSuccessful = true, message = "Unlimited mana has been enabled." };
 				} else if (commandParts[1] == "max") {
 					// Fill mana up
-					FillManaUp(playerSpellController.currentMana);
+					FillManaUp();
 					return new CommandParseResult { isSuccessful = true, message = "Mana has been filled up." };
 				} else {
 					// Change mana amount
 					if (int.TryParse(commandParts[1], out int manaAmount)) {
-						playerSpellController.ChangeManaAmount(manaAmount - playerSpellController.currentMana);
+						playerSpellController.ChangeManaAmount(manaAmount - playerSpellController.CurrentMana);
 						return new CommandParseResult { isSuccessful = true, message = $"Mana amount has been changed to {manaAmount}." };
 					} else {
 						return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, amount must be an integer." };

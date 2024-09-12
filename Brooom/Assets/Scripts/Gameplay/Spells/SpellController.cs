@@ -6,12 +6,12 @@ using System;
 public class SpellController : MonoBehaviour {
 
 	// Mana
-	[HideInInspector] public int currentMana;
-	[HideInInspector] public int maxMana;
+	public int CurrentMana { get; private set; }
+	public int MaxMana { get; private set; }
 
 	// Spells
-	[HideInInspector] public SpellInRace[] spellSlots;
-	[HideInInspector] public int selectedSpell;
+	public SpellInRace[] spellSlots { get; private set; }
+	public int selectedSpell { get; private set; }
 
 	// Callbacks
 	public Action<int> onManaAmountChanged; // parameter: new mana value
@@ -38,7 +38,7 @@ public class SpellController : MonoBehaviour {
 	public void CastCurrentlySelectedSpell() {
 		if (selectedSpell != -1) {
 			SpellInRace currentSpell = spellSlots[selectedSpell];
-			if (currentSpell.Charge >= 1 && currentMana >= currentSpell.Spell.ManaCost) {
+			if (currentSpell.Charge >= 1 && CurrentMana >= currentSpell.Spell.ManaCost) {
 				// TODO: Pass correct parameters (source, target)
 				if (currentSpell.Spell.Category == SpellCategory.SelfCast) {
 					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject = gameObject });
@@ -93,8 +93,8 @@ public class SpellController : MonoBehaviour {
 	}
 
 	public void ChangeManaAmount(int delta) {
-		currentMana = Mathf.Clamp(currentMana + delta, 0, maxMana);
-		onManaAmountChanged?.Invoke(currentMana);
+		CurrentMana = Mathf.Clamp(CurrentMana + delta, 0, MaxMana);
+		onManaAmountChanged?.Invoke(CurrentMana);
 	}
 
 	public void RechargeAllSpells() {
@@ -108,7 +108,7 @@ public class SpellController : MonoBehaviour {
 		foreach (var spell in spellSlots) {
 			if (spell != null) {
 				spell.UpdateCharge(Time.deltaTime);
-				spell.UpdateAvailability(currentMana);
+				spell.UpdateAvailability(CurrentMana);
 			}
 		}
 	}
@@ -116,8 +116,8 @@ public class SpellController : MonoBehaviour {
 	private void Awake() {
 		isPlayer = CompareTag("Player");
 		// Initialize data fields
-		maxMana = PlayerState.Instance.MaxManaAmount;
-		currentMana = 0;
+		MaxMana = PlayerState.Instance.MaxManaAmount;
+		CurrentMana = 0;
 		spellSlots = new SpellInRace[PlayerState.Instance.equippedSpells.Length];
 		selectedSpell = -1;
 		if (isPlayer) {

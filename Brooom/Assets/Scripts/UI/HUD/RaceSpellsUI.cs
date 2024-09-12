@@ -61,8 +61,8 @@ public class RaceSpellsUI : MonoBehaviour {
     }
 
     private void InitializeMana() {
-        manaBar.maxValue = playerSpellController.maxMana;
-        manaBar.value = playerSpellController.currentMana;
+        manaBar.maxValue = playerSpellController.MaxMana;
+        manaBar.value = playerSpellController.CurrentMana;
         manaText.text = manaBar.value.ToString();
     }
 
