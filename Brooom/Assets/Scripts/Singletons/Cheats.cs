@@ -445,7 +445,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					message = message
 				};
 			},
-			enabledScenes: new Scene[] { Scene.Race }));
+			enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack }));
 	}
 	private void InitializeRechargeCommand() {
 		// recharge - change spells' charge or enable/disable cooldown, available only in Race
@@ -484,7 +484,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					message = message
 				};
 			},
-			enabledScenes: new Scene[] { Scene.Race }));
+			enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack }));
 	}
 
 	private void InitializeSpeedCommand() {
