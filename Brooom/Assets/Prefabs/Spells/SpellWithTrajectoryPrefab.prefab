@@ -5085,7 +5085,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particles: {fileID: 1140474342695341087}
   hasFixedDuration: 1
-  duration: -1
 --- !u!198 &1140474342695341087
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -10097,7 +10096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0deeda595ecaa408e0394634b1179d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellSpeed: 15
+  spellSpeed: 20
   spellTrajectory: {fileID: 0}
   spellCastVisual: {fileID: 565052003317795141}
   spellCastTrail: {fileID: 7172474936520375527}
