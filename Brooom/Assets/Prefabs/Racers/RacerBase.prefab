@@ -217,7 +217,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 15
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3412074042987646884
 MonoBehaviour:
@@ -231,7 +231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13c96d64bebc5044a7c2fd0af1e8c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDetectionDistance: 15
+  maxDetectionDistance: 20
+  racerRootObject: {fileID: 170133169353488105}
   spellController: {fileID: 3161338561109082813}
   triggerZone: {fileID: 7214274730537879940}
 --- !u!1 &3934684019154203765
