@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(Collider))]
 public class SpellTargetPoint : RelativeOffsetComponent {
 
 	private void OnDrawGizmosSelected() {

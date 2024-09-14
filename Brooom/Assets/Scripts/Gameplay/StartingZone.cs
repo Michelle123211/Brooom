@@ -18,7 +18,7 @@ public class StartingZone : MonoBehaviour
 	private string countdownText = string.Empty;
 
 	private void OnTriggerEnter(Collider other) {
-		if (other.CompareTag("Player")) {
+		if (other.CompareTag("Player") && !other.isTrigger) {
 			currentTime = durationToStart;
 			isCountingDown = true;
 			// Initialize and show UI
@@ -28,7 +28,7 @@ public class StartingZone : MonoBehaviour
 	}
 
 	private void OnTriggerExit(Collider other) {
-		if (other.CompareTag("Player")) {
+		if (other.CompareTag("Player") && !other.isTrigger) {
 			isCountingDown = false;
 			// Hide UI
 			Utils.TweenAwareDisable(countdownLabel.gameObject);

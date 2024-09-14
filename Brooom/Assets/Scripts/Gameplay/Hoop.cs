@@ -42,22 +42,28 @@ public class Hoop : MonoBehaviour {
 
     public void OnHoopTriggerEntered(Collider otherObject) {
         if (!isActive) return;
-        int instanceID = otherObject.gameObject.GetInstanceID();
+        if (otherObject.isTrigger) return;
+        ColliderRootObject colliderRootObject = otherObject.GetComponent<ColliderRootObject>();
+        GameObject rootObject = colliderRootObject.GetRootObject();
+        int instanceID = rootObject.GetInstanceID();
         // Note that the racer with the given instance ID entered the hoop trigger
         if (activeTriggersCount.TryGetValue(instanceID, out int triggerCount)) {
             activeTriggersCount[instanceID] = triggerCount + 1;
         } else {
             activeTriggersCount[instanceID] = 1;
         }
-        // If there are 2 triggers active simultaneously, the races has passed through the hoop
+        // If there are 2 triggers active simultaneously, the racer has passed through the hoop
         if (activeTriggersCount.GetValueOrDefault(instanceID) == 2) {
-            otherObject.transform.parent.parent.GetComponent<CharacterRaceState>()?.OnHoopPassed(index); // root object has CharacterRaceState component
+            rootObject.GetComponent<CharacterRaceState>()?.OnHoopPassed(index); // root object has CharacterRaceState component
         }
     }
 
     public void OnHoopTriggerExited(Collider otherObject) {
         if (!isActive) return;
-        int instanceID = otherObject.gameObject.GetInstanceID();
+        if (otherObject.isTrigger) return;
+        ColliderRootObject colliderRootObject = otherObject.GetComponent<ColliderRootObject>();
+        GameObject rootObject = colliderRootObject.GetRootObject();
+        int instanceID = rootObject.GetInstanceID();
         // Note that the racer with the given instance ID exited the hoop trigger
         if (activeTriggersCount.TryGetValue(instanceID, out int triggerCount)) {
             activeTriggersCount[instanceID] = triggerCount - 1;

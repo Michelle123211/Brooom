@@ -193,6 +193,21 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -1661548419
       objectReference: {fileID: 0}
+    - target: {fileID: 1253138126071297060, guid: d5057250aeb262d42b6597b1fc78f59b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671678601012966655, guid: d5057250aeb262d42b6597b1fc78f59b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3934684019154203765, guid: d5057250aeb262d42b6597b1fc78f59b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 4632679343984315759, guid: d5057250aeb262d42b6597b1fc78f59b,
         type: 3}
       propertyPath: m_TagString
@@ -280,6 +295,7 @@ MonoBehaviour:
   defaultFOV: 60
   zoomedInFOV: 55
   zoomDuration: 1
+  resetDuration: 0.4
   backVirtualCamera: {fileID: 7671851170195841455}
   enableViewSwitch: 0
   virtualCameras:

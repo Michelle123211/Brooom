@@ -22,11 +22,14 @@ public class Bonus : MonoBehaviour {
     public UnityEvent deactivationEvent;
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Characters")) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Characters") && !other.isTrigger) {
             // Get the CharacterMovementController component on the root object
-            CharacterMovementController character = other.transform.parent.parent.GetComponent<CharacterMovementController>();
-            if (character == null)
+            ColliderRootObject colliderRootObject = other.GetComponent<ColliderRootObject>();
+            CharacterMovementController character = colliderRootObject.GetRootObject().GetComponent<CharacterMovementController>();
+            if (character == null) {
                 Debug.LogWarning("OnTriggerEnter() in bonus object is invoked but no CharacterMovementController was found.");
+                return;
+            }
             // Invoke the specific event
             BonusEffect effect = GetComponent<BonusEffect>();
             if (effect != null && character != null)
