@@ -36,7 +36,7 @@ public class Bonus : MonoBehaviour {
                 effect.ApplyBonusEffect(character);
             // Invoke the common events (e.g. particles, destroying self)
             if (!Utils.IsNullEvent(pickUpEvent))
-                pickUpEvent.Invoke();
+                pickUpEvent.Invoke(); // TODO: Add some pick up event
             // Let anyone interested know that a bonus was picked up by the player
             if (character.isPlayer) Messaging.SendMessage("BonusPickedUp", gameObject);
             // Deactivate and start reactivation countdown
@@ -54,12 +54,12 @@ public class Bonus : MonoBehaviour {
         if (!Utils.IsNullEvent(deactivationEvent))
             deactivationEvent.Invoke();
         // TODO: Wait until the event is done, in the meantime e.g. disable only the collider
-        // TODO: Add some tweening
+        // TODO: Add some tweening and deactivation event
         gameObject.SetActive(false);
     }
 
     public void Activate() {
-        // TODO: Add some tweening
+        // TODO: Add some tweening and activation event
         gameObject.SetActive(true);
         if (!Utils.IsNullEvent(activationEvent))
             activationEvent.Invoke();

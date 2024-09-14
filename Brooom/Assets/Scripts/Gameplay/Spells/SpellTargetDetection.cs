@@ -41,8 +41,6 @@ public class SpellTargetDetection : MonoBehaviour {
 		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
 			if (IsPotentialTargetForGivenSpell(rootObject, i)) {
 				AddPotentialTargetIfNotAlreadyThere(rootObject, i);
-				if (gameObject.CompareTag("Player"))
-					Debug.Log($"New target {rootObject.name} added for spell {PlayerState.Instance.equippedSpells[i].SpellName}. Currently there are {potentialTargets[i].Count}.");
 			}
 		}
 	}
@@ -54,8 +52,6 @@ public class SpellTargetDetection : MonoBehaviour {
 		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
 			if (IsPotentialTargetForGivenSpell(rootObject, i)) {
 				RemovePotentialTargetIfThere(rootObject, i);
-				if (gameObject.CompareTag("Player"))
-					Debug.Log($"Target {rootObject.name} removed from spell {PlayerState.Instance.equippedSpells[i].SpellName}. Currently there are {potentialTargets[i].Count}.");
 			}
 		}
 	}
@@ -100,6 +96,16 @@ public class SpellTargetDetection : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	private void Update() {
+		// Remove any inactive objects - e.g. bonuses (OnTriggerExit is not invoked when they are picked up and become inactive)
+		for (int i = 0; i < potentialTargets.Length; i++) {
+			if (potentialTargets[i] == null) continue;
+			for (int j = potentialTargets[i].Count - 1; j >= 0; j--) {
+				if (!potentialTargets[i][j].activeSelf) RemovePotentialTargetIfThere(potentialTargets[i][j], i);
+			}
+		}
 	}
 
 	private void Start() {
