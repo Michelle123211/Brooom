@@ -16,9 +16,9 @@ public abstract class SpellTargetSelection : MonoBehaviour {
 		if (selectedSpell.TargetType == SpellTargetType.Self) {
 			return new SpellTarget { TargetObject = spellController.gameObject };
 		} else if (selectedSpell.TargetType == SpellTargetType.Direction) {
-			return new SpellTarget { TargetObject = GetCurrentTargetObject() };
-		} else if (selectedSpell.TargetType == SpellTargetType.Opponent || selectedSpell.TargetType == SpellTargetType.Object) {
 			return new SpellTarget { TargetPosition = GetCurrentTargetPosition() };
+		} else if (selectedSpell.TargetType == SpellTargetType.Opponent || selectedSpell.TargetType == SpellTargetType.Object) {
+			return new SpellTarget { TargetObject = GetCurrentTargetObject() };
 		} else {
 			throw new NotSupportedException("SpellTargetSelection.GetCurrentTarget() was called with invalid spell target type.");
 		}

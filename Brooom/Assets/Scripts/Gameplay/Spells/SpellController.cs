@@ -18,6 +18,9 @@ public class SpellController : MonoBehaviour {
 	public Action<int> onSelectedSpellChanged; // parameter: index of the currently selected spell
 	public Action<int> onSpellCasted; // parameter: index of the spell
 
+	[Tooltip("Component derived from SpellTargetSelection which is responsible for selecting a target for currently seelcted spell.")]
+	[SerializeField] SpellTargetSelection spellTargetSelection;
+
 	private bool isPlayer = false;
 
 	// direction ... Decreasing = lower index, Increasing = higher index
@@ -46,36 +49,13 @@ public class SpellController : MonoBehaviour {
 		if (selectedSpell != -1) {
 			SpellInRace currentSpell = spellSlots[selectedSpell];
 			if (currentSpell.Charge >= 1 && CurrentMana >= currentSpell.Spell.ManaCost) {
-				// TODO: Pass correct parameters (source, target)
-				if (currentSpell.Spell.Category == SpellCategory.SelfCast) {
-					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = new SpellTarget { TargetObject = gameObject } });
-				} else if (currentSpell.Spell.Category == SpellCategory.ObjectApparition) {
-					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = new SpellTarget { TargetPosition = transform.position + transform.forward * 30 } });
-				} else if (currentSpell.Spell.Category == SpellCategory.OpponentCurse) {
-					// Find tis racer
-					RacerRepresentation thisRacer = null;
-					foreach (var racer in RaceController.Instance.racers) {
-						if (racer.characterController.gameObject == gameObject) {
-							thisRacer = racer;
-							break;
-						}
-					}
-					// Find the closest racer in front of this racer
-					float minDist = float.MaxValue;
-					CharacterMovementController bestTarget = null;
-					foreach (var racer in RaceController.Instance.racers) {
-						float dist = Vector3.Distance(racer.characterController.transform.position, transform.position);
-						if (racer != thisRacer && dist < minDist && RaceController.Instance.CompareRacers(racer, thisRacer) < 0) {
-							minDist = dist;
-							bestTarget = racer.characterController;
-						}
-					}
-					if (bestTarget != null)
-						currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = new SpellTarget { TargetObject = bestTarget.gameObject } });
-					else Debug.Log("No suitable target racer found.");
-				} else if (currentSpell.Spell.Category == SpellCategory.EnvironmentManipulation) {
-					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = new SpellTarget { TargetPosition = transform.position + transform.forward * 30 } });
+				// Cast spell and pass correct parameters (source, target)
+				SpellTarget spellTarget = spellTargetSelection.GetCurrentTarget();
+				if (!spellTarget.HasTargetAssigned) {
+					Debug.Log("No suitable spell target was found.");
+					return;
 				}
+				currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = spellTargetSelection.GetCurrentTarget() });
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
 				onSpellCasted?.Invoke(selectedSpell);
@@ -89,7 +69,7 @@ public class SpellController : MonoBehaviour {
 
 	public bool HasEquippedSpells() {
 		foreach (var spell in spellSlots) {
-			if (spell != null) return true;
+			if (spell != null && spell.Spell != null && !string.IsNullOrEmpty(spell.Spell.Identifier)) return true;
 		}
 		return false;
 	}
@@ -178,7 +158,12 @@ public struct SpellTarget {
 		get => targetObject;
 		set {
 			targetObject = value;
-			targetPoint = targetObject.GetComponentInChildren<SpellTargetPoint>();
+			if (value != null) {
+				targetPoint = targetObject.GetComponentInChildren<SpellTargetPoint>();
+				HasTargetAssigned = true;
+			} else {
+				HasTargetAssigned = false;
+			}
 		}
 	}
 
@@ -188,8 +173,11 @@ public struct SpellTarget {
 		set {
 			targetPosition = value;
 			targetObject = null;
+			HasTargetAssigned = true;
 		}
 	}
+
+	public bool HasTargetAssigned { get; private set; }
 
 	public Vector3 GetTargetPoint() {
 		if (targetObject != null) {
