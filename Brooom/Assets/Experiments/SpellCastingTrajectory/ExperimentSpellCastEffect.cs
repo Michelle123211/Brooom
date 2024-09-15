@@ -24,10 +24,10 @@ public class ExperimentSpellCastEffect : CustomVisualEffect {
 
 	public void InitializeStartAndTarget(SpellCastParameters castParameters) {
 		this.sourceObject = castParameters.SourceObject;
-		if (castParameters.TargetObject != null)
-			this.targetObject = castParameters.TargetObject;
+		if (castParameters.Target.TargetObject != null)
+			this.targetObject = castParameters.Target.TargetObject;
 		else
-			this.targetPosition = castParameters.TargetPosition;
+			this.targetPosition = castParameters.Target.TargetPosition;
 	}
 
 	protected override void StartPlaying_Internal() {

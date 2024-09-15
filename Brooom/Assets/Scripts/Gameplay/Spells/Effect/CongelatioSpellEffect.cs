@@ -10,8 +10,8 @@ public class CongelatioSpellEffect : RacerAffectingSpellEffect {
 
 	protected override void StartSpellEffect_Internal() {
 		this.targetRacer = null;
-		if (castParameters.TargetObject != null) targetRacer = castParameters.TargetObject.GetComponent<CharacterMovementController>();
-		if (castParameters.TargetObject == null || targetRacer == null)
+		if (castParameters.Target.TargetObject != null) targetRacer = castParameters.Target.TargetObject.GetComponent<CharacterMovementController>();
+		if (castParameters.Target.TargetObject == null || targetRacer == null)
 			throw new System.NotSupportedException($"{nameof(CongelatioSpellEffect)} may be casted only at an object with {nameof(CharacterMovementController)} component.");
 		// Disable the racer's controls and stop the racer
 		targetRacer.DisableActions(CharacterMovementController.StopMethod.BrakeStop);

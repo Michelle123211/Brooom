@@ -35,15 +35,22 @@ public class SpellController : MonoBehaviour {
 		return selectedSpell;
 	}
 
+	public Spell GetCurrentlySelectedSpell() {
+		if (selectedSpell != -1) {
+			return PlayerState.Instance.equippedSpells[selectedSpell];
+		}
+		return null;
+	}
+
 	public void CastCurrentlySelectedSpell() {
 		if (selectedSpell != -1) {
 			SpellInRace currentSpell = spellSlots[selectedSpell];
 			if (currentSpell.Charge >= 1 && CurrentMana >= currentSpell.Spell.ManaCost) {
 				// TODO: Pass correct parameters (source, target)
 				if (currentSpell.Spell.Category == SpellCategory.SelfCast) {
-					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject = gameObject });
+					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = new SpellTarget { TargetObject = gameObject } });
 				} else if (currentSpell.Spell.Category == SpellCategory.ObjectApparition) {
-					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetPosition = transform.position + transform.forward * 30 });
+					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = new SpellTarget { TargetPosition = transform.position + transform.forward * 30 } });
 				} else if (currentSpell.Spell.Category == SpellCategory.OpponentCurse) {
 					// Find tis racer
 					RacerRepresentation thisRacer = null;
@@ -64,10 +71,10 @@ public class SpellController : MonoBehaviour {
 						}
 					}
 					if (bestTarget != null)
-						currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetObject = bestTarget.gameObject });
+						currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = new SpellTarget { TargetObject = bestTarget.gameObject } });
 					else Debug.Log("No suitable target racer found.");
 				} else if (currentSpell.Spell.Category == SpellCategory.EnvironmentManipulation) {
-					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, TargetPosition = transform.position + transform.forward * 30 });
+					currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = new SpellTarget { TargetPosition = transform.position + transform.forward * 30 } });
 				}
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
@@ -150,9 +157,24 @@ public struct SpellCastParameters {
 		}
 	}
 
+	public SpellTarget Target { get; set; }
+
+	public Vector3 GetCastPoint() {
+		if (castPoint != null) return castPoint.GetAbsolutePosition();
+		else return sourceObject.transform.position;
+	}
+
+	public Vector3 GetTargetPoint() {
+		return Target.GetTargetPoint();
+	}
+
+}
+
+public struct SpellTarget {
+
 	private SpellTargetPoint targetPoint;
 	private GameObject targetObject;
-	public GameObject TargetObject { 
+	public GameObject TargetObject {
 		get => targetObject;
 		set {
 			targetObject = value;
@@ -167,11 +189,6 @@ public struct SpellCastParameters {
 			targetPosition = value;
 			targetObject = null;
 		}
-	}
-
-	public Vector3 GetCastPoint() {
-		if (castPoint != null) return castPoint.GetAbsolutePosition();
-		else return sourceObject.transform.position;
 	}
 
 	public Vector3 GetTargetPoint() {
