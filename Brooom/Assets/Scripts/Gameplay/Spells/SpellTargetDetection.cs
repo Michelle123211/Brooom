@@ -18,6 +18,8 @@ public class SpellTargetDetection : MonoBehaviour {
 
 	private List<GameObject>[] potentialTargets;
 
+	private bool isSpellEquipped = true;
+
 
 	// Returns list of potential targets for the currently selected spell
 	public List<GameObject> GetPotentialTargetsForSelectedSpell() {
@@ -35,6 +37,7 @@ public class SpellTargetDetection : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter(Collider other) {
+		if (!isSpellEquipped) return;
 		if (other.gameObject.GetComponent<SpellTargetPoint>() == null) return; // ignore objects which cannot be spell targets
 		GameObject rootObject = other.gameObject.GetComponent<ColliderRootObject>().GetRootObject();
 		// Find out whether it could be a target for any equipped spell
@@ -46,6 +49,7 @@ public class SpellTargetDetection : MonoBehaviour {
 	}
 
 	private void OnTriggerExit(Collider other) {
+		if (!isSpellEquipped) return;
 		if (other.gameObject.GetComponent<SpellTargetPoint>() == null) return; // ignore objects which cannot be spell targets
 		GameObject rootObject = other.gameObject.GetComponent<ColliderRootObject>().GetRootObject();
 		// Find out whether it could be a target for any equipped spell
@@ -99,6 +103,7 @@ public class SpellTargetDetection : MonoBehaviour {
 	}
 
 	private void Update() {
+		if (!isSpellEquipped) return;
 		// Remove any inactive objects - e.g. bonuses (OnTriggerExit is not invoked when they are picked up and become inactive)
 		for (int i = 0; i < potentialTargets.Length; i++) {
 			if (potentialTargets[i] == null) continue;
@@ -109,6 +114,7 @@ public class SpellTargetDetection : MonoBehaviour {
 	}
 
 	private void Start() {
+		isSpellEquipped = spellController.HasEquippedSpells();
 		// Initialize lists for potential targets
 		potentialTargets = new List<GameObject>[PlayerState.Instance.equippedSpells.Length];
 		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
