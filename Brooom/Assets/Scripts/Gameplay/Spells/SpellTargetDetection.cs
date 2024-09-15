@@ -36,6 +36,24 @@ public class SpellTargetDetection : MonoBehaviour {
 		return potentialTargets;
 	}
 
+	// Returns true if the given object could be a target of the given spell
+	public bool IsPotentialTargetForGivenSpell(GameObject target, int spellIndex) {
+		Spell equippedSpell = PlayerState.Instance.equippedSpells[spellIndex];
+		if (equippedSpell == null) return false;
+		// Spell casted at opponents and the target object is a racer different from the one this component is assigned to
+		if (equippedSpell.TargetType == SpellTargetType.Opponent &&
+				target.layer == LayerMask.NameToLayer("Characters") &&
+				target.GetInstanceID() != racerRootObject.GetInstanceID()) {
+			return true;
+		}
+		// Spell casted at objects and the target object is a suitable target
+		if (equippedSpell.TargetType == SpellTargetType.Object &&
+				target.CompareTag(equippedSpell.SpellTargetTag)) {
+			return true;
+		}
+		return false;
+	}
+
 	private void OnTriggerEnter(Collider other) {
 		if (!isSpellEquipped) return;
 		if (other.gameObject.GetComponent<SpellTargetPoint>() == null) return; // ignore objects which cannot be spell targets
@@ -82,24 +100,6 @@ public class SpellTargetDetection : MonoBehaviour {
 			}
 		}
 		if (isThere) potentialTargets[spellIndex].Remove(target);
-	}
-
-	// Returns true if the given object could be a target of the given spell
-	private bool IsPotentialTargetForGivenSpell(GameObject target, int spellIndex) {
-		Spell equippedSpell = PlayerState.Instance.equippedSpells[spellIndex];
-		if (equippedSpell == null) return false;
-		// Spell casted at opponents and the target object is a racer different from the one this component is assigned to
-		if (equippedSpell.TargetType == SpellTargetType.Opponent &&
-				target.layer == LayerMask.NameToLayer("Characters") &&
-				target.GetInstanceID() != racerRootObject.GetInstanceID()) {
-			return true;
-		}
-		// Spell casted at objects and the target object is a suitable target
-		if (equippedSpell.TargetType == SpellTargetType.Object &&
-				target.CompareTag(equippedSpell.SpellTargetTag)) {
-			return true;
-		}
-		return false;
 	}
 
 	private void Update() {
