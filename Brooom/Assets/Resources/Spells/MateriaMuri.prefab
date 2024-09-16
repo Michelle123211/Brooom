@@ -85,6 +85,11 @@ PrefabInstance:
       objectReference: {fileID: 4808130818381499142}
     - target: {fileID: 1282927587180040045, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
+      propertyPath: spellSpeed
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1282927587180040045, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
       propertyPath: spellTrajectory
       value: 
       objectReference: {fileID: 5220358784839359874}
