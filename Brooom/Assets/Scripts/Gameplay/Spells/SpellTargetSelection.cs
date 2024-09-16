@@ -11,6 +11,9 @@ public abstract class SpellTargetSelection : MonoBehaviour {
 	[Tooltip("SpellTargetDetection component which is used to get a list of potential targets for the currently selected spell.")]
 	[SerializeField] protected SpellTargetDetection spellTargetDetection; // to get a list of available targets
 
+	[Tooltip("Distance in which the target position is placed when casting a spell with direction as a target type.")]
+	[SerializeField] float targetPositionDistance = 30f;
+
 	public SpellTarget GetCurrentTarget() {
 		Spell selectedSpell = spellController.GetCurrentlySelectedSpell();
 		if (selectedSpell.TargetType == SpellTargetType.Self) {
@@ -24,8 +27,15 @@ public abstract class SpellTargetSelection : MonoBehaviour {
 		}
 	}
 
+	// Returns a GameObject which is a target of the currently selected spell
 	protected abstract GameObject GetCurrentTargetObject();
 
-	protected abstract Vector3 GetCurrentTargetPosition();
+	// Returns a direction in whichthe currently selected spell should be casted
+	protected abstract Vector3 GetCurrentTargetDirection();
+
+	private Vector3 GetCurrentTargetPosition() {
+		// Target position is a certain distance away in the target direction
+		return spellController.transform.position + targetPositionDistance * GetCurrentTargetDirection();
+	}
 
 }

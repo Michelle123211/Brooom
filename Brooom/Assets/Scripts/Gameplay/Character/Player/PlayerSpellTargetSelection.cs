@@ -18,10 +18,9 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		return lastTarget;
 	}
 
-	protected override Vector3 GetCurrentTargetPosition() {
-		// TODO: Implement based on direction the player is looking in
-		// TODO: Come up with a suitable distance in that direction
-		return spellController.transform.position + transform.forward * 30;
+	protected override Vector3 GetCurrentTargetDirection() {
+		// Target direction os the current view direction
+		return Camera.main.transform.forward;
 	}
 
 	private void ShowCrosshair() {
@@ -118,6 +117,7 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		if (!shouldHighlightObjects) return; // target highlighting is not needed
 		// Recompute current target and highlight it
 		HighlightBestTargetForSpell();
+		StartHighlightingTarget(); // DEBUG: Delete when not necessary
 	}
 
 	private void OnDestroy() {
