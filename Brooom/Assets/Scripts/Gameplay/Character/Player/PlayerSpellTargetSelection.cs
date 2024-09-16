@@ -10,6 +10,9 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 
 	private Spell selectedSpell;
 
+	[Tooltip("A UI element representing a crosshair which is to appear on screen whenever a spell with direction as its target type is selected.")]
+	[SerializeField] GameObject crosshair;
+
 	[SerializeField] RectTransform tempCrosshair;
 
 
@@ -24,10 +27,10 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	}
 
 	private void ShowCrosshair() {
-		// TODO
+		crosshair.TweenAwareEnable();
 	}
 	private void HideCrosshair() {
-		// TODO
+		crosshair.TweenAwareDisable();
 	}
 
 	private void HighlightBestTargetForSpell() {
