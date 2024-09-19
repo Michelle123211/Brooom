@@ -59,14 +59,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
+  m_Color: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4614a3eaadd4b6447b067480a741827c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 71aad4362bd48da4b96b1ff05a1f6fc5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -153,6 +153,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.x
+      value: -86.22131
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.y
+      value: 167.07718
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.z
+      value: 309.8371
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dec369d405800c47ab332ddcdb7e3d9, type: 3}
 --- !u!114 &3146952891414282310 stripped
@@ -182,7 +197,7 @@ PrefabInstance:
     - target: {fileID: 1054949850877811385, guid: 100ad070c06614f43abad543c262c5b7,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1054949850877811389, guid: 100ad070c06614f43abad543c262c5b7,
         type: 3}
@@ -293,6 +308,16 @@ PrefabInstance:
         type: 3}
       propertyPath: duration
       value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2856608545980373825, guid: 100ad070c06614f43abad543c262c5b7,
+        type: 3}
+      propertyPath: alphaTween.tweenPropertyValues.endValue
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8523793793977457448, guid: 100ad070c06614f43abad543c262c5b7,
+        type: 3}
+      propertyPath: m_Alpha
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8523793793977457448, guid: 100ad070c06614f43abad543c262c5b7,
         type: 3}
@@ -677,6 +702,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.x
+      value: 620.3744
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.y
+      value: -171.39307
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.z
+      value: 939.4562
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dec369d405800c47ab332ddcdb7e3d9, type: 3}
 --- !u!114 &7671851170195841455 stripped
@@ -763,6 +803,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.x
+      value: -985.05115
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.y
+      value: -590.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.z
+      value: 451.6985
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dec369d405800c47ab332ddcdb7e3d9, type: 3}
 --- !u!114 &7864682561799634747 stripped
@@ -848,6 +903,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.x
+      value: -783.906
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.y
+      value: -201.26523
+      objectReference: {fileID: 0}
+    - target: {fileID: 5943464346748025022, guid: 4dec369d405800c47ab332ddcdb7e3d9,
+        type: 3}
+      propertyPath: mNoiseOffsets.z
+      value: -481.65808
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dec369d405800c47ab332ddcdb7e3d9, type: 3}
