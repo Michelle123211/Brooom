@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	private bool shouldHighlightObjects = false;
 
 	private GameObject lastTarget = null;
+
+	private List<Renderer> outlinedRenderers = new List<Renderer>(); // all renderers of current target object
+	private List<int> originalRendererLayers = new List<int>(); // original layers assigned to renderer objects before changing it to Outline
 
 	private Spell selectedSpell;
 
@@ -31,6 +35,14 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	}
 	private void HideCrosshair() {
 		crosshair.TweenAwareDisable();
+	}
+
+	private void UpdateTemporaryCrosshair() { // DEBUG: Delete when not necessary
+		if (lastTarget == null) return;
+		SpellTargetPoint targetPoint = lastTarget.GetComponentInChildren<SpellTargetPoint>(); // DEBUG: Delete when not necessary
+		Vector3 worldPosition = targetPoint.GetAbsolutePosition(); // DEBUG: Delete when not necessary
+		Vector3 viewportPoint = Camera.main.WorldToViewportPoint(worldPosition); // DEBUG: Delete when not necessary
+		tempCrosshair.anchoredPosition = new Vector2(1920f * viewportPoint.x, 1080f * viewportPoint.y); // DEBUG: Delete when not necessary
 	}
 
 	private void HighlightBestTargetForSpell() {
@@ -58,22 +70,41 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 				StartHighlightingTarget();
 		}
 	}
+	// Highlights the target in lastTarget using an outline
 	private void StartHighlightingTarget() {
 		if (lastTarget == null) return;
-		// TODO: Highlight the target in lastTarget using a pulsing outline
-		SpellTargetPoint targetPoint = lastTarget.GetComponentInChildren<SpellTargetPoint>(); // DEBUG: Delete when not necessary
-		Vector3 worldPosition = targetPoint.GetAbsolutePosition(); // DEBUG: Delete when not necessary
-		Vector3 viewportPoint = Camera.main.WorldToViewportPoint(worldPosition); // DEBUG: Delete when not necessary
-		tempCrosshair.anchoredPosition = new Vector2(1920f * viewportPoint.x, 1080f * viewportPoint.y); // DEBUG: Delete when not necessary
+		// Find all renderers corresponding to the target object
+		Renderer[] renderers = lastTarget.GetComponentsInChildren<MeshRenderer>();
+		foreach (var renderer in renderers) outlinedRenderers.Add(renderer);
+		renderers = lastTarget.GetComponentsInChildren<SkinnedMeshRenderer>();
+		foreach (var renderer in renderers) outlinedRenderers.Add(renderer);
+		// Assign them to Outline layer (only renderers and not whole taret object so its layer is intact for other gameplay mechanics)
+		SetRendererLayerToOutline();
 		tempCrosshair.gameObject.SetActive(true); // DEBUG: Delete when not necessary
 		Debug.Log($"Started highlighting {lastTarget.name}.");
 	}
+	// Stops highlighting the target in lastTarget
 	private void StopHighlightingTarget() {
 		if (lastTarget == null) return;
-		// TODO: Stop highlighting the target in lastTarget
+		// Return renderer layers to their original values
+		RestoreRendererLayers();
 		tempCrosshair.gameObject.SetActive(false); // DEBUG: Delete when not necessary
 		Debug.Log($"Stopped highlighting {lastTarget.name}.");
+		// Clear everything
 		lastTarget = null;
+		outlinedRenderers.Clear();
+		originalRendererLayers.Clear();
+	}
+	private void SetRendererLayerToOutline() {
+		foreach (var renderer in outlinedRenderers) {
+			originalRendererLayers.Add(renderer.gameObject.layer);
+			renderer.gameObject.layer = LayerMask.NameToLayer("Outline");
+		}
+	}
+	private void RestoreRendererLayers() {
+		for (int i = 0; i < outlinedRenderers.Count; i++) {
+			outlinedRenderers[i].gameObject.layer = originalRendererLayers[i];
+		}
 	}
 
 	private void OnSelectedSpellChanged(int selectedSpellIndex) {
@@ -120,7 +151,7 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		if (!shouldHighlightObjects) return; // target highlighting is not needed
 		// Recompute current target and highlight it
 		HighlightBestTargetForSpell();
-		StartHighlightingTarget(); // DEBUG: Delete when not necessary
+		UpdateTemporaryCrosshair(); // DEBUG: Delete when not necessary
 	}
 
 	private void OnDestroy() {
