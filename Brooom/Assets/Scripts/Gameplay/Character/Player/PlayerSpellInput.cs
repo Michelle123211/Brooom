@@ -2,14 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSpellInput : MonoBehaviour {
+public class PlayerSpellInput : SpellInput {
 
-	private SpellController spellController;
-
-	private void Update() {
-		// Do nothing if the game is paused
-		if (GamePause.pauseState != GamePauseState.Running) return;
-
+	protected override void UpdateWhenGameIsRunning() {
 		// Detect mouse click and cast the currently selected spell
 		if (Input.GetMouseButtonDown(0)) {
 			spellController.CastCurrentlySelectedSpell();
@@ -25,7 +20,4 @@ public class PlayerSpellInput : MonoBehaviour {
 		}
 	}
 
-	private void Awake() {
-		spellController = GetComponent<SpellController>();
-	}
 }

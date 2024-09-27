@@ -68,15 +68,18 @@ public class SpellController : MonoBehaviour {
 	}
 
 	public bool HasEquippedSpells() {
+		if (spellSlots == null) return false;
 		foreach (var spell in spellSlots) {
 			if (spell != null && spell.Spell != null && !string.IsNullOrEmpty(spell.Spell.Identifier)) return true;
 		}
 		return false;
 	}
 
-	public void RandomizeEquippedSpells() { 
+	public void RandomizeEquippedSpells() {
 		// TODO: Randomize equipped spells so it is similar to the player
 		// TODO: Initialize selectedSpell
+		spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Velox"));
+		selectedSpell = 0;
 	}
 
 	public void ChangeManaAmount(int delta) {

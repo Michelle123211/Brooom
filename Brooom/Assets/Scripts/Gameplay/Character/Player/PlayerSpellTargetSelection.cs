@@ -113,6 +113,13 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 
 	private void OnSelectedSpellChanged(int selectedSpellIndex) {
 		selectedSpell = spellController.GetCurrentlySelectedSpell();
+		// Handle case when this may be called after initialization with no equipped spells
+		if (selectedSpell == null) {
+			shouldHighlightObjects = false;
+			HideCrosshair();
+			if (lastTarget != null) StopHighlightingTarget();
+			return;
+		}
 		// Show/hide crosshair
 		if (selectedSpell.TargetType == SpellTargetType.Direction) ShowCrosshair();
 		else HideCrosshair();
@@ -162,21 +169,16 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		UpdateDynamicCrosshair();
 	}
 
-	private void OnDestroy() {
-		// Unregister callbacks
-		spellController.onSelectedSpellChanged -= OnSelectedSpellChanged;
-	}
-
 	private void Start() {
-		// Disable this whole component if no spell is equipped
-		if (!spellController.HasEquippedSpells()) {
-			this.enabled = false;
-			return;
-		}
 		// Register callback
 		spellController.onSelectedSpellChanged += OnSelectedSpellChanged;
 		// Initialize
 		OnSelectedSpellChanged(spellController.selectedSpell);
+	}
+
+	private void OnDestroy() {
+		// Unregister callbacks
+		spellController.onSelectedSpellChanged -= OnSelectedSpellChanged;
 	}
 
 }
