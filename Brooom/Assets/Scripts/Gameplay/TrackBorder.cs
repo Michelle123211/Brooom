@@ -44,4 +44,10 @@ public class TrackBorder : MonoBehaviour
 			}
 		}
 	}
+
+	private void OnDestroy() {
+		// Reset material properties
+		meshRenderer?.sharedMaterial.SetVector("_ImpactPoint", Vector3.zero);
+		meshRenderer?.sharedMaterial.SetFloat("_ImpactTime", 0);
+	}
 }

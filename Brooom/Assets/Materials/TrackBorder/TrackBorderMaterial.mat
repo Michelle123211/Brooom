@@ -109,7 +109,7 @@ Material:
     - _GlossyReflections: 0
     - _ImpactPower: 0.3
     - _ImpactRadius: 10
-    - _ImpactTime: 1
+    - _ImpactTime: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -140,7 +140,7 @@ Material:
     - _CameraFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 2.9960785, g: 1.3333334, b: 0.1882353, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ImpactPoint: {r: 51.869102, g: 10.782447, b: -122.276375, a: 0}
+    - _ImpactPoint: {r: 0, g: 0, b: 0, a: 0}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
