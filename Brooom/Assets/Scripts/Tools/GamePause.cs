@@ -37,6 +37,12 @@ public class GamePause : MonoBehaviour {
         pauseState = GamePauseState.Resuming;
     }
 
+    public void ExitGame() {
+        // Change state to running
+        pauseState = GamePauseState.Running;
+        Time.timeScale = 1f;
+    }
+
 	private void Start() {
         animator = GetComponent<Animator>();
     }
