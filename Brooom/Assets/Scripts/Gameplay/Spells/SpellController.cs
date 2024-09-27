@@ -55,7 +55,7 @@ public class SpellController : MonoBehaviour {
 					Debug.Log("No suitable spell target was found.");
 					return;
 				}
-				currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = spellTargetSelection.GetCurrentTarget() });
+				currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = spellTarget });
 				ChangeManaAmount(-currentSpell.Spell.ManaCost);
 				// Notify anyone interested that a spell has been casted
 				onSpellCasted?.Invoke(selectedSpell);

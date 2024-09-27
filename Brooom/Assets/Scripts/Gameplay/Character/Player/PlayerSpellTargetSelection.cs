@@ -27,7 +27,7 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	}
 
 	protected override Vector3 GetCurrentTargetDirection() {
-		// Target direction os the current view direction
+		// Target direction is the current view direction
 		return Camera.main.transform.forward;
 	}
 
