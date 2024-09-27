@@ -8,6 +8,7 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	private bool shouldHighlightObjects = false;
 
 	private GameObject lastTarget = null;
+	private SpellTargetPoint lastTargetPoint = null;
 
 	private List<Renderer> outlinedRenderers = new List<Renderer>(); // all renderers of current target object
 	private List<int> originalRendererLayers = new List<int>(); // original layers assigned to renderer objects before changing it to Outline
@@ -15,9 +16,9 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	private Spell selectedSpell;
 
 	[Tooltip("A UI element representing a crosshair which is to appear on screen whenever a spell with direction as its target type is selected.")]
-	[SerializeField] GameObject crosshair;
-
-	[SerializeField] RectTransform tempCrosshair;
+	[SerializeField] GameObject staticCrosshair;
+	[Tooltip("A UI element representing a crosshair which is used to highlight a target object whenever a spell with opponent/object as its target is selected.")]
+	[SerializeField] RectTransform dynamicCrosshair;
 
 
 	protected override GameObject GetCurrentTargetObject() {
@@ -31,18 +32,10 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	}
 
 	private void ShowCrosshair() {
-		crosshair.TweenAwareEnable();
+		staticCrosshair.TweenAwareEnable();
 	}
 	private void HideCrosshair() {
-		crosshair.TweenAwareDisable();
-	}
-
-	private void UpdateTemporaryCrosshair() { // DEBUG: Delete when not necessary
-		if (lastTarget == null) return;
-		SpellTargetPoint targetPoint = lastTarget.GetComponentInChildren<SpellTargetPoint>(); // DEBUG: Delete when not necessary
-		Vector3 worldPosition = targetPoint.GetAbsolutePosition(); // DEBUG: Delete when not necessary
-		Vector3 viewportPoint = Camera.main.WorldToViewportPoint(worldPosition); // DEBUG: Delete when not necessary
-		tempCrosshair.anchoredPosition = new Vector2(1920f * viewportPoint.x, 1080f * viewportPoint.y); // DEBUG: Delete when not necessary
+		staticCrosshair.TweenAwareDisable();
 	}
 
 	private void HighlightBestTargetForSpell() {
@@ -66,8 +59,10 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		if (currentTarget != lastTarget) {
 			StopHighlightingTarget();
 			lastTarget = currentTarget;
-			if (lastTarget != null)
+			if (lastTarget != null) {
+				lastTargetPoint = lastTarget.GetComponentInChildren<SpellTargetPoint>();
 				StartHighlightingTarget();
+			}
 		}
 	}
 	// Highlights the target in lastTarget using an outline
@@ -80,7 +75,7 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		foreach (var renderer in renderers) outlinedRenderers.Add(renderer);
 		// Assign them to Outline layer (only renderers and not whole taret object so its layer is intact for other gameplay mechanics)
 		SetRendererLayerToOutline();
-		tempCrosshair.gameObject.SetActive(true); // DEBUG: Delete when not necessary
+		UpdateDynamicCrosshair(true);
 		Debug.Log($"Started highlighting {lastTarget.name}.");
 	}
 	// Stops highlighting the target in lastTarget
@@ -88,12 +83,21 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		if (lastTarget == null) return;
 		// Return renderer layers to their original values
 		RestoreRendererLayers();
-		tempCrosshair.gameObject.SetActive(false); // DEBUG: Delete when not necessary
 		Debug.Log($"Stopped highlighting {lastTarget.name}.");
 		// Clear everything
 		lastTarget = null;
+		lastTargetPoint = null;
 		outlinedRenderers.Clear();
 		originalRendererLayers.Clear();
+		dynamicCrosshair.gameObject.SetActive(false);
+	}
+	// Updates position of dynamic crosshair highlighting current target
+	private void UpdateDynamicCrosshair(bool alsoEnable = false) {
+		if (!shouldHighlightObjects || lastTarget == null || lastTargetPoint == null) return;
+		Vector3 worldPosition = lastTargetPoint.GetAbsolutePosition();
+		Vector3 viewportPoint = Camera.main.WorldToViewportPoint(worldPosition);
+		dynamicCrosshair.anchoredPosition = new Vector2(1920f * viewportPoint.x, 1080f * viewportPoint.y);
+		if (alsoEnable) dynamicCrosshair.gameObject.SetActive(true);
 	}
 	private void SetRendererLayerToOutline() {
 		foreach (var renderer in outlinedRenderers) {
@@ -151,7 +155,11 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		if (!shouldHighlightObjects) return; // target highlighting is not needed
 		// Recompute current target and highlight it
 		HighlightBestTargetForSpell();
-		UpdateTemporaryCrosshair(); // DEBUG: Delete when not necessary
+	}
+
+	private void LateUpdate() {
+		if (!shouldHighlightObjects) return; // target highlighting is not needed
+		UpdateDynamicCrosshair();
 	}
 
 	private void OnDestroy() {
