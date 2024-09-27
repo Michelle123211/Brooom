@@ -26,6 +26,7 @@ public class RaceSpellsUI : MonoBehaviour {
     private SpellController playerSpellController;
 
     public void Initialize(GameObject playerObject) {
+        gameObject.SetActive(false);
         this.playerSpellController = playerObject.GetComponent<SpellController>();
         // Show only if the player has some spells equipped
         if (playerSpellController.HasEquippedSpells()) {
