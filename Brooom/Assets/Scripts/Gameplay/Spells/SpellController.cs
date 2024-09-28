@@ -88,7 +88,7 @@ public class SpellController : MonoBehaviour {
 	public void RandomizeEquippedSpells() {
 		// TODO: Randomize equipped spells so it is similar to the player
 		// TODO: Initialize selectedSpell
-		spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Congelatio"));
+		spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Confusione"));
 		selectedSpell = 0;
 	}
 

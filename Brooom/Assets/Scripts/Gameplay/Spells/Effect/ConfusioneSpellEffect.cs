@@ -4,15 +4,11 @@ using UnityEngine;
 
 
 // Spell for confusing an opponent
-public class ConfusioneSpellEffect : RacerAffectingSpellEffect
-{
-	protected override void StartSpellEffect_Internal() {
-		// TODO: Disable the racer's controls
-		throw new System.NotImplementedException();
+public class ConfusioneSpellEffect : MovementAffectingSpellEffect {
+
+	protected override void DisableRacerMovement(CharacterMovementController targetRacer) {
+		// Disable actions but without stopping so the racer keeps moving forward
+		targetRacer.DisableActions(CharacterMovementController.StopMethod.NoStop);
 	}
 
-	protected override void StopSpellEffect_Internal() {
-		// TODO: Enable the racer's controls again
-		throw new System.NotImplementedException();
-	}
 }
