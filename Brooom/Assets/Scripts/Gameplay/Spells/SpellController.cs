@@ -40,29 +40,39 @@ public class SpellController : MonoBehaviour {
 
 	public Spell GetCurrentlySelectedSpell() {
 		if (selectedSpell != -1) {
-			return PlayerState.Instance.equippedSpells[selectedSpell];
+			if (spellSlots[selectedSpell] != null) return spellSlots[selectedSpell].Spell;
 		}
 		return null;
 	}
 
+	public bool IsCurrentlySelectedSpellReady() {
+		if (selectedSpell == -1) return false;
+		SpellInRace currentSpell = spellSlots[selectedSpell];
+		return (currentSpell.Charge >= 1 && CurrentMana >= currentSpell.Spell.ManaCost);
+	}
+
+	public bool IsSpellInSlotReady(int spellSlotIndex) {
+		if (spellSlotIndex < 0 || spellSlotIndex > spellSlots.Length - 1) throw new IndexOutOfRangeException();
+		SpellInRace spell = spellSlots[spellSlotIndex];
+		return (spell.Charge >= 1 && CurrentMana >= spell.Spell.ManaCost);
+	}
+
 	public void CastCurrentlySelectedSpell() {
-		if (selectedSpell != -1) {
+		if (IsCurrentlySelectedSpellReady()) { // spell is selected, it is charged and there is enough mana
 			SpellInRace currentSpell = spellSlots[selectedSpell];
-			if (currentSpell.Charge >= 1 && CurrentMana >= currentSpell.Spell.ManaCost) {
-				// Cast spell and pass correct parameters (source, target)
-				SpellTarget spellTarget = spellTargetSelection.GetCurrentTarget();
-				if (!spellTarget.HasTargetAssigned) {
-					Debug.Log("No suitable spell target was found.");
-					return;
-				}
-				currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = spellTarget });
-				ChangeManaAmount(-currentSpell.Spell.ManaCost);
-				// Notify anyone interested that a spell has been casted
-				onSpellCasted?.Invoke(selectedSpell);
-				if (isPlayer) {
-					Messaging.SendMessage("SpellCasted", currentSpell.Spell.Identifier);
-					PlayerState.Instance.MarkSpellAsUsed(currentSpell.Spell.Identifier);
-				}
+			// Cast spell and pass correct parameters (source, target)
+			SpellTarget spellTarget = spellTargetSelection.GetCurrentTarget();
+			if (!spellTarget.HasTargetAssigned) {
+				Debug.Log("No suitable spell target was found.");
+				return;
+			}
+			currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = spellTarget });
+			ChangeManaAmount(-currentSpell.Spell.ManaCost);
+			// Notify anyone interested that a spell has been casted
+			onSpellCasted?.Invoke(selectedSpell);
+			if (isPlayer) {
+				Messaging.SendMessage("SpellCasted", currentSpell.Spell.Identifier);
+				PlayerState.Instance.MarkSpellAsUsed(currentSpell.Spell.Identifier);
 			}
 		}
 	}
@@ -78,7 +88,7 @@ public class SpellController : MonoBehaviour {
 	public void RandomizeEquippedSpells() {
 		// TODO: Randomize equipped spells so it is similar to the player
 		// TODO: Initialize selectedSpell
-		spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Velox"));
+		spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Congelatio"));
 		selectedSpell = 0;
 	}
 
