@@ -107,6 +107,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Opponent
       objectReference: {fileID: 0}
+    - target: {fileID: 3161338561109082813, guid: d5057250aeb262d42b6597b1fc78f59b,
+        type: 3}
+      propertyPath: spellTargetSelection
+      value: 
+      objectReference: {fileID: 1459539863672795404}
     - target: {fileID: 3934684019154203765, guid: d5057250aeb262d42b6597b1fc78f59b,
         type: 3}
       propertyPath: m_TagString
@@ -158,6 +163,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellController: {fileID: 8446299117247132252}
+  spellTargetSelection: {fileID: 1459539863672795404}
+--- !u!114 &1459539863672795404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321814625550648350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd8f50d2b2e1b8f44b6cdb30cb5225b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellController: {fileID: 8446299117247132252}
+  spellTargetDetection: {fileID: 8192614673238933317}
+  targetPositionDistance: 30
 --- !u!1 &6680091516033058312 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 170133169353488105, guid: d5057250aeb262d42b6597b1fc78f59b,
@@ -186,6 +207,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86e426c4a12329e49b40fef6d19cb04c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8192614673238933317 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3412074042987646884, guid: d5057250aeb262d42b6597b1fc78f59b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6838747782754545889}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321814625550648350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f13c96d64bebc5044a7c2fd0af1e8c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8446299117247132252 stripped

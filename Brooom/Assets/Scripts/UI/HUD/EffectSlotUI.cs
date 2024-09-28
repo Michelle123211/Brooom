@@ -18,16 +18,17 @@ public class EffectSlotUI : MonoBehaviour
 		assignedEffect = effect;
 		effectImage.sprite = assignedEffect.Icon;
 		effectDurationText.text = $"{(int)assignedEffect.TimeLeft} s";
+		effect.onEffectEnd += DestroySelf; // register callback - destroy on timeout
 	}
 
 	private void Update() {
-		// Destroy on timeout
-		if (assignedEffect.TimeLeft < 0) {
-			Destroy(gameObject);
-		}
-		// Update the time
-		else { 
+		// Update the time label
+		if (assignedEffect.TimeLeft >= 0) {
 			effectDurationText.text = $"{(int)assignedEffect.TimeLeft} s";
 		}
+	}
+
+	private void DestroySelf() {
+		Destroy(gameObject);
 	}
 }

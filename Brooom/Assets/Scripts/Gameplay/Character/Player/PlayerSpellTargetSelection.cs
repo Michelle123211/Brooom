@@ -76,14 +76,12 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		// Assign them to Outline layer (only renderers and not whole taret object so its layer is intact for other gameplay mechanics)
 		SetRendererLayerToOutline();
 		UpdateDynamicCrosshair(true);
-		Debug.Log($"Started highlighting {lastTarget.name}.");
 	}
 	// Stops highlighting the target in lastTarget
 	private void StopHighlightingTarget() {
 		if (lastTarget == null) return;
 		// Return renderer layers to their original values
 		RestoreRendererLayers();
-		Debug.Log($"Stopped highlighting {lastTarget.name}.");
 		// Clear everything
 		lastTarget = null;
 		lastTargetPoint = null;
