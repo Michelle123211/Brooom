@@ -4,7 +4,19 @@ using UnityEngine;
 
 
 // Spell for pushing an opponent away
-public class FlanteSpellEffect : DurativeSpellEffect {
+public class FlanteSpellEffect : VelocityAddingSpellEffect {
+
+	protected override Vector3 GetInitialVelocityNormalized() {
+		return castParameters.castDirection; // direction of casting the spell ~ similar to view direction for player
+	}
+
+	protected override CharacterMovementController GetTargetMovementController() {
+		return castParameters.Target.TargetObject.GetComponentInChildren<CharacterMovementController>();
+	}
+
+}
+
+public abstract class VelocityAddingSpellEffect : DurativeSpellEffect {
 
 	[Tooltip("A velocity added to the target is changing according to this curve over time (values between 0 and 1).")]
 	[SerializeField] AnimationCurve velocityTweenCurve;
@@ -16,7 +28,7 @@ public class FlanteSpellEffect : DurativeSpellEffect {
 	Vector3 velocity;
 
 	protected override void ApplySpellEffect_OneIteration(float time) {
-		// TODO: Move the racer a bit further in the corresponding direction
+		// Move the racer a bit further in the corresponding direction
 		targetMovementController.AddAdditionalVelocityForNextFrame(velocity * velocityTweenCurve.Evaluate(time)); // tweened
 	}
 
@@ -25,7 +37,10 @@ public class FlanteSpellEffect : DurativeSpellEffect {
 	}
 
 	protected override void StartApplyingSpellEffect() {
-		targetMovementController = castParameters.Target.TargetObject.GetComponentInChildren<CharacterMovementController>();
-		velocity = impactStrength * castParameters.castDirection;
+		targetMovementController = GetTargetMovementController();
+		velocity = impactStrength * GetInitialVelocityNormalized();
 	}
+
+	protected abstract CharacterMovementController GetTargetMovementController();
+	protected abstract Vector3 GetInitialVelocityNormalized();
 }

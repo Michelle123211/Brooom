@@ -4,19 +4,14 @@ using UnityEngine;
 
 
 // Spell for relocating further in the direction of flying
-public class TranslatioSpellEffect : DurativeSpellEffect {
+public class TranslatioSpellEffect : VelocityAddingSpellEffect {
 
-	protected override void ApplySpellEffect_OneIteration(float time) {
-		// TODO: Move the racer a bit closer to the final position
-		throw new System.NotImplementedException();
+	protected override Vector3 GetInitialVelocityNormalized() {
+		return castParameters.SourceObject.transform.forward; // forward direction
 	}
 
-	protected override void FinishApplyingSpellEffect() {
-		throw new System.NotImplementedException();
-	}
-
-	protected override void StartApplyingSpellEffect() {
-		throw new System.NotImplementedException();
+	protected override CharacterMovementController GetTargetMovementController() {
+		return castParameters.SourceObject.GetComponentInChildren<CharacterMovementController>();
 	}
 
 }
