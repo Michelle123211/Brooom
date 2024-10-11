@@ -93,7 +93,7 @@ public class Spell : MonoBehaviour {
 
     public void CastSpell(SpellCastParameters castParameters) {
         // Create a separate instance of the spell effect controller (so it could be casted by several racers at once)
-        SpellEffectController effect = Instantiate<SpellEffectController>(effectControllerPrefab, castParameters.GetCastPoint(), Quaternion.identity);
+        SpellEffectController effect = Instantiate<SpellEffectController>(effectControllerPrefab, castParameters.GetCastPosition(), Quaternion.identity);
         effect.InvokeSpellEffect(castParameters);
     }
 }

@@ -205,7 +205,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a4b02570b8dc540abadc5264d531b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectDuration: 4
+  effectDuration: 1.5
+  velocityTweenCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  impactStrength: 20
 --- !u!114 &2960455016919309490 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5581139391021219865, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,

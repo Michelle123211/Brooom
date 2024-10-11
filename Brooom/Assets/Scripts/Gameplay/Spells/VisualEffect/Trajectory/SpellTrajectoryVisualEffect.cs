@@ -33,7 +33,7 @@ public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 		if (!isInitialized)
 			throw new System.NotSupportedException("SpellTrajectoryVisualEffect must be initialized using the InitializeStartAndTarget method before playing.");
 		// Initialization
-		startPosition = castParameters.GetCastPoint();
+		startPosition = castParameters.GetCastPosition();
 		transform.position = startPosition;
 		currentTime = 0;
 		spellTrajectory.ResetTrajectory();
@@ -61,7 +61,7 @@ public class SpellTrajectoryVisualEffect : CustomVisualEffect {
 
 	protected override bool UpdatePlaying_Internal(float deltaTime) {
 		// Update variables
-		Vector3 targetPosition = castParameters.GetTargetPoint(); // target is moving, point need to be recalculated every frame
+		Vector3 targetPosition = castParameters.GetTargetPosition(); // target is moving, point need to be recalculated every frame
 		currentTime += deltaTime;
 		float totalDistance = Vector3.Distance(startPosition, targetPosition);
 		float currentDistance = currentTime * spellSpeed;

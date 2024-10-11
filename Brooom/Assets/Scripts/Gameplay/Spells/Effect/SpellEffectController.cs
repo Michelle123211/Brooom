@@ -65,7 +65,7 @@ public class SpellEffectController : MonoBehaviour {
 	private void LateUpdate() {
         // Update position to follow the target if the target is self
         if (currentState == SpellCastState.EFFECT && castParameters.Spell.TargetType == SpellTargetType.Self) {
-            transform.position = castParameters.GetCastPoint();
+            transform.position = castParameters.GetCastPosition();
         }
 	}
 

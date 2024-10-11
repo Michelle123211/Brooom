@@ -53,6 +53,9 @@ public class CharacterMovementController : MonoBehaviour {
     float bonusSpeedDuration = 0;
     DG.Tweening.Core.TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> bonusSpeedTween;
 
+    // Additional velocity (added on top of the current velocity each frame)
+    Vector3 additionalVelocityInFrame = Vector3.zero;
+
 
     // Enabling/disabling the action inputs
     public void EnableActions() {
@@ -100,6 +103,11 @@ public class CharacterMovementController : MonoBehaviour {
         TweenBonusSpeed(maxBonusSpeed, 1f);
         if (isPlayer)
             cameraController?.ZoomIn(true); // zoom the camera in to make the effect stronger
+    }
+
+    // Used from Flante spell
+    public void AddAdditionalVelocityForNextFrame(Vector3 velocity) {
+        additionalVelocityInFrame += velocity;
     }
 
     public void ResetPosition(Vector3 position) {
@@ -224,5 +232,9 @@ public class CharacterMovementController : MonoBehaviour {
         currentPitch += (pitchInput - currentPitch) * pitchResponsiveness; // change slowly, not immediately
         eulerAngles.x = currentPitch * maxPitchAngle;
         characterTransform.localEulerAngles = eulerAngles;
+
+        // Additional velocity in this frame (e.g. from a spell effect)
+        rb.velocity += additionalVelocityInFrame;
+        additionalVelocityInFrame = Vector3.zero; // reset for next frame
     }
 }

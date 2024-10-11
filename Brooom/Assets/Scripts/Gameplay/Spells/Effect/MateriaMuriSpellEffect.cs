@@ -10,7 +10,7 @@ public class MateriaMuriSpellEffect : OneShotSpellEffect {
 
 	protected override void ApplySpellEffect_Internal() {
 		// Create an instance of a wall prefab and set its position and rotation
-		Transform wall = Instantiate<Transform>(brickWallPrefab, castParameters.GetTargetPoint(), Quaternion.identity);
+		Transform wall = Instantiate<Transform>(brickWallPrefab, castParameters.GetTargetPosition(), Quaternion.identity);
 		wall.eulerAngles = Vector3.up * castParameters.SourceObject.transform.eulerAngles.y; // perpendicular to the racer's direction of movement
 	}
 

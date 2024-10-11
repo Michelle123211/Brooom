@@ -66,7 +66,13 @@ public class SpellController : MonoBehaviour {
 				Debug.Log("No suitable spell target was found.");
 				return;
 			}
-			currentSpell.CastSpell(new SpellCastParameters { Spell = currentSpell.Spell, SourceObject = gameObject, Target = spellTarget });
+			currentSpell.CastSpell(
+				new SpellCastParameters { 
+					Spell = currentSpell.Spell, 
+					SourceObject = gameObject, 
+					Target = spellTarget, 
+					castDirection = (spellTarget.GetTargetPosition() - transform.position).normalized
+				});
 			ChangeManaAmount(-currentSpell.Spell.ManaCost);
 			// Notify anyone interested that a spell has been casted
 			onSpellCasted?.Invoke(selectedSpell);
@@ -152,13 +158,15 @@ public struct SpellCastParameters {
 
 	public SpellTarget Target { get; set; }
 
-	public Vector3 GetCastPoint() {
+	public Vector3 castDirection; // direction in which the spell is casted
+
+	public Vector3 GetCastPosition() {
 		if (castPoint != null) return castPoint.GetAbsolutePosition();
 		else return sourceObject.transform.position;
 	}
 
-	public Vector3 GetTargetPoint() {
-		return Target.GetTargetPoint();
+	public Vector3 GetTargetPosition() {
+		return Target.GetTargetPosition();
 	}
 
 }
@@ -192,7 +200,7 @@ public struct SpellTarget {
 
 	public bool HasTargetAssigned { get; private set; }
 
-	public Vector3 GetTargetPoint() {
+	public Vector3 GetTargetPosition() {
 		if (targetObject != null) {
 			if (targetPoint != null) return targetPoint.GetAbsolutePosition();
 			else return targetObject.transform.position;

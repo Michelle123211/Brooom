@@ -17,7 +17,7 @@ public class TemereCommodumSpellEffect : OneShotSpellEffect {
 		int randomIndex = availableBonusIndices[Random.Range(0, availableBonusIndices.Count)];
 		BonusEffect bonusPrefab = bonusPrefabs[randomIndex];
 		// Create an instance, set its position and disable reactivation
-		BonusEffect bonusInstance = Instantiate<BonusEffect>(bonusPrefab, castParameters.GetTargetPoint(), Quaternion.identity);
+		BonusEffect bonusInstance = Instantiate<BonusEffect>(bonusPrefab, castParameters.GetTargetPosition(), Quaternion.identity);
 		bonusInstance.GetComponent<Bonus>().shouldReactivate = false;
 	}
 
