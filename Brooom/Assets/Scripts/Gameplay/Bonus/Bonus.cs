@@ -10,6 +10,8 @@ public class Bonus : MonoBehaviour {
     [Tooltip("Material assigned to the bonus.")]
     public Material bonusMaterial;
 
+    [Tooltip("If the bonus should be reactivated after a certain period, or it should be destroyed after being picked up.")]
+    public bool shouldReactivate = true;
     [Tooltip("After how many seconds picked-up bonus is activated again.")]
     public float reactivationTime = 8;
 
@@ -39,9 +41,10 @@ public class Bonus : MonoBehaviour {
                 pickUpEvent.Invoke(); // TODO: Add some pick up event
             // Let anyone interested know that a bonus was picked up by the player
             if (character.isPlayer) Messaging.SendMessage("BonusPickedUp", gameObject);
-            // Deactivate and start reactivation countdown
-            Invoke(nameof(Activate), reactivationTime);
+            // Deactivate and start reactivation countdown, or destroy
+            if (shouldReactivate) Invoke(nameof(Activate), reactivationTime);
             Deactivate();
+            if (!shouldReactivate) DestroySelf();
         }
 	}
     
@@ -69,7 +72,12 @@ public class Bonus : MonoBehaviour {
         Destroy(gameObject);
     }
 
-	private void Start() {
+    private void Awake() {
+        transform.localScale = Vector3.zero;
+    }
+
+    private void Start() {
         RefreshVisual();
+        Activate();
 	}
 }
