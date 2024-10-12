@@ -6,7 +6,7 @@ using UnityEngine;
 // Spell for relocating further in the direction of flying
 public class TranslatioSpellEffect : VelocityAddingSpellEffect {
 
-	protected override Vector3 GetInitialVelocityNormalized() {
+	protected override Vector3 GetBaseVelocityNormalized() {
 		return castParameters.SourceObject.transform.forward; // forward direction
 	}
 

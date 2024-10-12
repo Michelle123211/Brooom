@@ -32,6 +32,9 @@ public class CharacterMovementController : MonoBehaviour {
 
     private StopMethod actionsDisabledStop = StopMethod.NoStop;
 
+    // Additional velocity (added on top of the current velocity each frame)
+    [HideInInspector] public AdditionalVelocityCombined additionalVelocity = new AdditionalVelocityCombined();
+
     // Distinguish between controlling movement of the player or the opponents
     [HideInInspector] public bool isPlayer = true;
 
@@ -52,9 +55,6 @@ public class CharacterMovementController : MonoBehaviour {
     float bonusSpeed = 0;
     float bonusSpeedDuration = 0;
     DG.Tweening.Core.TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> bonusSpeedTween;
-
-    // Additional velocity (added on top of the current velocity each frame)
-    Vector3 additionalVelocityInFrame = Vector3.zero;
 
 
     // Enabling/disabling the action inputs
@@ -103,11 +103,6 @@ public class CharacterMovementController : MonoBehaviour {
         TweenBonusSpeed(maxBonusSpeed, 1f);
         if (isPlayer)
             cameraController?.ZoomIn(true); // zoom the camera in to make the effect stronger
-    }
-
-    // Used from Flante spell
-    public void AddAdditionalVelocityForNextFrame(Vector3 velocity) {
-        additionalVelocityInFrame += velocity;
     }
 
     public void ResetPosition(Vector3 position) {
@@ -234,7 +229,63 @@ public class CharacterMovementController : MonoBehaviour {
         characterTransform.localEulerAngles = eulerAngles;
 
         // Additional velocity in this frame (e.g. from a spell effect)
-        rb.velocity += additionalVelocityInFrame;
-        additionalVelocityInFrame = Vector3.zero; // reset for next frame
+        additionalVelocity.UpdateAdditionalVelocities(Time.fixedDeltaTime);
+        rb.velocity += additionalVelocity.GetCurrentAdditionalVelocity();
     }
+}
+
+
+// This class is responsible for all additional velocities added on top of the usual velocity (e.g. from input)
+public class AdditionalVelocityCombined {
+
+    private List<AdditionalVelocityTweened> additionalVelocities = new List<AdditionalVelocityTweened>();
+
+    public void AddAdditionalVelocity(AdditionalVelocityTweened additionalVelocity) {
+        additionalVelocities.Add(additionalVelocity);
+    }
+
+    public void UpdateAdditionalVelocities(float deltaTime) {
+        // Update all additional velocities and remove those which are finished already
+        for (int i = additionalVelocities.Count - 1; i >= 0; i--) {
+            additionalVelocities[i].UpdateValue(deltaTime);
+            if (additionalVelocities[i].IsFinished)
+                additionalVelocities.RemoveAt(i);
+        }
+    }
+
+    public Vector3 GetCurrentAdditionalVelocity() {
+        Vector3 velocity = Vector3.zero;
+        foreach (var additionalVelocity in additionalVelocities) {
+            velocity += additionalVelocity.CurrentValue;
+        }
+        return velocity;
+    }
+
+}
+
+
+// This class is responsible for an additional velocity added on top of the usual velocity (e.g. from input)
+// Additional velocity is tweened over time
+public class AdditionalVelocityTweened {
+
+    public Vector3 CurrentValue => baseVelocity * tweenCurve.Evaluate(currentTimeNormalized);
+    public bool IsFinished => (currentTimeNormalized >= 1);
+
+    private Vector3 baseVelocity;
+    private float duration;
+    private AnimationCurve tweenCurve;
+
+    private float currentTimeNormalized = 0;
+
+    public AdditionalVelocityTweened(Vector3 baseVelocity, float duration, AnimationCurve tweenCurve) {
+        this.baseVelocity = baseVelocity;
+        this.duration = duration;
+        this.tweenCurve = tweenCurve;
+    }
+
+    public void UpdateValue(float deltaTime) {
+        currentTimeNormalized += (deltaTime / duration);
+        if (currentTimeNormalized > 1) currentTimeNormalized = 1;
+    }
+
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 // Spell for pushing an opponent away
 public class FlanteSpellEffect : VelocityAddingSpellEffect {
 
-	protected override Vector3 GetInitialVelocityNormalized() {
+	protected override Vector3 GetBaseVelocityNormalized() {
 		return castParameters.castDirection; // direction of casting the spell ~ similar to view direction for player
 	}
 
@@ -24,23 +24,19 @@ public abstract class VelocityAddingSpellEffect : DurativeSpellEffect {
 	[Tooltip("The impact strength of the spell is equal to the magnitude of velocity added to the target.")]
 	[SerializeField] float impactStrength = 20;
 
-	CharacterMovementController targetMovementController;
-	Vector3 velocity;
-
 	protected override void ApplySpellEffect_OneIteration(float time) {
-		// Move the racer a bit further in the corresponding direction
-		targetMovementController.AddAdditionalVelocityForNextFrame(velocity * velocityTweenCurve.Evaluate(time)); // tweened
 	}
 
 	protected override void FinishApplyingSpellEffect() {
-
 	}
 
 	protected override void StartApplyingSpellEffect() {
-		targetMovementController = GetTargetMovementController();
-		velocity = impactStrength * GetInitialVelocityNormalized();
+		// Add additional velocity to the target racer
+		GetTargetMovementController().additionalVelocity.AddAdditionalVelocity(
+			new AdditionalVelocityTweened(impactStrength * GetBaseVelocityNormalized(), effectDuration, velocityTweenCurve)
+		);
 	}
 
 	protected abstract CharacterMovementController GetTargetMovementController();
-	protected abstract Vector3 GetInitialVelocityNormalized();
+	protected abstract Vector3 GetBaseVelocityNormalized();
 }
