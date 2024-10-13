@@ -17,7 +17,7 @@ public class NavigationBonusEffect : BonusEffect {
 			return;
 		
 		// Instantiate an object travelling between the track points and leaving trail behind
-		HighlightTrajectory highlighter = Instantiate<HighlightTrajectory>(trajectoryHighlighterPrefab, transform.position, Quaternion.identity);
+		HighlightTrajectory highlighter = Instantiate<HighlightTrajectory>(trajectoryHighlighterPrefab, character.transform.position, Quaternion.identity);
 		CharacterRaceState raceState = character.GetComponent<CharacterRaceState>();
 		int nextHoopIndex = raceState.trackPointToPassNext;
 		for (int i = 0; i < numberOfPoints; i++) {

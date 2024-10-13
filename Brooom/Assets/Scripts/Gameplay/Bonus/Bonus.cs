@@ -23,6 +23,8 @@ public class Bonus : MonoBehaviour {
     [Tooltip("What should happen when the bonus is deactivated (e.g. particles).")]
     public UnityEvent deactivationEvent;
 
+    private Vector3 originalPosition; // position at which the bonus should reappear (no matter if it was moved previously, e.g. by a spell)
+
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.layer == LayerMask.NameToLayer("Characters") && !other.isTrigger) {
             // Get the CharacterMovementController component on the root object
@@ -63,6 +65,7 @@ public class Bonus : MonoBehaviour {
 
     public void Activate() {
         // TODO: Add some tweening and activation event
+        transform.position = originalPosition; // make sure to spawn the bonus at its original location
         gameObject.SetActive(true);
         if (!Utils.IsNullEvent(activationEvent))
             activationEvent.Invoke();
@@ -77,6 +80,7 @@ public class Bonus : MonoBehaviour {
     }
 
     private void Start() {
+        originalPosition = transform.position;
         RefreshVisual();
         Activate();
 	}

@@ -56,6 +56,7 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 			}
 		}
 		// Highlight the target and save it as the last target
+		if (lastTarget == null) StopHighlightingTarget();
 		if (currentTarget != lastTarget) {
 			StopHighlightingTarget();
 			lastTarget = currentTarget;
@@ -73,15 +74,14 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 		foreach (var renderer in renderers) outlinedRenderers.Add(renderer);
 		renderers = lastTarget.GetComponentsInChildren<SkinnedMeshRenderer>();
 		foreach (var renderer in renderers) outlinedRenderers.Add(renderer);
-		// Assign them to Outline layer (only renderers and not whole taret object so its layer is intact for other gameplay mechanics)
+		// Assign them to Outline layer (only renderers and not whole target object so its layer is intact for other gameplay mechanics)
 		SetRendererLayerToOutline();
 		UpdateDynamicCrosshair(true);
 	}
 	// Stops highlighting the target in lastTarget
 	private void StopHighlightingTarget() {
-		if (lastTarget == null) return;
 		// Return renderer layers to their original values
-		RestoreRendererLayers();
+		if (lastTarget != null) RestoreRendererLayers();
 		// Clear everything
 		lastTarget = null;
 		lastTargetPoint = null;
@@ -105,7 +105,8 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	}
 	private void RestoreRendererLayers() {
 		for (int i = 0; i < outlinedRenderers.Count; i++) {
-			outlinedRenderers[i].gameObject.layer = originalRendererLayers[i];
+			if (outlinedRenderers[i] != null) // object hasn't been destroyed in the meantime
+				outlinedRenderers[i].gameObject.layer = originalRendererLayers[i];
 		}
 	}
 

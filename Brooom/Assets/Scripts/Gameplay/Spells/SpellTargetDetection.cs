@@ -23,16 +23,19 @@ public class SpellTargetDetection : MonoBehaviour {
 
 	// Returns list of potential targets for the currently selected spell
 	public List<GameObject> GetPotentialTargetsForSelectedSpell() {
+		RemoveAnyInactivePotentialTarget();
 		return potentialTargets[spellController.selectedSpell];
 	}
 
 	// Returns list of potential targets for the spell on the given index
 	public List<GameObject> GetPotentialTargetsForGivenSpell(int spellIndex) {
+		RemoveAnyInactivePotentialTarget();
 		return potentialTargets[spellIndex];
 	}
 
 	// Returns lists of potential targets for all equipped spells
 	public List<GameObject>[] GetPotentialTargetsForAllSpells() {
+		RemoveAnyInactivePotentialTarget();
 		return potentialTargets;
 	}
 
@@ -102,15 +105,21 @@ public class SpellTargetDetection : MonoBehaviour {
 		if (isThere) potentialTargets[spellIndex].Remove(target);
 	}
 
-	private void Update() {
-		if (!isSpellEquipped) return;
-		// Remove any inactive objects - e.g. bonuses (OnTriggerExit is not invoked when they are picked up and become inactive)
+	// Removes any potential target which is either inactive or has been destroyed
+	private void RemoveAnyInactivePotentialTarget() {
 		for (int i = 0; i < potentialTargets.Length; i++) {
 			if (potentialTargets[i] == null) continue;
 			for (int j = potentialTargets[i].Count - 1; j >= 0; j--) {
-				if (!potentialTargets[i][j].activeSelf) RemovePotentialTargetIfThere(potentialTargets[i][j], i);
+				if (potentialTargets[i][j] == null) potentialTargets[i].RemoveAt(j);
+				else if (!potentialTargets[i][j].activeSelf) RemovePotentialTargetIfThere(potentialTargets[i][j], i);
 			}
 		}
+	}
+
+	private void Update() {
+		if (!isSpellEquipped) return;
+		// Remove any inactive objects - e.g. bonuses (OnTriggerExit is not invoked when they are picked up and become inactive)
+		RemoveAnyInactivePotentialTarget();
 	}
 
 	private void Start() {
