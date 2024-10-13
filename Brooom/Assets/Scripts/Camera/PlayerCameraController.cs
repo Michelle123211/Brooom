@@ -94,18 +94,26 @@ public class PlayerCameraController : MonoBehaviour {
         }
         // Handle switching to the back view
         if (InputManager.Instance.GetBoolValue("BackView")) {
-            if (isBackViewOn) { // switch to a front camera
-                currentCamera = virtualCameras[currentCameraIndex];
-                virtualCameras[currentCameraIndex].gameObject.SetActive(true);
-                backVirtualCamera.gameObject.SetActive(false);
-            } else { // switch to a back camera and reset the front one
-                currentCamera = backVirtualCamera;
-                backVirtualCamera.gameObject.SetActive(true);
-                virtualCameras[currentCameraIndex].gameObject.SetActive(false);
-                ResetCameras(true);
-            }
-            isBackViewOn = !isBackViewOn;
+            if (isBackViewOn) SwitchToFrontCamera();
+            else SwitchToBackCamera();
         }
+    }
+
+    private void SwitchToBackCamera() {
+        // Switch to back camera and reset the front one
+        isBackViewOn = true;
+        currentCamera = backVirtualCamera;
+        backVirtualCamera.gameObject.SetActive(true);
+        virtualCameras[currentCameraIndex].gameObject.SetActive(false);
+        ResetCameras(true);
+    }
+
+    private void SwitchToFrontCamera() {
+        // Switch to front camera
+        isBackViewOn = false;
+        currentCamera = virtualCameras[currentCameraIndex];
+        virtualCameras[currentCameraIndex].gameObject.SetActive(true);
+        backVirtualCamera.gameObject.SetActive(false);
     }
 
     public void ResetCameraIfNecessary() {
@@ -120,6 +128,9 @@ public class PlayerCameraController : MonoBehaviour {
                 .OnComplete(() => { currentSensitivity = SettingsUI.mouseSensitivity; isResetting = false; }); // enable camera movement again
         }
         // Back view camera (backVirtualCamera) cannot be rotated so no reset is needed
+
+        // If the current camera is back camera, then switch back to front one
+        if (isBackViewOn) SwitchToFrontCamera();
     }
 
     // Start is called before the first frame update
