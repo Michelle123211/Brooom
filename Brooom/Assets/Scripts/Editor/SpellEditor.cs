@@ -59,8 +59,13 @@ public class SpellEditor : Editor {
             tagProperty.stringValue = EditorGUILayout.TagField(new GUIContent("Target object tag", tagProperty.tooltip), tagProperty.stringValue);
             serializedObject.ApplyModifiedProperties();
         }
+        // Indicator icon (only if target type is opponent)
+        SerializedProperty indicatorIconProperty = serializedObject.FindProperty("indicatorIcon");
+        if (targetType == SpellTargetType.Opponent) {
+            EditorGUILayout.PropertyField(indicatorIconProperty);
+        }
         //EditorGUILayout.LabelField(serializedObject.FindProperty("<SpellTargetTag>k__BackingField").stringValue); // for debug
-        
+
         // Display errors/warning if some of the properties are invalid
         if (targetType == SpellTargetType.Invalid || (targetType == SpellTargetType.Object && string.IsNullOrEmpty(tagProperty.stringValue))) {
             EditorGUILayout.HelpBox("Please make sure all fields have valid values.", MessageType.Error);

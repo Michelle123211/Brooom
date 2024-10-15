@@ -65,6 +65,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
+      propertyPath: indicatorIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: 3e17bb7cc96dcef4080b28a4b4ed70c7,
+        type: 3}
+    - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
+        type: 3}
       propertyPath: emissionColor.b
       value: 0.1882353
       objectReference: {fileID: 0}

@@ -52,6 +52,11 @@ public class Spell : MonoBehaviour {
     private Sprite icon;
     public Sprite Icon { get => icon; private set => icon = value; }
 
+    [Tooltip("Spell icon used to indicate a spell being casted towards the player.")]
+    [SerializeField]
+    private Sprite indicatorIcon;
+    public Sprite IndicatorIcon { get => indicatorIcon; private set => indicatorIcon = value; }
+
     // Spell description and target description is obtained from localization tables
 
     [Tooltip("How much it costs to unlock the spell in the shop.")]

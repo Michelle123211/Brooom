@@ -1,9 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public class SpellEffectController : MonoBehaviour {
+
+    public event Action<SpellEffectController> onSpellCastFinished;
+    public event Action<SpellEffectController> onSpellHit;
+
+    public Spell Spell => castParameters.Spell;
 
     [Tooltip("A component derived from SpellEffect which is responsible for applying the actual spell effect.")]
     [SerializeField] private SpellEffect actualSpellEffect;
@@ -27,7 +33,10 @@ public class SpellEffectController : MonoBehaviour {
 
     public void InvokeSpellEffect(SpellCastParameters castParameters) {
         this.castParameters = castParameters;
-        // Based on the spell target handle the visual effect of casting the spell (if it is not null)
+        // Let the target racer know there is an incoming spell
+        if (castParameters.Spell.TargetType == SpellTargetType.Opponent)
+            castParameters.Target.TargetObject.GetComponentInChildren<IncomingSpellsTracker>().AddIncomingSpell(this);
+        // Based on the spell target, handle the visual effect of casting the spell (if it is not null)
         if (castParameters.Spell.TargetType != SpellTargetType.Self && spellTrajectoryVisualEffect != null) {
             currentState = SpellCastState.CAST;
             // Cast spell
@@ -42,6 +51,7 @@ public class SpellEffectController : MonoBehaviour {
         // Handle finishing casting the spell
         if (currentState == SpellCastState.CAST) {
             if (!spellTrajectoryVisualEffect.IsPlaying) {
+                onSpellCastFinished?.Invoke(this);
                 currentState = SpellCastState.HIT;
             }
         }
@@ -49,6 +59,7 @@ public class SpellEffectController : MonoBehaviour {
         if (currentState == SpellCastState.HIT) {
             if (targetHitVisualEffect != null)
                 targetHitVisualEffect.StartPlaying();
+            onSpellHit?.Invoke(this);
             currentState = SpellCastState.EFFECT;
             actualSpellEffect.ApplySpellEffect(castParameters);
         }
