@@ -10,9 +10,6 @@ public class IncomingSpellIndicator : MonoBehaviour {
     [Tooltip("An Image component used as a background cicle from which the spell icon is cut out.")]
     [SerializeField] Image spellIndicatorBackground;
 
-    [Tooltip("Distance from which the indicator will start being visible.")]
-    [SerializeField] float maxDistance;
-
     [Header("Icon scale")]
     [Tooltip("Curve describing interpolation of icon scale based on spell distance. The higher the x, the shorter the distance.")]
     [SerializeField] AnimationCurve scaleTweenCurve;
@@ -27,17 +24,19 @@ public class IncomingSpellIndicator : MonoBehaviour {
 
     public Vector3 SpellDirection { get; private set; }
     public float SpellDistance { get; private set; }
-    public float SpellDistanceNormalized => (SpellDistance / maxDistance);
+    public float SpellDistanceNormalized => (SpellDistance / initialDistance);
     public SpellEffectController SpellObject { get; private set; }
 
     private IncomingSpellsTracker spellsTrackerObject;
+    private float initialDistance;
 
     public void Initialize(SpellEffectController spellObject, IncomingSpellsTracker spellsTrackerObject) {
         spellIndicatorIcon.sprite = spellObject.Spell.IndicatorIcon;
         spellIndicatorBackground.color = spellObject.Spell.BaseColor;
         this.SpellObject = spellObject;
         this.spellsTrackerObject = spellsTrackerObject;
-        RecomputeState();
+        RecomputeState(); // SpellDistance and SpellDirection
+        this.initialDistance = SpellDistance;
     }
 
     // Computes spell distance and direction
@@ -48,7 +47,7 @@ public class IncomingSpellIndicator : MonoBehaviour {
 
     // Changes icon size/opacity according to distance
     private void UpdateVisual() {
-        float oneMinusDistanceNormalized = 1f - (Mathf.Clamp(SpellDistance, 0f, maxDistance) / maxDistance);
+        float oneMinusDistanceNormalized = 1f - (Mathf.Clamp(SpellDistance, 0f, initialDistance) / initialDistance);
         // Scale
         transform.localScale = Vector3.one * (scaleKeyframes.x + scaleTweenCurve.Evaluate(oneMinusDistanceNormalized) * (scaleKeyframes.y - scaleKeyframes.x));
         // Opacity
