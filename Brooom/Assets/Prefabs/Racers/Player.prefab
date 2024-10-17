@@ -1329,6 +1329,21 @@ MonoBehaviour:
   targetPositionDistance: 30
   staticCrosshair: {fileID: 4358841056391066091}
   dynamicCrosshair: {fileID: 2292393748490691586}
+--- !u!114 &5554461827556983987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6753667506759105039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce08b0fba51f2fb469e5e2a6e1a18b8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  incomingSpellIndicatorParent: {fileID: 2500101813904965431}
+  incomingSpellIndicatorPrefab: {fileID: 1852968075849956579, guid: fbc166f6824d65041a91ed9d9b4548a3,
+    type: 3}
 --- !u!114 &7013356618974776397 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3161338561109082813, guid: d5057250aeb262d42b6597b1fc78f59b,

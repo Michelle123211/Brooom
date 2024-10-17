@@ -41,6 +41,7 @@ public class AISpellInput : SpellInput {
 							spellController.ChangeSelectedSpell(IterationDirection.Decreasing);
 						}
 						spellController.CastCurrentlySelectedSpell();
+						break;
 					}
 				}
 			}

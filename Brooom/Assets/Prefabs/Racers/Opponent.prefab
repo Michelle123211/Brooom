@@ -179,6 +179,18 @@ MonoBehaviour:
   spellController: {fileID: 8446299117247132252}
   spellTargetDetection: {fileID: 8192614673238933317}
   targetPositionDistance: 30
+--- !u!114 &4906129263031874473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321814625550648350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 288af0fd9f3205148a3a4093ef1688c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6680091516033058312 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 170133169353488105, guid: d5057250aeb262d42b6597b1fc78f59b,
