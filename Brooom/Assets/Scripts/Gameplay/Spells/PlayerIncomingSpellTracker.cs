@@ -51,7 +51,6 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 
 	// Callback on spell hit
 	private void ShakeCamera(SpellEffectController _) {
-		Debug.Log("Shaking");
 		PlayerCameraController camera = transform.GetComponentInParent<PlayerCameraController>();
 		camera.Shake(cameraShakeDuration, cameraShakeIntensity);
 	}

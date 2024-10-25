@@ -230,7 +230,11 @@ public class CharacterMovementController : MonoBehaviour {
 
         // Additional velocity in this frame (e.g. from a spell effect)
         additionalVelocity.UpdateAdditionalVelocities(Time.fixedDeltaTime);
-        rb.velocity += additionalVelocity.GetCurrentAdditionalVelocity();
+        Vector3 additionalVelocityVector = additionalVelocity.GetCurrentAdditionalVelocity();
+        if (transform.position.y >= PlayerState.Instance.maxAltitude && additionalVelocityVector.y > 0) // limiting the altitude
+            rb.velocity += additionalVelocityVector.WithY(0);
+        else
+            rb.velocity += additionalVelocityVector;
     }
 }
 

@@ -7,7 +7,8 @@ using UnityEngine;
 public class FlanteSpellEffect : VelocityAddingSpellEffect {
 
 	protected override Vector3 GetBaseVelocityNormalized() {
-		return castParameters.castDirection; // direction of casting the spell ~ similar to view direction for player
+		// Direction of casting the spell (~ similar to view direction for player)
+		return castParameters.castDirection;
 	}
 
 	protected override CharacterMovementController GetTargetMovementController() {
