@@ -13,13 +13,20 @@ public class ObjectGrowingVisualEffect : DurativeVisualEffect {
 	[Tooltip("A curve determining how to tween between the initial scale and the target scale over the duration. All values should be normalized between 0 and 1.")]
 	[SerializeField] AnimationCurve tweeningCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
+	[Tooltip("Whether the object, whose scale is tweened, should be activated at the start.")]
+	[SerializeField] bool activateAtStart = true;
+	[Tooltip("Whether the object, whose scale is tweened, should be deactivated at the end.")]
+	[SerializeField] bool deactivateAtEnd = true;
+
 	protected override void StartPlaying_AfterDurativeInit() {
 		objectToGrow.localScale = initialScale;
-		objectToGrow.gameObject.SetActive(true);
+		if (activateAtStart)
+			objectToGrow.gameObject.SetActive(true);
 	}
 
 	protected override void StopPlaying_AfterDurativeFinish() {
-		objectToGrow.gameObject.SetActive(false);
+		if (deactivateAtEnd)
+			objectToGrow.gameObject.SetActive(false);
 	}
 
 	protected override void UpdatePlaying_WithNormalizedTime(float currentTimeNormalized) {

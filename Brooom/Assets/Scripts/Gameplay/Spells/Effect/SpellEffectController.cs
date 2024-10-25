@@ -19,6 +19,8 @@ public class SpellEffectController : MonoBehaviour {
     [Tooltip("A visual effect used when the spell hits its target (it may be even the racer casting the spell).")]
     [SerializeField] private CustomVisualEffect targetHitVisualEffect;
 
+    private bool isDestroyScheduled = false;
+
     private enum SpellCastState {
         NOT_STARTED,
         CAST,
@@ -57,19 +59,29 @@ public class SpellEffectController : MonoBehaviour {
         }
         // Handle hitting the target and invoking the actual effect
         if (currentState == SpellCastState.HIT) {
-            if (targetHitVisualEffect != null)
-                targetHitVisualEffect.StartPlaying();
-            onSpellHit?.Invoke(this);
-            currentState = SpellCastState.EFFECT;
-            actualSpellEffect.ApplySpellEffect(castParameters);
+            // If the target has shield and is not the racer themselves, don't continue and finish casting the spell
+            GameObject targetObject = castParameters.Target.TargetObject;
+            if (castParameters.Spell.TargetType != SpellTargetType.Self && targetObject != null && targetObject.GetComponentInChildren<SpellShield>() != null)
+                currentState = SpellCastState.FINISHED;
+            // Otherwise, continue invoking the spell effect
+            else {
+                if (targetHitVisualEffect != null)
+                    targetHitVisualEffect.StartPlaying();
+                onSpellHit?.Invoke(this);
+                currentState = SpellCastState.EFFECT;
+                actualSpellEffect.ApplySpellEffect(castParameters);
+            }
         }
         // Handle the actual functional spell effect
         if (currentState == SpellCastState.EFFECT) {
             if (IsSpellFinished()) {
                 currentState = SpellCastState.FINISHED;
-                // Schedule destroying this spell instance
-                Destroy(gameObject, 1f);
             }
+        }
+        // Handle destruction of this spell instance
+        if (currentState == SpellCastState.FINISHED && !isDestroyScheduled) {
+            Destroy(gameObject, 1f);
+            isDestroyScheduled = true;
         }
 	}
 

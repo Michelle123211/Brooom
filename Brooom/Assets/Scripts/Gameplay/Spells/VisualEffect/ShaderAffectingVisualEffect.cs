@@ -11,6 +11,7 @@ public class ShaderAffectingVisualEffect : DurativeVisualEffect {
 
 	[SerializeField] List<InterpolatedShaderParameter<float>> floatParameters = new List<InterpolatedShaderParameter<float>>();
 	[SerializeField] List<InterpolatedShaderParameter<Color>> colorParameters = new List<InterpolatedShaderParameter<Color>>();
+	[SerializeField] List<InterpolatedShaderParameter<bool>> boolParameters = new List<InterpolatedShaderParameter<bool>>();
 
 	protected override void StartPlaying_AfterDurativeInit() {
 		// Set initial values
@@ -18,6 +19,8 @@ public class ShaderAffectingVisualEffect : DurativeVisualEffect {
 			meshRenderer.material.SetFloat(parameter.parameterName, parameter.initialValue);
 		foreach (var parameter in colorParameters)
 			meshRenderer.material.SetColor(parameter.parameterName, parameter.initialValue);
+		foreach (var parameter in boolParameters)
+			meshRenderer.material.SetInt(parameter.parameterName, parameter.initialValue == false ? 0 : 1);
 	}
 
 	protected override void StopPlaying_AfterDurativeFinish() {
@@ -26,6 +29,8 @@ public class ShaderAffectingVisualEffect : DurativeVisualEffect {
 			meshRenderer.material.SetFloat(parameter.parameterName, parameter.targetValue);
 		foreach (var parameter in colorParameters)
 			meshRenderer.material.SetColor(parameter.parameterName, parameter.targetValue);
+		foreach (var parameter in boolParameters)
+			meshRenderer.material.SetInt(parameter.parameterName, parameter.targetValue == false ? 0 : 1);
 	}
 
 	protected override void UpdatePlaying_WithNormalizedTime(float currentTimeNormalized) {
