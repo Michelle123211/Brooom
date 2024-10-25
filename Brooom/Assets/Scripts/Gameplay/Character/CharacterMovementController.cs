@@ -61,7 +61,7 @@ public class CharacterMovementController : MonoBehaviour {
     public void EnableActions() {
         actionsEnabled = true;
     }
-    public enum StopMethod { 
+    public enum StopMethod {
         ImmediateStop,
         BrakeStop,
         NoStop
@@ -165,6 +165,15 @@ public class CharacterMovementController : MonoBehaviour {
         }
     }
 
+    private bool ShouldMove() {
+        // Should not move if movement actions are not enabled
+        if (!actionsEnabled && actionsDisabledStop != StopMethod.BrakeStop) return false;
+        // Should not move if the game is paused
+        if (GamePause.pauseState == GamePauseState.Paused) return false;
+        // Otherwise movement is enabled
+        return true;
+    }
+
     private void Awake() {
         if (characterInput == null)
             characterInput = GetComponent<CharacterInput>();
@@ -175,48 +184,41 @@ public class CharacterMovementController : MonoBehaviour {
         if (isPlayer)
             cameraController = GetComponent<PlayerCameraController>();
         maxSpeed = initialMaxSpeed * MAX_SPEED;
-	}
+    }
 
-	private void FixedUpdate() {
-        // Do nothing if movement actions are not enabled
-        if (!actionsEnabled && actionsDisabledStop != StopMethod.BrakeStop) {
-            return;
-        }
-
-        // Do nothing if the game is paused
-        if (GamePause.pauseState == GamePauseState.Paused)
-            return;
-
-        CharacterMovementValues movementInput = characterInput.GetMovementInput();
-
-        // Handle disabled movement actions with braking
-        if (!actionsEnabled && actionsDisabledStop == StopMethod.BrakeStop)
-            movementInput = new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
-
+    private void HandleForwardMovement(CharacterMovementValues movementInput) {
         // Forward input
         float forwardInput = (float)movementInput.forwardMotion * movementInput.forwardValue;
         previousForwardInput = forwardInput;
-
         // Resolve bonus speed (if any)
         if (hasBonusSpeed)
             UpdateBonusSpeed(forwardInput);
-
         // Forward
         currentForwardSpeed += ((forwardInput * maxSpeed) - currentForwardSpeed) * forwardResponsiveness; // change slowly, not immediately
         if (currentForwardSpeed < 0) currentForwardSpeed = 0; // not allowing reverse, only brake
         rb.velocity = characterTransform.forward * (currentForwardSpeed + bonusSpeed); // add also the bonus speed, if any
+    }
 
-        // Limiting the altitude
+    private void ApplyAdditionalVelocity() {
+        // Additional velocity in this frame (e.g. from a spell effect)
+        additionalVelocity.UpdateAdditionalVelocities(Time.fixedDeltaTime);
+        rb.velocity += additionalVelocity.GetCurrentAdditionalVelocity();
+    }
+
+    // Returns pitch input which is then used for rotation
+    private float LimitAltitude(CharacterMovementValues movementInput) {
         float pitchInput = (float)movementInput.pitchMotion * movementInput.pitchValue;
-        if (transform.position.y >= PlayerState.Instance.maxAltitude && pitchInput < 1) {
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        if (transform.position.y >= PlayerState.Instance.maxAltitude && rb.velocity.y > 0) {
+            rb.velocity = rb.velocity.WithY(0);
             if (pitchInput == -1) pitchInput = 0;
         }
         if (transform.position.y <= 0.5 && pitchInput == 1) // TODO: Change this later to distance from the terrain underneath (instead of fixed y)
             pitchInput = 0;
+        return pitchInput;
+    }
 
+    private void HandleRotations(float pitchInput, float yawInput) {
         // Yaw
-        float yawInput = (float)movementInput.yawMotion * movementInput.yawValue;
         currentYaw += (yawInput - currentYaw) * (isPlayer ? yawResponsiveness : 1); // change slowly, not immediately
         currentRoll += (yawInput - currentRoll) * yawResponsiveness;
         transform.Rotate(Vector3.up, currentYaw * turnSpeed);
@@ -227,14 +229,25 @@ public class CharacterMovementController : MonoBehaviour {
         currentPitch += (pitchInput - currentPitch) * pitchResponsiveness; // change slowly, not immediately
         eulerAngles.x = currentPitch * maxPitchAngle;
         characterTransform.localEulerAngles = eulerAngles;
+    }
 
-        // Additional velocity in this frame (e.g. from a spell effect)
-        additionalVelocity.UpdateAdditionalVelocities(Time.fixedDeltaTime);
-        Vector3 additionalVelocityVector = additionalVelocity.GetCurrentAdditionalVelocity();
-        if (transform.position.y >= PlayerState.Instance.maxAltitude && additionalVelocityVector.y > 0) // limiting the altitude
-            rb.velocity += additionalVelocityVector.WithY(0);
-        else
-            rb.velocity += additionalVelocityVector;
+    private void FixedUpdate() {
+        // Do nothing if actions are disabled or game is paused
+        if (!ShouldMove()) return;
+
+        CharacterMovementValues movementInput = characterInput.GetMovementInput();
+
+        // Handle disabled movement actions with braking
+        if (!actionsEnabled && actionsDisabledStop == StopMethod.BrakeStop)
+            movementInput = new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
+
+        // Movement
+        HandleForwardMovement(movementInput); // forward (including bonus speed)
+        ApplyAdditionalVelocity(); // additional velocity in this frame (e.g. from a spell effect)
+        float pitchInput = LimitAltitude(movementInput); // limiting the altitude
+
+        // Rotation
+        HandleRotations(pitchInput, (float)movementInput.yawMotion * movementInput.yawValue);
     }
 }
 
