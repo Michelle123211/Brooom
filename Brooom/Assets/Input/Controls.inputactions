@@ -60,6 +60,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ResetView",
+                    "type": "Button",
+                    "id": "4731a9d7-b442-4808-b6ce-96094082f93d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "CastSpell",
                     "type": "Button",
                     "id": "367e4e03-7bac-4686-bbf3-20a6d6128ec8",
@@ -76,15 +85,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "ResetView",
-                    "type": "Button",
-                    "id": "4731a9d7-b442-4808-b6ce-96094082f93d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 },
                 {
                     "name": "Restart",
