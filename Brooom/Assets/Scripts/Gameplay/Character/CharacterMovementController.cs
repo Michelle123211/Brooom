@@ -165,30 +165,29 @@ public class CharacterMovementController : MonoBehaviour {
         }
     }
 
-    private bool ShouldMove() {
-        // Should not move if movement actions are not enabled
-        if (!actionsEnabled && actionsDisabledStop != StopMethod.BrakeStop) return false;
-        // Should not move if the game is paused
-        if (GamePause.pauseState == GamePauseState.Paused) return false;
-        // Otherwise movement is enabled
-        return true;
-    }
-
-    private void Awake() {
-        if (characterInput == null)
-            characterInput = GetComponent<CharacterInput>();
-        if (characterInput == null)
-            Debug.LogError("An object with CharacterMovementController component must also have any component derived from CharacterInput (e.g. PlayerCharacterInput, OpponentCharacterInput).");
-        rb = GetComponent<Rigidbody>();
-        isPlayer = gameObject.CompareTag("Player");
-        if (isPlayer)
-            cameraController = GetComponent<PlayerCameraController>();
-        maxSpeed = initialMaxSpeed * MAX_SPEED;
+    private CharacterMovementValues GetMovementInputConsideringDisabledActions() {
+        // Get current input
+        CharacterMovementValues movementInput = characterInput.GetMovementInput();
+        // Override it if actions are disabled
+        if (!actionsEnabled) {
+            switch (actionsDisabledStop) {
+                case StopMethod.BrakeStop:
+                    movementInput = new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
+                    break;
+                case StopMethod.ImmediateStop:
+                case StopMethod.NoStop:
+                    movementInput = new CharacterMovementValues(ForwardMotion.None, YawMotion.None, PitchMotion.None);
+                    break;
+            }
+        }
+        return movementInput;
     }
 
     private void HandleForwardMovement(CharacterMovementValues movementInput) {
         // Forward input
         float forwardInput = (float)movementInput.forwardMotion * movementInput.forwardValue;
+        if (!actionsEnabled && actionsDisabledStop == StopMethod.NoStop) // use the previous input value to keep moving with the same velocity
+            forwardInput = previousForwardInput;
         previousForwardInput = forwardInput;
         // Resolve bonus speed (if any)
         if (hasBonusSpeed)
@@ -231,17 +230,24 @@ public class CharacterMovementController : MonoBehaviour {
         characterTransform.localEulerAngles = eulerAngles;
     }
 
+    private void Awake() {
+        if (characterInput == null)
+            characterInput = GetComponent<CharacterInput>();
+        if (characterInput == null)
+            Debug.LogError("An object with CharacterMovementController component must also have any component derived from CharacterInput (e.g. PlayerCharacterInput, OpponentCharacterInput).");
+        rb = GetComponent<Rigidbody>();
+        isPlayer = gameObject.CompareTag("Player");
+        if (isPlayer)
+            cameraController = GetComponent<PlayerCameraController>();
+        maxSpeed = initialMaxSpeed * MAX_SPEED;
+    }
+
     private void FixedUpdate() {
-        // Do nothing if actions are disabled or game is paused
-        if (!ShouldMove()) return;
-
-        CharacterMovementValues movementInput = characterInput.GetMovementInput();
-
-        // Handle disabled movement actions with braking
-        if (!actionsEnabled && actionsDisabledStop == StopMethod.BrakeStop)
-            movementInput = new CharacterMovementValues(ForwardMotion.Brake, YawMotion.None, PitchMotion.None);
+        // Do nothing if the game is paused
+        if (GamePause.pauseState == GamePauseState.Paused) return;
 
         // Movement
+        CharacterMovementValues movementInput = GetMovementInputConsideringDisabledActions();
         HandleForwardMovement(movementInput); // forward (including bonus speed)
         ApplyAdditionalVelocity(); // additional velocity in this frame (e.g. from a spell effect)
         float pitchInput = LimitAltitude(movementInput); // limiting the altitude
