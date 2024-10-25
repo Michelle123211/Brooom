@@ -1344,6 +1344,8 @@ MonoBehaviour:
   incomingSpellIndicatorParent: {fileID: 2500101813904965431}
   incomingSpellIndicatorPrefab: {fileID: 1852968075849956579, guid: fbc166f6824d65041a91ed9d9b4548a3,
     type: 3}
+  cameraShakeDuration: 0.3
+  cameraShakeIntensity: 3
 --- !u!114 &7013356618974776397 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3161338561109082813, guid: d5057250aeb262d42b6597b1fc78f59b,

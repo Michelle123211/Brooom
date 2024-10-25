@@ -73,11 +73,15 @@ public class PlayerCameraController : MonoBehaviour {
     }
 
     public void Shake(float duration, float intensity) {
-        foreach (var camera in virtualCameras) {
-            CinemachineBasicMultiChannelPerlin cameraNoise = camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            DOTween.To(() => cameraNoise.m_AmplitudeGain, x => cameraNoise.m_AmplitudeGain = x, intensity, duration/2f).SetEase(Ease.InOutCubic)
-                .OnComplete(() => DOTween.To(() => cameraNoise.m_AmplitudeGain, x => cameraNoise.m_AmplitudeGain = x, 0, duration/2f)).SetEase(Ease.InOutCubic);
-        }
+        foreach (var camera in virtualCameras)
+            ShakeCamera(camera, duration, intensity);
+        ShakeCamera(backVirtualCamera, duration, intensity);
+    }
+
+    private void ShakeCamera(CinemachineVirtualCamera camera, float duration, float intensity) {
+        CinemachineBasicMultiChannelPerlin cameraNoise = camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        DOTween.To(() => cameraNoise.m_AmplitudeGain, x => cameraNoise.m_AmplitudeGain = x, intensity, duration / 2f).SetEase(Ease.InOutCubic)
+            .OnComplete(() => DOTween.To(() => cameraNoise.m_AmplitudeGain, x => cameraNoise.m_AmplitudeGain = x, 0, duration / 2f)).SetEase(Ease.InOutCubic);
     }
 
     private void SwitchCameraIfNecessary() {

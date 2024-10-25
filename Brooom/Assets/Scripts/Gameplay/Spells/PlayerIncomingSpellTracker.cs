@@ -9,6 +9,11 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 	[Tooltip("Prefab of indicator of incoming spell. Applicable only for player.")]
 	[SerializeField] IncomingSpellIndicator incomingSpellIndicatorPrefab;
 
+	[Tooltip("For how many seconds the camera shakes when player is hit by a spell.")]
+	[SerializeField] float cameraShakeDuration = 0.3f;
+	[Tooltip("How much the camera shakes when player is hit by a spell.")]
+	[SerializeField] float cameraShakeIntensity = 3f;
+
 	private List<IncomingSpellIndicator> incomingSpellIndicators = new List<IncomingSpellIndicator>();
 	private List<RectTransform> incomingSpellIndicatorTransforms = new List<RectTransform>();
 
@@ -17,6 +22,7 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 
 	protected override void OnIncomingSpellAdded(SpellEffectController spell) {
 		// Show an indicator
+		spell.onSpellHit += ShakeCamera;
 		IncomingSpellIndicator indicator = Instantiate<IncomingSpellIndicator>(incomingSpellIndicatorPrefab, incomingSpellIndicatorParent);
 		indicator.Initialize(spell, this);
 		incomingSpellIndicators.Add(indicator);
@@ -41,6 +47,13 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 		float angle = Vector3.SignedAngle(direction.WithY(0), Vector3.forward, Vector3.up);
 		if (angle < 0) angle += 360;
 		return angle * Mathf.Deg2Rad; // convert from degrees to radians
+	}
+
+	// Callback on spell hit
+	private void ShakeCamera(SpellEffectController _) {
+		Debug.Log("Shaking");
+		PlayerCameraController camera = transform.GetComponentInParent<PlayerCameraController>();
+		camera.Shake(cameraShakeDuration, cameraShakeIntensity);
 	}
 
 	private void Start() {
