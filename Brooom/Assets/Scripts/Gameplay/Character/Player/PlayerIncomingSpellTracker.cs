@@ -42,13 +42,6 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 		}
 	}
 
-	// Returns angle between 0 and 2*pi
-	protected float GetAngleFromDirection(Vector3 direction) {
-		float angle = Vector3.SignedAngle(direction.WithY(0), Vector3.forward, Vector3.up);
-		if (angle < 0) angle += 360;
-		return angle * Mathf.Deg2Rad; // convert from degrees to radians
-	}
-
 	// Callback on spell hit
 	private void ShakeCamera(SpellEffectController _) {
 		PlayerCameraController camera = transform.GetComponentInParent<PlayerCameraController>();

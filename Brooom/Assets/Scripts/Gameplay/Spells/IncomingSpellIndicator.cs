@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class IncomingSpellIndicator : MonoBehaviour {
 
+    [Tooltip("An Image component used as an arrow indicating from which direction the spell is coming.")]
+    [SerializeField] Image arrowIcon;
+
     [Tooltip("An Image component used to cut out an incoming spell icon out of colored background circle.")]
     [SerializeField] Image spellIndicatorIcon;
     [Tooltip("An Image component used as a background cicle from which the spell icon is cut out.")]
@@ -33,6 +36,7 @@ public class IncomingSpellIndicator : MonoBehaviour {
     public void Initialize(SpellEffectController spellObject, IncomingSpellsTracker spellsTrackerObject) {
         spellIndicatorIcon.sprite = spellObject.Spell.IndicatorIcon;
         spellIndicatorBackground.color = spellObject.Spell.BaseColor;
+        arrowIcon.color = spellObject.Spell.BaseColor;
         this.SpellObject = spellObject;
         this.spellsTrackerObject = spellsTrackerObject;
         RecomputeState(); // SpellDistance and SpellDirection
@@ -51,7 +55,12 @@ public class IncomingSpellIndicator : MonoBehaviour {
         // Scale
         transform.localScale = Vector3.one * (scaleKeyframes.x + scaleTweenCurve.Evaluate(oneMinusDistanceNormalized) * (scaleKeyframes.y - scaleKeyframes.x));
         // Opacity
-        spellIndicatorBackground.color = spellIndicatorBackground.color.WithA(opacityKeyframes.x + opacityTweenCurve.Evaluate(oneMinusDistanceNormalized) * (opacityKeyframes.y - opacityKeyframes.x));
+        float alpha = opacityKeyframes.x + opacityTweenCurve.Evaluate(oneMinusDistanceNormalized) * (opacityKeyframes.y - opacityKeyframes.x);
+        spellIndicatorBackground.color = spellIndicatorBackground.color.WithA(alpha);
+        arrowIcon.color = arrowIcon.color.WithA(alpha);
+        // Rotation
+        float angle = spellsTrackerObject.GetAngleFromDirection(SpellDirection, false);
+        arrowIcon.transform.localEulerAngles = arrowIcon.transform.localEulerAngles.WithZ(angle);
     }
 
 	private void Update() {
