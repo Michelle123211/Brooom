@@ -211,8 +211,10 @@ public class StatsComputer : MonoBehaviour {
         }
         // Spell usage
         equippedSpellUsageValue = notUsedSpellPenalization.Evaluate(spellUsedCount / (float)equippedSpellCount); // number between 0 and 1 describing how diverse spells the player has casted during the race
-        totalSpellUsedCount = 0; // TODO: how many of the total spells the player has ever used
-        totalSpellCount = 1; // TODO: how many spells are available in the game
+        totalSpellUsedCount = 0; // how many of the total spells the player has ever used
+        foreach (var spellCast in PlayerState.Instance.spellCast)
+            if (spellCast.Value) totalSpellUsedCount++;
+        totalSpellCount = Mathf.Max(SpellManager.Instance.AllSpells.Count, 1); // how many spells are available in the game (must be > 0 for further computation)
         spellUsageValue = (totalSpellUsedCount / (float)totalSpellCount); // number between 0 and 1 describing how diverse spells the player has ever casted
         // Weight of the new stat value when cimbining it with the old one
         float middle = (totalRacers - 1) / 2f + 1;
