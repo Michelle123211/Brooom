@@ -95,7 +95,7 @@ public class RaceController : MonoBehaviour {
                 racer.characterController.DisableActions(CharacterMovementController.StopMethod.BrakeStop);
                 racer.characterController.gameObject.GetComponent<FaceAnimationsController>()?.StartSmiling();
                 // TODO: Start waving animation
-                racer.spellCasting.SetActive(false);
+                racer.spellInput.DisableSpellCasting();
                 break;
             }
         }
@@ -180,7 +180,7 @@ public class RaceController : MonoBehaviour {
         foreach (var racer in racers) {
             racer.characterController.EnableActions();
             racer.state.SetRaceStarted(true);
-            racer.spellCasting.SetActive(true);
+            racer.spellInput.TryEnableSpellCasting();
         }
         // Start computing player stats
         statsComputer.StartComputingStats();
@@ -190,7 +190,7 @@ public class RaceController : MonoBehaviour {
         State = RaceState.RaceFinished;
         // Disable player actions make them brake
         playerRacer.characterController.DisableActions(CharacterMovementController.StopMethod.BrakeStop);
-        playerRacer.spellCasting.SetActive(false);
+        playerRacer.spellInput.DisableSpellCasting();
         // Start playing the sequence
         PlayableDirector endCutscene = Cutscenes.Instance.PlayCutscene("RaceEnd");
         double remainingDuration = 0;
@@ -305,13 +305,13 @@ public class RaceController : MonoBehaviour {
                 characterName = characters[i].GetComponentInChildren<CharacterAppearance>().characterName,
                 characterController = characters[i],
                 state = characters[i].GetComponent<CharacterRaceState>(),
-                spellCasting = characters[i].transform.Find("SpellCasting").gameObject
+                spellInput = characters[i].GetComponentInChildren<SpellInput>()
             };
             racer.state.Initialize(level.track.Count);
             racers.Add(racer);
             if (racer.characterController.isPlayer) playerRacer = racer;
             racer.characterController.DisableActions();
-            racer.spellCasting.SetActive(false);
+            racer.spellInput.DisableSpellCasting();
         }
     }
 
@@ -465,5 +465,5 @@ public class RacerRepresentation {
     public string characterName = string.Empty;
     public CharacterMovementController characterController;
     public CharacterRaceState state;
-    public GameObject spellCasting;
+    public SpellInput spellInput;
 }

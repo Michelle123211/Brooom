@@ -70,6 +70,6 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 				radius * Mathf.Sin(angle)
 			);
 		}
-		}
+	}
 
 }
