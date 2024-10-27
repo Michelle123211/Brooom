@@ -3,22 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class RaceSpellSlotUI : MonoBehaviour {
 
 	[Header("Parameters")]
 	[Tooltip("When the spell is unavailable (not charged, not enough mana) the slot becomes smaller.")]
 	[SerializeField] float unavailableScale = 0.75f;
-	[Tooltip("When the spell is unavailable (not charged, not enough mana) an overlay with an alpha value appears.")]
-	[SerializeField] float unavailableOverlayAlpha = 0.3f;
+	[Tooltip("When the spell is unavailable (not charged, not enough mana) the slot becomes transparent with this alpha value.")]
+	[SerializeField] float unavailableAlpha = 0.8f;
 
 	[Header("UI elements")]
+	[Tooltip("A TMP displaying mana cost.")]
+	[SerializeField] TextMeshProUGUI manaCostLabel;
 	[Tooltip("An Image used to indicate how charged the spell is.")]
 	[SerializeField] Image fillImage;
 	[Tooltip("An Image used as a background of the spell slot.")]
 	[SerializeField] Image backgroundImage;
-	[Tooltip("An Image used as an overlay when the spell is unavailable.")]
-	[SerializeField] Image unavailableOverlay;
+	[Tooltip("Canvas Group used to set alpha value for the whole slot.")]
+	[SerializeField] CanvasGroup contentCanvasGroup;
 
 	[Header("Related objects")]
 	[SerializeField] SpellSlotUI spellSlotUI;
@@ -36,13 +39,16 @@ public class RaceSpellSlotUI : MonoBehaviour {
 			assignedSpell.onBecomesAvailable += ChangeToAvailable;
 			assignedSpell.onBecomesUnavailable += ChangeToUnavailable;
 		}
+		// Set mana cost
+		if (isEmpty) manaCostLabel.gameObject.SetActive(false);
+		else manaCostLabel.text = spell.Spell.ManaCost.ToString();
 		// Change icon
 		spellSlotUI.Initialize(isEmpty ? null : spell.Spell);
 		fillImage.sprite = backgroundImage.sprite;
 		// Initialize image fill, scale and alpha of the overlay
 		fillImage.fillAmount = 0;
 		transform.localScale = Vector3.one * unavailableScale;
-		unavailableOverlay.color = unavailableOverlay.color.WithA(unavailableOverlayAlpha);
+		contentCanvasGroup.alpha = unavailableAlpha;
 		// Change to available if necessary
 		if (!isEmpty && assignedSpell.IsAvailable)
 			ChangeToAvailable();
@@ -65,22 +71,25 @@ public class RaceSpellSlotUI : MonoBehaviour {
 		transform.DOKill();
 		transform.DOScale(1f, 0.3f)
 			.OnComplete(() => transform.DOScale(0.98f, 0.5f).SetEase(Ease.InQuad).SetLoops(-1, LoopType.Yoyo));
-		unavailableOverlay.DOKill();
-		unavailableOverlay.DOFade(0f, 0.3f);
+		contentCanvasGroup.DOKill();
+		contentCanvasGroup.DOFade(1f, 0.3f);
 	}
 
 	private void ChangeToUnavailable() {
 		// If the spell becomes unavailable (not enough mana, not charged) tween its scale and alpha of the unavailable overlay
 		transform.DOKill();
 		transform.DOScale(unavailableScale, 0.3f);
-		unavailableOverlay.DOKill();
-		unavailableOverlay.DOFade(unavailableOverlayAlpha, 0.3f);
+		contentCanvasGroup.DOKill();
+		contentCanvasGroup.DOFade(unavailableAlpha, 0.3f);
 	}
 
 	private void Update() {
 		if (!isEmpty) {
 			// Change image fill based on charge
 			fillImage.fillAmount = assignedSpell.Charge;
+			// Change color of mana cost
+			if (assignedSpell.HasEnoughMana) manaCostLabel.color = Color.green; // TODO: Use color from color palette
+			else manaCostLabel.color = Color.red; // TODO: Use color from color palette
 		}
 	}
 

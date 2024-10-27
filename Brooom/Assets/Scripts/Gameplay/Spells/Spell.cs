@@ -109,6 +109,7 @@ public class SpellInRace {
     public float Charge { get; private set; } = 1; // percentage but between 0 and 1
 
     public bool IsAvailable { get; private set; } = false; // is fully charged and there is enough mana
+    public bool HasEnoughMana { get; private set; } = false; // there is enough mana
 
     // Callbacks on changes
     public event Action onBecomesAvailable;
@@ -144,6 +145,8 @@ public class SpellInRace {
 
     public void UpdateAvailability(int currentMana) {
         bool newAvailability = IsSpellAvailable(currentMana);
+        // Check mana
+        HasEnoughMana = (currentMana >= Spell.ManaCost);
         // Check if the state changed
         bool becomesAvailable = false;
         bool becomesUnavailable = false;
