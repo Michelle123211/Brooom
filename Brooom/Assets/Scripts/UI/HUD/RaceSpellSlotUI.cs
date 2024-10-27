@@ -14,6 +14,8 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	[SerializeField] float unavailableAlpha = 0.8f;
 
 	[Header("UI elements")]
+	[Tooltip("Game Object containing everything related to mana cost. Is deactivated when no spell is assigned.")]
+	[SerializeField] GameObject manaPartParent;
 	[Tooltip("A TMP displaying mana cost.")]
 	[SerializeField] TextMeshProUGUI manaCostLabel;
 	[Tooltip("An Image used to indicate how charged the spell is.")]
@@ -40,7 +42,7 @@ public class RaceSpellSlotUI : MonoBehaviour {
 			assignedSpell.onBecomesUnavailable += ChangeToUnavailable;
 		}
 		// Set mana cost
-		if (isEmpty) manaCostLabel.gameObject.SetActive(false);
+		if (isEmpty) manaPartParent.SetActive(false);
 		else manaCostLabel.text = spell.Spell.ManaCost.ToString();
 		// Change icon
 		spellSlotUI.Initialize(isEmpty ? null : spell.Spell);
