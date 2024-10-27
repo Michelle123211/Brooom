@@ -41,7 +41,8 @@ public class SpellTargetDetection : MonoBehaviour {
 
 	// Returns true if the given object could be a target of the given spell
 	public bool IsPotentialTargetForGivenSpell(GameObject target, int spellIndex) {
-		Spell equippedSpell = PlayerState.Instance.equippedSpells[spellIndex];
+		if (spellController.spellSlots[spellIndex] == null) return false;
+		Spell equippedSpell = spellController.spellSlots[spellIndex].Spell;
 		if (equippedSpell == null) return false;
 		// Spell casted at opponents and the target object is a racer different from the one this component is assigned to
 		if (equippedSpell.TargetType == SpellTargetType.Opponent &&
@@ -127,7 +128,8 @@ public class SpellTargetDetection : MonoBehaviour {
 		// Initialize lists for potential targets
 		potentialTargets = new List<GameObject>[PlayerState.Instance.equippedSpells.Length];
 		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
-			Spell equippedSpell = PlayerState.Instance.equippedSpells[i];
+			if (spellController.spellSlots[i] == null) continue;
+			Spell equippedSpell = spellController.spellSlots[i].Spell;
 			if (equippedSpell == null) continue;
 			if (equippedSpell.TargetType == SpellTargetType.Opponent || equippedSpell.TargetType == SpellTargetType.Object) {
 				potentialTargets[i] = new List<GameObject>();

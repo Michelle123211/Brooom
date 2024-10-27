@@ -47,14 +47,14 @@ public class SpellController : MonoBehaviour {
 
 	public bool IsCurrentlySelectedSpellReady() {
 		if (selectedSpell == -1) return false;
-		SpellInRace currentSpell = spellSlots[selectedSpell];
-		return (currentSpell.Charge >= 1 && CurrentMana >= currentSpell.Spell.ManaCost);
+		return IsSpellInSlotReady(selectedSpell);
 	}
 
 	public bool IsSpellInSlotReady(int spellSlotIndex) {
 		if (spellSlotIndex < 0 || spellSlotIndex > spellSlots.Length - 1) throw new IndexOutOfRangeException();
 		SpellInRace spell = spellSlots[spellSlotIndex];
-		return (spell.Charge >= 1 && CurrentMana >= spell.Spell.ManaCost);
+		if (spell == null) return false;
+		return spell.IsSpellAvailable(CurrentMana);
 	}
 
 	public void CastCurrentlySelectedSpell() {
@@ -94,9 +94,10 @@ public class SpellController : MonoBehaviour {
 	public void RandomizeEquippedSpells() {
 		// TODO: Randomize equipped spells so it is similar to the player
 		// TODO: Initialize selectedSpell
-		spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Confusione"));
-		spellSlots[1] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Congelatio"));
-		spellSlots[2] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Flante"));
+		//spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("MateriaMuri"));
+		spellSlots[1] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Confusione"));
+		//spellSlots[2] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Defensio"));
+		//spellSlots[3] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Attractio"));
 		selectedSpell = 0;
 	}
 

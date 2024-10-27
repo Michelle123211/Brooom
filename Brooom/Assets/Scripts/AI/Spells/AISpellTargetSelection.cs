@@ -5,15 +5,17 @@ using UnityEngine;
 public class AISpellTargetSelection : SpellTargetSelection {
 
 	protected override Vector3 GetCurrentTargetDirection() {
-		// TODO
-		throw new System.NotImplementedException();
+		// Select simply the forward direction
+		// TODO: Make the decision better
+		return transform.forward;
 	}
 
 	protected override GameObject GetCurrentTargetObject() {
-		// TODO
-
-		// DEBUG: Just select player object for now
-		return UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player").gameObject;
+		// Select random target from all possible ones
+		// TODO: Make the decision better
+		List<GameObject> potentialTargets = spellTargetDetection.GetPotentialTargetsForSelectedSpell();
+		if (potentialTargets == null || potentialTargets.Count == 0) return null;
+		return potentialTargets[Random.Range(0, potentialTargets.Count)];
 	}
 
 	private void Start() {
