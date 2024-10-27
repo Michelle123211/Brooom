@@ -7,7 +7,7 @@ using DG.Tweening;
 [RequireComponent(typeof(Rigidbody))]
 public class CharacterMovementController : MonoBehaviour {
 
-    public static float MAX_SPEED = 16; // TODO: Use it everywhere (e.g. in the broom upgrades)
+    public static float MAX_SPEED = 16;
 
     // Parameters
     [Header("Forward movement")]

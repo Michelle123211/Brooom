@@ -37,14 +37,14 @@ public class ExperimentSpellCastEffect : CustomVisualEffect {
 		currentTime = 0;
 		spellTrajectory.ResetTrajectory();
 		if (spellCastTrail != null)
-			spellCastTrail.emitting = true; // TODO: Find out how to correctly enable the trail
+			spellCastTrail.emitting = true;
 		if (spellCastParticles != null)
 			spellCastParticles.Play();
 	}
 
 	protected override void StopPlaying_Internal() {
 		if (spellCastTrail != null)
-			spellCastTrail.emitting = false; // TODO: Find out how to correctly disable the trail
+			spellCastTrail.emitting = false;
 		if (spellCastParticles != null)
 			spellCastParticles.Stop();
 		sourceObject = null;
