@@ -186,9 +186,9 @@ MonoBehaviour:
   sceneInitializationCommands:
   - scene: 3
     commands:
-    - mana off
-    - recharge off
-    - start
+    - '#mana off'
+    - '#recharge off'
+    - '#start'
   - scene: 5
     commands:
     - mana off
