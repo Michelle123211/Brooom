@@ -101,16 +101,13 @@ public abstract class RacerAffectingSpellEffect : ReversibleSpellEffect {
     [Tooltip("A visual effect which is displayed around the racer while they are affected by the spell.")]
     [SerializeField] private SelfDestructiveVisualEffect spellInfluenceVisualEffectPrefab;
 
-    [Tooltip("Whether this spell has a positive or negative effect on the target racer.")]
-    [SerializeField] private bool isPositive = false;
-
 	protected override void StartSpellEffect() {
         EffectibleCharacter targetRacer = null;
         if (castParameters.Target.TargetObject != null) targetRacer = castParameters.Target.TargetObject.GetComponent<EffectibleCharacter>();
         if (castParameters.Target.TargetObject == null || targetRacer == null)
             throw new System.NotSupportedException($"{nameof(RacerAffectingSpellEffect)} and derived classes may be used only for spells casted at other racers.");
         // Add the spell among effects affecting the target racer (+ add the visual effect)
-        CharacterEffect characterEffect = new CharacterEffect(castParameters.Spell.Icon, effectDuration, isPositive);
+        CharacterEffect characterEffect = new CharacterEffect(castParameters.Spell.Icon, effectDuration, castParameters.Spell.IsPositive);
         characterEffect.onEffectStart += StartSpellEffect_Internal;
         characterEffect.onEffectEnd += StopSpellEffect_Internal;
         targetRacer.AddEffect(characterEffect, spellInfluenceVisualEffectPrefab);

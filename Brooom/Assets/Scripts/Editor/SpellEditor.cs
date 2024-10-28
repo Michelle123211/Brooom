@@ -74,6 +74,8 @@ public class SpellEditor : Editor {
 
     private void DisplaySpellEffectProperties() {
         EditorGUILayout.LabelField("Spell effect", EditorStyles.boldLabel);
+        SerializedProperty isPositiveProperty = serializedObject.FindProperty("isPositive");
+        EditorGUILayout.PropertyField(isPositiveProperty);
         SerializedProperty effectControllerProperty = serializedObject.FindProperty("effectControllerPrefab");
         EditorGUILayout.PropertyField(effectControllerProperty);
         if (effectControllerProperty.objectReferenceValue == null) {

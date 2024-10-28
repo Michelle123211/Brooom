@@ -89,6 +89,11 @@ public class Spell : MonoBehaviour {
     private string spellTargetTag = string.Empty; // tag of the target object in case of SpellTargetType.Object
     public string SpellTargetTag { get => spellTargetTag; private set => spellTargetTag = value; }
 
+    [Tooltip("Whether the spell affects a potential target in a positive or negative way.")]
+    [SerializeField]
+    private bool isPositive = false;
+    public bool IsPositive { get => isPositive; private set => isPositive = value; }
+
     [Tooltip("A prefab of SpellEffectController component which is responsible for controlling the visual and actual effect of casting the spell.")]
     [SerializeField] private SpellEffectController effectControllerPrefab;
 

@@ -50,6 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
         type: 3}
+      propertyPath: isPositive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486016122441531451, guid: a58588be6d18d874d87d1def514b4542,
+        type: 3}
       propertyPath: targetType
       value: 1
       objectReference: {fileID: 0}
