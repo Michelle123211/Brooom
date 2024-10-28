@@ -87,15 +87,15 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 		}
 	}
 	[Space(5)]
-	// Skipping mana bonus
-	[Tooltip("Whether the AI should make mistake of skipping mana bonus.")]
-	[SerializeField] bool manaBonusSkipMistakeEnabled = true;
-	[Tooltip("The curve describes probability of skipping a mana bonus based on the probability of corresponding mistake (average of precision and magic mistake probabilities).")]
-	[SerializeField] AnimationCurve manaBonusSkipCurve;
-	public AnimationCurve ManaBonusSkipCurve {
+	// Skipping mana bonus or spell recharge bonus
+	[Tooltip("Whether the AI should make mistake of skipping mana bonus or spell recharge bonus.")]
+	[SerializeField] bool spellBonusSkipMistakeEnabled = true;
+	[Tooltip("The curve describes probability of skipping a mana bonus or spell recharge bonus based on the probability of corresponding mistake (average of precision and magic mistake probabilities).")]
+	[SerializeField] AnimationCurve spellBonusSkipCurve;
+	public AnimationCurve SpellBonusSkipCurve {
 		get {
-			if (manaBonusSkipMistakeEnabled) return manaBonusSkipCurve;
-			else return constantZeroCurve; // 0 % probability of skipping a mana bonus
+			if (spellBonusSkipMistakeEnabled) return spellBonusSkipCurve;
+			else return constantZeroCurve; // 0 % probability of skipping a mana bonus or a spell recharge bonus
 		}
 	}
 	[Space(5)]

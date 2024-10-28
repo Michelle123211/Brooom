@@ -248,10 +248,10 @@ public class BonusGoal : TrackElementGoal {
             mistakeProbability = (agentSkillLevel.GetSpeedMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
             skipProbability = agentSkillLevel.mistakesParameters.SpeedBonusSkipCurve.Evaluate(mistakeProbability);
         }
-        // ... mana bonus - based on average of Magic and Precision stats
-        else if (bonus.GetType() == typeof(ManaBonusEffect)) {
+        // ... mana bonus and spell recharge bonus - based on average of Magic and Precision stats
+        else if (bonus.GetType() == typeof(ManaBonusEffect) || bonus.GetType() == typeof(RechargeSpellsBonusEffect)) {
             mistakeProbability = (agentSkillLevel.GetMagicMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
-            skipProbability = agentSkillLevel.mistakesParameters.ManaBonusSkipCurve.Evaluate(mistakeProbability);
+            skipProbability = agentSkillLevel.mistakesParameters.SpellBonusSkipCurve.Evaluate(mistakeProbability);
         }
         // ... other - based on Precision stat
         else {
@@ -270,11 +270,15 @@ public class BonusGoal : TrackElementGoal {
     }
 
     public override float GetRationality() {
-        // TODO: Mana bonus rationality based on current mana amount
         // Not rational if too far from the current direction of the agent
         float angleYaw = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, Vector3.up);
-        if (Mathf.Abs(angleYaw) > 60f) return 0;
-        else return 1;
+        if (Mathf.Abs(angleYaw) <= 90 && bonusSpot.bonusInstances[0].GetType() == typeof(ManaBonusEffect)) { // for mana bonus, tolerate even larger offset if current mana amount is too low
+            SpellController spellController = this.agent.GetComponentInChildren<SpellController>();
+            float manaPercentage = (float)spellController.CurrentMana / (float)spellController.MaxMana;
+            if (manaPercentage < 0.3f) return 1;
+        }
+        if (Mathf.Abs(angleYaw) <= 60f) return 1;
+        else return 0;
     }
 
     private void ChooseRandomInstance() {
