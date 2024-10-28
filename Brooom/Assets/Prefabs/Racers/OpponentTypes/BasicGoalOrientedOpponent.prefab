@@ -70,6 +70,18 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6134760467171468951, guid: 1ddae517c0dd1874e8a808aca93b2ea3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1ddae517c0dd1874e8a808aca93b2ea3, type: 3}
+--- !u!114 &3147960353714021634 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3091923793382060302, guid: 1ddae517c0dd1874e8a808aca93b2ea3,
+    type: 3}
+  m_PrefabInstance: {fileID: 92171018952414220}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4230585548284103415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c77e90b6c74f142b20c36ca93867f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4230585548284103415 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4319367836660047611, guid: 1ddae517c0dd1874e8a808aca93b2ea3,
@@ -126,6 +138,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 340530399415905335, guid: 8b56d100b8391d74c9041cd5987d66f8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 637999008526955781, guid: 8b56d100b8391d74c9041cd5987d66f8,
+        type: 3}
+      propertyPath: skillLevel
+      value: 
+      objectReference: {fileID: 3147960353714021634}
+    - target: {fileID: 3548515022325890735, guid: 8b56d100b8391d74c9041cd5987d66f8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3725938522927781499, guid: 8b56d100b8391d74c9041cd5987d66f8,
         type: 3}
       propertyPath: characterInput

@@ -93,10 +93,13 @@ public class SpellController : MonoBehaviour {
 
 	public void RandomizeEquippedSpells() {
 		// TODO: Randomize equipped spells so it is similar to the player
+		// TODO: Equip spells into a continuous block starting at index 0
 		// TODO: Initialize selectedSpell
-		//spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("MateriaMuri"));
-		spellSlots[1] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Confusione"));
-		//spellSlots[2] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Defensio"));
+		spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Confusione"));
+		//spellSlots[1] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Congelatio"));
+		//spellSlots[1] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Defensio"));
+		//spellSlots[2] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("MateriaMuri"));
+		//spellSlots[2] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("TemereCommodum"));
 		//spellSlots[3] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Attractio"));
 		selectedSpell = 0;
 	}

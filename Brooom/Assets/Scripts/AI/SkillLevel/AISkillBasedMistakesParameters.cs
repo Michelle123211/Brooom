@@ -9,6 +9,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	private AnimationCurve constantOneCurve = AnimationCurve.Constant(0f, 1f, 1f);
 	private AnimationCurve constantZeroCurve = AnimationCurve.Constant(0f, 1f, 0f);
 
+
 	[Header("Movement")]
 	// Speed mistake
 	[Tooltip("Whether the AI should make speed mistake (flying in only a fraction of the maximum speed).")]
@@ -18,7 +19,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve SpeedModifierCurve {
 		get {
 			if (speedMistakeEnabled) return speedModifierCurve;
-			else return constantOneCurve;
+			else return constantOneCurve; // 100 % of maximum speed
 		}
 	}
 	[Space(5)]
@@ -30,7 +31,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve KeepDirectionDurationCurve {
 		get {
 			if (keepDirectionMistakeEnabled) return keepDirectionDurationCurve;
-			else return constantZeroCurve;
+			else return constantZeroCurve; // 0 % probability of keeping a direction
 		}
 	}
 	[Space(5)]
@@ -42,9 +43,10 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve CollisionAvoidanceWeightCurve {
 		get {
 			if (collisionAvoidanceMistakeEnabled) return collisionAvoidanceWeightCurve;
-			else return constantOneCurve;
+			else return constantOneCurve; // considering direction to avoid collision with full weight (1)
 		}
 	}
+
 
 	[Header("Hoops and checkpoints")]
 	// Skipping hoops
@@ -55,7 +57,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve HoopSkipCurve {
 		get {
 			if (hoopSkipMistakeEnabled) return hoopSkipCurve;
-			else return constantZeroCurve;
+			else return constantZeroCurve; // 0 % probability of skipping a hoop
 		}
 	}
 	[Space(5)]
@@ -67,7 +69,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve HoopMissCurve {
 		get {
 			if (hoopMissMistakeEnabled) return hoopMissCurve;
-			else return constantZeroCurve;
+			else return constantZeroCurve; // 0 % probability of missing a hoop
 		}
 	}
 
@@ -81,7 +83,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve SpeedBonusSkipCurve {
 		get {
 			if (speedBonusSkipMistakeEnabled) return speedBonusSkipCurve;
-			else return constantZeroCurve;
+			else return constantZeroCurve; // 0 % probability of skipping a mana bonus
 		}
 	}
 	[Space(5)]
@@ -93,7 +95,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve ManaBonusSkipCurve {
 		get {
 			if (manaBonusSkipMistakeEnabled) return manaBonusSkipCurve;
-			else return constantZeroCurve;
+			else return constantZeroCurve; // 0 % probability of skipping a mana bonus
 		}
 	}
 	[Space(5)]
@@ -105,7 +107,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve BonusSkipCurve {
 		get {
 			if (bonusSkipMistakeEnabled) return bonusSkipCurve;
-			else return constantZeroCurve;
+			else return constantZeroCurve; // 0 % probability of skipping a bonus
 		}
 	}
 	[Space(5)]
@@ -117,7 +119,44 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	public AnimationCurve BonusMissCurve {
 		get {
 			if (bonusMissMistakeEnabled) return bonusMissCurve;
-			else return constantZeroCurve;
+			else return constantZeroCurve; // 0 % probability of missing a bonus
 		}
 	}
+
+
+	[Header("Spell casting")]
+	// Spell cast decision interval duration
+	[Tooltip("Whether the AI should adjust how often it makes decisions about spell casting.")]
+	[SerializeField] bool variableSpellDecisionIntervalEnabled = true;
+	[Tooltip("The curve describes duration (in seconds) between subsequent spell cast decisions based on the magic mistake probability.")]
+	[SerializeField] AnimationCurve spellDecisionIntervalCurve;
+	public AnimationCurve SpellDecisionIntervalCurve {
+		get {
+			if (variableSpellDecisionIntervalEnabled) return spellDecisionIntervalCurve;
+			else return constantOneCurve; // interval duration 1 s
+		}
+	}
+	// Casting a spell
+	[Tooltip("Whether the AI should make a mistake of not casting a spell sometimes.")]
+	[SerializeField] bool spellCastMistakeEnabled = true;
+	[Tooltip("The curve describes probability of casting a spell (which is ready to be used) based on the magic mistake probability.")]
+	[SerializeField] AnimationCurve spellCastCurve;
+	public AnimationCurve SpellCastCurve {
+		get {
+			if (spellCastMistakeEnabled) return spellCastCurve;
+			else return constantOneCurve; // casting a spell 100 % of time
+		}
+	}
+	// Number of unique spells used
+	[Tooltip("Whether the AI should make a mistake of using only a subset of all equipped spells.")]
+	[SerializeField] bool notUsingAllSpellsMistakeEnabled = true;
+	[Tooltip("The curve describes mapping from magic mistake probability to percentage of equipped spells used.")]
+	[SerializeField] AnimationCurve spellUsedCountCurve;
+	public AnimationCurve SpellUsedCountCurve {
+		get {
+			if (notUsingAllSpellsMistakeEnabled) return spellUsedCountCurve;
+			else return constantOneCurve; // using 100 % of equipped spells
+		}
+	}
+
 }
