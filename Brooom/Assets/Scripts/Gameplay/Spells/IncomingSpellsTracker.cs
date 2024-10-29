@@ -4,29 +4,73 @@ using UnityEngine;
 
 public abstract class IncomingSpellsTracker : MonoBehaviour {
 
-	public List<SpellEffectController> IncomingSpells { get; protected set; } = new List<SpellEffectController>();
+	public List<IncomingSpellInfo> IncomingSpells { get; protected set; } = new List<IncomingSpellInfo>();
 
 	public void AddIncomingSpell(SpellEffectController spell) {
-		IncomingSpells.Add(spell);
+		IncomingSpellInfo spellInfo = new IncomingSpellInfo(spell, transform);
+		IncomingSpells.Add(spellInfo);
 		spell.onSpellCastFinished += RemoveIncomingSpell;
-		OnIncomingSpellAdded(spell);
+		OnIncomingSpellAdded(spellInfo);
 			
 	}
 
 	public void RemoveIncomingSpell(SpellEffectController spell) {
-		IncomingSpells.Remove(spell);
-		OnIncomingSpellRemoved(spell);
+		IncomingSpellInfo spellInfo = null;
+		for (int i = IncomingSpells.Count - 1; i >= 0; i--) {
+			if (IncomingSpells[i].SpellObject == spell) {
+				spellInfo = IncomingSpells[i];
+				IncomingSpells.RemoveAt(i);
+				break;
+			}
+		}
+		OnIncomingSpellRemoved(spellInfo);
 	}
 
+	protected abstract void OnIncomingSpellAdded(IncomingSpellInfo spellInfo);
+	protected abstract void OnIncomingSpellRemoved(IncomingSpellInfo spellInfo);
+	protected abstract void UpdateAfterParent();
+
+	private void Update() {
+		// Update state (direction and distance) of all incoming spells
+		foreach (var incomingSpell in IncomingSpells) {
+			incomingSpell.UpdateState();
+		}
+		UpdateAfterParent();
+	}
+
+}
+
+public class IncomingSpellInfo {
+
+	public Transform TargetObject { get; private set; }
+	public SpellEffectController SpellObject { get; private set; }
+
+	public Vector3 Direction { get; private set; }
+	public float Distance { get; private set; }
+	public float DistanceNormalized => (Mathf.Clamp(Distance, 0f, initialDistance) / initialDistance);
+
+	private float initialDistance;
+
+
+	public IncomingSpellInfo(SpellEffectController spell, Transform target) {
+		TargetObject = target;
+		SpellObject = spell;
+		UpdateState();
+		initialDistance = Distance;
+	}
+	
 	// Returns angle between 0 and 2*pi if inRadians is true, otherwise an angle between 0 and 360
-	public float GetAngleFromDirection(Vector3 direction, bool inRadians = true) {
-		float angle = Vector3.SignedAngle(direction.WithY(0), Vector3.forward, Vector3.up);
+	public float GetAngleFromDirection(bool inRadians = true) {
+		float angle = Vector3.SignedAngle(Direction.WithY(0), Vector3.forward, Vector3.up);
 		if (angle < 0) angle += 360;
 		if (inRadians) return angle * Mathf.Deg2Rad; // convert from degrees to radians
 		else return angle;
 	}
 
-	protected abstract void OnIncomingSpellAdded(SpellEffectController spell);
-	protected abstract void OnIncomingSpellRemoved(SpellEffectController spell);
+	// Computes spell distance and direction
+	public void UpdateState() { 
+		Distance = Vector3.Distance(SpellObject.transform.position, TargetObject.position);
+		Direction = TargetObject.InverseTransformPoint(SpellObject.transform.position).normalized;
+	}
 
 }

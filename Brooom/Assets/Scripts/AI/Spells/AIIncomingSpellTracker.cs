@@ -6,8 +6,12 @@ public class AIIncomingSpellTracker : IncomingSpellsTracker {
 
 	// TODO: Create some API to be used with spell casting AI
 
-	protected override void OnIncomingSpellAdded(SpellEffectController spell) {}
+	protected override void OnIncomingSpellAdded(IncomingSpellInfo spellInfo) {
+	}
 
-	protected override void OnIncomingSpellRemoved(SpellEffectController spell) {}
+	protected override void OnIncomingSpellRemoved(IncomingSpellInfo spellInfo) {
+	}
 
+	protected override void UpdateAfterParent() {
+	}
 }

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class IncomingSpellIndicator : MonoBehaviour {
 
+    public IncomingSpellInfo IncomingSpellInfo { get; private set; }
+
     [Tooltip("An Image component used as an arrow indicating from which direction the spell is coming.")]
     [SerializeField] Image arrowIcon;
 
@@ -25,33 +27,16 @@ public class IncomingSpellIndicator : MonoBehaviour {
     [Tooltip("Start and end opacity values between which the interpolation would take place.")]
     [SerializeField] Vector2 opacityKeyframes;
 
-    public Vector3 SpellDirection { get; private set; }
-    public float SpellDistance { get; private set; }
-    public float SpellDistanceNormalized => (SpellDistance / initialDistance);
-    public SpellEffectController SpellObject { get; private set; }
-
-    private IncomingSpellsTracker spellsTrackerObject;
-    private float initialDistance;
-
-    public void Initialize(SpellEffectController spellObject, IncomingSpellsTracker spellsTrackerObject) {
-        spellIndicatorIcon.sprite = spellObject.Spell.IndicatorIcon;
-        spellIndicatorBackground.color = spellObject.Spell.BaseColor;
-        arrowIcon.color = spellObject.Spell.BaseColor;
-        this.SpellObject = spellObject;
-        this.spellsTrackerObject = spellsTrackerObject;
-        RecomputeState(); // SpellDistance and SpellDirection
-        this.initialDistance = SpellDistance;
-    }
-
-    // Computes spell distance and direction
-    private void RecomputeState() {
-        SpellDistance = Vector3.Distance(spellsTrackerObject.transform.position, SpellObject.transform.position);
-        SpellDirection = spellsTrackerObject.transform.InverseTransformPoint(SpellObject.transform.position).normalized;
+    public void Initialize(IncomingSpellInfo incomingSpellInfo) {
+        this.IncomingSpellInfo = incomingSpellInfo;
+        spellIndicatorIcon.sprite = incomingSpellInfo.SpellObject.Spell.IndicatorIcon;
+        spellIndicatorBackground.color = incomingSpellInfo.SpellObject.Spell.BaseColor;
+        arrowIcon.color = incomingSpellInfo.SpellObject.Spell.BaseColor;
     }
 
     // Changes icon size/opacity according to distance
     private void UpdateVisual() {
-        float oneMinusDistanceNormalized = 1f - (Mathf.Clamp(SpellDistance, 0f, initialDistance) / initialDistance);
+        float oneMinusDistanceNormalized = 1f - IncomingSpellInfo.DistanceNormalized;
         // Scale
         transform.localScale = Vector3.one * (scaleKeyframes.x + scaleTweenCurve.Evaluate(oneMinusDistanceNormalized) * (scaleKeyframes.y - scaleKeyframes.x));
         // Opacity
@@ -59,12 +44,11 @@ public class IncomingSpellIndicator : MonoBehaviour {
         spellIndicatorBackground.color = spellIndicatorBackground.color.WithA(alpha);
         arrowIcon.color = arrowIcon.color.WithA(alpha);
         // Rotation
-        float angle = spellsTrackerObject.GetAngleFromDirection(SpellDirection, false);
+        float angle = IncomingSpellInfo.GetAngleFromDirection(false);
         arrowIcon.transform.localEulerAngles = arrowIcon.transform.localEulerAngles.WithZ(angle);
     }
 
 	private void Update() {
-        RecomputeState();
         UpdateVisual();
 	}
 

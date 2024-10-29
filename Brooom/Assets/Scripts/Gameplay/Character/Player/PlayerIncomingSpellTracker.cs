@@ -20,25 +20,37 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 	private float maxCircleRadius = 400f;
 	private float minCircleRadius = 80f;
 
-	protected override void OnIncomingSpellAdded(SpellEffectController spell) {
+	protected override void OnIncomingSpellAdded(IncomingSpellInfo spellInfo) {
 		// Show an indicator
-		spell.onSpellHit += ShakeCamera;
+		spellInfo.SpellObject.onSpellHit += ShakeCamera;
 		IncomingSpellIndicator indicator = Instantiate<IncomingSpellIndicator>(incomingSpellIndicatorPrefab, incomingSpellIndicatorParent);
-		indicator.Initialize(spell, this);
+		indicator.Initialize(spellInfo);
 		incomingSpellIndicators.Add(indicator);
 		incomingSpellIndicatorTransforms.Add(indicator.GetComponent<RectTransform>());
 	}
 
-	protected override void OnIncomingSpellRemoved(SpellEffectController spell) {
+	protected override void OnIncomingSpellRemoved(IncomingSpellInfo spellInfo) {
 		// Destroy the indicator
 		for (int i = incomingSpellIndicators.Count - 1; i >= 0; i--) {
-			if (incomingSpellIndicators[i].SpellObject == spell) {
+			if (incomingSpellIndicators[i].IncomingSpellInfo == spellInfo) {
 				IncomingSpellIndicator indicator = incomingSpellIndicators[i];
 				incomingSpellIndicators.RemoveAt(i);
 				incomingSpellIndicatorTransforms.RemoveAt(i);
 				indicator.gameObject.TweenAwareDisable();
 				break;
 			}
+		}
+	}
+
+	protected override void UpdateAfterParent() {
+		// Place indicators on a circle (angle according to direction, radius according to distance)
+		for (int i = 0; i < incomingSpellIndicators.Count; i++) {
+			float angle = IncomingSpells[i].GetAngleFromDirection() + (Mathf.PI / 2f); // shift so zero is up
+			float radius = minCircleRadius + IncomingSpells[i].DistanceNormalized * (maxCircleRadius - minCircleRadius);
+			incomingSpellIndicatorTransforms[i].anchoredPosition = new Vector2(
+				radius * Mathf.Cos(angle),
+				radius * Mathf.Sin(angle)
+			);
 		}
 	}
 
@@ -51,18 +63,6 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 	private void Start() {
 		RectTransform rectTransform = incomingSpellIndicatorParent.GetComponent<RectTransform>();
 		maxCircleRadius = Mathf.Min(rectTransform.rect.width, rectTransform.rect.height) / 2f;
-	}
-
-	private void Update() {
-		// Place indicators on a circle (angle according to direction, radius according to distance)
-		for (int i = 0; i < incomingSpellIndicators.Count; i++) {
-			float angle = GetAngleFromDirection(incomingSpellIndicators[i].SpellDirection) + (Mathf.PI / 2f); // shift so zero is up
-			float radius = minCircleRadius + incomingSpellIndicators[i].SpellDistanceNormalized * (maxCircleRadius - minCircleRadius);
-			incomingSpellIndicatorTransforms[i].anchoredPosition = new Vector2(
-				radius * Mathf.Cos(angle),
-				radius * Mathf.Sin(angle)
-			);
-		}
 	}
 
 }
