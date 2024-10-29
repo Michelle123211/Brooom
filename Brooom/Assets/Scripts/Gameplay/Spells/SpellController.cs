@@ -91,16 +91,20 @@ public class SpellController : MonoBehaviour {
 		return false;
 	}
 
+	// Equips racer with a random set of spells selected from those which are already available for player + one more
 	public void RandomizeEquippedSpells() {
-		// TODO: Randomize equipped spells so it is similar to the player
-		// TODO: Equip spells into a continuous block starting at index 0
-		// TODO: Initialize selectedSpell
-		spellSlots[0] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Confusione"));
-		//spellSlots[1] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Congelatio"));
-		//spellSlots[1] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Defensio"));
-		//spellSlots[2] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("MateriaMuri"));
-		//spellSlots[2] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("TemereCommodum"));
-		//spellSlots[3] = new SpellInRace(SpellManager.Instance.GetSpellFromIdentifier("Attractio"));
+		if (PlayerState.Instance.availableSpellCount == 0) return;
+		// Create a list of spells to choose from
+		List<Spell> spellsToChooseFrom = GetSpellsForRandomization();
+		// Randomly select at most 4 different spells and equip them in a continuous block starting at index 0
+		//	- According to Magic statistic only a subset of equipped spells may be used so we can equip them all
+		int spellCount = Mathf.Min(spellsToChooseFrom.Count, 4);
+		while (spellCount > 0) {
+			int randomSpellIndex = UnityEngine.Random.Range(0, spellsToChooseFrom.Count);
+			spellSlots[spellCount - 1] = new SpellInRace(spellsToChooseFrom[randomSpellIndex]);
+			spellsToChooseFrom.RemoveAt(randomSpellIndex);
+			spellCount--;
+		}
 		selectedSpell = 0;
 	}
 
@@ -113,6 +117,31 @@ public class SpellController : MonoBehaviour {
 		foreach (var spell in spellSlots) {
 			if (spell != null) spell.Recharge();
 		}
+	}
+
+	private List<Spell> GetSpellsForRandomization() {
+		// Get all spells already unlocked for player + deterministically add one more spell which has not been unlocked yet
+		List<Spell> selectedSpells = new List<Spell>();
+		Spell interestingUnavailableSpell = null;
+		int interestingUnavailableSpellPrice = int.MaxValue;
+		foreach (var spell in SpellManager.Instance.AllSpells) {
+			if (PlayerState.Instance.IsSpellPurchased(spell.Identifier))
+				// Add available spell to the list
+				selectedSpells.Add(spell);
+			else {
+				// Find the cheapest interesting unavailable spell (interesting ~ from a specific category, not self-cast)
+				if (interestingUnavailableSpell == null && (
+					spell.Category == SpellCategory.OpponentCurse ||
+						spell.Category == SpellCategory.EnvironmentManipulation ||
+						spell.Category == SpellCategory.ObjectApparition) &&
+					spell.CoinsCost < interestingUnavailableSpellPrice) {
+					interestingUnavailableSpellPrice = spell.CoinsCost;
+					interestingUnavailableSpell = spell;
+				}
+			}
+		}
+		if (interestingUnavailableSpell != null) selectedSpells.Add(interestingUnavailableSpell);
+		return selectedSpells;
 	}
 
 	private void Update() {
