@@ -30,8 +30,8 @@ public class AISpellTargetSelection : SpellTargetSelection {
 		// Decide based on spell target type
 		Spell spell = spellController.GetCurrentlySelectedSpell();
 		if (spell.TargetType == SpellTargetType.Opponent) {
-			// Choose opponent the furthest in the race
-			return ChooseOpponentFurthestInRace(potentialTargets);
+			// Choose opponent the furthest in the race who is not already being hit by the same spell
+			return ChooseOpponentFurthestWithoutOvercast(potentialTargets, spell);
 		} else {
 			// Choose randomly from the two closest targets - so there is a chance Attractio would not be casted at the bonus the racer is currently flying to, which is better
 			return ChooseClosestOrSecondClosestTarget(potentialTargets);
@@ -60,6 +60,27 @@ public class AISpellTargetSelection : SpellTargetSelection {
 			}
 		}
 		return bestRacer;
+	}
+
+	// Tries to find an opponent who is the furthest in the race and the same spell is not already being casted at them
+	// If no such opponent exists, then just the furthest one is chosen
+	private GameObject ChooseOpponentFurthestWithoutOvercast(List<GameObject> potentialTargets, Spell spell) {
+		// Choose opponent the furthest in the race but make sure the same spell is not already being casted at him
+		GameObject bestTarget = null;
+		int bestPlace = int.MaxValue;
+		foreach (var opponent in potentialTargets) {
+			int place = opponent.GetComponentInChildren<CharacterRaceState>().place;
+			if (place < bestPlace) { // further in race than the best one found so far
+				IncomingSpellsTracker incomingSpellTracker = opponent.GetComponentInChildren<IncomingSpellsTracker>();
+				if (!incomingSpellTracker.IsSpellIncoming(spell.Identifier)) { // not already being hit by the same spell
+					bestPlace = place;
+					bestTarget = opponent;
+				}
+			}
+		}
+		// If there is no suitable target, choose simply the one who is the furthest in the race
+		if (bestTarget != null) return bestTarget;
+		else return ChooseOpponentFurthestInRace(potentialTargets);
 	}
 
 	private GameObject ChooseClosestOrSecondClosestTarget(List<GameObject> potentialTargets) {

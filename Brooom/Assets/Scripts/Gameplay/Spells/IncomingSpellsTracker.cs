@@ -26,6 +26,17 @@ public abstract class IncomingSpellsTracker : MonoBehaviour {
 		OnIncomingSpellRemoved(spellInfo);
 	}
 
+	// TODO: Add any API methods which could be used with spell casting AI
+
+	// Find out whether a specific spell is being casted at this racer
+	public bool IsSpellIncoming(string spellIdentifier) {
+		foreach (var incomingSpell in IncomingSpells) {
+			if (incomingSpell.SpellObject.Spell.Identifier == spellIdentifier)
+				return true;
+		}
+		return false;
+	}
+
 	protected abstract void OnIncomingSpellAdded(IncomingSpellInfo spellInfo);
 	protected abstract void OnIncomingSpellRemoved(IncomingSpellInfo spellInfo);
 	protected abstract void UpdateAfterParent();
