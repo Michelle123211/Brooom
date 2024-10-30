@@ -272,10 +272,12 @@ public class BonusGoal : TrackElementGoal {
     public override float GetRationality() {
         // Not rational if too far from the current direction of the agent
         float angleYaw = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, Vector3.up);
-        if (Mathf.Abs(angleYaw) <= 90 && bonusSpot.bonusInstances[0].GetType() == typeof(ManaBonusEffect)) { // for mana bonus, tolerate even larger offset if current mana amount is too low
+        if (bonusSpot.bonusInstances[0].GetType() == typeof(ManaBonusEffect)) {
+            // Treat mana bonus differently
             SpellController spellController = this.agent.GetComponentInChildren<SpellController>();
-            float manaPercentage = (float)spellController.CurrentMana / (float)spellController.MaxMana;
-            if (manaPercentage < 0.3f) return 1;
+            if (spellController.CurrentMana == spellController.MaxMana) return 0; // not rational if racer has max mana
+            if (Mathf.Abs(angleYaw) <= 90 && ((float)spellController.CurrentMana / (float)spellController.MaxMana) < 0.3f) // tolerate even larger angle if low on mana
+                return 1;
         }
         if (Mathf.Abs(angleYaw) <= 60f) return 1;
         else return 0;
