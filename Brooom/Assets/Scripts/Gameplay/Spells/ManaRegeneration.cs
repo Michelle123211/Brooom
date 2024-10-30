@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ManaRegeneration : MonoBehaviour {
 
+	public int TotalManaGenerated { get; private set; }
+
 	[Tooltip("Spell Controller component managing mana amount. It is used to change the amount.")]
 	[SerializeField] SpellController spellController;
 
@@ -21,6 +23,7 @@ public class ManaRegeneration : MonoBehaviour {
 		timeUntilManaRegeneration -= Time.deltaTime;
 		if (timeUntilManaRegeneration < 0) {
 			spellController.ChangeManaAmount(manaRegenerationAmount);
+			TotalManaGenerated += manaRegenerationAmount;
 			if (debugLogs) Debug.Log($"Current mana increased to {spellController.CurrentMana}/{spellController.MaxMana}.");
 			timeUntilManaRegeneration += manaRegenerationInterval;
 		}
@@ -28,6 +31,7 @@ public class ManaRegeneration : MonoBehaviour {
 
 	private void OnEnable() {
 		timeUntilManaRegeneration = manaRegenerationInterval;
+		TotalManaGenerated = 0;
 	}
 
 }

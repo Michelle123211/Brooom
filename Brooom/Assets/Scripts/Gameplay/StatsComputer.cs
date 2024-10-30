@@ -209,6 +209,8 @@ public class StatsComputer : MonoBehaviour {
             if (bonusSpot.bonusInstances[0].TryGetComponent<ManaBonusEffect>(out ManaBonusEffect manaBonus))
                 totalMana += manaBonus.manaAmount;
         }
+        ManaRegeneration manaRegeneration = playerSpellController.GetComponentInChildren<ManaRegeneration>();
+        totalMana += (manaRegeneration.TotalManaGenerated / 2); // add mana regenerated automatically (divided by two to account for situations when mana is regenerated too fast)
         // Spell usage
         equippedSpellUsageValue = notUsedSpellPenalization.Evaluate(spellUsedCount / (float)equippedSpellCount); // number between 0 and 1 describing how diverse spells the player has casted during the race
         totalSpellUsedCount = 0; // how many of the total spells the player has ever used
