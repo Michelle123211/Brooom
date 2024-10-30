@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 // Class representing a common base for communication with SpellController to select and cast spells
@@ -8,6 +9,11 @@ public abstract class SpellInput : MonoBehaviour {
 
     [Tooltip("SpellController component assigned to this racer.")]
     [SerializeField] protected SpellController spellController;
+
+    [Tooltip("What should happen if spell casting is enabled, e.g. which components should be enabled.")]
+    [SerializeField] private UnityEvent onSpellCastingEnabled;
+    [Tooltip("What should happen if spell casting is disabled, e.g. which components should be disabled.")]
+    [SerializeField] private UnityEvent onSpellCastingDisabled;
 
     private bool isInitialized = false;
     private bool spellsEnabled = false;
@@ -17,11 +23,8 @@ public abstract class SpellInput : MonoBehaviour {
         if (spellController.HasEquippedSpells()) {
             // Enable all components used for spell casting
             spellsEnabled = true;
-            spellController.enabled = true;
-            GetComponent<Collider>().enabled = true;
-            GetComponent<SpellTargetDetection>().enabled = true;
-            GetComponent<SpellTargetSelection>().enabled = true;
-            GetComponent<SpellInput>().enabled = true;
+            if (!Utils.IsNullEvent(onSpellCastingEnabled)) onSpellCastingEnabled.Invoke();
+            this.enabled = true;
             return true;
         }
         return false;
@@ -30,11 +33,8 @@ public abstract class SpellInput : MonoBehaviour {
     public void DisableSpellCasting() {
         // Disable all components used for spell casting
         spellsEnabled = false;
-        spellController.enabled = false;
-        GetComponent<Collider>().enabled = false;
-        GetComponent<SpellTargetDetection>().enabled = false;
-        GetComponent<SpellTargetSelection>().enabled = false;
-        GetComponent<SpellInput>().enabled = false;
+        if (!Utils.IsNullEvent(onSpellCastingDisabled)) onSpellCastingDisabled.Invoke();
+        this.enabled = false;
     }
 
 	protected abstract void UpdateWhenGameIsRunning();

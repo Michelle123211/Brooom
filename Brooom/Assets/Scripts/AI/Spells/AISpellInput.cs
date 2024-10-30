@@ -14,12 +14,12 @@ public class AISpellInput : SpellInput {
 	private bool[] isSpellReady;
 	private int readySpellCount = 0;
 
-	private bool isInitialized = false;
+	private bool wasInitialized = false;
 
 	private float nextDecisionDelay = 0f; // in how many seconds a new spell casting decision would be made
 
 	protected override void UpdateWhenGameIsRunning() {
-		if (!isInitialized) Initialize(); // postponed initialization to make sure SpellController has been already initialized
+		if (!wasInitialized) Initialize(); // postponed initialization to make sure SpellController has been already initialized
 
 		// Make sure it is already time for another iteration
 		if (nextDecisionDelay > 0f) {
@@ -112,7 +112,7 @@ public class AISpellInput : SpellInput {
 		foreach (var slot in spellController.spellSlots) {
 			if (slot != null && !slot.IsEmpty()) equippedSpellCount++;
 		}
-		isInitialized = true;
+		wasInitialized = true;
 	}
 
 }
