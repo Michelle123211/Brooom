@@ -220,6 +220,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 6594264219315407665}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onSpellCastingDisabled:
     m_PersistentCalls:
       m_Calls:
@@ -271,6 +283,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 6594264219315407665}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   spellTargetSelection: {fileID: 1459539863672795404}
   skillLevel: {fileID: 0}
   debugLogs: 0
@@ -301,6 +325,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 288af0fd9f3205148a3a4093ef1688c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6594264219315407665 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 390569338891811792, guid: d5057250aeb262d42b6597b1fc78f59b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6838747782754545889}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321814625550648350}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0e3c096bc937446b0d70cf2f8702c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6680091516033058312 stripped
