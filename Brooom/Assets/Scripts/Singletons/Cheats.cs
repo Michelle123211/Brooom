@@ -403,7 +403,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 	private void InitializeManaCommand() {
 		// mana - change mana amount or enable/disable unlimited mana, available only in Race
-		void ScheduleFillingManaUp(int currentManaValue) { // the parameter must be there because this method is used as a callback on mana value change
+		void ScheduleFillingManaUp(int _) { // the parameter must be there because this method is used as a callback on mana value change
 			// Schedule filling mana up so that it is done independently of the current callbacks being invoked
 			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 			Invoke(nameof(FillManaUp), 0.1f);
@@ -445,11 +445,11 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					message = message
 				};
 			},
-			enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack }));
+			enabledScenes: new Scene[] { Scene.Race }));
 	}
 	private void InitializeRechargeCommand() {
 		// recharge - change spells' charge or enable/disable cooldown, available only in Race
-		void RechargeAllSpells(int spellCastedIndex) { // the parameter must be there because this method is used as a callback on spell casted
+		void RechargeAllSpells(int _) { // the parameter must be there because this method is used as a callback on spell casted
 			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 			playerSpellController.RechargeAllSpells();
 		}
@@ -484,7 +484,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					message = message
 				};
 			},
-			enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack }));
+			enabledScenes: new Scene[] { Scene.Race }));
 	}
 
 	private void InitializeSpeedCommand() {
