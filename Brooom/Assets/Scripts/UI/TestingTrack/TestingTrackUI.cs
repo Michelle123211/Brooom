@@ -12,8 +12,10 @@ public class TestingTrackUI : MonoBehaviour {
 
 	[Header("Spells")]
 	[SerializeField] RaceSpellsUI spellsUI; // TODO: Delete, only temporary
+	[SerializeField] SpellDescriptionUI spellDescriptionUI;
 
 	private CharacterMovementController playerMovementController;
+	private SpellController playerSpellController;
 
 	public void UpdatePlayerState() {
 		speedText.text = Math.Round(playerMovementController.GetCurrentSpeed(), 1).ToString();
@@ -24,9 +26,21 @@ public class TestingTrackUI : MonoBehaviour {
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
+	private void OnSelectedSpellChanged(int spellIndex) {
+		spellDescriptionUI.ShowSpellDescription(playerSpellController.spellSlots[spellIndex].Spell);
+	}
+
 	private void Start() {
 		playerMovementController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<CharacterMovementController>("Player");
+		playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+		playerSpellController.onSelectedSpellChanged += OnSelectedSpellChanged;
+		if (playerSpellController.HasEquippedSpells())
+			spellDescriptionUI.ShowSpellDescription(playerSpellController.GetCurrentlySelectedSpell());
 		spellsUI.Initialize(playerMovementController.gameObject); // initialize and show
+	}
+
+	private void OnDestroy() {
+		playerSpellController.onSelectedSpellChanged -= OnSelectedSpellChanged;
 	}
 
 	private void Update() {

@@ -34,7 +34,7 @@ public class TooltipStyleTag {
     [Header("Color")]
     [Tooltip("Whether the color of the text marked with the given tag should be changed (i.e. the following color is valid and not default).")]
     public bool changeColor = false;
-    [Tooltip("A color which shoudl be used fo a text marked with the given tag.")]
+    [Tooltip("A color which should be used fo a text marked with the given tag.")]
     public Color textColor = Color.gray;
 
     [Header("Format")]
