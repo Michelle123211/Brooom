@@ -20,7 +20,7 @@ MonoBehaviour:
   customTags:
   - tag: ~~
     changeColor: 1
-    textColor: {r: 1, g: 0.94274926, b: 0, a: 0}
+    textColor: {r: 1, g: 0.94274926, b: 0, a: 1}
     bold: 1
     italics: 0
     underline: 0
@@ -34,14 +34,14 @@ MonoBehaviour:
     uppercase: 0
   - tag: ==
     changeColor: 1
-    textColor: {r: 0, g: 1, b: 0.99999976, a: 0}
+    textColor: {r: 0, g: 1, b: 0.99999976, a: 1}
     bold: 1
     italics: 0
     underline: 0
     uppercase: 0
   - tag: '&&'
     changeColor: 1
-    textColor: {r: 1, g: 1, b: 1, a: 0}
+    textColor: {r: 1, g: 1, b: 1, a: 1}
     bold: 1
     italics: 0
     underline: 0
