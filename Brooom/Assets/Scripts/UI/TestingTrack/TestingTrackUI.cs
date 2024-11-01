@@ -23,6 +23,7 @@ public class TestingTrackUI : MonoBehaviour {
 	private TagsMapping tagsMapping;
 
 	public void ReturnBack() {
+		SceneLoader.Instance.SetBoolParameterForNextScene("OpenShop", true); // go straight to the Shop
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
 	}
 
