@@ -13,7 +13,8 @@ public class TestingTrackUI : MonoBehaviour {
 	[Header("Spells")]
 	[SerializeField] RaceSpellsUI spellsUI; // TODO: Delete, only temporary
 	[SerializeField] TooltipPanel spellDescriptionUI;
-	[Tooltip("Custom tags and their style which is used to format spell description text.")]
+	[SerializeField] TooltipPanel spellInstructionsUI;
+	[Tooltip("Custom tags and their style which is used to format spell description and spell instructions texts.")]
 	[SerializeField] TooltipStyle tooltipStyle;
 
 	private CharacterMovementController playerMovementController;
@@ -84,6 +85,19 @@ public class TestingTrackUI : MonoBehaviour {
 	}
 	#endregion
 
+	#region Spell instructions
+	private void ShowSpellInstructions() {
+		if (tagsMapping == null) tagsMapping = TooltipController.GetCustomTagsToTMProTagsMapping(tooltipStyle);
+
+		spellInstructionsUI.SetContent(new List<string> {
+			TooltipController.ReplaceCustomTagsWithTMProTags(
+				LocalizationManager.Instance.GetLocalizedString("TestingLabelSpellInstructions"),
+				tagsMapping)
+		});
+		spellInstructionsUI.gameObject.TweenAwareEnable();
+	}
+	#endregion
+
 	private void Start() {
 		// Initialize data fields
 		playerMovementController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<CharacterMovementController>("Player");
@@ -93,8 +107,11 @@ public class TestingTrackUI : MonoBehaviour {
 		if (tooltipStyle == null)
 			tooltipStyle = Resources.Load<TooltipStyle>("DefaultTooltipStyle");
 		spellDescriptionUI.ChangeAppearance(tooltipStyle);
-		if (playerSpellController.HasEquippedSpells())
+		spellInstructionsUI.ChangeAppearance(tooltipStyle);
+		if (playerSpellController.HasEquippedSpells()) {
 			ShowSpellDescription(playerSpellController.selectedSpell);
+			ShowSpellInstructions();
+		}
 		// Initialize and show spells UI
 		spellsUI.Initialize(playerMovementController.gameObject);
 	}
