@@ -14,8 +14,7 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
 
     private TooltipPanel tooltipPanel;
 
-    private Dictionary<string, string> openingTags = new Dictionary<string, string>(); // TMPro tags corresponding to the user-defined tags
-    private Dictionary<string, string> closingTags = new Dictionary<string, string>();
+    private TagsMapping tagsMapping; // TMPro tags corresponding to the user-defined tags
     private bool isLocalized = false; // if the tooltip is localized, given texts will be used as keys for localization
 
     public void SetTooltipContent(TooltipSectionsText content) {
@@ -54,52 +53,35 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
             inputText = LocalizationManager.Instance.GetLocalizedString(inputText);
         }
         // Replace tags
-        return ReplaceCustomTags(inputText);
+        return TooltipController.ReplaceCustomTagsWithTMProTags(inputText, tagsMapping);
     }
 
-    // Replaces user-defined tags with those supported by TMPro
-    private string ReplaceCustomTags(string inputText) {
-        // TODO: Make it more efficient (e.g. using trie from tags)
+	public void AwakeSingleton() {
+	}
 
-        StringBuilder formattedString = new StringBuilder();
-        Stack<string> tagStack = new Stack<string>(); // stack of tags which were not closed yet
-        // Go through the text and replace tags
-        int i = 0;
-        while (i < inputText.Length) {
-            // Check if any tag matches, find the longest one
-            string tagFound = "";
-            foreach (var customTag in tooltipStyle.customTags) {
-                if (inputText.Length >= i + customTag.tag.Length // input string is long enough to contain tag
-                    && inputText.Substring(i, customTag.tag.Length) == customTag.tag // input string contains tag
-                    && customTag.tag.Length > tagFound.Length) { // tag is the longest one yet
-                    tagFound = customTag.tag;
-                }
-            }
-            if (tagFound.Length > 0) { // a tag was found
-                if (tagStack.Count > 0 && tagStack.Peek() == tagFound) { // closing tag
-                    formattedString.Append(closingTags[tagFound]);
-                    tagStack.Pop();
-                } else { // opening tag
-                    formattedString.Append(openingTags[tagFound]);
-                    tagStack.Push(tagFound);
-                }
-                i += tagFound.Length;
-            } else { // no tag
-                formattedString.Append(inputText[i]);
-                i++;
-            }
-        }
-        // Resolve any open tags
-        string tag;
-        while (tagStack.Count > 0) {
-            tag = tagStack.Pop();
-            formattedString.Append(closingTags[tag]);
-        }
-        return formattedString.ToString();
+	public void InitializeSingleton() {
+        tooltipPanel = GetComponentInChildren<TooltipPanel>();
+        if (tooltipStyle == null)
+            tooltipStyle = Resources.Load<TooltipStyle>("DefaultTooltipStyle");
+        // Apply the style (change background, font)
+        tooltipPanel.ChangeAppearance(tooltipStyle);
+        // For each custom tag compose its TMPro-supported start and end tag, store them
+        tagsMapping = TooltipController.GetCustomTagsToTMProTagsMapping(tooltipStyle);
     }
 
-    // For each custom tag composes its TMPro-supported start and end tags and stores them in Dictionaries
-    private void ConvertTagsToTMProTags() {
+	protected override void SetSingletonOptions() {
+        Options = (int)SingletonOptions.LazyInitialization | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.PersistentBetweenScenes;
+	}
+
+	private void OnDestroy() {
+        if (Instance == this)
+            ResetInstance();
+	}
+
+    // For each custom tag composes its TMPro-supported start and end tags and stores them in TagsMapping instance
+    public static TagsMapping GetCustomTagsToTMProTagsMapping(TooltipStyle tooltipStyle) {
+        TagsMapping tagsMap = new TagsMapping();
+        // For each custom tag defined in TooltipStyle, create its TMPro equivalent
         foreach (var tag in tooltipStyle.customTags) {
             StringBuilder tmproOpenTag = new StringBuilder();
             StringBuilder tmproCloseTag = new StringBuilder();
@@ -128,32 +110,83 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
                 tmproOpenTag.Append("<uppercase>");
                 tmproCloseTag.Insert(0, "</uppercase>");
             }
-            openingTags[tag.tag] = tmproOpenTag.ToString();
-            closingTags[tag.tag] = tmproCloseTag.ToString();
+            tagsMap.AddTMProTagPairFromCustomTag(tag.tag, tmproOpenTag.ToString(), tmproCloseTag.ToString());
         }
+        return tagsMap;
     }
 
-	public void AwakeSingleton() {
-	}
+    // Replaces user-defined tags with those supported by TMPro
+    public static string ReplaceCustomTagsWithTMProTags(string inputText, TagsMapping tagsMap) {
+        // TODO: Make it more efficient (e.g. using trie from tags)
 
-	public void InitializeSingleton() {
-        tooltipPanel = GetComponentInChildren<TooltipPanel>();
-        if (tooltipStyle == null)
-            tooltipStyle = Resources.Load<TooltipStyle>("DefaultTooltipStyle");
-        // Apply the style (change background, font)
-        tooltipPanel.ChangeAppearance(tooltipStyle);
-        // For each custom tag compose its TMPro-supported start and end tag, store them in Dictionaries
-        ConvertTagsToTMProTags();
+        StringBuilder formattedString = new StringBuilder();
+        Stack<string> tagStack = new Stack<string>(); // stack of tags which were not closed yet
+        // Go through the text and replace tags
+        int i = 0;
+        while (i < inputText.Length) {
+            // Check if any tag matches, find the longest one
+            string tagFound = "";
+            foreach (var customTag in tagsMap.CustomTags) {
+                if (inputText.Length >= i + customTag.Length // input string is long enough to contain tag
+                    && inputText.Substring(i, customTag.Length) == customTag // input string contains tag
+                    && customTag.Length > tagFound.Length) { // tag is the longest one yet
+                    tagFound = customTag;
+                }
+            }
+            if (tagFound.Length > 0) { // a tag was found
+                if (tagStack.Count > 0 && tagStack.Peek() == tagFound) { // closing tag
+                    formattedString.Append(tagsMap.GetTMProClosingTag(tagFound));
+                    tagStack.Pop();
+                } else { // opening tag
+                    formattedString.Append(tagsMap.GetTMProOpeningTag(tagFound));
+                    tagStack.Push(tagFound);
+                }
+                i += tagFound.Length;
+            } else { // no tag
+                formattedString.Append(inputText[i]);
+                i++;
+            }
+        }
+        // Resolve any open tags
+        string tag;
+        while (tagStack.Count > 0) {
+            tag = tagStack.Pop();
+            formattedString.Append(tagsMap.GetTMProClosingTag(tag));
+        }
+        return formattedString.ToString();
+    }
+}
+
+public class TagsMapping {
+
+    public IEnumerable<string> CustomTags => openingTags.Keys;
+
+    private Dictionary<string, string> openingTags;
+    private Dictionary<string, string> closingTags;
+
+    public TagsMapping() {
+        openingTags = new Dictionary<string, string>();
+        closingTags = new Dictionary<string, string>();
     }
 
-	protected override void SetSingletonOptions() {
-        Options = (int)SingletonOptions.LazyInitialization | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.PersistentBetweenScenes;
-	}
+    public void AddTMProTagPairFromCustomTag(string customTag, string TMProOpeningTag, string TMProClosingTag) {
+        openingTags[customTag] = TMProOpeningTag;
+        closingTags[customTag] = TMProClosingTag;
+    }
 
-	private void OnDestroy() {
-        if (Instance == this)
-            ResetInstance();
-	}
+    public string GetTMProOpeningTag(string customTag) { 
+        return openingTags.ContainsKey(customTag) ? openingTags[customTag] : null;
+    }
+
+    public string GetTMProClosingTag(string customTag) {
+        return closingTags.ContainsKey(customTag) ? closingTags[customTag] : null;
+    }
+
+    public (string, string) GetTMProTagPairFromCustomTag(string customTag) {
+        string openingTag = openingTags.ContainsKey(customTag) ? openingTags[customTag] : null;
+        string closingTag = closingTags.ContainsKey(customTag) ? closingTags[customTag] : null;
+        return (openingTag, closingTag);
+    }
 }
 
 [System.Serializable]

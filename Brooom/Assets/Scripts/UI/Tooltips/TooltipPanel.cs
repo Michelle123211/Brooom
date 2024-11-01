@@ -7,9 +7,12 @@ using TMPro;
 public class TooltipPanel : MonoBehaviour
 {
 	[Tooltip("Text fields of individual sections.")]
-	public TooltipSectionsTextFields textFields;
+	[SerializeField] TooltipSectionsTextFields textFields;
     [Tooltip("RectTransform of the Canvas in which the tooltip panel is located.")]
-    public RectTransform canvasRectTransform;
+    [SerializeField] RectTransform canvasRectTransform;
+
+    [Tooltip("Whether this tooltip panel is just a static text on the screen or it is supposed to follow a cursor.")]
+    [SerializeField] bool isStatic = false;
 
 	private Image background;
 	private RectTransform rectTransform;
@@ -24,7 +27,8 @@ public class TooltipPanel : MonoBehaviour
             field.font = style.font;
             field.color = style.textColor;
         }
-        maxWidth = style.maxWidth;
+        if (!isStatic)
+            maxWidth = style.maxWidth;
     }
 
     public void SetContent(List<string> content) {
@@ -33,7 +37,8 @@ public class TooltipPanel : MonoBehaviour
             textFields[i].text = text;
             i++;
         }
-        AdjustSize();
+        if (!isStatic)
+            AdjustSize();
     }
 
     private void AdjustSize() {
@@ -63,16 +68,17 @@ public class TooltipPanel : MonoBehaviour
     }
 
     private void Update() {
-        // Follow the mouse cursor
-        transform.position = Input.mousePosition;
-        // Adjust position according to screen borders
-        Vector2 anchoredPosition = rectTransform.anchoredPosition;
-        if (anchoredPosition.x + rectTransform.rect.width > canvasRectTransform.rect.width)
-            anchoredPosition.x = canvasRectTransform.rect.width - rectTransform.rect.width;
-        if (anchoredPosition.y + rectTransform.rect.height > canvasRectTransform.rect.height)
-            anchoredPosition.y = canvasRectTransform.rect.height - rectTransform.rect.height;
-        rectTransform.anchoredPosition = anchoredPosition;
-
+        if (!isStatic) {
+            // Follow the mouse cursor
+            transform.position = Input.mousePosition;
+            // Adjust position according to screen borders
+            Vector2 anchoredPosition = rectTransform.anchoredPosition;
+            if (anchoredPosition.x + rectTransform.rect.width > canvasRectTransform.rect.width)
+                anchoredPosition.x = canvasRectTransform.rect.width - rectTransform.rect.width;
+            if (anchoredPosition.y + rectTransform.rect.height > canvasRectTransform.rect.height)
+                anchoredPosition.y = canvasRectTransform.rect.height - rectTransform.rect.height;
+            rectTransform.anchoredPosition = anchoredPosition;
+        }
     }
 }
 
