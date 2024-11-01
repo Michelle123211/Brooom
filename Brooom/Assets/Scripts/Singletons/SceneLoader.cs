@@ -80,9 +80,6 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		// It does not make sense to display loading without the fade
 		if (!fade && showLoading)
 			showLoading = false;
-		// Load the next scene asynchronously and don't activate it immediately
-		AsyncOperation loadingScene = SceneManager.LoadSceneAsync(sceneName);
-		loadingScene.allowSceneActivation = false;
 		// Fade out to overlay
 		if (fade) animator.SetTrigger("FadeOut");
 		if (showLoading) animator.SetTrigger("LoadingIn");
@@ -92,7 +89,14 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 			// Wait until the fade out animation is finished
 			yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 		}
-		// Enable activation of the scene
+		if (showLoading) {
+			// Wait until the loading animation starts playing
+			yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("LoadingFadeIn"));
+			// Wait until the fade out animation is completed fully
+			yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+		}
+		// Load next scene asycnhronously and activate it right away
+		AsyncOperation loadingScene = SceneManager.LoadSceneAsync(sceneName);
 		loadingScene.allowSceneActivation = true;
 		// Wait until the scene is loaded
 		yield return new WaitUntil(() => loadingScene.isDone);
