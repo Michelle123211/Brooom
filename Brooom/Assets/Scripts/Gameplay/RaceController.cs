@@ -168,6 +168,8 @@ public class RaceController : MonoBehaviour {
         if (opponentParent != null) opponentParent.gameObject.SetActive(true);
         // Wait until the end of the sequence
         yield return new WaitForSeconds((float)remainingDuration);
+        // Reset camera (front camera, default rotation)
+        playerRacer.characterController.GetComponent<PlayerCameraController>().TweenToResetView();
         // Show the race countdown
         for (int i = 3; i > 0; i--) {
             raceHUD.ShowCountdown(i.ToString());

@@ -64,6 +64,21 @@ public class PlayerCameraController : MonoBehaviour {
             ZoomIn(false);
     }
 
+    public void TweenToResetView() {
+        // Reset rotation
+        isResetting = true;
+        currentSensitivity = 0; // disable camera movement while the tween is running
+        foreach (var camera in virtualCameras) {
+            DOTween.To(() => rotationX, x => rotationX = x, 0f, resetDuration).SetEase(Ease.InOutCubic);
+            DOTween.To(() => rotationY, y => rotationY = y, 0f, resetDuration).SetEase(Ease.InOutCubic)
+                .OnComplete(() => { currentSensitivity = SettingsUI.mouseSensitivity; isResetting = false; }); // enable camera movement again
+        }
+        // Back view camera (backVirtualCamera) cannot be rotated so no reset is needed
+
+        // If the current camera is back camera, then switch back to front one
+        if (isBackViewOn) SwitchToFrontCamera();
+    }
+
     // Changes the camera's FOV to zoom in/out
     public void ZoomIn(bool zoomIn) {
         float fov = zoomIn ? zoomedInFOV : defaultFOV;
@@ -120,21 +135,10 @@ public class PlayerCameraController : MonoBehaviour {
         backVirtualCamera.gameObject.SetActive(false);
     }
 
-    public void ResetCameraIfNecessary() {
+    private void ResetCameraWithTweenIfNecessary() {
         if (isResetting || !InputManager.Instance.GetBoolValue("ResetView"))
             return;
-        // Reset rotation
-        isResetting = true;
-        currentSensitivity = 0; // disable camera movement while the tween is running
-        foreach (var camera in virtualCameras) {
-            DOTween.To(() => rotationX, x => rotationX = x, 0f, resetDuration).SetEase(Ease.InOutCubic);
-            DOTween.To(() => rotationY, y => rotationY = y, 0f, resetDuration).SetEase(Ease.InOutCubic)
-                .OnComplete(() => { currentSensitivity = SettingsUI.mouseSensitivity; isResetting = false; }); // enable camera movement again
-        }
-        // Back view camera (backVirtualCamera) cannot be rotated so no reset is needed
-
-        // If the current camera is back camera, then switch back to front one
-        if (isBackViewOn) SwitchToFrontCamera();
+        TweenToResetView();
     }
 
     // Start is called before the first frame update
@@ -163,7 +167,7 @@ public class PlayerCameraController : MonoBehaviour {
     {
         // React to player input
         SwitchCameraIfNecessary();
-        ResetCameraIfNecessary();
+        ResetCameraWithTweenIfNecessary();
 
         // Back view camera cannot be rotated
         if (isBackViewOn) return;
