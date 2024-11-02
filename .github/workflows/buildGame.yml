@@ -21,6 +21,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        projectPath:
+          - Brooom
         targetPlatform:
           # - iOS # Build an iOS player
           # - StandaloneWindows # Build a Windows standalone
@@ -44,14 +46,14 @@ jobs:
       - if: matrix.targetPlatform == 'WebGL' ||  matrix.targetPlatform == 'Android' || matrix.targetPlatform == 'StandaloneWindows64'
         uses: actions/cache@v4
         with:
-          path: Brooom/Library
+          path: ${{ matrix.projectPath }}/Library
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
 
       - if: matrix.targetPlatform != 'WebGL' &&  matrix.targetPlatform != 'Android' && matrix.targetPlatform != 'StandaloneWindows64'
         uses: actions/cache/restore@v4
         with:
-          path: Brooom/Library
+          path: ${{ matrix.projectPath }}/Library
           key: Library-StandaloneWindows64
           restore-keys: Library-WebGL
             Library-
@@ -75,7 +77,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: Brooom
+          projectPath: ${{ matrix.projectPath }}
           buildName: ${{ github.event.repository.name }}
           versioning: Semantic
           targetPlatform: ${{ matrix.targetPlatform }}
