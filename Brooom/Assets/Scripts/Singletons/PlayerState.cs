@@ -272,6 +272,12 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
 
     #region Singleton
+    static PlayerState() { 
+        Options = SingletonOptions.PersistentBetweenScenes | SingletonOptions.LazyInitialization | SingletonOptions.RemoveRedundantInstances;
+    }
+    public void AwakeSingleton() {
+    }
+
     public void InitializeSingleton() {
         // Initialize everything to default values
         // ...progress
@@ -300,9 +306,6 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         knownOpponents = new Dictionary<int, string>();
         // ...available regions
         regionsAvailability = new Dictionary<LevelRegionType, bool>();
-    }
-
-    public void AwakeSingleton() {
     }
 	#endregion
 

@@ -56,8 +56,13 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
         return TooltipController.ReplaceCustomTagsWithTMProTags(inputText, tagsMapping);
     }
 
+    static TooltipController() { 
+        Options = SingletonOptions.LazyInitialization | SingletonOptions.RemoveRedundantInstances | SingletonOptions.PersistentBetweenScenes;
+    }
+
 	public void AwakeSingleton() {
-	}
+        gameObject.SetActive(false);
+    }
 
 	public void InitializeSingleton() {
         tooltipPanel = GetComponentInChildren<TooltipPanel>();
@@ -68,10 +73,6 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
         // For each custom tag compose its TMPro-supported start and end tag, store them
         tagsMapping = TooltipController.GetCustomTagsToTMProTagsMapping(tooltipStyle);
     }
-
-	protected override void SetSingletonOptions() {
-        Options = (int)SingletonOptions.LazyInitialization | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.PersistentBetweenScenes;
-	}
 
 	private void OnDestroy() {
         if (Instance == this)

@@ -112,16 +112,17 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		onSceneLoaded?.Invoke();
 	}
 
-	public void InitializeSingleton() {
-		currentScene = SceneManager.GetActiveScene().name;
+	static SceneLoader() { 
+		Options = SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances | SingletonOptions.LazyInitialization;
 	}
 
 	public void AwakeSingleton() {
 	}
 
-	protected override void SetSingletonOptions() {
-		Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.LazyInitialization;
+	public void InitializeSingleton() {
+		currentScene = SceneManager.GetActiveScene().name;
 	}
+
 }
 
 

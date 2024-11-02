@@ -45,15 +45,14 @@ public class SpellManager : MonoBehaviourSingleton<SpellManager>, ISingleton {
 	}
 
 	#region Singleton initialization
+	static SpellManager() { 
+		Options = SingletonOptions.CreateNewGameObject | SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances;
+	}
+
 	public void AwakeSingleton() {
 	}
 
 	public void InitializeSingleton() {
-	}
-
-	// Persistent singleton
-	protected override void SetSingletonOptions() {
-		Options = (int)SingletonOptions.CreateNewGameObject | (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances;
 	}
 	#endregion
 }

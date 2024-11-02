@@ -46,6 +46,12 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, ISingleton
 	}
 	// TODO: Add more if necessary
 
+	public InputManager() { 
+		Options = SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances | SingletonOptions.LazyInitialization;
+	}
+
+	public void AwakeSingleton() {
+	}
 
 	public void InitializeSingleton() {
 		playerInput = GetComponent<PlayerInput>();
@@ -57,13 +63,6 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, ISingleton
 		LoadBindings();
 		SetupInputActions();
 		UpdateInputs();
-	}
-
-	public void AwakeSingleton() {
-	}
-
-	protected override void SetSingletonOptions() {
-		Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.LazyInitialization;
 	}
 
 	public void SaveBindings() {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,8 +6,8 @@ using UnityEngine;
 
 public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, ISingleton {
 
-    // Describes the chosen behaviour of the singleton using SingletonOptions enum values
-    public static int Options { get; protected set; } = (int)SingletonOptions.LazyInitialization;
+    // Describes the chosen behaviour of the singleton - could be overwritten in class constructor
+    public static SingletonOptions Options { get; protected set; } = SingletonOptions.PersistentBetweenScenes; // static field is separate for each type specialization
 
     private static bool isInitialized = false;
 
@@ -14,44 +15,48 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
     public static T Instance {
         get {
             // Lazy initialization
-            if (_Instance == null || !isInitialized || (Options & (int)SingletonOptions.LazyInitialization) != 0) {
-                InitializeSingletonInstance();
-            }
+            if (_Instance == null) TrySetSingletonInstance();
+            if (!isInitialized) InitializeSingleton();
             return _Instance;
         }
     }
 
-    private static void InitializeSingletonInstance() {
+    private static void TrySetSingletonInstance() {
         if (_Instance != null) return;
-        // Find it in the scene (even hidden)
+        // Try to find it in the scene (even hidden)
         List<T> objectsFound = Utils.FindObject<T>();
         if (objectsFound.Count > 0) {
             _Instance = objectsFound[0];
         }
+        // Call AwakeSingleton()
+        if (_Instance != null) {
+            _Instance.AwakeSingleton();
+            // If necessary, make it persistent between scenes
+            if (Options.HasFlag(SingletonOptions.PersistentBetweenScenes))
+                GameObject.DontDestroyOnLoad(_Instance);
+        }
+    }
+
+    private static void InitializeSingleton() {
+        if (_Instance == null) TrySetSingletonInstance();
 
         if (_Instance == null) {
-            // Create a new GameObject representing the singleton if there is none in the scene
-            if ((Options & (int)SingletonOptions.CreateNewGameObject) != 0) {
+            // Create a new GameObject representing the singleton if there is none already
+            if (Options.HasFlag(SingletonOptions.CreateNewGameObject)) {
                 GameObject go = new GameObject();
                 go.name = typeof(T).Name;
                 _Instance = go.AddComponent<T>();
+                // If necessary, make it persistent between scenes
+                if (Options.HasFlag(SingletonOptions.PersistentBetweenScenes))
+                    GameObject.DontDestroyOnLoad(_Instance);
             } else {
                 Debug.LogError($"No instance of the {typeof(T).Name} singleton was found in the scene.");
                 return;
             }
         }
-        _Instance.InitializeSingleton();
-        // Persistency between scenes
-        if ((Options & (int)SingletonOptions.PersistentBetweenScenes) != 0) {
-            GameObject.DontDestroyOnLoad(_Instance);
-        }
-        isInitialized = true;
-    }
 
-    // A method used to set different singleton options flags (SingletonOptions enum) other than the default ones
-    //    It is called in the Awake() and may be overriden by derived types to set their specific options flags
-    protected virtual void SetSingletonOptions() {
-        Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances;
+        _Instance.InitializeSingleton();
+        isInitialized = true;
     }
 
     // May be used e.g. from OnDestroy
@@ -61,24 +66,28 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
     }
 
     private void Awake() {
-        SetSingletonOptions();
         // Remove redundant instances from the scene
-        if (_Instance != null && _Instance != this && (Options & (int)SingletonOptions.RemoveRedundantInstances) != 0)
+        if (_Instance != null && _Instance != this && Options.HasFlag(SingletonOptions.RemoveRedundantInstances))
             Destroy(gameObject);
         else {
+            if (_Instance == null) {
+                TrySetSingletonInstance();
+            }
             // Eager initialization
-            if ((Options & (int)SingletonOptions.LazyInitialization) == 0)
-                InitializeSingletonInstance();
-            _Instance.AwakeSingleton();
+            if (!Options.HasFlag(SingletonOptions.LazyInitialization)) {
+                InitializeSingleton();
+            }
         }
 	}
 }
 
+[Flags]
+// Describes the chosen behaviour of the singleton
 public enum SingletonOptions { 
-    LazyInitialization, // Initialize the singleton instance when it is needed for the first time
-    RemoveRedundantInstances, // Remove redundant instances from the scene
-    CreateNewGameObject, // Create a new GameObject representing the singleton if there is none in the scene
-    PersistentBetweenScenes // Use DontDestroyOnLoad
+    LazyInitialization = 1, // Initialize the singleton instance when it is needed for the first time
+    RemoveRedundantInstances = 2, // Remove redundant instances from the scene
+    CreateNewGameObject = 4, // Create a new GameObject representing the singleton if there is none in the scene
+    PersistentBetweenScenes = 8 // Use DontDestroyOnLoad
 }
 
 // An interface containing useful methods for the types derived from MonoBehaviourSingleton<T>

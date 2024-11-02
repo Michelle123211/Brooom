@@ -649,6 +649,10 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 
 	#region SINGLETON
+	static Cheats() { 
+		Options = SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances;
+	}
+
 	public void AwakeSingleton() {
 	}
 
@@ -665,10 +669,6 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		// Register callbacks
 		Messaging.RegisterForMessage("GameStarted", ProcessInitializationCommands);
 		SceneLoader.Instance.onSceneLoaded += ProcessSceneInitializationCommands;
-	}
-
-	protected override void SetSingletonOptions() {
-		Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances;
 	}
 	#endregion
 

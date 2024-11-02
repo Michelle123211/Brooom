@@ -94,6 +94,13 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 		return availableLanguages;
 	}
 
+	static LocalizationManager() { 
+		Options = SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances | SingletonOptions.LazyInitialization;
+	}
+
+	public void AwakeSingleton() {
+	}
+
 	public void InitializeSingleton() {
 		LoadDataFromJSONFile();
 		// Load the persistently saved selected language from earlier
@@ -101,13 +108,6 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 		if (!string.IsNullOrEmpty(loadedLanguage)) {
 			ChangeCurrentLanguage(loadedLanguage);
 		}
-	}
-
-	public void AwakeSingleton() {
-	}
-
-	protected override void SetSingletonOptions() {
-		Options = (int)SingletonOptions.PersistentBetweenScenes | (int)SingletonOptions.RemoveRedundantInstances | (int)SingletonOptions.LazyInitialization;
 	}
 
 	// Loads languages and phrases from an input file located in Resources
