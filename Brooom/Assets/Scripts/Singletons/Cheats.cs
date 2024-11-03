@@ -422,7 +422,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					return new CommandParseResult { isSuccessful = true, message = "Unlimited mana has been disabled." };
 				} else if (commandParts[1] == "off") {
 					// Enable unlimited mana
-					playerSpellController.onManaAmountChanged -= ScheduleFillingManaUp; // try to unregister in case it wal already registered
+					playerSpellController.onManaAmountChanged -= ScheduleFillingManaUp; // try to unregister in case it was already registered
 					playerSpellController.onManaAmountChanged += ScheduleFillingManaUp;
 					FillManaUp();
 					return new CommandParseResult { isSuccessful = true, message = "Unlimited mana has been enabled." };

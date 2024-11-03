@@ -64,7 +64,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     #region Coins
     public int Coins { get; private set; } = 0;
-    public Action<int, int> onCoinsAmountChanged; // callback invoked whenever the amount of coins changes, parameters are old amount and new amount
+    public event Action<int, int> onCoinsAmountChanged; // callback invoked whenever the amount of coins changes, parameters are old amount and new amount
 
     // Returns true if the transaction could be performed (there was enough coins)
     public bool ChangeCoinsAmount(int delta) {

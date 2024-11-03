@@ -15,7 +15,7 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 	public string CurrentLanguage { get; private set; }
 
 	// Callback on language changed - used from LocalizedTextMeshProUI to update text content
-	public Action onCurrentLanguageChanged;
+	public event Action onCurrentLanguageChanged;
 
 	// A key under which the current language is saved persistently
 	public const string currentLanguageSaveKey = "CurrentLanguage";

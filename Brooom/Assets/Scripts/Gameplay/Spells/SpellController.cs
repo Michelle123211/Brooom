@@ -14,9 +14,9 @@ public class SpellController : MonoBehaviour {
 	public int selectedSpell { get; private set; }
 
 	// Callbacks
-	public Action<int> onManaAmountChanged; // parameter: new mana value
-	public Action<int> onSelectedSpellChanged; // parameter: index of the currently selected spell
-	public Action<int> onSpellCasted; // parameter: index of the spell
+	public event Action<int> onManaAmountChanged; // parameter: new mana value
+	public event Action<int> onSelectedSpellChanged; // parameter: index of the currently selected spell
+	public event Action<int> onSpellCasted; // parameter: index of the spell
 
 	[Tooltip("Component derived from SpellTargetSelection which is responsible for selecting a target for currently seelcted spell.")]
 	[SerializeField] SpellTargetSelection spellTargetSelection;

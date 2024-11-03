@@ -8,7 +8,7 @@ public class EffectibleCharacter : MonoBehaviour
     // Effects acting on the character
     public List<CharacterEffect> effects = new List<CharacterEffect>();
 
-    public Action<CharacterEffect> onNewEffectAdded; // parameter: the added effect
+    public event Action<CharacterEffect> onNewEffectAdded; // parameter: the added effect
 
     [Tooltip("A parent object of all visual effect instances corresponding to effects acting on the character (e.g. particles).")]
     [SerializeField] private Transform visualEffectsParent;
