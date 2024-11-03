@@ -46,7 +46,7 @@
 - Character idle animations (on broom and standing) + facial animations
 - Main menu background
 
-**Milestone 6** (September 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone6.zip))):
+**Milestone 6** (September 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone6.zip)):
 
 - Preparation for opponents - complex refactorization, spawning randomized enemies
 - Training vs race - transition, starting zone, finish line, detecting and highlighting hoops, missed checkpoint warning, wrong direction warning
@@ -54,7 +54,7 @@
 - Race results - coin reward, table and computation of opponents' times
 - Player stats computation
 
-**Milestone 7** (October 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone7.zip))):
+**Milestone 7** (October 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone7.zip)):
 
 - GDD restructuralization
 - Pause menu
@@ -62,7 +62,7 @@
 - Basis for testing track - environment, borders, hoop, bonus, moving opponent
 - Opponents' AI - design, infrastructure, basic movement (flying through hoops, picking up bonuses)
 
-**Milestone 8** (November 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone8.zip))):
+**Milestone 8** (November 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone8.zip)):
 
 - Finished opponents' AI - adjusting to player:
   - Making different types of mistakes based on stats
@@ -71,3 +71,12 @@
 - Debugging
 - Balancing (speed bonus, placing bonuses, speed broom upgrade, missed hoop penalization)
 - Testing
+
+**Milestone 9** (3rd November 2024, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone9.zip)):
+
+- Spell system - aiming, casting, spells implementation, visual effects, ...
+- Spell casting AI
+- Back camera and view reset
+- Added new cheats for spells
+- Testing track (unlimited mana, no spell cooldown)
+- Automatic build on GitHub
