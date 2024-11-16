@@ -35,7 +35,7 @@ public class RaceResultsUI : MonoBehaviour {
     Color[] placeColors = new Color[] { // TODO: Move to a separate color palette
         Utils.ColorFromRBG256(243, 217, 81), // gold
         Utils.ColorFromRBG256(164, 164, 164), // silver
-        Utils.ColorFromRBG256(203, 128, 83), // bronz
+        Utils.ColorFromRBG256(203, 128, 83), // bronze
         Utils.ColorFromRBG256(126, 92, 80) };
 
     public void GoToPlayerOverview() {

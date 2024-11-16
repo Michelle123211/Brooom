@@ -24,7 +24,7 @@ public class AchievementSlotUI : MonoBehaviour {
 	Color[] levelColors = new Color[] { // TODO: Use colors from a color palette (the same colors as for the place in HUD)
         Utils.ColorFromRBG256(243, 217, 81), // gold
         Utils.ColorFromRBG256(164, 164, 164), // silver
-        Utils.ColorFromRBG256(203, 128, 83), // bronz
+        Utils.ColorFromRBG256(203, 128, 83), // bronze
         Utils.ColorFromRBG256(126, 92, 80) };
 
 	public void Initialize(AchievementProgress achievement) {
