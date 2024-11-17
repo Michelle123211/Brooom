@@ -18,8 +18,12 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	[SerializeField] GameObject manaPartParent;
 	[Tooltip("A TMP displaying mana cost.")]
 	[SerializeField] TextMeshProUGUI manaCostLabel;
-	[Tooltip("An Image used to indicate how charged the spell is.")]
-	[SerializeField] Image fillImage;
+	[Tooltip("An Image containing spell icon, which is used to indicate how charged the spell is.")]
+	[SerializeField] Image spellIconFillImage;
+	[Tooltip("An Image containing background, which is used to indicate how charged the spell is.")]
+	[SerializeField] Image backgroundFillImage;
+	[Tooltip("An Image used as a spell icon.")]
+	[SerializeField] Image spellIconImage;
 	[Tooltip("An Image used as a background of the spell slot.")]
 	[SerializeField] Image backgroundImage;
 	[Tooltip("Canvas Group used to set alpha value for the whole slot.")]
@@ -46,9 +50,12 @@ public class RaceSpellSlotUI : MonoBehaviour {
 		else manaCostLabel.text = spell.Spell.ManaCost.ToString();
 		// Change icon
 		spellSlotUI.Initialize(isEmpty ? null : spell.Spell);
-		fillImage.sprite = backgroundImage.sprite;
+		spellIconFillImage.sprite = spellIconImage.sprite;
+		backgroundFillImage.sprite = backgroundImage.sprite;
+		backgroundFillImage.color = backgroundImage.color;
 		// Initialize image fill, scale and alpha of the overlay
-		fillImage.fillAmount = 0;
+		spellIconFillImage.fillAmount = 0;
+		backgroundFillImage.fillAmount = 0;
 		transform.localScale = Vector3.one * unavailableScale;
 		contentCanvasGroup.alpha = unavailableAlpha;
 		// Change to available if necessary
@@ -88,7 +95,8 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	private void Update() {
 		if (!isEmpty) {
 			// Change image fill based on charge
-			fillImage.fillAmount = assignedSpell.Charge;
+			spellIconFillImage.fillAmount = assignedSpell.Charge;
+			backgroundFillImage.fillAmount = assignedSpell.Charge;
 			// Change color of mana cost
 			if (assignedSpell.HasEnoughMana) manaCostLabel.color = Color.green; // TODO: Use color from color palette
 			else manaCostLabel.color = Color.red; // TODO: Use color from color palette

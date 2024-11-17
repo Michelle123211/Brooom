@@ -40,17 +40,16 @@ public class ColorPalette : ScriptableObject {
 	public Color opponentCurseSpellBackground;
 	public Color environmentManipulationSpellBackground;
 	public Color objectApparitionSpellBackground;
-
-	[Header("Debug")]
-	public Color testColor1;
-	public Color testColor2;
-	public Color testColor3;
-	public Color testColor4;
 	#endregion
 
 	public Color GetColor(ColorFromPalette color) {
 		return color switch {
 			// TODO: Add more cases
+			// Spells
+			ColorFromPalette.Spells_SelfCastSpellBackground => selfCastSpellBackground,
+			ColorFromPalette.Spells_OpponentCurseSpellBackground => opponentCurseSpellBackground,
+			ColorFromPalette.Spells_EnvironmentManipulationSpellBackground => environmentManipulationSpellBackground,
+			ColorFromPalette.Spells_ObjectApparitionSpellBackground => objectApparitionSpellBackground,
 			_ => Color.black,
 		};
 	}
@@ -60,4 +59,9 @@ public class ColorPalette : ScriptableObject {
 public enum ColorFromPalette {
 	None = 0,
 	// TODO: Add more colors
+	// Spells
+	Spells_SelfCastSpellBackground = 300,
+	Spells_OpponentCurseSpellBackground = 301,
+	Spells_EnvironmentManipulationSpellBackground = 302,
+	Spells_ObjectApparitionSpellBackground = 303
 }

@@ -19,11 +19,8 @@ MonoBehaviour:
   hoopMinimap: {r: 0, g: 0, b: 0, a: 0}
   checkpointMinimap: {r: 0, g: 0, b: 0, a: 0}
   borderMinimap: {r: 0, g: 0, b: 0, a: 0}
-  selfCastSpellBackground: {r: 0, g: 0, b: 0, a: 0}
-  opponentCurseSpellBackground: {r: 0, g: 0, b: 0, a: 0}
-  environmentManipulationSpellBackground: {r: 0, g: 0, b: 0, a: 0}
-  objectApparitionSpellBackground: {r: 0, g: 0, b: 0, a: 0}
-  testColor1: {r: 1, g: 0.99501103, b: 0, a: 1}
-  testColor2: {r: 1, g: 0, b: 0.019001007, a: 1}
-  testColor3: {r: 0, g: 0.9400835, b: 1, a: 1}
-  testColor4: {r: 0.082764626, g: 0, b: 1, a: 1}
+  selfCastSpellBackground: {r: 0.24705882, g: 0.28235295, b: 0.54901963, a: 1}
+  opponentCurseSpellBackground: {r: 0.54901963, g: 0.24705882, b: 0.26666668, a: 1}
+  environmentManipulationSpellBackground: {r: 0.49019608, g: 0.24705882, b: 0.54901963,
+    a: 1}
+  objectApparitionSpellBackground: {r: 0.24705882, g: 0.54901963, b: 0.34901962, a: 1}
