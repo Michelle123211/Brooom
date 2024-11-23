@@ -7,7 +7,7 @@ using TMPro;
 public class EffectSlotUI : MonoBehaviour
 {
 	[Tooltip("An image displaying icon of the effect.")]
-	[SerializeField] Image effectImage;
+	[SerializeField] Image effectIconImage;
 	[Tooltip("A label which displays the time left.")]
 	[SerializeField] TextMeshProUGUI effectDurationText;
 
@@ -16,7 +16,7 @@ public class EffectSlotUI : MonoBehaviour
 	// Initialization with icon and duration
 	public void Initialize(CharacterEffect effect) {
 		assignedEffect = effect;
-		effectImage.sprite = assignedEffect.Icon;
+		effectIconImage.sprite = assignedEffect.Icon;
 		effectDurationText.text = $"{(int)assignedEffect.TimeLeft} s";
 		effect.onEffectEnd += DestroySelf; // register callback - destroy on timeout
 	}
