@@ -25,10 +25,10 @@ public class ColorPalette : ScriptableObject {
 	#region Color fields
 	// TODO: Add more colors
 	[Header("Main UI")]
+	public Color potato;
 	public Color bronze;
 	public Color silver;
 	public Color gold;
-	public Color platinum;
 
 	[Header("HUD")]
 	public Color hoopMinimap;
