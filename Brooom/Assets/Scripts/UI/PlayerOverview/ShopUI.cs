@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
@@ -47,6 +48,10 @@ public class ShopUI : MonoBehaviour
 		UtilsMonoBehaviour.RemoveAllChildren(spellsParent);
 		// Instantiate new spell slots
 		spells.Clear();
+		int spellCount = SpellManager.Instance.AllSpells.Count;
+		if (spellCount > 12) { // Increase number of columns
+			spellsParent.GetComponent<GridLayoutGroup>().constraintCount = Mathf.CeilToInt(spellCount / 3f);
+		}
 		foreach (var spell in SpellManager.Instance.AllSpells) {
 			ShopSpellSlotUI spellSlot = Instantiate<ShopSpellSlotUI>(spellSlotPrefab, spellsParent);
 			spellSlot.Initialize(spell);
