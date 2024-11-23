@@ -76,7 +76,8 @@ PrefabInstance:
         type: 3}
       propertyPath: icon
       value: 
-      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 21300000, guid: ccf59cf4d371785458e39de353050b9b,
+        type: 3}
     - target: {fileID: 7795519905594957891, guid: 37a7184ac9c9925488a0a7e3237d7faf,
         type: 3}
       propertyPath: category
@@ -171,7 +172,6 @@ MonoBehaviour:
   effectDuration: 6
   spellInfluenceVisualEffectPrefab: {fileID: 4281517938970481384, guid: 732daec2b0527b149981ef9b16e58198,
     type: 3}
-  isPositive: 1
   shieldPrefab: {fileID: 6398954427890711645, guid: 6eb8897c60f3aa242897ebc3aceda687,
     type: 3}
 --- !u!114 &7891999617853697298 stripped

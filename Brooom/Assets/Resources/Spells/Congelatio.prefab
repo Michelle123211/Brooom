@@ -11,7 +11,7 @@ PrefabInstance:
         type: 3}
       propertyPath: icon
       value: 
-      objectReference: {fileID: 21300000, guid: 2da2d15ce082e12448ac493c55a33f0f,
+      objectReference: {fileID: 21300000, guid: d164e9f89c72d69438c491262b80465c,
         type: 3}
     - target: {fileID: 824713787177137337, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,
         type: 3}
@@ -207,7 +207,6 @@ MonoBehaviour:
   effectDuration: 4
   spellInfluenceVisualEffectPrefab: {fileID: 8264217232118660448, guid: 0a2f44c53eaee16458531cea152102a5,
     type: 3}
-  isPositive: 0
 --- !u!114 &3832833945539866151 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5581139391021219865, guid: dcb3bce5cd2b2614b8c98d2bda1592bc,

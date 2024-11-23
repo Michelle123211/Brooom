@@ -54,7 +54,8 @@ public class SpellSlotUI : MonoBehaviour
 				_ => ColorFromPalette.None
 			});
 		} else {
-			// TODO: Handle empty slot background
+			// For empty slot, make it semi-transparent
+			spellBackground.color = Color.white.WithA(0.2f);
 		}
 	}
 
