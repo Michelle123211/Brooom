@@ -23,8 +23,8 @@ public class UtilsMonoBehaviour : MonoBehaviour
     }
 
     // Destroys all children of the given Transform
-    public static void RemoveAllChildren(Transform parent) {
-        for (int i = parent.childCount - 1; i >= 0; i--) {
+    public static void RemoveAllChildren(Transform parent, int startIndex = 0) {
+        for (int i = parent.childCount - 1; i >= startIndex; i--) {
             Destroy(parent.GetChild(i).gameObject);
         }
     }
