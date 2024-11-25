@@ -289,10 +289,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc403e3adb7493149aa2b043be8b202c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelBackgrounds:
+  - {fileID: 21300000, guid: 925c019f7638b204d83ae48f0835f648, type: 3}
+  - {fileID: 21300000, guid: 00c1a2650d14d314b8c06a7b8b9d6c8c, type: 3}
+  - {fileID: 21300000, guid: ed943b714b3e6634baea9c56ce744cef, type: 3}
+  - {fileID: 21300000, guid: 827b5312bab687b44ab456ab1e7c9542, type: 3}
   unknownAchievementIcon: {fileID: 21300000, guid: 6a8ee2b06dd33a24694b9f0d3f315c72,
     type: 3}
   unknownAchievementColor: {r: 0.7372549, g: 0.7372549, b: 0.7372549, a: 1}
-  missingAchievementIcon: {fileID: 21300000, guid: cde7469096582e04897fae80dfc34fbe,
+  missingAchievementIcon: {fileID: 21300000, guid: adafc4361099aec4983ee2ea942240a9,
     type: 3}
   slotTransform: {fileID: 2081540428709940937}
   iconImage: {fileID: 2081540427705401456}

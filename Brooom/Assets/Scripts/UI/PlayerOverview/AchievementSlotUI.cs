@@ -6,6 +6,9 @@ using DG.Tweening;
 
 public class AchievementSlotUI : MonoBehaviour {
 
+	[Tooltip("Sprites which will be used as backgrounds for different levels of achievement. Highest level should be on the lowest index.")]
+	[SerializeField] List<Sprite> levelBackgrounds = new List<Sprite>();
+
 	[Tooltip("Sprite which will be used instead od the achievement's icon if the achievement has not been achieved yet.")]
 	[SerializeField] Sprite unknownAchievementIcon;
 	[Tooltip("Color which will be used for an uknown achievement.")]
@@ -20,12 +23,6 @@ public class AchievementSlotUI : MonoBehaviour {
 	[SerializeField] GameObject newAchievementLabel;
 
 	private Tooltip tooltip;
-
-	Color[] levelColors = new Color[] { // TODO: Use colors from a color palette (the same colors as for the place in HUD)
-        Utils.ColorFromRBG256(243, 217, 81), // gold
-        Utils.ColorFromRBG256(164, 164, 164), // silver
-        Utils.ColorFromRBG256(203, 128, 83), // bronze
-        Utils.ColorFromRBG256(126, 92, 80) };
 
 	public void Initialize(AchievementProgress achievement) {
 		if (tooltip == null) tooltip = GetComponent<Tooltip>();
@@ -46,8 +43,8 @@ public class AchievementSlotUI : MonoBehaviour {
 			iconImage.sprite = achievement.achievement.icon;
 		else iconImage.sprite = missingAchievementIcon;
 		// Set background color according to the level
-		int colorIndex = Mathf.Clamp(achievement.maximumLevel - achievement.currentLevel, 0, levelColors.Length);
-		backgroundImage.color = levelColors[colorIndex];
+		int backgroundIndex = Mathf.Clamp(achievement.maximumLevel - achievement.currentLevel, 0, levelBackgrounds.Count);
+		backgroundImage.sprite = levelBackgrounds[backgroundIndex];
 		// Set tooltip content
 		string achievementID = achievement.achievement.type.ToString();
 		tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString("Achievement" + achievementID) + "~~";
