@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bcdf0430da181943bcb586cd2d29f73, type: 3}
   m_Name: BonusesPickedUp
   m_EditorClassIdentifier: 
-  achievementName: BonusesPickedUp
   icon: {fileID: 21300000, guid: 2c411b42662f82c4d9038f23952a537b, type: 3}
   type: 302
   valuesForLevels:
   - 10
+  - 20
   - 50
   - 100
