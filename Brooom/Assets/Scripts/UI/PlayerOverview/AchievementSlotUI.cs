@@ -11,8 +11,8 @@ public class AchievementSlotUI : MonoBehaviour {
 
 	[Tooltip("Sprite which will be used instead od the achievement's icon if the achievement has not been achieved yet.")]
 	[SerializeField] Sprite unknownAchievementIcon;
-	[Tooltip("Color which will be used for an uknown achievement.")]
-	[SerializeField] Color unknownAchievementColor;
+	[Tooltip("Sprite which will be used as a background if the achievement is not known yet.")]
+	[SerializeField] Sprite unknownAchievementBackground;
 	[Tooltip("Sprite which will be used for a known achievement which has no icon assigned.")]
 	[SerializeField] Sprite missingAchievementIcon;
 
@@ -57,7 +57,7 @@ public class AchievementSlotUI : MonoBehaviour {
 
 	private void InitializeUnknownAchievement(AchievementProgress achievement) {
 		iconImage.sprite = unknownAchievementIcon;
-		backgroundImage.color = unknownAchievementColor;
+		backgroundImage.sprite = unknownAchievementBackground;
 		tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString("AchievementUnknown") + "~~";
 		tooltip.texts.mainTop = LocalizationManager.Instance.GetLocalizedString("AchievementTooltipUnknown");
 	}
