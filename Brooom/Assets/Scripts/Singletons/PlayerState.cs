@@ -168,8 +168,21 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public Dictionary<int, string> knownOpponents; // stored names of opponents already visible in the leaderboard (according to their place)
 	#endregion
 
-	#region Mana + available regions
-    [field: SerializeField]
+	#region Visited regions
+	public Dictionary<LevelRegionType, bool> regionsVisited = new Dictionary<LevelRegionType, bool>();
+
+    public void SetRegionVisited(LevelRegionType region) {
+        if (!regionsVisited.ContainsKey(region) || !regionsVisited[region]) {
+            // Notify anyone interested that a new region has been visited
+            Messaging.SendMessage("NewRegionVisited");
+		}
+        regionsVisited[region] = true;
+		SaveSystem.SaveVisitedRegions(regionsVisited);
+	}
+	#endregion
+
+	#region Mana + available regions - not stored persistently
+	[field: SerializeField]
     [Tooltip("The maximum amount of mana the player can have at once.")]
     public int MaxManaAmount { get; private set; } = 100;
 
@@ -206,6 +219,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             SpellsAvailability = this.spellAvailability,
             SpellsUsage = this.spellCast
         });
+        // ...visited regions
+        SaveSystem.SaveRegions(new RegionsSaveData { RegionsVisited = this.regionsVisited });
         // Save AchievementManager data
         AchievementManager.Instance.SaveAchievementsProgress();
     }
@@ -222,6 +237,9 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         // ...purchased, equipped and used spells
         SpellsSaveData spells = SaveSystem.LoadSpells();
         LoadFromSavedSpells(spells);
+        // ...visited regions
+        RegionsSaveData regions = SaveSystem.LoadRegions();
+        LoadFromSavedRegions(regions);
         // Load AchievementManager data
         AchievementManager.Instance.LoadAchievementsProgress();
     }
@@ -270,6 +288,12 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         }
     }
 
+    private void LoadFromSavedRegions(RegionsSaveData regions) {
+        if (regions != null) { 
+            if (regions.RegionsVisited != null) this.regionsVisited = regions.RegionsVisited;
+        }
+    }
+
 
     #region Singleton
     static PlayerState() { 
@@ -306,6 +330,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         knownOpponents = new Dictionary<int, string>();
         // ...available regions
         regionsAvailability = new Dictionary<LevelRegionType, bool>();
+        regionsVisited = new Dictionary<LevelRegionType, bool>();
     }
 	#endregion
 

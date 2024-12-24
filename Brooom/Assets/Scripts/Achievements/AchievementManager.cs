@@ -293,7 +293,7 @@ class SpellsData : AchievementData {
 	}
 
 	private void OnSpellPurchased() {
-		// TODO: May not be needed
+		// TODO: May not be needed - the message is not sent nor handled and there is no achievement for it right now
 		SaveData();
 	}
 
@@ -391,7 +391,7 @@ class RaceData : AchievementData {
 		}
 	}
 
-	private void OnRaceStarted(int numRacers) { // TODO: Corresponding message must be called before OnRaceFinished - MESSAGES
+	private void OnRaceStarted(int numRacers) {
 		currentNumberOfRacers = numRacers;
 		SaveData();
 	}
@@ -401,21 +401,21 @@ class RaceData : AchievementData {
 		SaveData();
 	}
 
-	private void OnRaceFinished(int place) {
+	private void OnRaceFinished(int place) { // Requires OnRaceStarted to be invoked first (to initialize currentNumberOfRacers)
 		racesFinished++;
 		if (place == 1) { // first
 			firstPlace++;
 			currentLoseStreak = 0;
-			longestWinStreak++;
+			currentWinStreak++;
 			if (currentWinStreak > longestWinStreak) longestWinStreak = currentWinStreak;
 		} else if (place == currentNumberOfRacers) { // last
-			currentLoseStreak = 0;
-			currentWinStreak = 0;
-		} else {
 			lastPlace++;
 			currentWinStreak = 0;
-			longestLoseStreak++;
+			currentLoseStreak++;
 			if (currentLoseStreak > longestLoseStreak) longestLoseStreak = currentLoseStreak;
+		} else {
+			currentLoseStreak = 0;
+			currentWinStreak = 0;
 		}
 		SaveData();
 	}
@@ -436,10 +436,9 @@ class LevelData : AchievementData {
 	public int hoopsPassed = 0;
 	// Number of hoops missed
 	public int hoopsMissed = 0;
-	// WHether all regions were unlocked
+	// Whether all regions were unlocked
 	public bool allRegionsAvailable = false;
 	// Whether all regions were visited
-	// TODO: How to detect visiting a region
 	public bool allRegionsVisited = false;
 
 	public override void ResetData() {
@@ -521,14 +520,29 @@ class LevelData : AchievementData {
 	private void OnNewRegionAvailable() {
 		if (allRegionsAvailable) return; // no need to check again
 		bool allAvailable = true;
-		foreach (var region in PlayerState.Instance.regionsAvailability)
-			if (!region.Value) allAvailable = false;
+		foreach (var region in PlayerState.Instance.regionsAvailability) {
+			if (!region.Value) {
+				allAvailable = false;
+				break;
+			}
+		}
 		allRegionsAvailable = allAvailable;
 		SaveData();
 	}
 
 	private void OnNewRegionVisited() {
-		// TODO: React to a new region visited
+		if (allRegionsVisited) return; // no need to check again
+		bool allVisited = true;
+		// Enumerate all possible regions and make sure they have been visited
+		foreach (LevelRegionType region in Enum.GetValues(typeof(LevelRegionType))) {
+			if (region == LevelRegionType.NONE) continue;
+			if (region == LevelRegionType.Tunnel) continue; // TODO: Skipped only temporarily, until it is added to the game
+			if (!PlayerState.Instance.regionsVisited.ContainsKey(region)) {
+				allVisited = false;
+				break;
+			}
+		}
+		allRegionsVisited = allVisited;
 		SaveData();
 	}
 }

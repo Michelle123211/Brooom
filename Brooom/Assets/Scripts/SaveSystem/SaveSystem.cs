@@ -13,6 +13,7 @@ public class SaveSystem
     private static readonly string playerStateFileName = "player_state";
     private static readonly string broomUpgradesFileName = "broom_upgrades";
     private static readonly string spellsFileName = "spells";
+    private static readonly string regionsFileName = "regions";
     private static readonly string achievementsFileName = "achievements";
 
     // Other parts of the path
@@ -26,6 +27,7 @@ public class SaveSystem
     private static readonly string playerStatePath = saveFolder + playerStateFileName + fileExtension;
     private static readonly string broomUpgradesPath = saveFolder + broomUpgradesFileName + fileExtension;
     private static readonly string spellsPath = saveFolder + spellsFileName + fileExtension;
+    private static readonly string regionsPath = saveFolder + regionsFileName + fileExtension;
     private static readonly string achievementsPartialPath = saveFolder + achievementsFileName;
 
 
@@ -301,10 +303,48 @@ public class SaveSystem
         // Return only the casted spells
         return spellsData.SpellsUsage;
     }
-    #endregion
+	#endregion
 
-    #region Achievements
-    public static void SaveAchievementData<T>(T data, string dataIdentifier) {
+	#region Visited regions
+	public static void SaveRegions(RegionsSaveData regionsData) {
+		// Save everything
+		string json = JsonUtility.ToJson(regionsData);
+		File.WriteAllText(regionsPath, json);
+	}
+
+	public static RegionsSaveData LoadRegions() {
+		// Load everything
+		if (File.Exists(regionsPath)) { // If there is a save file, load the data from there
+			string json = File.ReadAllText(regionsPath);
+			RegionsSaveData regionsData = JsonUtility.FromJson<RegionsSaveData>(json);
+			return regionsData;
+		} else { // Otherwise return null
+			return null;
+		}
+	}
+
+	public static void SaveVisitedRegions(Dictionary<LevelRegionType, bool> visitedRegions) {
+		// Load everything
+		RegionsSaveData regionsData = LoadRegions();
+		if (regionsData == null) regionsData = new RegionsSaveData(); // if there is no save file, use default values
+																	  // Override only the visited regions
+		regionsData.RegionsVisited = visitedRegions;
+		// Save it back
+		SaveRegions(regionsData);
+	}
+
+    public static Dictionary<LevelRegionType, bool> LoadVisitedRegions() {
+		// Load everything
+		RegionsSaveData regionsData = LoadRegions();
+		// If there is no saved state, return null
+		if (regionsData == null) return null;
+        // Return only the visited regions
+        return regionsData.RegionsVisited;
+	}
+	#endregion
+
+	#region Achievements
+	public static void SaveAchievementData<T>(T data, string dataIdentifier) {
         string json = JsonUtility.ToJson(data);
         File.WriteAllText($"{achievementsPartialPath}_{dataIdentifier}{fileExtension}", json);
     }

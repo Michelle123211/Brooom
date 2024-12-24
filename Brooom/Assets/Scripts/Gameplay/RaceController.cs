@@ -69,24 +69,35 @@ public class RaceController : MonoBehaviour {
 
     public RaceState State { get; protected set; } = RaceState.Training; // distinguish between training and race
 
+    private int restartCountInTraining = 0;
+
 
     // Called when entering the race
     public virtual void StartRace() {
+        Messaging.SendMessage("TrainingEnded", restartCountInTraining);
         // Start animation sequence
         StartCoroutine(PlayRaceStartSequence());
-    }
+		// Send message
+		Messaging.SendMessage("RaceStarted", racers.Count);
+	}
 
     // Called when player finishes the race
     public virtual void EndRace() {
         // Start animation sequence
         StartCoroutine(PlayRaceEndSequence());
-    }
+		// Send message
+		Messaging.SendMessage("RaceFinished", playerRacer.state.place);
+        // Note down visited regions
+        DetectVisitedRegions();
+	}
 
     public virtual void GiveUpRace() {
         // Decrease all stats
         statsComputer.LowerAllStatsOnRaceGivenUp();
-        // Change scene
-        SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
+		// Send message
+		Messaging.SendMessage("RaceGivenUp");
+		// Change scene
+		SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
     public void OnRacerFinished(CharacterRaceState racerState) {
@@ -127,8 +138,9 @@ public class RaceController : MonoBehaviour {
 
     private void StartTraining() {
         State = RaceState.Training;
-        // Hide bonuses
-        bonusParent = levelGenerator.transform.Find("Bonus");
+        restartCountInTraining = 0;
+		// Hide bonuses
+		bonusParent = levelGenerator.transform.Find("Bonus");
         if (bonusParent != null) bonusParent.gameObject.SetActive(false);
         // Hide opponents
         opponentParent = levelGenerator.transform.Find("Opponents");
@@ -206,8 +218,8 @@ public class RaceController : MonoBehaviour {
         // Recompute racers' places
         CompleteOpponentState();
         ComputeRacerPlaces();
-        // Update player statistics in PlayerState - computation depends on the player's place
-        statsComputer.UpdateStats();
+		// Update player statistics in PlayerState - computation depends on the player's place
+		statsComputer.UpdateStats();
         // Show the race results
         ShowRaceResults();
     }
@@ -414,7 +426,8 @@ public class RaceController : MonoBehaviour {
                 // Handle restart
                 if (GamePause.pauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
                     playerRacer.characterController.ResetPosition(level.playerStartPosition);
-                }
+                    restartCountInTraining++;
+				}
                 break;
             case RaceState.RaceInProgress:
                 // Update time from the start of the race
@@ -446,6 +459,22 @@ public class RaceController : MonoBehaviour {
         raceHUD.FlashScreenColor(Color.red);
 
     }
+
+    private void DetectVisitedRegions() {
+        // For each track point, set its region as visited
+        for (int i = 0; i < level.track.Count; i++) {
+            // Only passed hoops are considered
+            if (!playerRacer.state.hoopsPassedArray[i]) continue;
+            // Track region (if any)
+            TrackPoint trackPoint = level.track[i];
+			if (trackPoint.trackRegion != LevelRegionType.NONE)
+				PlayerState.Instance.SetRegionVisited(trackPoint.trackRegion);
+			// Terrain region
+			Vector2Int gridCoords = trackPoint.gridCoords;
+			PlayerState.Instance.SetRegionVisited(level.terrain[gridCoords.x, gridCoords.y].region);
+		}
+    }
+
 }
 
 public enum RaceState {
