@@ -77,16 +77,12 @@ public class RaceController : MonoBehaviour {
         Messaging.SendMessage("TrainingEnded", restartCountInTraining);
         // Start animation sequence
         StartCoroutine(PlayRaceStartSequence());
-		// Send message
-		Messaging.SendMessage("RaceStarted", racers.Count);
 	}
 
     // Called when player finishes the race
     public virtual void EndRace() {
         // Start animation sequence
         StartCoroutine(PlayRaceEndSequence());
-		// Send message
-		Messaging.SendMessage("RaceFinished", playerRacer.state.place);
         // Note down visited regions
         DetectVisitedRegions();
 	}
@@ -190,8 +186,10 @@ public class RaceController : MonoBehaviour {
         raceHUD.ShowCountdown("START!");
         // Actually start the race
         State = RaceState.RaceInProgress;
-        // Enable player and enable opponents actions
-        foreach (var racer in racers) {
+		// Send message
+		Messaging.SendMessage("RaceStarted", racers.Count);
+		// Enable player and enable opponents actions
+		foreach (var racer in racers) {
             racer.characterController.EnableActions();
             racer.state.SetRaceStarted(true);
             racer.spellInput.TryEnableSpellCasting();
@@ -220,8 +218,10 @@ public class RaceController : MonoBehaviour {
         ComputeRacerPlaces();
 		// Update player statistics in PlayerState - computation depends on the player's place
 		statsComputer.UpdateStats();
-        // Show the race results
-        ShowRaceResults();
+		// Send message
+		Messaging.SendMessage("RaceFinished", playerRacer.state.place);
+		// Show the race results
+		ShowRaceResults();
     }
 
     protected void CompleteOpponentState() {
