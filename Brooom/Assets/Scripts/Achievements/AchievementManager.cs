@@ -520,8 +520,11 @@ class LevelData : AchievementData {
 	private void OnNewRegionAvailable() {
 		if (allRegionsAvailable) return; // no need to check again
 		bool allAvailable = true;
-		foreach (var region in PlayerState.Instance.regionsAvailability) {
-			if (!region.Value) {
+		// Enumerate all possible regions and make sure they are all available
+		foreach (LevelRegionType region in Enum.GetValues(typeof(LevelRegionType))) {
+			if (region == LevelRegionType.NONE) continue;
+			if (region == LevelRegionType.Tunnel) continue; // TODO: Skipped only temporarily, until it is added to the game
+			if (!PlayerState.Instance.regionsAvailability.ContainsKey(region) || !PlayerState.Instance.regionsAvailability[region]) {
 				allAvailable = false;
 				break;
 			}
@@ -537,7 +540,7 @@ class LevelData : AchievementData {
 		foreach (LevelRegionType region in Enum.GetValues(typeof(LevelRegionType))) {
 			if (region == LevelRegionType.NONE) continue;
 			if (region == LevelRegionType.Tunnel) continue; // TODO: Skipped only temporarily, until it is added to the game
-			if (!PlayerState.Instance.regionsVisited.ContainsKey(region)) {
+			if (!PlayerState.Instance.regionsVisited.ContainsKey(region) || !PlayerState.Instance.regionsVisited[region]) {
 				allVisited = false;
 				break;
 			}

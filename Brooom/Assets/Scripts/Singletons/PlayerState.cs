@@ -173,10 +173,10 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     public void SetRegionVisited(LevelRegionType region) {
         if (!regionsVisited.ContainsKey(region) || !regionsVisited[region]) {
-            // Notify anyone interested that a new region has been visited
-            Messaging.SendMessage("NewRegionVisited");
+			regionsVisited[region] = true;
+			// Notify anyone interested that a new region has been visited
+			Messaging.SendMessage("NewRegionVisited");
 		}
-        regionsVisited[region] = true;
 		SaveSystem.SaveVisitedRegions(regionsVisited);
 	}
 	#endregion
@@ -189,9 +189,10 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>(); // not persistently stored, recomputed whenever a level is generated
 
     public void SetRegionAvailability(LevelRegionType region, bool availability) {
-        if (regionsAvailability.ContainsKey(region) && availability && !regionsAvailability[region]) { // a new region became available
-            // Notify anyone interested that a new region has been unlocked
-            Messaging.SendMessage("NewRegionAvailable");
+        if (availability && (!regionsAvailability.ContainsKey(region) || (regionsAvailability.ContainsKey(region) && !regionsAvailability[region]))) { // a new region became available
+			regionsAvailability[region] = availability;
+			// Notify anyone interested that a new region has been unlocked
+			Messaging.SendMessage("NewRegionAvailable");
         }
         regionsAvailability[region] = availability;
     }

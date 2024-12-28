@@ -386,8 +386,8 @@ public class RaceController : MonoBehaviour {
                 regionWithValue.region,
                 PlayerState.Instance.maxAltitude >= regionWithValue.minValue ? true : false
             );
-        // And set them
-        levelGenerator.regionsAvailability = PlayerState.Instance.regionsAvailability;
+		// And set them
+		levelGenerator.regionsAvailability = PlayerState.Instance.regionsAvailability;
         TrackPointsGenerationRandomWalk trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
         trackGenerator.numberOfCheckpoints = numOfCheckpoints;
         trackGenerator.maxDirectionChangeAngle = directionChange;
