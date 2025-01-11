@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class PlayerOverviewUI : MonoBehaviour
 {
+
     [SerializeField] LeaderboardUI leaderboard;
     [SerializeField] RadarGraphUI statsGraph;
     [SerializeField] EquippedSpellsUI equippedSpells;
     [SerializeField] AchievementsUI achievements;
     [SerializeField] Color oldStatsColor;
     [SerializeField] Color newStatsColor;
+
+    private bool isInitialized = false;
 
     public void ReturnToMenu() {
         SceneLoader.Instance.LoadScene(Scene.MainMenu);
@@ -23,7 +26,7 @@ public class PlayerOverviewUI : MonoBehaviour
         int place = leaderboard.GetPlayerPlaceAndUpdateUI();
         UpdateGraph();
         equippedSpells.UpdateUI();
-        achievements.UpdateUI();
+        achievements.UpdateUI(!isInitialized); // if isInitialized == true, then achievements will not be completely replaced, only updated
 
         // Show game ending (with a short delay) if the player is on the first place
         if (place == 1 && !PlayerState.Instance.GameComplete) {
@@ -34,6 +37,7 @@ public class PlayerOverviewUI : MonoBehaviour
 
 	private void OnEnable() {
         UpdateUI();
+        isInitialized = true;
     }
 
     private void UpdateGraph() {

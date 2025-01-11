@@ -20,20 +20,26 @@ public class AchievementSlotUI : MonoBehaviour {
 	[SerializeField] Transform slotTransform;
 	[SerializeField] Image iconImage;
 	[SerializeField] Image backgroundImage;
-	[SerializeField] GameObject newAchievementLabel;
+	[SerializeField] GameObject newAchievementNotification;
 
+	private AchievementProgress assignedAchievement;
 	private Tooltip tooltip;
 
 	public void Initialize(AchievementProgress achievement) {
+		this.assignedAchievement = achievement;
 		if (tooltip == null) tooltip = GetComponent<Tooltip>();
 		// Set icon, background color, tooltip content
 		if (achievement.currentLevel > 0) InitializeKnownAchievement(achievement);
 		else InitializeUnknownAchievement(achievement);
-		// Highlight new achievement
-		if (achievement.levelChanged) {
+		UpdateUI();
+	}
+
+	public void UpdateUI() {
+		// Highlight new achievement if necessary
+		if (assignedAchievement.isNew) {
 			HighlightNewAchievement();
 		} else {
-			newAchievementLabel.SetActive(false);
+			newAchievementNotification.SetActive(false);
 		}
 	}
 
@@ -63,7 +69,7 @@ public class AchievementSlotUI : MonoBehaviour {
 	}
 
 	private void HighlightNewAchievement() {
-		newAchievementLabel.SetActive(true);
+		newAchievementNotification.SetActive(true);
 		// A short tween changing scale
 		slotTransform.DOScale(1.3f, 0.2f).SetDelay(1f).OnComplete(() => slotTransform.DOScale(1f, 0.4f).SetEase(Ease.OutBounce));
 	}

@@ -69,7 +69,7 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 			int dataIndex = (int)achievementsProgress[i].achievement.type / 100;
 			// Get the current achievement level
 			int newLevel = achievementData[dataIndex].GetAchievementLevel(achievementsProgress[i].achievement);
-			achievementsProgress[i].levelChanged = newLevel != achievementsProgress[i].currentLevel; // Mark any changes
+			achievementsProgress[i].isNew = newLevel != achievementsProgress[i].currentLevel; // mark new achievement
 			achievementsProgress[i].currentLevel = newLevel;
 			// Handle unknown type or other problems
 			if (achievementsProgress[i].currentLevel == -1) {
@@ -141,7 +141,7 @@ public class AchievementProgress {
 	public Achievement achievement;
 	public int currentLevel = 0;
 	public int maximumLevel = 0;
-	public bool levelChanged = false;
+	public bool isNew = false;
 
 	public AchievementProgress(Achievement achievement) {
 		this.achievement = achievement;

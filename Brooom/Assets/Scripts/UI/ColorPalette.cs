@@ -25,10 +25,12 @@ public class ColorPalette : ScriptableObject {
 	#region Color fields
 	// TODO: Add more colors
 	[Header("Main UI")]
-	public Color potato;
-	public Color bronze;
-	public Color silver;
 	public Color gold;
+	public Color silver;
+	public Color bronze;
+	public Color potato;
+
+	public Color alertColor;
 
 	[Header("HUD")]
 	public Color hoopMinimap;
@@ -45,6 +47,10 @@ public class ColorPalette : ScriptableObject {
 	public Color GetColor(ColorFromPalette color) {
 		return color switch {
 			// TODO: Add more cases
+			// Main UI
+			ColorFromPalette.MainUI_AlertColor => alertColor,
+			// HUD
+
 			// Spells
 			ColorFromPalette.Spells_SelfCastSpellBackground => selfCastSpellBackground,
 			ColorFromPalette.Spells_OpponentCurseSpellBackground => opponentCurseSpellBackground,
@@ -59,6 +65,12 @@ public class ColorPalette : ScriptableObject {
 public enum ColorFromPalette {
 	None = 0,
 	// TODO: Add more colors
+	// Main UI
+	// 100 - Gold
+	// 101 - Silver
+	// 102 - Bronze
+	// 103 - Potato
+	MainUI_AlertColor = 104,
 	// Spells
 	Spells_SelfCastSpellBackground = 300,
 	Spells_OpponentCurseSpellBackground = 301,
