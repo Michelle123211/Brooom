@@ -29,13 +29,15 @@ public class ColorPalette : ScriptableObject {
 	public Color silver;
 	public Color bronze;
 	public Color potato;
-
 	public Color alertColor;
 
 	[Header("HUD")]
-	public Color hoopMinimap;
-	public Color checkpointMinimap;
-	public Color borderMinimap;
+	public Color characterEffectBackground;
+	public Color minimapHoop;
+	public Color minimapCheckpoint;
+	public Color minimapBorder;
+	public Color minimapStartingZone;
+	public Color minimapFinishLine;
 
 	[Header("Spells")]
 	public Color selfCastSpellBackground;
@@ -48,14 +50,24 @@ public class ColorPalette : ScriptableObject {
 		return color switch {
 			// TODO: Add more cases
 			// Main UI
+			ColorFromPalette.MainUI_Gold => gold,
+			ColorFromPalette.MainUI_Silver => silver,
+			ColorFromPalette.MainUI_Bronze => bronze,
+			ColorFromPalette.MainUI_Potato => potato,
 			ColorFromPalette.MainUI_AlertColor => alertColor,
 			// HUD
-
+			ColorFromPalette.HUD_CharacterEffectBackground => characterEffectBackground,
+			ColorFromPalette.HUD_MinimapHoop => minimapHoop,
+			ColorFromPalette.HUD_MinimapCheckpoint => minimapCheckpoint,
+			ColorFromPalette.HUD_MinimapBorder => minimapBorder,
+			ColorFromPalette.HUD_MinimapStartingZone => minimapStartingZone,
+			ColorFromPalette.HUD_MinimapFinishLine => minimapFinishLine,
 			// Spells
 			ColorFromPalette.Spells_SelfCastSpellBackground => selfCastSpellBackground,
 			ColorFromPalette.Spells_OpponentCurseSpellBackground => opponentCurseSpellBackground,
 			ColorFromPalette.Spells_EnvironmentManipulationSpellBackground => environmentManipulationSpellBackground,
 			ColorFromPalette.Spells_ObjectApparitionSpellBackground => objectApparitionSpellBackground,
+			// Default
 			_ => Color.black,
 		};
 	}
@@ -66,11 +78,18 @@ public enum ColorFromPalette {
 	None = 0,
 	// TODO: Add more colors
 	// Main UI
-	// 100 - Gold
-	// 101 - Silver
-	// 102 - Bronze
-	// 103 - Potato
+	MainUI_Gold = 100,
+	MainUI_Silver = 101,
+	MainUI_Bronze = 102,
+	MainUI_Potato = 103,
 	MainUI_AlertColor = 104,
+	// HUD
+	HUD_CharacterEffectBackground = 200,
+	HUD_MinimapHoop = 201,
+	HUD_MinimapCheckpoint = 202,
+	HUD_MinimapBorder = 203,
+	HUD_MinimapStartingZone = 204,
+	HUD_MinimapFinishLine = 205,
 	// Spells
 	Spells_SelfCastSpellBackground = 300,
 	Spells_OpponentCurseSpellBackground = 301,

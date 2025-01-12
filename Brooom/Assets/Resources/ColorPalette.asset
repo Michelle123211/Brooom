@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ed2ae17eab521428d0dada0920b011, type: 3}
   m_Name: ColorPalette
   m_EditorClassIdentifier: 
-  gold: {r: 0, g: 0, b: 0, a: 0}
-  silver: {r: 0, g: 0, b: 0, a: 0}
-  bronze: {r: 0, g: 0, b: 0, a: 0}
-  potato: {r: 0, g: 0, b: 0, a: 0}
+  gold: {r: 0.9529412, g: 0.8509804, b: 0.31764707, a: 1}
+  silver: {r: 0.6431373, g: 0.6431373, b: 0.6431373, a: 1}
+  bronze: {r: 0.79607844, g: 0.5019608, b: 0.3254902, a: 1}
+  potato: {r: 0.49411765, g: 0.36078432, b: 0.3137255, a: 1}
   alertColor: {r: 1, g: 0, b: 0.14117648, a: 1}
-  hoopMinimap: {r: 0, g: 0, b: 0, a: 0}
-  checkpointMinimap: {r: 0, g: 0, b: 0, a: 0}
-  borderMinimap: {r: 0, g: 0, b: 0, a: 0}
+  characterEffectBackground: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
+  minimapHoop: {r: 1, g: 1, b: 1, a: 1}
+  minimapCheckpoint: {r: 1, g: 0.9411765, b: 0, a: 1}
+  minimapBorder: {r: 1, g: 0.5254902, b: 0, a: 1}
+  minimapStartingZone: {r: 0.32156864, g: 1, b: 0.2509804, a: 1}
+  minimapFinishLine: {r: 1, g: 1, b: 1, a: 1}
   selfCastSpellBackground: {r: 0.24705882, g: 0.28235295, b: 0.54901963, a: 1}
   opponentCurseSpellBackground: {r: 0.54901963, g: 0.24705882, b: 0.26666668, a: 1}
   environmentManipulationSpellBackground: {r: 0.49019608, g: 0.24705882, b: 0.54901963,
