@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 // Generates points the track goes through (using random walk)
 // Prevents the track from intersecting itself
 public class TrackPointsGenerationRandomWalk : LevelGeneratorModule {

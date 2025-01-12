@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class TrackObjectsPlacement : LevelGeneratorModule {
 	[Tooltip("Prefab of the hoop.")]
 	public Hoop hoopPrefab;
