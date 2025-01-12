@@ -76,6 +76,8 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 
 	// Applies all linked colors in all the scenes (while opening them and saving them), while removing any invalid property
 	public void ApplyColors(ColorPalette colorPalette = null) {
+		InitializeColorGroups(); // make sure all color groups are present
+
 		if (colorPalette != null) currentlyUsedColorPalette = colorPalette;
 		else currentlyUsedColorPalette = ColorPalette.Instance;
 
@@ -136,13 +138,17 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 		return false;
 	}
 
-	private void Awake() {
+	private void InitializeColorGroups() {
 		// Initialize ColorGroup for each color
 		foreach (ColorFromPalette color in Enum.GetValues(typeof(ColorFromPalette))) {
 			if (!HasColorGroup(color)) {
 				colorGroups.Add(new ColorGroup(color));
 			}
 		}
+	}
+
+	private void Awake() {
+		InitializeColorGroups();
 	}
 
 }
