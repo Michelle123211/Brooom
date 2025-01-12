@@ -67,7 +67,7 @@ public class CharacterMovementController : MonoBehaviour {
         NoStop
     }
     public void DisableActions(StopMethod stopMethod = StopMethod.ImmediateStop) {
-        if (actionsEnabled && stopMethod == StopMethod.ImmediateStop)
+        if (stopMethod == StopMethod.ImmediateStop)
             ResetMovement();
         actionsDisabledStop = stopMethod;
         actionsEnabled = false;
