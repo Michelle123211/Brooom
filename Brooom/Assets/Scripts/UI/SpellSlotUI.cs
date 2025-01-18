@@ -41,10 +41,10 @@ public class SpellSlotUI : MonoBehaviour
 		// Background color
 		if (!isEmpty) {
 			spellBackground.color = ColorPalette.Instance.GetColor(assignedSpell.Category switch {
-				SpellCategory.SelfCast => ColorFromPalette.Spells_SelfCastSpellBackground,
-				SpellCategory.OpponentCurse => ColorFromPalette.Spells_OpponentCurseSpellBackground,
-				SpellCategory.EnvironmentManipulation => ColorFromPalette.Spells_EnvironmentManipulationSpellBackground,
-				SpellCategory.ObjectApparition => ColorFromPalette.Spells_ObjectApparitionSpellBackground,
+				SpellCategory.SelfCast => ColorFromPalette.Spells_BackgroundSelfCastSpell,
+				SpellCategory.OpponentCurse => ColorFromPalette.Spells_BackgroundOpponentCurse,
+				SpellCategory.EnvironmentManipulation => ColorFromPalette.Spells_BackgroundEnvironmentManipulation,
+				SpellCategory.ObjectApparition => ColorFromPalette.Spells_BackgroundObjectApparition,
 				_ => ColorFromPalette.None
 			});
 		} else {
