@@ -35,8 +35,8 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color sectionTitleText;
 	[SerializeField] Color darkText;
 	[SerializeField] Color lightText;
-	[SerializeField] Color positiveNumber;
-	[SerializeField] Color negativeNumber;
+	[SerializeField] Color positiveColor;
+	[SerializeField] Color negativeColor;
 	[SerializeField] Color notificationColor;
 	// TODO: sliders, scrollbars, ...
 
@@ -94,8 +94,8 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.MainUI_TextTitleSection => sectionTitleText,
 			ColorFromPalette.MainUI_TextDark => darkText,
 			ColorFromPalette.MainUI_TextLight => lightText,
-			ColorFromPalette.MainUI_NumberPositive => positiveNumber,
-			ColorFromPalette.MainUI_NumberNegative => negativeNumber,
+			ColorFromPalette.MainUI_PositiveColor => positiveColor,
+			ColorFromPalette.MainUI_NegativeColor => negativeColor,
 			ColorFromPalette.MainUI_Notification => notificationColor,
 			// Leaderboard
 			ColorFromPalette.Leaderboard_PlaceGold => gold,
@@ -150,8 +150,8 @@ public enum ColorFromPalette {
 	MainUI_TextTitleSection = 131,          // shop (spells, broom upgrades), settings (audio, controls, ...), about
 	MainUI_TextDark = 132,					// almost everywhere
 	MainUI_TextLight = 133,					// loading screen
-	MainUI_NumberPositive = 140,            // price, mana cost, stats/leaderboard change
-	MainUI_NumberNegative = 141,            // price, mana cost, HUD penalization (time, missed hoops), missed hoops in results, stats/leaderboard change
+	MainUI_PositiveColor = 140,				// price, mana cost, stats/leaderboard change
+	MainUI_NegativeColor = 141,				// price, mana cost, HUD penalization (time, missed hoops), missed hoops in results, stats/leaderboard change
 	MainUI_Notification = 150,				// new achievement
 	// TODO: sliders, scrollbars, ... = 160	// settings, ...
 
