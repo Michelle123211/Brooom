@@ -98,8 +98,8 @@ public class RaceSpellSlotUI : MonoBehaviour {
 			spellIconFillImage.fillAmount = assignedSpell.Charge;
 			backgroundFillImage.fillAmount = assignedSpell.Charge;
 			// Change color of mana cost
-			if (assignedSpell.HasEnoughMana) manaCostLabel.color = Color.green; // TODO: Use color from color palette
-			else manaCostLabel.color = Color.red; // TODO: Use color from color palette
+			if (assignedSpell.HasEnoughMana) manaCostLabel.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NumberPositive);
+			else manaCostLabel.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NumberNegative);
 		}
 	}
 

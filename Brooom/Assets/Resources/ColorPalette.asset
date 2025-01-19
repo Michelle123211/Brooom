@@ -21,8 +21,8 @@ MonoBehaviour:
   sectionTitleText: {r: 0, g: 0, b: 0, a: 0}
   darkText: {r: 0, g: 0, b: 0, a: 0}
   lightText: {r: 0, g: 0, b: 0, a: 0}
-  positiveNumber: {r: 0, g: 0, b: 0, a: 0}
-  negativeNumber: {r: 0, g: 0, b: 0, a: 0}
+  positiveNumber: {r: 0.29067284, g: 0.8679245, b: 0.29067284, a: 1}
+  negativeNumber: {r: 1, g: 0.2949414, b: 0.25943398, a: 1}
   notificationColor: {r: 1, g: 0, b: 0.14117648, a: 1}
   gold: {r: 0.9529412, g: 0.8509804, b: 0.31764707, a: 1}
   silver: {r: 0.6431373, g: 0.6431373, b: 0.6431373, a: 1}
@@ -30,15 +30,15 @@ MonoBehaviour:
   potato: {r: 0.49411765, g: 0.36078432, b: 0.3137255, a: 1}
   leaderboardRowBackground: {r: 0, g: 0, b: 0, a: 0}
   leaderboardHighlightedRowBackground: {r: 0, g: 0, b: 0, a: 0}
-  overlayBackground: {r: 0, g: 0, b: 0, a: 0}
+  overlayBackground: {r: 1, g: 1, b: 1, a: 1}
   characterEffectBackground: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
-  manaCostBackground: {r: 0, g: 0, b: 0, a: 0}
+  manaCostBackground: {r: 0.74509805, g: 0.9372549, b: 0.94509804, a: 1}
   minimapHoop: {r: 1, g: 1, b: 1, a: 1}
   minimapCheckpoint: {r: 1, g: 0.9411765, b: 0, a: 1}
   minimapBorder: {r: 1, g: 0.5254902, b: 0, a: 1}
   minimapStartingZone: {r: 0.32156864, g: 1, b: 0.2509804, a: 1}
   minimapFinishLine: {r: 1, g: 1, b: 1, a: 1}
-  manaColor: {r: 0, g: 0, b: 0, a: 0}
+  manaColor: {r: 0, g: 0.9764706, b: 1, a: 1}
   selfCastSpellBackground: {r: 0.24705882, g: 0.28235295, b: 0.54901963, a: 1}
   opponentCurseSpellBackground: {r: 0.54901963, g: 0.24705882, b: 0.26666668, a: 1}
   environmentManipulationSpellBackground: {r: 0.49019608, g: 0.24705882, b: 0.54901963,

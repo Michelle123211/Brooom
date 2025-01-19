@@ -18,7 +18,7 @@ public class EffectsUI : MonoBehaviour {
     void Start()
     {
         // Remove all existing slots
-        UtilsMonoBehaviour.RemoveAllChildren(effectSlotsParent);
+        UtilsMonoBehaviour.RemoveAllChildrenOfType<EffectSlotUI>(effectSlotsParent);
         // Find the player character and register callback
         playerCharacter = UtilsMonoBehaviour.FindObjectOfTypeAndTag<EffectibleCharacter>("Player");
         if (playerCharacter!= null)
