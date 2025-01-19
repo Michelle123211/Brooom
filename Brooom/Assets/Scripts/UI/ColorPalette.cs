@@ -26,58 +26,58 @@ public class ColorPalette : ScriptableObject {
 	// TODO: Add more colors
 
 	[Header("Main UI elements")]
-	public Color primaryButton;
-	public Color secondaryButton;
-	public Color primaryBackground;
-	public Color secondaryBackground;
-	public Color highlightColor;
-	public Color screenTitleText;
-	public Color sectionTitleText;
-	public Color darkText;
-	public Color lightText;
-	public Color positiveNumber;
-	public Color negativeNumber;
-	public Color notificationColor;
+	[SerializeField] Color primaryButton;
+	[SerializeField] Color secondaryButton;
+	[SerializeField] Color primaryBackground;
+	[SerializeField] Color secondaryBackground;
+	[SerializeField] Color highlightColor;
+	[SerializeField] Color screenTitleText;
+	[SerializeField] Color sectionTitleText;
+	[SerializeField] Color darkText;
+	[SerializeField] Color lightText;
+	[SerializeField] Color positiveNumber;
+	[SerializeField] Color negativeNumber;
+	[SerializeField] Color notificationColor;
 	// TODO: sliders, scrollbars, ...
 
 	[Header("Leaderboard")]
-	public Color gold;
-	public Color silver;
-	public Color bronze;
-	public Color potato;
-	public Color leaderboardRowBackground;
-	public Color leaderboardHighlightedRowBackground;
+	[SerializeField] Color gold;
+	[SerializeField] Color silver;
+	[SerializeField] Color bronze;
+	[SerializeField] Color potato;
+	[SerializeField] Color leaderboardRowBackground;
+	[SerializeField] Color leaderboardHighlightedRowBackground;
 
 	[Header("HUD")]
-	public Color overlayBackground;
-	public Color characterEffectBackground;
-	public Color manaCostBackground;
+	[SerializeField] Color overlayBackground;
+	[SerializeField] Color characterEffectBackground;
+	[SerializeField] Color manaCostBackground;
 
 	[Header("Minimap")]
-	public Color minimapHoop;
-	public Color minimapCheckpoint;
-	public Color minimapBorder;
-	public Color minimapStartingZone;
-	public Color minimapFinishLine;
+	[SerializeField] Color minimapHoop;
+	[SerializeField] Color minimapCheckpoint;
+	[SerializeField] Color minimapBorder;
+	[SerializeField] Color minimapStartingZone;
+	[SerializeField] Color minimapFinishLine;
 
 	[Header("Spells")]
-	public Color manaColor;
-	public Color selfCastSpellBackground;
-	public Color opponentCurseSpellBackground;
-	public Color environmentManipulationSpellBackground;
-	public Color objectApparitionSpellBackground;
+	[SerializeField] Color manaColor;
+	[SerializeField] Color selfCastSpellBackground;
+	[SerializeField] Color opponentCurseSpellBackground;
+	[SerializeField] Color environmentManipulationSpellBackground;
+	[SerializeField] Color objectApparitionSpellBackground;
 
 	// Shop - from 700
 	[Header("Shop")]
-	public Color activeBroomUpgradeLevel;
-	public Color inactiveBroomUpgradeLevel;
+	[SerializeField] Color activeBroomUpgradeLevel;
+	[SerializeField] Color inactiveBroomUpgradeLevel;
 
 	// Statistics graph - from 800
 	[Header("Statistics")]
-	public Color statsGraphPrimaryAxis;
-	public Color statsGraphSecondaryAxis;
-	public Color statsGraphNewValues;
-	public Color statsGraphOldValues;
+	[SerializeField] Color statsGraphPrimaryAxis;
+	[SerializeField] Color statsGraphSecondaryAxis;
+	[SerializeField] Color statsGraphNewValues;
+	[SerializeField] Color statsGraphOldValues;
 	#endregion
 
 	#region Enum to color mapping
