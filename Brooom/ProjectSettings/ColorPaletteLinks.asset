@@ -93,6 +93,9 @@ MonoBehaviour:
     - guid: GlobalObjectId_V1-2-7bb69fa8544f0cd41a79236dedf269d9-8187462410303921247-1662908669
       propertyPath: m_Color
       objectType: 0
+    - guid: GlobalObjectId_V1-2-7bb69fa8544f0cd41a79236dedf269d9-8187462410303921247-1570645511
+      propertyPath: m_Color
+      objectType: 0
   - color: 130
     properties: []
   - color: 131
@@ -114,6 +117,9 @@ MonoBehaviour:
     - guid: GlobalObjectId_V1-2-7bb69fa8544f0cd41a79236dedf269d9-629087752-0
       propertyPath: m_Color
       objectType: 0
+    - guid: GlobalObjectId_V1-1-a908acca5a5659740b4741865de711e4-5192810594119295468-0
+      propertyPath: m_fontColor
+      objectType: 1
   - color: 150
     properties:
     - guid: GlobalObjectId_V1-1-b5460731ce412cf4386015cbfa643e02-9218256833864266481-0
@@ -211,12 +217,6 @@ MonoBehaviour:
     properties: []
   - color: 710
     properties:
-    - guid: GlobalObjectId_V1-2-7bb69fa8544f0cd41a79236dedf269d9-2010801264-0
-      propertyPath: m_Color
-      objectType: 0
-    - guid: GlobalObjectId_V1-1-1d7cd365c28f7ec46bd60008cbec2933-2191149111362992756-0
-      propertyPath: m_Color
-      objectType: 1
     - guid: GlobalObjectId_V1-1-8901025903bd7cf4dbd028a5378fd08d-9088806664737787616-0
       propertyPath: m_Color
       objectType: 1
@@ -224,5 +224,13 @@ MonoBehaviour:
       propertyPath: m_Color
       objectType: 1
     - guid: GlobalObjectId_V1-1-d6d17c71ce247324890225ed147c34f0-2733281629884795479-0
+      propertyPath: m_Color
+      objectType: 1
+    - guid: GlobalObjectId_V1-1-a908acca5a5659740b4741865de711e4-2297714148822858763-0
+      propertyPath: m_Color
+      objectType: 1
+  - color: 320
+    properties:
+    - guid: GlobalObjectId_V1-1-a908acca5a5659740b4741865de711e4-6369017090105338813-0
       propertyPath: m_Color
       objectType: 1

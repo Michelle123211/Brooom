@@ -47,6 +47,7 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color potato;
 	[SerializeField] Color leaderboardRowBackground;
 	[SerializeField] Color leaderboardSecondaryRowBackground;
+	[SerializeField] Color leaderboardRewardBackground;
 
 	[Header("HUD")]
 	[SerializeField] Color overlayBackground;
@@ -105,6 +106,7 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.Leaderboard_PlacePotato => potato,
 			ColorFromPalette.Leaderboard_Row => leaderboardRowBackground,
 			ColorFromPalette.Leaderboard_RowSecondary => leaderboardSecondaryRowBackground,
+			ColorFromPalette.Leaderboard_RewardBackground => leaderboardRewardBackground,
 			// HUD
 			ColorFromPalette.HUD_BackgroundOverlay => overlayBackground,
 			ColorFromPalette.HUD_BackgroundCharacterEffect => characterEffectBackground,
@@ -164,6 +166,7 @@ public enum ColorFromPalette {
 	Leaderboard_PlacePotato = 303,          // HUD, race results
 	Leaderboard_Row = 310,                  // race results, global leaderboard
 	Leaderboard_RowSecondary = 311,			// race results, global leaderboard
+	Leaderboard_RewardBackground = 320,		// race results
 
 	// HUD - from 400
 	HUD_BackgroundOverlay = 400,            // different sections of HUD
