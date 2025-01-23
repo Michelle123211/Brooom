@@ -31,7 +31,7 @@ public class AITestRaceController : RaceController {
         CompleteOpponentState();
         ComputeRacerPlaces();
         // Show the race results
-        ShowRaceResults();
+        ShowRaceResults(new int[racers.Count]);
     }
 
 	public override void GiveUpRace() {
@@ -39,7 +39,7 @@ public class AITestRaceController : RaceController {
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
-    protected override void ShowRaceResults() {
+    protected override void ShowRaceResults(int[] coinRewards) {
         // Collect results from individual racers
         RaceResultData[] results = new RaceResultData[racers.Count];
         foreach (var racer in racers) {
@@ -49,11 +49,11 @@ public class AITestRaceController : RaceController {
                 name = racer.characterName,
                 color = racer.state.assignedColor,
                 time = time,
-                penalization = racer.state.timePenalization,
-                coinsReward = 0
+                timePenalization = racer.state.timePenalization,
+                coinsReward = time > 0 ? coinRewards[racer.state.place - 1] : 0
             };
         }
-        raceResults.SetResultsTable(results);
+        raceResults.SetResultsTable(results, playerRacer.state.place);
         // Display everything
         raceResults.gameObject.TweenAwareEnable();
     }

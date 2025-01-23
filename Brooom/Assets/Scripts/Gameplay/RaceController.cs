@@ -216,12 +216,16 @@ public class RaceController : MonoBehaviour {
         // Recompute racers' places
         CompleteOpponentState();
         ComputeRacerPlaces();
-		// Update player statistics in PlayerState - computation depends on the player's place
-		statsComputer.UpdateStats();
-		// Send message
-		Messaging.SendMessage("RaceFinished", playerRacer.state.place);
+        int[] coinRewards = ComputeCoinRewards();
+        // Update player statistics in PlayerState - computation depends on the player's place
+        statsComputer.UpdateStats();
+        // Update player's coins account - TODO: consider coins penalization (e.g. for exposing magic)
+        int playerReward = coinRewards[playerRacer.state.place - 1];
+        if (playerReward > 0) PlayerState.Instance.ChangeCoinsAmount(playerReward);
+        // Send message
+        Messaging.SendMessage("RaceFinished", playerRacer.state.place);
 		// Show the race results
-		ShowRaceResults();
+		ShowRaceResults(coinRewards);
     }
 
     protected void CompleteOpponentState() {
@@ -257,13 +261,8 @@ public class RaceController : MonoBehaviour {
         }
     }
 
-    protected virtual void ShowRaceResults() {
-        // Set player's results
-        raceResults.SetPlace(playerRacer.state.place, racers.Count);
-        raceResults.SetTime(playerRacer.state.finishTime + playerRacer.state.timePenalization);
-        raceResults.SetPenalization(Mathf.RoundToInt(playerRacer.state.timePenalization));
+    protected virtual void ShowRaceResults(int[] coinRewards) {
         // Collect results from individual racers
-        int[] coinRewards = ComputeCoinRewards();
         RaceResultData[] results = new RaceResultData[racers.Count];
         foreach (var racer in racers) {
             float time = racer.state.finishTime + racer.state.timePenalization;
@@ -274,10 +273,11 @@ public class RaceController : MonoBehaviour {
                 name = racer.characterName,
                 color = racer.state.assignedColor,
                 time = time,
-                penalization = racer.state.timePenalization,
+                timePenalization = racer.state.timePenalization,
                 coinsReward = time > 0 ? coinRewards[racer.state.place - 1] : 0 };
+                // TODO: Set coinsPenalization
         }
-        raceResults.SetResultsTable(results);
+        raceResults.SetResultsTable(results, playerRacer.state.place);
         // Display everything
         raceResults.gameObject.TweenAwareEnable();
     }
@@ -289,10 +289,6 @@ public class RaceController : MonoBehaviour {
         result[0] = Mathf.FloorToInt(firstPlaceRaw / 10) * 10; // floor to tens
         result[1] = Mathf.FloorToInt((result[0] * 0.6f) / 10) * 10; // 60 % of the first place reward, floored to tens
         result[2] = Mathf.FloorToInt((result[0] * 0.2f) / 10) * 10; // 20 % of the first place reward, floored to tens
-        // Add coins to the player's account
-        int playerReward = result[playerRacer.state.place - 1];
-        if (playerReward > 0)
-            PlayerState.Instance.ChangeCoinsAmount(playerReward);
         return result;
     }
 

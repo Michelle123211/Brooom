@@ -28,8 +28,9 @@ MonoBehaviour:
   silver: {r: 0.6431373, g: 0.6431373, b: 0.6431373, a: 1}
   bronze: {r: 0.79607844, g: 0.5019608, b: 0.3254902, a: 1}
   potato: {r: 0.49411765, g: 0.36078432, b: 0.3137255, a: 1}
-  leaderboardRowBackground: {r: 0, g: 0, b: 0, a: 0}
-  leaderboardHighlightedRowBackground: {r: 0, g: 0, b: 0, a: 0}
+  leaderboardRowBackground: {r: 0.99607843, g: 0.7607843, b: 1, a: 1}
+  leaderboardSecondaryRowBackground: {r: 0.90588236, g: 0.90588236, b: 0.90588236,
+    a: 1}
   overlayBackground: {r: 1, g: 1, b: 1, a: 1}
   characterEffectBackground: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
   manaCostBackground: {r: 0.74509805, g: 0.9372549, b: 0.94509804, a: 1}
@@ -46,6 +47,7 @@ MonoBehaviour:
   objectApparitionSpellBackground: {r: 0.24705882, g: 0.54901963, b: 0.34901962, a: 1}
   activeBroomUpgradeLevel: {r: 0, g: 0, b: 0, a: 0}
   inactiveBroomUpgradeLevel: {r: 0, g: 0, b: 0, a: 0}
+  coinColor: {r: 1, g: 0.9254902, b: 0, a: 1}
   statsGraphPrimaryAxis: {r: 0, g: 0, b: 0, a: 0}
   statsGraphSecondaryAxis: {r: 0, g: 0, b: 0, a: 0}
   statsGraphNewValues: {r: 0, g: 0, b: 0, a: 0}

@@ -46,7 +46,7 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color bronze;
 	[SerializeField] Color potato;
 	[SerializeField] Color leaderboardRowBackground;
-	[SerializeField] Color leaderboardHighlightedRowBackground;
+	[SerializeField] Color leaderboardSecondaryRowBackground;
 
 	[Header("HUD")]
 	[SerializeField] Color overlayBackground;
@@ -71,6 +71,7 @@ public class ColorPalette : ScriptableObject {
 	[Header("Shop")]
 	[SerializeField] Color activeBroomUpgradeLevel;
 	[SerializeField] Color inactiveBroomUpgradeLevel;
+	[SerializeField] Color coinColor;
 
 	// Statistics graph - from 800
 	[Header("Statistics")]
@@ -103,7 +104,7 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.Leaderboard_PlaceBronze => bronze,
 			ColorFromPalette.Leaderboard_PlacePotato => potato,
 			ColorFromPalette.Leaderboard_Row => leaderboardRowBackground,
-			ColorFromPalette.Leaderboard_RowHighlighted => leaderboardHighlightedRowBackground,
+			ColorFromPalette.Leaderboard_RowSecondary => leaderboardSecondaryRowBackground,
 			// HUD
 			ColorFromPalette.HUD_BackgroundOverlay => overlayBackground,
 			ColorFromPalette.HUD_BackgroundCharacterEffect => characterEffectBackground,
@@ -123,6 +124,7 @@ public class ColorPalette : ScriptableObject {
 			// Shop
 			ColorFromPalette.Shop_BroomUpgradeLevelActive => activeBroomUpgradeLevel,
 			ColorFromPalette.Shop_BroomUpgradeLevelInactive => inactiveBroomUpgradeLevel,
+			ColorFromPalette.Shop_Coin => coinColor,
 			// Statistics graph
 			ColorFromPalette.StatsGraph_AxisPrimary => statsGraphPrimaryAxis,
 			ColorFromPalette.StatsGraph_AxisSecondary => statsGraphSecondaryAxis,
@@ -161,7 +163,7 @@ public enum ColorFromPalette {
 	Leaderboard_PlaceBronze = 302,          // HUD, race results
 	Leaderboard_PlacePotato = 303,          // HUD, race results
 	Leaderboard_Row = 310,                  // race results, global leaderboard
-	Leaderboard_RowHighlighted = 311,       // race results, global leaderboard
+	Leaderboard_RowSecondary = 311,			// race results, global leaderboard
 
 	// HUD - from 400
 	HUD_BackgroundOverlay = 400,            // different sections of HUD
@@ -185,6 +187,7 @@ public enum ColorFromPalette {
 	// Shop - from 700
 	Shop_BroomUpgradeLevelActive = 700,
 	Shop_BroomUpgradeLevelInactive = 701,
+	Shop_Coin = 710,
 
 	// Statistics graph - from 800
 	StatsGraph_AxisPrimary = 800,
