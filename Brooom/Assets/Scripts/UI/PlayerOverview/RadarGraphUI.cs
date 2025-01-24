@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -80,7 +81,8 @@ public class RadarGraphUI : MonoBehaviour
         List<Vector3> points = GetPolygonPointsFromValues(values);
         List<Vector3> initialPoints = GetPolygonPointsFromValues(initialValues);
         if (showChangeInLabels) {
-            for (int i = 0; i < parametersCount; i++) labels[i].SetValueChange(values[i] - initialValues[i], polygonTweenDuration, numberFormat);
+            for (int i = 0; i < parametersCount; i++)
+                labels[i].SetValueChange(values[i], values[i] - initialValues[i], polygonTweenDuration, numberFormat);
         }
         InstantiatePolygon(points, true, initialPoints);
     }
@@ -110,15 +112,22 @@ public class RadarGraphUI : MonoBehaviour
         // Delete background lines
         UIPathRenderer lineRenderer = GetComponent<UIPathRenderer>();
         lineRenderer.ResetAll();
-        // Delete labels
-        UtilsMonoBehaviour.RemoveAllChildrenOfType<RadarGraphLabelUI>(graphLabelsParent);
-        // Delete polygons
+        // Delete polygons and labels
         ResetValues();
+        ResetLabels();
     }
 
     public void ResetValues() {
         // Delete all polygons
         UtilsMonoBehaviour.RemoveAllChildrenOfType<RadarGraphPolygonUI>(polygonsParent);
+    }
+
+    public void ResetLabels() {
+        // Delete all labels
+        foreach (var label in graphLabelsParent.GetComponentsInChildren<RadarGraphLabelUI>())
+            label.DOComplete();
+        UtilsMonoBehaviour.RemoveAllChildrenOfType<RadarGraphLabelUI>(graphLabelsParent);
+        labels.Clear();
     }
 
     private void DrawBackgroundLines() {
@@ -142,6 +151,7 @@ public class RadarGraphUI : MonoBehaviour
             Debug.LogWarning("Parent Transform for the radar graph labels was not set. The graph's Transform is used instead.");
             graphLabelsParent = transform;
         }
+        ResetLabels();
         for (int i = 0; i < parametersCount; i++) {
             RadarGraphLabelUI label = Instantiate<RadarGraphLabelUI>(graphLabelPrefab, graphLabelsParent);
             label.GetComponent<RectTransform>().anchoredPosition = axes[i] * (1f + labelsOffset);

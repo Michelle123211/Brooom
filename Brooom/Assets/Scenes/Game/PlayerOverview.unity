@@ -173,12 +173,12 @@ PrefabInstance:
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
@@ -223,7 +223,7 @@ PrefabInstance:
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
@@ -274,6 +274,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShopButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f3eecbe906c84964b931f61fc97a8551,
+        type: 3}
+    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.67058825
+      objectReference: {fileID: 0}
+    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.28627452
+      objectReference: {fileID: 0}
+    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.69803923
       objectReference: {fileID: 0}
     - target: {fileID: 7031503936049828170, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
@@ -2411,6 +2432,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8596600418252970421, guid: 8901025903bd7cf4dbd028a5378fd08d,
+        type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: -30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8901025903bd7cf4dbd028a5378fd08d, type: 3}
 --- !u!224 &412143934 stripped
@@ -4055,7 +4081,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 20
+  m_Spacing: 10
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -8813,7 +8839,7 @@ PrefabInstance:
     - target: {fileID: 8187462408966023352, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}
       propertyPath: m_text
-      value: Next Race
+      value: "DAL\u0160\xCD Z\xC1VOD"
       objectReference: {fileID: 0}
     - target: {fileID: 8187462408966023352, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}
@@ -8903,12 +8929,12 @@ PrefabInstance:
     - target: {fileID: 8187462410303921241, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 8187462410303921241, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 8187462410303921241, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}
@@ -8975,6 +9001,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: NextRaceButton
       objectReference: {fileID: 0}
+    - target: {fileID: 8187462410303921247, guid: f0bd0e68b35665542868db1ed9b4bed7,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 20c857502b9519c4da2d6518f6b6a2bb,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0bd0e68b35665542868db1ed9b4bed7, type: 3}
 --- !u!224 &1199320190 stripped
@@ -12575,12 +12607,12 @@ PrefabInstance:
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
@@ -12625,7 +12657,7 @@ PrefabInstance:
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 1037691112762103241, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
@@ -12681,6 +12713,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MenuButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f3eecbe906c84964b931f61fc97a8551,
+        type: 3}
+    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.67058825
+      objectReference: {fileID: 0}
+    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.28627452
+      objectReference: {fileID: 0}
+    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.69803923
       objectReference: {fileID: 0}
     - target: {fileID: 7031503936049828170, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}

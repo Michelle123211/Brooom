@@ -3,77 +3,92 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class RadarGraphLabelUI : MonoBehaviour
 {
+    [Header("Axis label")]
     [SerializeField] TextMeshProUGUI labelText;
 
-    [SerializeField] TextMeshProUGUI topRightValueText;
-    [SerializeField] TextMeshProUGUI bottomRightValueText;
-    [SerializeField] TextMeshProUGUI bottomLeftValueText;
-    [SerializeField] TextMeshProUGUI topLeftValueText;
+    [Header("Value change labels")]
+    [SerializeField] GameObject topRightLabel;
+    [SerializeField] GameObject bottomRightLabel;
+    [SerializeField] GameObject bottomLeftLabel;
+    [SerializeField] GameObject topLeftLabel;
 
     private Tooltip tooltip;
     private RectTransform rectTransform;
 
-    TextMeshProUGUI currentTextField;
-    private float currentValue;
+    private string label;
+
+    RectTransform currentChangeLabelRectTransform;
+    TextMeshProUGUI currentValueChangeText;
+    private float currentChangeValue;
     private string currentFormat;
 
     public void Initialize(string content, string tooltipDescription = null) {
+        label = content;
         labelText.text = content;
         if (tooltipDescription != null) {
-            if (tooltip == null) tooltip = GetComponent<Tooltip>();
+            if (tooltip == null) tooltip = GetComponentInChildren<Tooltip>();
             if (tooltip != null) tooltip.texts.mainTop = tooltipDescription;
         }
-        SetEmptyValueChange();
+        HideAllValueChangeLabels();
     }
 
-    public void SetValueChange(float valueChange, float tweenDuration, string format) {
+    public void SetValueChange(float currentValue, float valueChange, float tweenDuration, string format) {
         currentFormat = format;
-        // Reset all labels (just to make sure)
-        SetEmptyValueChange();
+        // Set current value
+        labelText.text = $"{label}:{currentValue.ToString(currentFormat)}";
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
         // Choose the best text field (according to where around the graph the label is)
-        currentTextField = ChooseValueChangeTextField();
+        HideAllValueChangeLabels();
+        ChooseValueChangeTextField();
         // Tween the value change
-        currentValue = 0;
+        currentChangeValue = 0;
         UpdateValueChange();
-        DOTween.To(() => currentValue, x => { currentValue = x; UpdateValueChange(); }, valueChange, tweenDuration);
-    }
-
-    private void SetEmptyValueChange() {
-        topRightValueText.text = string.Empty;
-        bottomRightValueText.text = string.Empty;
-        bottomLeftValueText.text = string.Empty;
-        topLeftValueText.text = string.Empty;
+        DOTween.To(() => currentChangeValue, x => { currentChangeValue = x; UpdateValueChange(); }, valueChange, tweenDuration);
     }
 
     // Chooses a suitable text field for displaying value change (placed according to the anchored position of the label)
-    private TextMeshProUGUI ChooseValueChangeTextField() {
+    private void ChooseValueChangeTextField() {
         if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
+        GameObject selectedValueChangeLabel;
         if (rectTransform.anchoredPosition.x < 0) { // left
             if (rectTransform.anchoredPosition.y < 0) // bottom
-                return bottomLeftValueText;
+                selectedValueChangeLabel = bottomLeftLabel;
             else // top
-                return topLeftValueText;
+                selectedValueChangeLabel = topLeftLabel;
         } else { // right
             if (rectTransform.anchoredPosition.y < 0) // bottom
-                return bottomRightValueText;
+                selectedValueChangeLabel = bottomRightLabel;
             else // top
-                return topRightValueText;
+                selectedValueChangeLabel = topRightLabel;
         }
+        currentValueChangeText = selectedValueChangeLabel.GetComponentInChildren<TextMeshProUGUI>();
+        currentChangeLabelRectTransform = selectedValueChangeLabel.GetComponent<RectTransform>();
+        currentValueChangeText.text = "";
+        selectedValueChangeLabel.SetActive(true);
     }
 
     private void UpdateValueChange() {
         // Prepare the string
-        string valueChangeText = currentValue.ToString(currentFormat);
-        if (currentValue >= 0) valueChangeText = "+" + valueChangeText;
+        string valueChangeText = currentChangeValue.ToString(currentFormat);
+        if (currentChangeValue >= 0) valueChangeText = "+" + valueChangeText;
         // Set text and color
-        currentTextField.text = valueChangeText;
-        if (currentValue < 0) {
-            currentTextField.color = Color.red; // TODO: Use a color from color palette
+        currentValueChangeText.text = valueChangeText;
+        if (currentChangeValue < 0) {
+            currentValueChangeText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
         } else {
-            currentTextField.color = Color.green; // TODO: Use a color from color palette
+            currentValueChangeText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
         }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(currentChangeLabelRectTransform);
+    }
+
+    private void HideAllValueChangeLabels() {
+        topRightLabel.SetActive(false);
+        bottomRightLabel.SetActive(false);
+        bottomLeftLabel.SetActive(false);
+        topLeftLabel.SetActive(false);
     }
 }

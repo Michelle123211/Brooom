@@ -50,7 +50,7 @@ public class PlayerOverviewUI : MonoBehaviour
         statsGraph.SetPolygonColor(oldStatsColor);
         statsGraph.SetPolygonBorder(true, oldStatsColor.WithA(1), 2);
         statsGraph.DrawGraphValues(oldValues);
-        // ... new values tweened with a delay (in blue)
+        // ... new values tweened with a delay
         Invoke(nameof(ShowCurrentPlayerStats), 1f);
     }
 

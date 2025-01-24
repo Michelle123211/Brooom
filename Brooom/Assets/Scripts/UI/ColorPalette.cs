@@ -80,6 +80,8 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color statsGraphSecondaryAxis;
 	[SerializeField] Color statsGraphNewValues;
 	[SerializeField] Color statsGraphOldValues;
+	[SerializeField] Color statsGraphLabelBackground;
+	[SerializeField] Color statsGraphValueChangeBackground;
 	#endregion
 
 	#region Enum to color mapping
@@ -132,6 +134,8 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.StatsGraph_AxisSecondary => statsGraphSecondaryAxis,
 			ColorFromPalette.StatsGraph_ValuesNew => statsGraphNewValues,
 			ColorFromPalette.StatsGraph_ValuesOld => statsGraphOldValues,
+			ColorFromPalette.StatsGraph_AxisLabelBackground => statsGraphLabelBackground,
+			ColorFromPalette.StatsGraph_ValueChangeBackground => statsGraphValueChangeBackground,
 			// Default
 			_ => Color.black,
 		};
@@ -196,6 +200,7 @@ public enum ColorFromPalette {
 	StatsGraph_AxisPrimary = 800,
 	StatsGraph_AxisSecondary = 801,
 	StatsGraph_ValuesNew = 810,				// polygon for new values
-	StatsGraph_ValuesOld = 811				// polygon for old values
-
+	StatsGraph_ValuesOld = 811,				// polygon for old values
+	StatsGraph_AxisLabelBackground = 820,
+	StatsGraph_ValueChangeBackground = 821
 }
