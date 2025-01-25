@@ -38,6 +38,7 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color positiveColor;
 	[SerializeField] Color negativeColor;
 	[SerializeField] Color notificationColor;
+	[SerializeField] Color tooltipBackground;
 	// TODO: sliders, scrollbars, ...
 
 	[Header("Leaderboard")]
@@ -102,6 +103,7 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.MainUI_PositiveColor => positiveColor,
 			ColorFromPalette.MainUI_NegativeColor => negativeColor,
 			ColorFromPalette.MainUI_Notification => notificationColor,
+			ColorFromPalette.MainUI_TooltipBackground => tooltipBackground,
 			// Leaderboard
 			ColorFromPalette.Leaderboard_PlaceGold => gold,
 			ColorFromPalette.Leaderboard_PlaceSilver => silver,
@@ -173,7 +175,8 @@ public enum ColorFromPalette {
 	MainUI_PositiveColor = 140,					// price, mana cost, stats/leaderboard change
 	MainUI_NegativeColor = 141,					// price, mana cost, HUD penalization (time, missed hoops), missed hoops in results, stats/leaderboard change
 	MainUI_Notification = 150,					// new achievement
-	// TODO: sliders, scrollbars, ... = 160		// settings, ...
+	MainUI_TooltipBackground = 160,
+	// TODO: sliders, scrollbars, ... = 170		// settings, ...
 
 	// Leaderboard - from 300
 	Leaderboard_PlaceGold = 300,				// HUD, race results

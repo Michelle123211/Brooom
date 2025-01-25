@@ -16,7 +16,7 @@ MonoBehaviour:
   secondaryButton: {r: 0, g: 0, b: 0, a: 0}
   primaryBackground: {r: 0.89411765, g: 0.4627451, b: 0.972549, a: 1}
   secondaryBackground: {r: 0, g: 0, b: 0, a: 0}
-  highlightColor: {r: 0.9764706, g: 1, b: 0, a: 1}
+  highlightColor: {r: 1, g: 0.9490196, b: 0.19215687, a: 1}
   screenTitleText: {r: 0, g: 0, b: 0, a: 0}
   sectionTitleText: {r: 0, g: 0, b: 0, a: 0}
   darkText: {r: 0, g: 0, b: 0, a: 0}
@@ -24,6 +24,7 @@ MonoBehaviour:
   positiveColor: {r: 0.2901961, g: 0.8666667, b: 0.2901961, a: 1}
   negativeColor: {r: 1, g: 0.25882354, b: 0.2588235, a: 1}
   notificationColor: {r: 1, g: 0, b: 0.14117648, a: 1}
+  tooltipBackground: {r: 0.16862746, g: 0.16862746, b: 0.16862746, a: 1}
   gold: {r: 0.9529412, g: 0.8509804, b: 0.31764707, a: 1}
   silver: {r: 0.6431373, g: 0.6431373, b: 0.6431373, a: 1}
   bronze: {r: 0.79607844, g: 0.5019608, b: 0.3254902, a: 1}
