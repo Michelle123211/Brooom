@@ -26,10 +26,6 @@ public class BroomUpgradeRowUI : MonoBehaviour
     [Tooltip("A prefab of a level indicator which is instantiated multiple times.")]
     [SerializeField] Image levelIndicatorPrefab;
 
-    [Header("Colors")]
-    [SerializeField] Gradient levelIndicatorGradient;
-    [SerializeField] Color levelNotPurchasedColor;
-
     private BroomUpgrade assignedUpgrade;
 
     private Image[] levelIndicators;
@@ -74,10 +70,14 @@ public class BroomUpgradeRowUI : MonoBehaviour
         // Level indicator
         for (int i = 0; i < levelIndicators.Length; i++) {
             // Set color according to the level
-            if (i < assignedUpgrade.CurrentLevel) // level purchased
-                levelIndicators[i].color = levelIndicatorGradient.Evaluate((float) i / (assignedUpgrade.MaxLevel - 1));
-            else // level not purchased
-                levelIndicators[i].color = levelNotPurchasedColor;
+            if (i < assignedUpgrade.CurrentLevel) { // level purchased
+                Color lightColor = ColorPalette.Instance.GetColor(ColorFromPalette.Shop_BroomUpgradeLevelActiveLight);
+                Color darkColor = ColorPalette.Instance.GetColor(ColorFromPalette.Shop_BroomUpgradeLevelActiveDark);
+                float blend = (float)i / (assignedUpgrade.MaxLevel - 1);
+                levelIndicators[i].color = blend * darkColor + (1 - blend) * lightColor;
+            } else { // level not purchased
+                levelIndicators[i].color = ColorPalette.Instance.GetColor(ColorFromPalette.Shop_BroomUpgradeLevelInactive);
+            }
         }
         // Price and buy button
         if (assignedUpgrade.CurrentLevel == assignedUpgrade.MaxLevel) { // max level reached
@@ -87,7 +87,7 @@ public class BroomUpgradeRowUI : MonoBehaviour
             priceText.text = price.ToString();
             if (PlayerState.Instance.Coins < price) { // change to red if not enough coins
                 buyButton.interactable = false;
-                priceText.color = Color.red; // TODO: Change to using a different color (not so aggressive, e.g. from a color palette)
+                priceText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
             }
         }
     }

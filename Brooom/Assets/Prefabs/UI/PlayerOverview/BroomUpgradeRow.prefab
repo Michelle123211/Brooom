@@ -63,36 +63,6 @@ MonoBehaviour:
   tooltip: {fileID: 4758427507908570948}
   levelIndicatorPrefab: {fileID: 1780600717852036862, guid: 780e44c9801b98e44b909fab704db4c4,
     type: 3}
-  levelIndicatorGradient:
-    serializedVersion: 2
-    key0: {r: 0.5990566, g: 0.81775296, b: 1, a: 1}
-    key1: {r: 0.007843138, g: 0.54509807, b: 1, a: 1}
-    key2: {r: 0.007843138, g: 0.54509807, b: 1, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 65535
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  levelNotPurchasedColor: {r: 0.7764706, g: 0.7764706, b: 0.7764706, a: 1}
 --- !u!114 &4758427507908570948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +96,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: 50
+  m_Spacing: 30
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -147,7 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
-  m_MinWidth: 690
+  m_MinWidth: 735
   m_MinHeight: -1
   m_PreferredWidth: -1
   m_PreferredHeight: -1
@@ -490,7 +460,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 180, y: 0}
+  m_SizeDelta: {x: 225, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2733281630969335575
 MonoBehaviour:
@@ -510,7 +480,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: 15
+  m_Spacing: -10
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -557,7 +527,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 70}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2733281631262635059
 CanvasRenderer:
@@ -580,15 +550,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96308607, g: 0.9811321, b: 0, a: 1}
+  m_Color: {r: 0.9764706, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: e0c777c3ae0f9eb4a84747d8d8feea88, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -865,12 +835,12 @@ PrefabInstance:
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
@@ -990,12 +960,12 @@ PrefabInstance:
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
@@ -1115,12 +1085,12 @@ PrefabInstance:
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 1780600717852036861, guid: 780e44c9801b98e44b909fab704db4c4,
         type: 3}
@@ -1202,6 +1172,11 @@ PrefabInstance:
       propertyPath: m_text
       value: 9999
       objectReference: {fileID: 0}
+    - target: {fileID: 1868143783121236243, guid: 6a8674091571ae54b90a7526d80a1ed3,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 1868143783121236243, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_HorizontalAlignment

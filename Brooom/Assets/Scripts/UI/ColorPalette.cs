@@ -70,7 +70,8 @@ public class ColorPalette : ScriptableObject {
 
 	// Shop - from 700
 	[Header("Shop")]
-	[SerializeField] Color activeBroomUpgradeLevel;
+	[SerializeField] Color activeLightBroomUpgradeLevel;
+	[SerializeField] Color activeDarkBroomUpgradeLevel;
 	[SerializeField] Color inactiveBroomUpgradeLevel;
 	[SerializeField] Color coinColor;
 
@@ -126,7 +127,8 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.Spells_BackgroundEnvironmentManipulation => environmentManipulationSpellBackground,
 			ColorFromPalette.Spells_BackgroundObjectApparition => objectApparitionSpellBackground,
 			// Shop
-			ColorFromPalette.Shop_BroomUpgradeLevelActive => activeBroomUpgradeLevel,
+			ColorFromPalette.Shop_BroomUpgradeLevelActiveLight => activeLightBroomUpgradeLevel,
+			ColorFromPalette.Shop_BroomUpgradeLevelActiveDark => activeDarkBroomUpgradeLevel,
 			ColorFromPalette.Shop_BroomUpgradeLevelInactive => inactiveBroomUpgradeLevel,
 			ColorFromPalette.Shop_Coin => coinColor,
 			// Statistics graph
@@ -159,31 +161,31 @@ public enum ColorFromPalette {
 	// TODO: Add more colors
 
 	// Main UI elements - from 100
-	MainUI_ButtonPrimary = 100,             // buttons in Main Menu, ...
-	MainUI_ButtonSecondary = 101,           // buttons in settings, character creation, ...
-	MainUI_BackgroundPrimary = 110,         // pause menu, temporarily in settings, about, player overview, shop, race results
-	MainUI_BackgroundSecondary = 111,       // temporarily for sections in settings, about
-	MainUI_HighlightColor = 120,            // tooltip, buttons
-	MainUI_TextTitleScreen = 130,           // all screen titles, pause menu
-	MainUI_TextTitleSection = 131,          // shop (spells, broom upgrades), settings (audio, controls, ...), about
-	MainUI_TextDark = 132,					// almost everywhere
-	MainUI_TextLight = 133,					// loading screen
-	MainUI_PositiveColor = 140,				// price, mana cost, stats/leaderboard change
-	MainUI_NegativeColor = 141,				// price, mana cost, HUD penalization (time, missed hoops), missed hoops in results, stats/leaderboard change
-	MainUI_Notification = 150,				// new achievement
-	// TODO: sliders, scrollbars, ... = 160	// settings, ...
+	MainUI_ButtonPrimary = 100,					// buttons in Main Menu, ...
+	MainUI_ButtonSecondary = 101,				// buttons in settings, character creation, ...
+	MainUI_BackgroundPrimary = 110,				// pause menu, temporarily in settings, about, player overview, shop, race results
+	MainUI_BackgroundSecondary = 111,			// temporarily for sections in settings, about
+	MainUI_HighlightColor = 120,				// tooltip, buttons
+	MainUI_TextTitleScreen = 130,				// all screen titles, pause menu
+	MainUI_TextTitleSection = 131,				// shop (spells, broom upgrades), settings (audio, controls, ...), about
+	MainUI_TextDark = 132,						// almost everywhere
+	MainUI_TextLight = 133,						// loading screen
+	MainUI_PositiveColor = 140,					// price, mana cost, stats/leaderboard change
+	MainUI_NegativeColor = 141,					// price, mana cost, HUD penalization (time, missed hoops), missed hoops in results, stats/leaderboard change
+	MainUI_Notification = 150,					// new achievement
+	// TODO: sliders, scrollbars, ... = 160		// settings, ...
 
 	// Leaderboard - from 300
-	Leaderboard_PlaceGold = 300,            // HUD, race results
-	Leaderboard_PlaceSilver = 301,          // HUD, race results
-	Leaderboard_PlaceBronze = 302,          // HUD, race results
-	Leaderboard_PlacePotato = 303,          // HUD, race results
-	Leaderboard_Row = 310,                  // race results, global leaderboard
-	Leaderboard_RowSecondary = 311,			// race results, global leaderboard
-	Leaderboard_RewardBackground = 320,		// race results
+	Leaderboard_PlaceGold = 300,				// HUD, race results
+	Leaderboard_PlaceSilver = 301,				// HUD, race results
+	Leaderboard_PlaceBronze = 302,				// HUD, race results
+	Leaderboard_PlacePotato = 303,				// HUD, race results
+	Leaderboard_Row = 310,						// race results, global leaderboard
+	Leaderboard_RowSecondary = 311,				// race results, global leaderboard
+	Leaderboard_RewardBackground = 320,			// race results
 
 	// HUD - from 400
-	HUD_BackgroundOverlay = 400,            // different sections of HUD
+	HUD_BackgroundOverlay = 400,				// different sections of HUD
 	HUD_BackgroundCharacterEffect = 410,
 	HUD_BackgroundManaCost = 420,
 
@@ -195,22 +197,23 @@ public enum ColorFromPalette {
 	Minimap_FinishLine = 504,
 
 	// Spells - from 600
-	Spells_ManaColor = 600,                 // mana bar in HUD, tooltip, mana bonus
+	Spells_ManaColor = 600,						// mana bar in HUD, tooltip, mana bonus
 	Spells_BackgroundSelfCastSpell = 610,
 	Spells_BackgroundOpponentCurse = 611,
 	Spells_BackgroundEnvironmentManipulation = 612,
 	Spells_BackgroundObjectApparition = 613,
 
 	// Shop - from 700
-	Shop_BroomUpgradeLevelActive = 700,
-	Shop_BroomUpgradeLevelInactive = 701,
+	Shop_BroomUpgradeLevelActiveLight = 700,	// lowest broom upgrade level
+	Shop_BroomUpgradeLevelActiveDark = 701,		// highest broom upgrade level
+	Shop_BroomUpgradeLevelInactive = 702,
 	Shop_Coin = 710,
 
 	// Statistics graph - from 800
 	StatsGraph_AxisPrimary = 800,
 	StatsGraph_AxisSecondary = 801,
-	StatsGraph_ValuesNew = 810,				// polygon for new values
-	StatsGraph_ValuesOld = 811,				// polygon for old values
+	StatsGraph_ValuesNew = 810,					// polygon for new values
+	StatsGraph_ValuesOld = 811,					// polygon for old values
 	StatsGraph_AxisLabelBackground = 820,
 	StatsGraph_ValueChangeBackground = 821
 }
