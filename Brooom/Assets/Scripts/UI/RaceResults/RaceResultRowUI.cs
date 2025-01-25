@@ -40,10 +40,7 @@ public class RaceResultRowUI : MonoBehaviour
 
     private void SetPlace(int place) {
         placeText.text = place.ToString();
-        if (place == 1) placeImage.color = ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceGold);
-        else if (place == 2) placeImage.color = ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceSilver);
-        else if (place == 3) placeImage.color = ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceBronze);
-        else placeImage.color = ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlacePotato);
+        placeImage.color = ColorPalette.Instance.GetLeaderboardPlaceColor(place);
     }
 
     private void SetTime(float time, int timePenalization) {

@@ -24,12 +24,12 @@ public class LeaderboardUI : MonoBehaviour {
 
 		PlayerLeaderboardData playerData = ComputePlayerData();
 		// According to the place fill the table with rows and values
-		if (playerData.place < 9) {
+		if (playerData.place < 6) { // Show first 6 places (including player)
 			AddOpponentsRange(1, playerData.place - 1);
 			AddPlayer(playerData);
-			AddOpponentsRange(playerData.place + 1, 9, true);
-		} else {
-			AddOpponentsRange(1, 6); // place >= 9 ==> show the first 6, then gap, player with the neighbours
+			AddOpponentsRange(playerData.place + 1, 6, true);
+		} else { // Show first 3 places, then gap, and then player with neighbours
+			AddOpponentsRange(1, 3);
 			CreateGap();
 			AddPlayerWithNeighbours(playerData);
 		}

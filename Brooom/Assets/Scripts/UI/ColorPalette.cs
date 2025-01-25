@@ -140,6 +140,16 @@ public class ColorPalette : ScriptableObject {
 			_ => Color.black,
 		};
 	}
+
+	// Returns color based on the given place (i.e. gold, silver, bronze)
+	public Color GetLeaderboardPlaceColor(int place) { 
+		return place switch {
+			1 => ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceGold),
+			2 => ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceSilver),
+			3 => ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceBronze),
+			_ => ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlacePotato)
+		};
+	}
 	#endregion
 
 }
