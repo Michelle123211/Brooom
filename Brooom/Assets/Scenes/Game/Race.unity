@@ -329,18 +329,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 10066885}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &53260193 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3139369962943467976, guid: f0451ec7c47179e47aba16e3e66e6934,
-    type: 3}
-  m_PrefabInstance: {fileID: 3139369962895474281}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &61240108 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8124931981723988934, guid: 382504ebae1f7e341818ac2192edc837,
@@ -3530,7 +3518,7 @@ MonoBehaviour:
   hoopsTotalText: {fileID: 593661529}
   hoopsMissedText: {fileID: 1676610061}
   placeObject: {fileID: 90020688}
-  placeBackground: {fileID: 53260193}
+  placeBackground: {fileID: 3139369962895474282}
   placeText: {fileID: 934507525}
   spellsUI: {fileID: 2065663106}
   countdownObject: {fileID: 174481252}
@@ -11802,6 +11790,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0451ec7c47179e47aba16e3e66e6934, type: 3}
+--- !u!114 &3139369962895474282 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 441485350115148650, guid: f0451ec7c47179e47aba16e3e66e6934,
+    type: 3}
+  m_PrefabInstance: {fileID: 3139369962895474281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90020688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7578841607084159487
 PrefabInstance:
   m_ObjectHideFlags: 0

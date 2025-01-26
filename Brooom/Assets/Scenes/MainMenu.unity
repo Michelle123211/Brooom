@@ -2181,7 +2181,7 @@ PrefabInstance:
     - target: {fileID: 8187462410303921241, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8187462410303921241, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
@@ -2191,7 +2191,7 @@ PrefabInstance:
     - target: {fileID: 8187462410303921241, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8187462410303921241, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
@@ -2241,12 +2241,12 @@ PrefabInstance:
     - target: {fileID: 8187462410303921241, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8187462410303921241, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 8187462410303921241, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
@@ -2267,6 +2267,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MultiplayerButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187462410303921242, guid: 31a857ba14895054eb81797935aeff9d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8187462410303921247, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
