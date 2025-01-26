@@ -68,6 +68,7 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color opponentCurseSpellBackground;
 	[SerializeField] Color environmentManipulationSpellBackground;
 	[SerializeField] Color objectApparitionSpellBackground;
+	[SerializeField] Color emptySlotColor;
 
 	// Shop - from 700
 	[Header("Shop")]
@@ -128,6 +129,7 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.Spells_BackgroundOpponentCurse => opponentCurseSpellBackground,
 			ColorFromPalette.Spells_BackgroundEnvironmentManipulation => environmentManipulationSpellBackground,
 			ColorFromPalette.Spells_BackgroundObjectApparition => objectApparitionSpellBackground,
+			ColorFromPalette.Spells_EmptySlotColor => emptySlotColor,
 			// Shop
 			ColorFromPalette.Shop_BroomUpgradeLevelActiveLight => activeLightBroomUpgradeLevel,
 			ColorFromPalette.Shop_BroomUpgradeLevelActiveDark => activeDarkBroomUpgradeLevel,
@@ -205,6 +207,7 @@ public enum ColorFromPalette {
 	Spells_BackgroundOpponentCurse = 611,
 	Spells_BackgroundEnvironmentManipulation = 612,
 	Spells_BackgroundObjectApparition = 613,
+	Spells_EmptySlotColor = 620,
 
 	// Shop - from 700
 	Shop_BroomUpgradeLevelActiveLight = 700,	// lowest broom upgrade level

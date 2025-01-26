@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3e6493ab6534de04fbf37929ace50d44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c861eb7cf29ad5c4b8023922771d1857, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -112,7 +112,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -2, y: -2}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2081540427845668859
 CanvasRenderer:
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 13fe2bea581b5bd49a44aa96294df4e9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b52f2ad3ef833924fa34c4d83549dfa8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -182,8 +182,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2081540428847289643}
-  m_RootOrder: 2
+  m_Father: {fileID: 2081540428709940937}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6da6a5df0e958134dbbe31eb7b6113e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a21ae3d5bcb34d84b93ce813796bcad6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -260,6 +260,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2081540428847289643}
+  - {fileID: 2081540428042117390}
   - {fileID: 6108597113749048049}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -294,6 +295,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 00c1a2650d14d314b8c06a7b8b9d6c8c, type: 3}
   - {fileID: 21300000, guid: ed943b714b3e6634baea9c56ce744cef, type: 3}
   - {fileID: 21300000, guid: 827b5312bab687b44ab456ab1e7c9542, type: 3}
+  slotBorderSprite: {fileID: 21300000, guid: a21ae3d5bcb34d84b93ce813796bcad6, type: 3}
+  unknownSlotBorderSprite: {fileID: 21300000, guid: 302d2254079dda84688d37772c986731,
+    type: 3}
+  unknownSlotBorderColor: {r: 0.25490198, g: 0.25490198, b: 0.25490198, a: 0.5882353}
   unknownAchievementIcon: {fileID: 21300000, guid: c861eb7cf29ad5c4b8023922771d1857,
     type: 3}
   unknownAchievementBackground: {fileID: 21300000, guid: b52f2ad3ef833924fa34c4d83549dfa8,
@@ -303,6 +308,7 @@ MonoBehaviour:
   slotTransform: {fileID: 2081540428709940937}
   iconImage: {fileID: 2081540427705401456}
   backgroundImage: {fileID: 2081540427845668858}
+  borderImage: {fileID: 2081540428042117391}
   newAchievementNotification: {fileID: 5279909233281362320}
 --- !u!114 &2870672800353953955
 MonoBehaviour:
@@ -340,7 +346,7 @@ GameObject:
   - component: {fileID: 2081540428847289621}
   - component: {fileID: 2081540428847289620}
   m_Layer: 5
-  m_Name: Visual
+  m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -360,14 +366,13 @@ RectTransform:
   m_Children:
   - {fileID: 2081540427845668857}
   - {fileID: 2081540427705401463}
-  - {fileID: 2081540428042117390}
   m_Father: {fileID: 2081540428709940937}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -4, y: -4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2081540428847289622
 CanvasRenderer:
@@ -397,7 +402,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 13fe2bea581b5bd49a44aa96294df4e9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5f8c1325e8f6cc74ea0f4a47a1d58b6c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -450,7 +455,7 @@ RectTransform:
   m_Children:
   - {fileID: 3681136902236948906}
   m_Father: {fileID: 2081540428709940937}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

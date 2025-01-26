@@ -6,9 +6,17 @@ using DG.Tweening;
 
 public class AchievementSlotUI : MonoBehaviour {
 
+	[Header("Sprites")]
+
 	[Tooltip("Sprites which will be used as backgrounds for different levels of achievement. Highest level should be on the lowest index.")]
 	[SerializeField] List<Sprite> levelBackgrounds = new List<Sprite>();
 
+	[Tooltip("A Sprite which is used as border of a known achievement.")]
+	[SerializeField] Sprite slotBorderSprite;
+	[Tooltip("A Sprite which is used as border of an unknown achievement.")]
+	[SerializeField] Sprite unknownSlotBorderSprite;
+	[Tooltip("Color which is used for an unknown achievement border.")]
+	[SerializeField] Color unknownSlotBorderColor;
 	[Tooltip("Sprite which will be used instead od the achievement's icon if the achievement has not been achieved yet.")]
 	[SerializeField] Sprite unknownAchievementIcon;
 	[Tooltip("Sprite which will be used as a background if the achievement is not known yet.")]
@@ -20,6 +28,7 @@ public class AchievementSlotUI : MonoBehaviour {
 	[SerializeField] Transform slotTransform;
 	[SerializeField] Image iconImage;
 	[SerializeField] Image backgroundImage;
+	[SerializeField] Image borderImage;
 	[SerializeField] GameObject newAchievementNotification;
 
 	private AchievementProgress assignedAchievement;
@@ -48,6 +57,9 @@ public class AchievementSlotUI : MonoBehaviour {
 		if (achievement.achievement.icon != null)
 			iconImage.sprite = achievement.achievement.icon;
 		else iconImage.sprite = missingAchievementIcon;
+		// Set border
+		borderImage.sprite = slotBorderSprite;
+		borderImage.color = Color.black;
 		// Set background color according to the level
 		int backgroundIndex = Mathf.Clamp(achievement.maximumLevel - achievement.currentLevel, 0, levelBackgrounds.Count);
 		backgroundImage.sprite = levelBackgrounds[backgroundIndex];
@@ -64,6 +76,8 @@ public class AchievementSlotUI : MonoBehaviour {
 	private void InitializeUnknownAchievement(AchievementProgress achievement) {
 		iconImage.sprite = unknownAchievementIcon;
 		backgroundImage.sprite = unknownAchievementBackground;
+		borderImage.sprite = unknownSlotBorderSprite;
+		borderImage.color = unknownSlotBorderColor;
 		tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString("AchievementUnknown") + "~~";
 		tooltip.texts.mainTop = LocalizationManager.Instance.GetLocalizedString("AchievementTooltipUnknown");
 	}
