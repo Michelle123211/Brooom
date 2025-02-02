@@ -141,6 +141,9 @@ MonoBehaviour:
     - guid: GlobalObjectId_V1-2-3bacfede75a12d8468f5b7a2b880c370-8187462410303921247-608655646
       propertyPath: m_Color
       objectType: 0
+    - guid: GlobalObjectId_V1-3-89c586453efd8db45a880c04b7236586-11400000-0
+      propertyPath: customTags.Array.data[0].textColor
+      objectType: 1
   - color: 130
     properties:
     - guid: GlobalObjectId_V1-1-7fea81a1957dd7647bcf64cd2baa7d61-6737050304438943808-0
@@ -151,7 +154,10 @@ MonoBehaviour:
   - color: 132
     properties: []
   - color: 133
-    properties: []
+    properties:
+    - guid: GlobalObjectId_V1-3-89c586453efd8db45a880c04b7236586-11400000-0
+      propertyPath: customTags.Array.data[3].textColor
+      objectType: 1
   - color: 140
     properties: []
   - color: 141
@@ -249,6 +255,9 @@ MonoBehaviour:
     - guid: GlobalObjectId_V1-1-91aa71b5112c6bf4a865f5b79b5c1b46-2193192412961599782-0
       propertyPath: m_Color
       objectType: 1
+    - guid: GlobalObjectId_V1-3-89c586453efd8db45a880c04b7236586-11400000-0
+      propertyPath: customTags.Array.data[2].textColor
+      objectType: 1
   - color: 610
     properties: []
   - color: 611
@@ -323,6 +332,9 @@ MonoBehaviour:
     - guid: GlobalObjectId_V1-2-be6917035d18e6e4c8a73e6be794c984-709881277-0
       propertyPath: m_Color
       objectType: 0
+    - guid: GlobalObjectId_V1-3-89c586453efd8db45a880c04b7236586-11400000-0
+      propertyPath: backgroundColor
+      objectType: 1
   - color: 620
     properties:
     - guid: GlobalObjectId_V1-1-b5460731ce412cf4386015cbfa643e02-2081540428709940916-0
@@ -330,4 +342,9 @@ MonoBehaviour:
       objectType: 1
     - guid: GlobalObjectId_V1-1-90bc248a1221ec844942df494afc42e2-2399082555118468009-0
       propertyPath: emptySlotColor
+      objectType: 1
+  - color: 161
+    properties:
+    - guid: GlobalObjectId_V1-3-89c586453efd8db45a880c04b7236586-11400000-0
+      propertyPath: textColor
       objectType: 1
