@@ -437,6 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf3e1177aa6c0447b81d27df710a294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentScene: Start
   animator: {fileID: 1538307267892136609}
 --- !u!1 &4291003545612039541
 GameObject:
@@ -528,6 +529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 1
+  delay: 0
   destroy: 0
   enable: 0
   loop: 1

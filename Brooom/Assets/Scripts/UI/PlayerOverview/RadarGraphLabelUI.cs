@@ -23,6 +23,7 @@ public class RadarGraphLabelUI : MonoBehaviour
 
     RectTransform currentChangeLabelRectTransform;
     TextMeshProUGUI currentValueChangeText;
+    Image currentValueChangeBackground;
     private float currentChangeValue;
     private string currentFormat;
 
@@ -66,6 +67,7 @@ public class RadarGraphLabelUI : MonoBehaviour
                 selectedValueChangeLabel = topRightLabel;
         }
         currentValueChangeText = selectedValueChangeLabel.GetComponentInChildren<TextMeshProUGUI>();
+        currentValueChangeBackground = selectedValueChangeLabel.GetComponent<Image>();
         currentChangeLabelRectTransform = selectedValueChangeLabel.GetComponent<RectTransform>();
         currentValueChangeText.text = "";
         selectedValueChangeLabel.SetActive(true);
@@ -78,9 +80,9 @@ public class RadarGraphLabelUI : MonoBehaviour
         // Set text and color
         currentValueChangeText.text = valueChangeText;
         if (currentChangeValue < 0) {
-            currentValueChangeText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
+            currentValueChangeBackground.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
         } else {
-            currentValueChangeText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
+            currentValueChangeBackground.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(currentChangeLabelRectTransform);
     }

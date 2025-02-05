@@ -48,12 +48,6 @@ public class RaceUI : MonoBehaviour {
 
     private CharacterRaceState playerRaceState;
 
-    Color[] placeColors = new Color[] { // TODO: Move to a separate color palette
-        Utils.ColorFromRBG256(243, 217, 81), // gold
-        Utils.ColorFromRBG256(164, 164, 164), // silver
-        Utils.ColorFromRBG256(203, 128, 83), // bronze
-        Utils.ColorFromRBG256(126, 92, 80) };
-
 
     #region Coutndown
     public void ShowCountdown(string coutndownValue) {
@@ -114,9 +108,7 @@ public class RaceUI : MonoBehaviour {
     public void UpdatePlace(int place) {
         placeText.text = place.ToString();
         // Change color according to the place
-        int colorIndex = place - 1;
-        if (colorIndex >= placeColors.Length) colorIndex = placeColors.Length - 1;
-        placeBackground.color = placeColors[colorIndex];
+        placeBackground.color = ColorPalette.Instance.GetLeaderboardPlaceColor(place);
     }
     #endregion
 

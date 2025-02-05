@@ -15,8 +15,10 @@ public class LeaderboardRowUI : MonoBehaviour {
 	[Header("Additional text fields")]
 	[SerializeField] GameObject placeChangeLabel;
 	[SerializeField] TextMeshProUGUI placeChangeText;
+	[SerializeField] Image placeChangeBackground;
 	[SerializeField] GameObject averageChangeLabel;
 	[SerializeField] TextMeshProUGUI averageChangeText;
+	[SerializeField] Image averageChangeBackground;
 	[SerializeField] float tweenDuration = 0.5f;
 	[SerializeField] float tweenDelay = 1f;
 
@@ -50,23 +52,23 @@ public class LeaderboardRowUI : MonoBehaviour {
 	}
 
 	private void SetPlaceChange(int placeChange) {
-		placeChangeText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
+		placeChangeBackground.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
 		if (placeChange < 0) {
 			placeChangeText.text = placeChange.ToString();
 		} else if (placeChange > 0) {
 			placeChangeText.text = "+" + placeChange.ToString();
-			placeChangeText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
+			placeChangeBackground.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
 		}
 		if (placeChange != 0) placeChangeLabel.SetActive(true);
 	}
 
 	private void SetAverageChange(float averageChange) {
-		averageChangeText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
+		averageChangeBackground.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
 		if (averageChange > 0) {
 			averageChangeText.text = "+" + averageChange.ToString("N1");
 		} else if (averageChange < 0) {
 			averageChangeText.text = averageChange.ToString("N1");
-			averageChangeText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
+			averageChangeBackground.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
 		}
 		if (averageChange != 0) averageChangeLabel.SetActive(true);
 	}

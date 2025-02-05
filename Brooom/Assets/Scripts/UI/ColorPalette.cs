@@ -35,6 +35,7 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color sectionTitleText;
 	[SerializeField] Color darkText;
 	[SerializeField] Color lightText;
+	[SerializeField] Color darkishText;
 	[SerializeField] Color positiveColor;
 	[SerializeField] Color negativeColor;
 	[SerializeField] Color notificationColor;
@@ -54,7 +55,6 @@ public class ColorPalette : ScriptableObject {
 	[Header("HUD")]
 	[SerializeField] Color overlayBackground;
 	[SerializeField] Color characterEffectBackground;
-	[SerializeField] Color manaCostBackground;
 
 	[Header("Minimap")]
 	[SerializeField] Color minimapHoop;
@@ -85,7 +85,6 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color statsGraphNewValues;
 	[SerializeField] Color statsGraphOldValues;
 	[SerializeField] Color statsGraphLabelBackground;
-	[SerializeField] Color statsGraphValueChangeBackground;
 	#endregion
 
 	#region Enum to color mapping
@@ -102,6 +101,7 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.MainUI_TextTitleSection => sectionTitleText,
 			ColorFromPalette.MainUI_TextDark => darkText,
 			ColorFromPalette.MainUI_TextLight => lightText,
+			ColorFromPalette.MainUI_TextDarkish => darkishText,
 			ColorFromPalette.MainUI_PositiveColor => positiveColor,
 			ColorFromPalette.MainUI_NegativeColor => negativeColor,
 			ColorFromPalette.MainUI_Notification => notificationColor,
@@ -118,7 +118,6 @@ public class ColorPalette : ScriptableObject {
 			// HUD
 			ColorFromPalette.HUD_BackgroundOverlay => overlayBackground,
 			ColorFromPalette.HUD_BackgroundCharacterEffect => characterEffectBackground,
-			ColorFromPalette.HUD_BackgroundManaCost => manaCostBackground,
 			// Minimap
 			ColorFromPalette.Minimap_Hoop => minimapHoop,
 			ColorFromPalette.Minimap_Checkpoint => minimapCheckpoint,
@@ -143,7 +142,6 @@ public class ColorPalette : ScriptableObject {
 			ColorFromPalette.StatsGraph_ValuesNew => statsGraphNewValues,
 			ColorFromPalette.StatsGraph_ValuesOld => statsGraphOldValues,
 			ColorFromPalette.StatsGraph_AxisLabelBackground => statsGraphLabelBackground,
-			ColorFromPalette.StatsGraph_ValueChangeBackground => statsGraphValueChangeBackground,
 			// Default
 			_ => Color.black,
 		};
@@ -152,11 +150,22 @@ public class ColorPalette : ScriptableObject {
 	// Returns color based on the given place (i.e. gold, silver, bronze)
 	public Color GetLeaderboardPlaceColor(int place) { 
 		return place switch {
-			1 => ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceGold),
-			2 => ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceSilver),
-			3 => ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlaceBronze),
-			_ => ColorPalette.Instance.GetColor(ColorFromPalette.Leaderboard_PlacePotato)
+			1 => GetColor(ColorFromPalette.Leaderboard_PlaceGold),
+			2 => GetColor(ColorFromPalette.Leaderboard_PlaceSilver),
+			3 => GetColor(ColorFromPalette.Leaderboard_PlaceBronze),
+			_ => GetColor(ColorFromPalette.Leaderboard_PlacePotato)
 		};
+	}
+
+	// Returns color based on the given spell category
+	public Color GetSpellCategoryColor(SpellCategory spellCategory) {
+		return GetColor(spellCategory switch {
+			SpellCategory.SelfCast => ColorFromPalette.Spells_BackgroundSelfCastSpell,
+			SpellCategory.OpponentCurse => ColorFromPalette.Spells_BackgroundOpponentCurse,
+			SpellCategory.EnvironmentManipulation => ColorFromPalette.Spells_BackgroundEnvironmentManipulation,
+			SpellCategory.ObjectApparition => ColorFromPalette.Spells_BackgroundObjectApparition,
+			_ => ColorFromPalette.None
+		});
 	}
 	#endregion
 
@@ -176,12 +185,12 @@ public enum ColorFromPalette {
 	MainUI_TextTitleSection = 131,				// shop (spells, broom upgrades), settings (audio, controls, ...), about
 	MainUI_TextDark = 132,						// almost everywhere
 	MainUI_TextLight = 133,						// loading screen
+	MainUI_TextDarkish = 134,					// text in Main Menu buttons, rebinding UI, ...
 	MainUI_PositiveColor = 140,					// price, mana cost, stats/leaderboard change
 	MainUI_NegativeColor = 141,					// price, mana cost, HUD penalization (time, missed hoops), missed hoops in results, stats/leaderboard change
 	MainUI_Notification = 150,					// new achievement
 	MainUI_TooltipBackground = 160,
 	MainUI_TooltipText = 161,
-	// TODO: sliders, scrollbars, ... = 170		// settings, ...
 
 	// Leaderboard - from 300
 	Leaderboard_PlaceGold = 300,				// HUD, race results
@@ -195,7 +204,6 @@ public enum ColorFromPalette {
 	// HUD - from 400
 	HUD_BackgroundOverlay = 400,				// different sections of HUD
 	HUD_BackgroundCharacterEffect = 410,
-	HUD_BackgroundManaCost = 420,
 
 	// Minimap - from 500
 	Minimap_Hoop = 500,
@@ -223,6 +231,5 @@ public enum ColorFromPalette {
 	StatsGraph_AxisSecondary = 801,
 	StatsGraph_ValuesNew = 810,					// polygon for new values
 	StatsGraph_ValuesOld = 811,					// polygon for old values
-	StatsGraph_AxisLabelBackground = 820,
-	StatsGraph_ValueChangeBackground = 821
+	StatsGraph_AxisLabelBackground = 820
 }

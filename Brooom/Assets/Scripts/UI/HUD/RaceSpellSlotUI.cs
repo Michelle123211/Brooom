@@ -18,6 +18,8 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	[SerializeField] GameObject manaPartParent;
 	[Tooltip("A TMP displaying mana cost.")]
 	[SerializeField] TextMeshProUGUI manaCostLabel;
+	[Tooltip("An Image used as a background of the mana cost label.")]
+	[SerializeField] Image manaCostBackground;
 	[Tooltip("An Image containing spell icon, which is used to indicate how charged the spell is.")]
 	[SerializeField] Image spellIconFillImage;
 	[Tooltip("An Image containing background, which is used to indicate how charged the spell is.")]
@@ -98,8 +100,8 @@ public class RaceSpellSlotUI : MonoBehaviour {
 			spellIconFillImage.fillAmount = assignedSpell.Charge;
 			backgroundFillImage.fillAmount = assignedSpell.Charge;
 			// Change color of mana cost
-			if (assignedSpell.HasEnoughMana) manaCostLabel.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
-			else manaCostLabel.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
+			if (assignedSpell.HasEnoughMana) manaCostBackground.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_PositiveColor);
+			else manaCostBackground.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
 		}
 	}
 

@@ -53,13 +53,7 @@ public class SpellSlotUI : MonoBehaviour
 			spellImage.sprite = assignedSpell.Icon;
 		// Background color
 		if (!isEmpty) {
-			spellBackground.color = ColorPalette.Instance.GetColor(assignedSpell.Category switch {
-				SpellCategory.SelfCast => ColorFromPalette.Spells_BackgroundSelfCastSpell,
-				SpellCategory.OpponentCurse => ColorFromPalette.Spells_BackgroundOpponentCurse,
-				SpellCategory.EnvironmentManipulation => ColorFromPalette.Spells_BackgroundEnvironmentManipulation,
-				SpellCategory.ObjectApparition => ColorFromPalette.Spells_BackgroundObjectApparition,
-				_ => ColorFromPalette.None
-			});
+			spellBackground.color = ColorPalette.Instance.GetSpellCategoryColor(assignedSpell.Category);
 		} else {
 			// For empty slot, make it semi-transparent
 			spellBackground.color = Color.white.WithA(0.1f);

@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: ColorPalette
   m_EditorClassIdentifier: 
   primaryButton: {r: 0.69803923, g: 0.28627452, b: 0.67058825, a: 1}
-  secondaryButton: {r: 0, g: 0, b: 0, a: 0}
-  primaryBackground: {r: 0.89411765, g: 0.4627451, b: 0.972549, a: 1}
+  secondaryButton: {r: 0.87058824, g: 0.87058824, b: 0.87058824, a: 1}
+  primaryBackground: {r: 0.7921569, g: 0.41568628, b: 0.85882354, a: 1}
   secondaryBackground: {r: 0.91764706, g: 0.91764706, b: 0.91764706, a: 1}
   highlightColor: {r: 1, g: 0.9490196, b: 0.19215687, a: 1}
   screenTitleText: {r: 0.45490196, g: 0.15686275, b: 0.44705883, a: 1}
   sectionTitleText: {r: 0.598, g: 0.20799999, b: 0.5893334, a: 1}
   darkText: {r: 0, g: 0, b: 0, a: 1}
   lightText: {r: 1, g: 1, b: 1, a: 1}
+  darkishText: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   positiveColor: {r: 0.2901961, g: 0.8666667, b: 0.2901961, a: 1}
   negativeColor: {r: 1, g: 0.25882354, b: 0.2588235, a: 1}
   notificationColor: {r: 1, g: 0, b: 0.14117648, a: 1}
@@ -36,7 +37,7 @@ MonoBehaviour:
   leaderboardRewardBackground: {r: 0.40784314, g: 0.40784314, b: 0.40784314, a: 1}
   overlayBackground: {r: 1, g: 1, b: 1, a: 1}
   characterEffectBackground: {r: 0.6039216, g: 0.6039216, b: 0.6039216, a: 1}
-  manaCostBackground: {r: 0.74509805, g: 0.9372549, b: 0.94509804, a: 1}
+  manaCostBackground: {r: 0.40784314, g: 0.40784314, b: 0.40784314, a: 1}
   minimapHoop: {r: 1, g: 1, b: 1, a: 1}
   minimapCheckpoint: {r: 1, g: 0.9411765, b: 0, a: 1}
   minimapBorder: {r: 1, g: 0.5254902, b: 0, a: 1}
@@ -53,9 +54,9 @@ MonoBehaviour:
   activeDarkBroomUpgradeLevel: {r: 0.007843138, g: 0.54509807, b: 1, a: 1}
   inactiveBroomUpgradeLevel: {r: 0.7764706, g: 0.7764706, b: 0.7764706, a: 1}
   coinColor: {r: 1, g: 0.9254902, b: 0, a: 1}
-  statsGraphPrimaryAxis: {r: 0, g: 0, b: 0, a: 0}
-  statsGraphSecondaryAxis: {r: 0, g: 0, b: 0, a: 0}
-  statsGraphNewValues: {r: 0, g: 0, b: 0, a: 0}
-  statsGraphOldValues: {r: 0, g: 0, b: 0, a: 0}
+  statsGraphPrimaryAxis: {r: 0, g: 0, b: 0, a: 1}
+  statsGraphSecondaryAxis: {r: 0.65882355, g: 0.65882355, b: 0.65882355, a: 1}
+  statsGraphNewValues: {r: 0.833, g: 0.19992001, b: 0.79079473, a: 1}
+  statsGraphOldValues: {r: 0.43529412, g: 0.43529412, b: 0.43529412, a: 1}
   statsGraphLabelBackground: {r: 0.99607843, g: 0.7607843, b: 1, a: 1}
   statsGraphValueChangeBackground: {r: 0.40784314, g: 0.40784314, b: 0.40784314, a: 1}
