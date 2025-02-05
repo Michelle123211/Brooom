@@ -40,16 +40,12 @@ public class AchievementSlotUI : MonoBehaviour {
 		// Set icon, background color, tooltip content
 		if (achievement.currentLevel > 0) InitializeKnownAchievement(achievement);
 		else InitializeUnknownAchievement(achievement);
-		UpdateUI();
 	}
 
-	public void UpdateUI() {
-		// Highlight new achievement if necessary
-		if (assignedAchievement.isNew) {
-			HighlightNewAchievement();
-		} else {
-			newAchievementNotification.SetActive(false);
-		}
+	public void HighlightNewAchievement() {
+		newAchievementNotification.SetActive(true);
+		// A short tween changing scale
+		slotTransform.DOScale(1.3f, 0.2f).SetDelay(1f).OnComplete(() => slotTransform.DOScale(1f, 0.4f).SetEase(Ease.OutBounce));
 	}
 
 	private void InitializeKnownAchievement(AchievementProgress achievement) {
@@ -80,11 +76,5 @@ public class AchievementSlotUI : MonoBehaviour {
 		borderImage.color = unknownSlotBorderColor;
 		tooltip.texts.topLeft = "~~" + LocalizationManager.Instance.GetLocalizedString("AchievementUnknown") + "~~";
 		tooltip.texts.mainTop = LocalizationManager.Instance.GetLocalizedString("AchievementTooltipUnknown");
-	}
-
-	private void HighlightNewAchievement() {
-		newAchievementNotification.SetActive(true);
-		// A short tween changing scale
-		slotTransform.DOScale(1.3f, 0.2f).SetDelay(1f).OnComplete(() => slotTransform.DOScale(1f, 0.4f).SetEase(Ease.OutBounce));
 	}
 }
