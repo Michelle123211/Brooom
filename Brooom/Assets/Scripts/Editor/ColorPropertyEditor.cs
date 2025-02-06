@@ -40,7 +40,8 @@ public static class ColorPropertyEditor {
 	}
 
 	private static void OnPropertyContextMenu(GenericMenu genericMenu, SerializedProperty serializedProperty) {
-		if (serializedProperty.propertyType != SerializedPropertyType.Color) return;
+		if (serializedProperty.propertyType != SerializedPropertyType.Color) return; // ignore all properties other than Color
+		if (serializedProperty.serializedObject.targetObject as ColorPalette) return; // don't show context menu for properties inside of ColorPalette type itself
 
 		SerializedProperty propertyCopy = serializedProperty.Copy();
 		if (!(propertyCopy.serializedObject.targetObject is Component) && !(propertyCopy.serializedObject.targetObject is ScriptableObject)) return;
