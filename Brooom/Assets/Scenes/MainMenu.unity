@@ -462,12 +462,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: AboutButton
       objectReference: {fileID: 0}
-    - target: {fileID: 8187462410303921247, guid: 31a857ba14895054eb81797935aeff9d,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f3eecbe906c84964b931f61fc97a8551,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31a857ba14895054eb81797935aeff9d, type: 3}
 --- !u!224 &198756770 stripped
@@ -2016,12 +2010,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8187462410303921247, guid: 31a857ba14895054eb81797935aeff9d,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f3eecbe906c84964b931f61fc97a8551,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31a857ba14895054eb81797935aeff9d, type: 3}
 --- !u!224 &1154674477 stripped
@@ -2734,12 +2722,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8187462410303921247, guid: 31a857ba14895054eb81797935aeff9d,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f3eecbe906c84964b931f61fc97a8551,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31a857ba14895054eb81797935aeff9d, type: 3}
 --- !u!224 &1416665103 stripped
@@ -3663,11 +3645,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8187462408966023352, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}
-      propertyPath: m_fontSize
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8187462408966023352, guid: f0bd0e68b35665542868db1ed9b4bed7,
-        type: 3}
       propertyPath: m_fontSizeBase
       value: 50
       objectReference: {fileID: 0}
@@ -3821,12 +3798,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainButton
       objectReference: {fileID: 0}
-    - target: {fileID: 8187462410303921247, guid: f0bd0e68b35665542868db1ed9b4bed7,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 20c857502b9519c4da2d6518f6b6a2bb,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0bd0e68b35665542868db1ed9b4bed7, type: 3}
 --- !u!224 &1901134707 stripped

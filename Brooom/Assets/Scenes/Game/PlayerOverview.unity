@@ -275,12 +275,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShopButton
       objectReference: {fileID: 0}
-    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f3eecbe906c84964b931f61fc97a8551,
-        type: 3}
     - target: {fileID: 7031503936049828170, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: assignedKey
@@ -2583,12 +2577,6 @@ PrefabInstance:
       propertyPath: assignedKey
       value: ShopBtnTestingTrack
       objectReference: {fileID: 0}
-    - target: {fileID: 3559760248851633237, guid: 96b605571cf704d4bae3b42add041853,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f3eecbe906c84964b931f61fc97a8551,
-        type: 3}
     - target: {fileID: 5247065881442634269, guid: 96b605571cf704d4bae3b42add041853,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -7352,11 +7340,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8187462408966023352, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}
-      propertyPath: m_fontSize
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8187462408966023352, guid: f0bd0e68b35665542868db1ed9b4bed7,
-        type: 3}
       propertyPath: m_fontSizeBase
       value: 50
       objectReference: {fileID: 0}
@@ -7510,12 +7493,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: NextRaceButton
       objectReference: {fileID: 0}
-    - target: {fileID: 8187462410303921247, guid: f0bd0e68b35665542868db1ed9b4bed7,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 20c857502b9519c4da2d6518f6b6a2bb,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0bd0e68b35665542868db1ed9b4bed7, type: 3}
 --- !u!224 &1199320190 stripped
@@ -11109,12 +11086,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MenuButton
       objectReference: {fileID: 0}
-    - target: {fileID: 6169684062762890256, guid: 8e18f0453978d8a4288bb2cd198d1902,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: f3eecbe906c84964b931f61fc97a8551,
-        type: 3}
     - target: {fileID: 7031503936049828170, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: assignedKey
