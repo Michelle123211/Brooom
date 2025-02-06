@@ -60,7 +60,7 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 	public void AddProperty(ColorFromPalette color, string guid, string propertyPath, ColorProperty.Type objectType) {
 		// Add property to the color, remove it from any other
 		foreach (var colorGroup in colorGroups) {
-			if (colorGroup.color == color) colorGroup.ToggleProperty(guid, propertyPath, objectType);
+			if (colorGroup.color == color) colorGroup.AddProperty(guid, propertyPath, objectType);
 			else colorGroup.RemoveProperty(guid, propertyPath);
 		}
 		Save(true);
@@ -171,10 +171,8 @@ public class ColorGroup {
 		return false;
 	}
 
-	public void ToggleProperty(string guid, string propertyPath, ColorProperty.Type objectType) {
-		if (HasProperty(guid, propertyPath)) {
-			RemoveProperty(guid, propertyPath);
-		} else {
+	public void AddProperty(string guid, string propertyPath, ColorProperty.Type objectType) {
+		if (!HasProperty(guid, propertyPath)) {
 			properties.Add(new ColorProperty(guid, propertyPath, objectType));
 		}
 	}
