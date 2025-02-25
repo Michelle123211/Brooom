@@ -29,7 +29,7 @@ public class NavigationBonusEffect : BonusEffect {
 	}
 
 	public override bool IsAvailable() {
-		if (SceneLoader.Instance.currentScene == "TestingTrack") return false; // not available in Testing Track
+		if (SceneLoader.Instance.CurrentScene == Scene.TestingTrack) return false; // not available in Testing Track
 		else return true; // otherwise, always available
 	}
 }

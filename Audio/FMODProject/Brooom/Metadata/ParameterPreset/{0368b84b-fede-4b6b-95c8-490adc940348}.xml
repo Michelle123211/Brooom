@@ -16,16 +16,18 @@
 			<value>2</value>
 		</property>
 		<property name="maximum">
-			<value>7</value>
+			<value>9</value>
 		</property>
 		<property name="enumerationLabels">
+			<value>Start</value>
 			<value>MainMenu</value>
 			<value>CharacterCreation</value>
 			<value>Tutorial</value>
-			<value>Race</value>
 			<value>PlayerOverview</value>
+			<value>Race</value>
 			<value>TestingTrack</value>
 			<value>Ending</value>
+			<value>Exit</value>
 		</property>
 		<property name="isGlobal">
 			<value>true</value>

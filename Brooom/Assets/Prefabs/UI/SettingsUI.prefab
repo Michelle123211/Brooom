@@ -1915,6 +1915,11 @@ PrefabInstance:
       propertyPath: VCAPath
       value: vca:/Music
       objectReference: {fileID: 0}
+    - target: {fileID: 5069724564810044744, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+        type: 3}
+      propertyPath: linkedVCA
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5444951962858827839, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
         type: 3}
       propertyPath: assignedKey
@@ -3192,6 +3197,11 @@ PrefabInstance:
       propertyPath: VCAPath
       value: vca:/Ambience
       objectReference: {fileID: 0}
+    - target: {fileID: 5069724564810044744, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+        type: 3}
+      propertyPath: linkedVCA
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5444951962858827839, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
         type: 3}
       propertyPath: assignedKey
@@ -3749,6 +3759,11 @@ PrefabInstance:
         type: 3}
       propertyPath: VCAPath
       value: vca:/SoundEffects
+      objectReference: {fileID: 0}
+    - target: {fileID: 5069724564810044744, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+        type: 3}
+      propertyPath: linkedVCA
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5444951962858827839, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
         type: 3}

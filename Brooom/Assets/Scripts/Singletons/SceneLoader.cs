@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 
-	[HideInInspector]
-	public string currentScene = Scene.Start.ToString();
+	public Scene CurrentScene { get; private set; } =  Scene.Start;
+
+	public event Action<Scene> onSceneStartedLoading;
+	public event Action<Scene> onSceneLoaded;
 
 	[SerializeField] private Animator animator;
-
-	public event Action onSceneLoaded;
 
 	#region Passing parameters between scenes
 
@@ -60,20 +60,16 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 
 	// Loads scene with the given name (using fade in/out and loading screen) - one parameter variant to be used in UnityEvent
 	public void LoadScene(string sceneName) {
-		LoadScene(sceneName, true, true);
+		LoadScene(Enum.Parse<Scene>(sceneName), true, true);
 	}
 
 	// Loads scene whose name is given by the enum value
 	public void LoadScene(Scene scene, bool fade = true, bool showLoading = true) {
-		LoadScene(scene.ToString(), fade, showLoading);
+		StartCoroutine(LoadSceneAsync(scene, fade, showLoading));
 	}
 
-	// Loads scene with the given name
-	public void LoadScene(string sceneName, bool fade = true, bool showLoading = true) {
-		StartCoroutine(LoadSceneAsync(sceneName, fade, showLoading));
-	}
-
-	private IEnumerator LoadSceneAsync(string sceneName, bool fade = true, bool showLoading = true) {
+	private IEnumerator LoadSceneAsync(Scene scene, bool fade = true, bool showLoading = true) {
+		onSceneStartedLoading.Invoke(scene);
 		// Enable cursor
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
@@ -96,11 +92,11 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 			yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 		}
 		// Load next scene asycnhronously and activate it right away
-		AsyncOperation loadingScene = SceneManager.LoadSceneAsync(sceneName);
+		AsyncOperation loadingScene = SceneManager.LoadSceneAsync(scene.ToString());
 		loadingScene.allowSceneActivation = true;
 		// Wait until the scene is loaded
 		yield return new WaitUntil(() => loadingScene.isDone);
-		currentScene = sceneName;
+		CurrentScene = scene;
 		PassAndResetCurrentParameters();
 		// Fade into the new scene
 		if (fade) {
@@ -108,8 +104,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		}
 		// Reset previous LoadingIn trigger in case it stayed set
 		animator.ResetTrigger("LoadingIn");
-		// Call registered callbacks
-		onSceneLoaded?.Invoke();
+		onSceneLoaded?.Invoke(scene);
 	}
 
 	static SceneLoader() { 
@@ -120,20 +115,20 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	}
 
 	public void InitializeSingleton() {
-		currentScene = SceneManager.GetActiveScene().name;
+		CurrentScene = Enum.Parse<Scene>(SceneManager.GetActiveScene().name);
 	}
 
 }
 
 
 public enum Scene { 
-	MainMenu,
-	CharacterCreation,
-	Tutorial,
-	Race,
-	PlayerOverview,
-	TestingTrack,
-	Ending,
-	Start,
-	Exit
+	Start = 0,
+	MainMenu = 1,
+	CharacterCreation = 2,
+	Tutorial = 3,
+	PlayerOverview = 4,
+	Race = 5,
+	TestingTrack = 6,
+	Ending = 7,
+	Exit = 8
 }

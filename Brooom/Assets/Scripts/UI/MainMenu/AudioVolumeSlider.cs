@@ -4,17 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class AudioVolumeSlider : MonoBehaviour {
-	[Tooltip("Path of the VCA whose volume is changed by this slider.")]
-	[SerializeField] string VCAPath = "vca:/Master";
+
+	[Tooltip("VCA whose volume is changed by this slider.")]
+	[SerializeField] VCA linkedVCA;
 
 	[Tooltip("Corresponding slider component.")]
 	[SerializeField] Slider slider;
 
-	private FMOD.Studio.VCA VCAHandle;
-
 	public void ChangeVolume(float value) {
-		if (!VCAHandle.hasHandle()) VCAHandle = FMODUnity.RuntimeManager.GetVCA(VCAPath);
-		if (VCAHandle.isValid()) VCAHandle.setVolume(value);
+		AudioManager.Instance.ChangeVCAVolume(linkedVCA, value);
 	}
 
 	public void SetValue(float value) {
@@ -24,9 +22,5 @@ public class AudioVolumeSlider : MonoBehaviour {
 
 	public float GetValue() {
 		return slider.value;
-	}
-
-	private void Awake() {
-		VCAHandle = FMODUnity.RuntimeManager.GetVCA(VCAPath);
 	}
 }

@@ -616,11 +616,10 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		Utils.TweenAwareDisable(messageArea); // hide message area
 	}
 
-	private void ProcessSceneInitializationCommands() {
+	private void ProcessSceneInitializationCommands(Scene currentScene) {
 		// Process commands for the current scene
-		string currentScene = SceneLoader.Instance.currentScene;
 		foreach (var sceneCommands in sceneInitializationCommands) {
-			if (sceneCommands.scene.ToString() == currentScene) {
+			if (sceneCommands.scene == currentScene) {
 				foreach (var command in sceneCommands.commands) {
 					ProcessCommand(command);
 				}
@@ -691,16 +690,15 @@ public class CheatCommand {
 	}
 
 	public bool IsAvailable() {
-		string currentScene = SceneLoader.Instance.currentScene;
 		// Check if it is disabled in the current scene
 		if (disabledInScenes != null) {
 			foreach (var scene in disabledInScenes)
-				if (scene.ToString() == currentScene) return false;
+				if (scene == SceneLoader.Instance.CurrentScene) return false;
 		}
 		// Check if the current scene is among the scenes the command is enabled in
 		if (enabledInScenes != null) {
 			foreach (var scene in enabledInScenes)
-				if (scene.ToString() == currentScene) return true;
+				if (scene == SceneLoader.Instance.CurrentScene) return true;
 			return false;
 		}
 		// Otherwise it is not disabled and is enabled in all the scenes
