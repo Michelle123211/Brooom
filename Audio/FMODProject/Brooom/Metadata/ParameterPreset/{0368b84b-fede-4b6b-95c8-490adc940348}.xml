@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{0368b84b-fede-4b6b-95c8-490adc940348}">
+		<property name="name">
+			<value>Scene</value>
+		</property>
+		<relationship name="folder">
+			<destination>{454826da-d74a-4195-87a0-9d09d192d2e1}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{bec78d37-878d-49cb-9597-0dc3007a223c}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{bec78d37-878d-49cb-9597-0dc3007a223c}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>7</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>MainMenu</value>
+			<value>CharacterCreation</value>
+			<value>Tutorial</value>
+			<value>Race</value>
+			<value>PlayerOverview</value>
+			<value>TestingTrack</value>
+			<value>Ending</value>
+		</property>
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+	</object>
+</objects>
