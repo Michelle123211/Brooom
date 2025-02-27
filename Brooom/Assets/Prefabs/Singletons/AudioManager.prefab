@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6da3017378a17458d90311a7b599bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundMusic: {fileID: 4831259791547829185}
+  <Events>k__BackingField: {fileID: 11400000, guid: e81a5769ad46dea44b783c9dd845f8e4,
+    type: 2}
 --- !u!114 &4831259791547829185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,14 +62,14 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 2073811307
-      Data2: 1086633544
-      Data3: 1707942291
-      Data4: -760398977
+      Data1: 1515415982
+      Data2: 1292179442
+      Data3: -2080866653
+      Data4: -551544612
     Path: event:/MUSIC/BackgroundMusic
   Event: 
   EventPlayTrigger: 1
-  EventStopTrigger: 0
+  EventStopTrigger: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0

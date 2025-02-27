@@ -309,6 +309,19 @@ public class LevelRepresentation {
 		}
 	}
 
+	// Returns terrain point which is the closest one to the given position
+	public TerrainPoint GetNearestGridPoint(Vector3 fromPosition) {
+		// Make sure fromPosition is within the grid
+		Vector3 bottomLeft = terrain[0, 0].position;
+		Vector3 topRight = terrain[pointCount.x - 1, pointCount.y - 1].position;
+		fromPosition = new Vector3(Mathf.Clamp(fromPosition.x, bottomLeft.x, topRight.x), fromPosition.y, Mathf.Clamp(fromPosition.z, bottomLeft.z, topRight.z));
+		// Get indices of the nearest terrain point
+		fromPosition -= bottomLeft; // to start at [0,0]
+		fromPosition /= pointOffset; // to get to indices
+		// Round to nearest integer and return terrain point with the corresponding indices
+		return terrain[Mathf.RoundToInt(fromPosition.x), Mathf.RoundToInt(fromPosition.z)];
+	}
+
 	private void ComputeDependentParameters() {
 		// Compute parameters which are not set from outside
 		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions

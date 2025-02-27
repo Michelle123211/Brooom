@@ -69,7 +69,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	}
 
 	private IEnumerator LoadSceneAsync(Scene scene, bool fade = true, bool showLoading = true) {
-		onSceneStartedLoading.Invoke(scene);
+		onSceneStartedLoading?.Invoke(scene);
 		// Enable cursor
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;

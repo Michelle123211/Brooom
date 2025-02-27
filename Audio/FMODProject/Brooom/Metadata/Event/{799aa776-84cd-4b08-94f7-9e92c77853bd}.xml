@@ -5,7 +5,7 @@
 			<value>SpellCast</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{42328504-28eb-4363-b5bc-360323273a99}</destination>
@@ -96,6 +96,7 @@
 	<object class="MixerBusEffectChain" id="{f4b0281c-cfa0-4350-898b-47e9eaca7143}">
 		<relationship name="effects">
 			<destination>{b4da8f8f-a5b8-4d61-95d1-e1542ee64f28}</destination>
+			<destination>{4420445c-9534-440d-89e6-984f1318c54f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{577eebf5-409c-4a71-845a-86887811d090}" />
@@ -106,4 +107,5 @@
 	</object>
 	<object class="MixerBusFader" id="{1bd62e7c-361d-4f14-a4dd-cc990f130748}" />
 	<object class="MixerBusFader" id="{b4da8f8f-a5b8-4d61-95d1-e1542ee64f28}" />
+	<object class="SpatialiserEffect" id="{4420445c-9534-440d-89e6-984f1318c54f}" />
 </objects>

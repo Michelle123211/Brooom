@@ -73,6 +73,7 @@ public class SpellController : MonoBehaviour {
 					Target = spellTarget, 
 					castDirection = (spellTarget.GetTargetPosition() - transform.position).normalized
 				});
+			AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.SpellCast, gameObject);
 			ChangeManaAmount(-currentSpell.Spell.ManaCost);
 			// Notify anyone interested that a spell has been casted
 			onSpellCasted?.Invoke(selectedSpell);

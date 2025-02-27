@@ -201,7 +201,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.678
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -392,8 +392,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea3ce5fd795cd66438298b31aa084560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VCAPath: vca:/Master
+  linkedVCA: 0
   slider: {fileID: 892904085926534061}
+  volumeConversionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.5277974
+      outSlope: 0.5277974
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.08935826
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &892904086627560168
 MonoBehaviour:
   m_ObjectHideFlags: 0

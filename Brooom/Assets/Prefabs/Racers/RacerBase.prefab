@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 3161338561109082813}
   - component: {fileID: 170133169353488107}
   - component: {fileID: 4933597784101161968}
+  - component: {fileID: 8944231609688057608}
+  - component: {fileID: 6618447451096069534}
   m_Layer: 9
   m_Name: RacerBase
   m_TagString: Untagged
@@ -143,6 +145,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faceAnimationsPlayer: {fileID: 828062036360458583}
+--- !u!114 &8944231609688057608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170133169353488105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 309119183
+      Data2: 1331594758
+      Data3: 805913485
+      Data4: -744313363
+    Path: event:/SFX/GAME/BroomFlying
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params:
+  - Name: Speed
+    Value: 0
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &6618447451096069534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170133169353488105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306bf067eea88484f8f9e0d928e39961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1253138126071297060
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e028a6227449f5746be9c12ad8bde784, type: 3}
+  m_Name: FMODEvents
+  m_EditorClassIdentifier: 
+  <GUI>k__BackingField:
+    <Click>k__BackingField:
+      Guid:
+        Data1: -2114112211
+        Data2: 1095452818
+        Data3: 2027842442
+        Data4: -1301646981
+      Path: event:/SFX/GUI/Click
+  <Game>k__BackingField:
+    <SpellCast>k__BackingField:
+      Guid:
+        Data1: 2040178550
+        Data2: 1258849485
+        Data3: -1835075692
+        Data4: -1118603065
+      Path: event:/SFX/GAME/SpellCast
