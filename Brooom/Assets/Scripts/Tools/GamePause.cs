@@ -24,9 +24,13 @@ public class GamePause : MonoBehaviour {
         // Enable cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        // Start pause menu audio
+        AudioManager.Instance.PauseGame();
     }
 
     public void ResumeGame() {
+        // Stop pause menu audio
+        AudioManager.Instance.ResumeGame();
         // Disable cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>, ISingleton {
 	[field: SerializeField]
 	public FMODEvents Events { get; private set; }
 
+	[SerializeField] FMODUnity.StudioEventEmitter pauseMenuSnapshot;
+
 	// VCA handles - to be able to change their volume easily
 	FMOD.Studio.VCA masterVCA;
 	FMOD.Studio.VCA musicVCA;
@@ -40,6 +42,14 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>, ISingleton {
 
 	public void PlayOneShotAttached(FMODUnity.EventReference eventReference, GameObject gameObject) {
 		FMODUnity.RuntimeManager.PlayOneShotAttached(eventReference, gameObject);
+	}
+
+	public void PauseGame() {
+		pauseMenuSnapshot.Play();
+	}
+
+	public void ResumeGame() {
+		pauseMenuSnapshot.Stop();
 	}
 
 	private void OnSceneLoading(Scene scene) {
