@@ -16,12 +16,24 @@ public class FMODEvents : ScriptableObject
 
 [System.Serializable]
 public class GUIEvents {
+
     [field: SerializeField]
     public EventReference Click { get; private set; }
+
+    [field: SerializeField]
+
+    public EventReference Release { get; private set; }
+
+    [field: SerializeField]
+
+    public EventReference SliderValue { get; private set; }
+
 }
 
 [System.Serializable]
 public class GameEvents {
+
     [field: SerializeField]
     public EventReference SpellCast { get; private set; }
+
 }

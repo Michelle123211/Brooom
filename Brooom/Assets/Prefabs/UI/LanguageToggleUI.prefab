@@ -242,6 +242,7 @@ GameObject:
   - component: {fileID: 8143386240921094595}
   - component: {fileID: 7958155054829134946}
   - component: {fileID: 4834512679868179111}
+  - component: {fileID: 3938309002869022752}
   m_Layer: 5
   m_Name: LanguageToggleUI
   m_TagString: Untagged
@@ -367,3 +368,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &3938309002869022752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8143386240921094593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -2114112211
+      Data2: 1095452818
+      Data3: 2027842442
+      Data4: -1301646981
+    Path: event:/SFX/GUI/Click
+  Event: 
+  EventPlayTrigger: 19
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

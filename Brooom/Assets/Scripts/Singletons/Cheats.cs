@@ -638,10 +638,12 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			}
 			// ... enter cheat
 			if (Input.GetKeyDown(KeyCode.Return)) { // Enter
+				AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.Click);
 				OnCommandEntered();
 			}
 			// ... history
 			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) {
+				AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.Click);
 				HandleCommandHistory();
 			}
 		}

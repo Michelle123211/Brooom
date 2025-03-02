@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1937500417211745527}
   - component: {fileID: 1937500417211745481}
   - component: {fileID: 1937500417211745526}
+  - component: {fileID: 4582348459145427730}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -76,6 +77,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4582348459145427730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937500417211745524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -2114112211
+      Data2: 1095452818
+      Data3: 2027842442
+      Data4: -1301646981
+    Path: event:/SFX/GUI/Click
+  Event: 
+  EventPlayTrigger: 19
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1937500417511396253
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,6 +120,7 @@ GameObject:
   - component: {fileID: 1937500417511396241}
   - component: {fileID: 1937500417511396254}
   - component: {fileID: 1937500417511396255}
+  - component: {fileID: 3732185652897289344}
   m_Layer: 5
   m_Name: Scrollbar Vertical
   m_TagString: Untagged
@@ -197,12 +230,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1937500417211745526}
   m_HandleRect: {fileID: 1937500417211745527}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3732185652897289344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937500417511396253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d777412a9eebdb42aae3780daacea3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioEvent:
+    Guid:
+      Data1: -1018776776
+      Data2: 1110728541
+      Data3: -737567056
+      Data4: 577436568
+    Path: event:/SFX/GUI/ScrollbarValue
+  soundInterval: 0.1
 --- !u!1 &1937500417606570347
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 1937500417912512607}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 2
   m_Elasticity: 0.1

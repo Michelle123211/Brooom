@@ -331,7 +331,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -438,6 +438,7 @@ GameObject:
   - component: {fileID: 5813993300790001461}
   - component: {fileID: 116777197801482996}
   - component: {fileID: 3755740491201303920}
+  - component: {fileID: 88930942725750719}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -572,3 +573,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2cd84111774e484fa83cc65727901c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &88930942725750719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8651237838648153637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -2114112211
+      Data2: 1095452818
+      Data3: 2027842442
+      Data4: -1301646981
+    Path: event:/SFX/GUI/Click
+  Event: 
+  EventPlayTrigger: 19
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
