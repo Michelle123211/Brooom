@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 2733281631262635056}
   - component: {fileID: 2733281631262635057}
   - component: {fileID: 2733281631262635070}
-  - component: {fileID: 4162955970913798698}
+  - component: {fileID: 8027763782032386493}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -644,7 +644,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &4162955970913798698
+--- !u!114 &8027763782032386493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -653,28 +653,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 2733281631262635068}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ef7ed06e8ee9654c87f17705781be82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
+  interactableClickEvent:
     Guid:
-      Data1: -2114112211
-      Data2: 1095452818
-      Data3: 2027842442
-      Data4: -1301646981
-    Path: event:/SFX/GUI/Click
-  Event: 
-  EventPlayTrigger: 19
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  noninteractableClickEvent:
+    Guid:
+      Data1: -1376538395
+      Data2: 1214463234
+      Data3: 1986401703
+      Data4: -620713917
+    Path: event:/SFX/GUI/PurchaseDenied
 --- !u!1001 &48953248212632816
 PrefabInstance:
   m_ObjectHideFlags: 0

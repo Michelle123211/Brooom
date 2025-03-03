@@ -43,9 +43,14 @@ public class BroomUpgradeRowUI : MonoBehaviour
 
     public void PurchaseUpgrade() {
         // Check if the player has enough coins
-        if (!PlayerState.Instance.ChangeCoinsAmount(-assignedUpgrade.CoinsCostOfEachLevel[assignedUpgrade.CurrentLevel])) return;
-        assignedUpgrade.LevelUp();
+        if (!PlayerState.Instance.ChangeCoinsAmount(-assignedUpgrade.CoinsCostOfEachLevel[assignedUpgrade.CurrentLevel])) {
+            Debug.Log("Not enough coins for the given broom upgrade.");
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PurchaseDenied);
+            return;
+        }
+		assignedUpgrade.LevelUp();
         PlayerState.Instance.SetBroomUpgradeLevel(assignedUpgrade.UpgradeName, assignedUpgrade.CurrentLevel, assignedUpgrade.MaxLevel);
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.Purchase);
         // Update the UI
         UpdateCurrentLevel();
     }

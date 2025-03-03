@@ -133,6 +133,7 @@ public class KeyBindingUI : MonoBehaviour {
                 AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
             })
             .OnComplete(operation => {
+                AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.KeyDown);
                 // Activate the action back
                 action.Enable();
                 // Update UI - part 1

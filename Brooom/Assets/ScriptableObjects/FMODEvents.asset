@@ -62,6 +62,27 @@ MonoBehaviour:
         Data3: 1662389902
         Data4: 1140197855
       Path: event:/SFX/GUI/PanelClose
+    <KeyDown>k__BackingField:
+      Guid:
+        Data1: 1492486533
+        Data2: 1183661577
+        Data3: 3538360
+        Data4: -89054595
+      Path: event:/SFX/GUI/KeyDown
+    <Purchase>k__BackingField:
+      Guid:
+        Data1: 848264087
+        Data2: 1264253185
+        Data3: 826874040
+        Data4: 741896054
+      Path: event:/SFX/GUI/Purchase
+    <PurchaseDenied>k__BackingField:
+      Guid:
+        Data1: -1376538395
+        Data2: 1214463234
+        Data3: 1986401703
+        Data4: -620713917
+      Path: event:/SFX/GUI/PurchaseDenied
   <Game>k__BackingField:
     <SpellCast>k__BackingField:
       Guid:

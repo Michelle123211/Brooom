@@ -38,6 +38,10 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	private int lastCommandIndex; // last command entered
 	private int historyOffset; // offset of the last command displayed from the history
 
+	public void OnCommandInput(string currentCommand) {
+		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.KeyDown);
+	}
+
 	private void OnCommandEntered() {
 		string command = commandField.text;
 		if (!string.IsNullOrEmpty(command)) {

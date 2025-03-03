@@ -26,9 +26,15 @@ public class ShopSpellSlotUI : MonoBehaviour
     }
 
     public void PurchaseSpell() {
+        // Check the spell is not already purchased
+        if (PlayerState.Instance.IsSpellPurchased(assignedSpell.Identifier)) return;
         // Check if the player has enough coins
-        if (!PlayerState.Instance.ChangeCoinsAmount(-assignedSpell.CoinsCost)) return;
+        if (!PlayerState.Instance.ChangeCoinsAmount(-assignedSpell.CoinsCost)) {
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PurchaseDenied);
+            return;
+        }
         PlayerState.Instance.UnlockSpell(assignedSpell.Identifier);
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.Purchase);
         // Update the UI
         ChangeToUnlocked();
         // TODO: If it is the first purchased spell, start a tutorial
@@ -46,6 +52,7 @@ public class ShopSpellSlotUI : MonoBehaviour
         // Hide price + overlay
         ShowOrHidePrice(false);
         unavailableOverlay.SetActive(false);
+        GetComponent<Button>().interactable = false;
     }
 
     private void ChangeToLocked() {
@@ -55,6 +62,7 @@ public class ShopSpellSlotUI : MonoBehaviour
             priceText.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_NegativeColor);
         ShowOrHidePrice(true);
         unavailableOverlay.SetActive(true);
+        GetComponent<Button>().interactable = true;
     }
 
     private void ShowOrHidePrice(bool show = true) {

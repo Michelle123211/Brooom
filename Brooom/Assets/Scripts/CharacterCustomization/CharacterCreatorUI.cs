@@ -46,6 +46,7 @@ public class CharacterCreatorUI : MonoBehaviour
 
     public void NameChanged(string name) {
         currentName = name;
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.KeyDown);
         if (string.IsNullOrEmpty(name)) {
             continueButton.interactable = false;
         } else {

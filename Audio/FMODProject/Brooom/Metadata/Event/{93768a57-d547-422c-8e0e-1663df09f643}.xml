@@ -103,6 +103,9 @@
 	</object>
 	<object class="MixerBusPanner" id="{80d500a8-361b-434b-ac8d-bf2a5e0983bb}" />
 	<object class="SingleSound" id="{0ec47d3f-c8a7-4772-af59-391872a3e530}">
+		<property name="startOffset">
+			<value>20</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{8fb615fb-301f-4721-8dc5-b99f87520550}</destination>
 		</relationship>

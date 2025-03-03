@@ -153,7 +153,6 @@ GameObject:
   - component: {fileID: 666093373101190801}
   - component: {fileID: 5549733640341444293}
   - component: {fileID: 6603251856204191489}
-  - component: {fileID: 7781814340206172061}
   m_Layer: 5
   m_Name: ShopSpellSlot
   m_TagString: Untagged
@@ -280,37 +279,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7781814340206172061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5549733640341444295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -2114112211
-      Data2: 1095452818
-      Data3: 2027842442
-      Data4: -1301646981
-    Path: event:/SFX/GUI/Click
-  Event: 
-  EventPlayTrigger: 19
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &5549733641619286839
 GameObject:
   m_ObjectHideFlags: 0

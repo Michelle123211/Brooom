@@ -29,6 +29,12 @@ public class GUIEvents {
 
     [field: SerializeField] public EventReference PanelClose { get; private set; }
 
+    [field: SerializeField] public EventReference KeyDown { get; private set; }
+
+    [field: SerializeField] public EventReference Purchase { get; private set; }
+
+    [field: SerializeField] public EventReference PurchaseDenied { get; private set; }
+
 }
 
 [System.Serializable]
