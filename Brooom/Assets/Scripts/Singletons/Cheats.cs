@@ -126,6 +126,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	private void ToggleVisibility() {
 		if (!cheatsAreVisible) {
 			// Show the cheats UI
+			AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
 			Utils.TweenAwareEnable(cheatsUI);
 			cheatsAreVisible = true;
 			// Focus on the input field
@@ -133,6 +134,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			commandField.ActivateInputField();
 		} else {
 			// Hide the cheats UI
+			AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
 			Utils.TweenAwareDisable(cheatsUI);
 			cheatsAreVisible = false;
 		}

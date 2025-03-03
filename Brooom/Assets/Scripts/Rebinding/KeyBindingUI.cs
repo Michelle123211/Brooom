@@ -130,6 +130,7 @@ public class KeyBindingUI : MonoBehaviour {
                 UpdateBindingText();
                 rebindOverlay.SetDuplicateWarningText(" ");
                 CleanUp();
+                AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
             })
             .OnComplete(operation => {
                 // Activate the action back

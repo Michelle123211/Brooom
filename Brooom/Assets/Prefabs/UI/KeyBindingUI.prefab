@@ -502,6 +502,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: RebindingButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5582466758091345372, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: EventReference.Path
+      value: event:/SFX/GUI/PanelOpen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5582466758091345372, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -1457585156
+      objectReference: {fileID: 0}
+    - target: {fileID: 5582466758091345372, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1081842778
+      objectReference: {fileID: 0}
+    - target: {fileID: 5582466758091345372, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: -374527096
+      objectReference: {fileID: 0}
+    - target: {fileID: 5582466758091345372, guid: 8e18f0453978d8a4288bb2cd198d1902,
+        type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 293069318
+      objectReference: {fileID: 0}
     - target: {fileID: 5923777118491503557, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: m_Name

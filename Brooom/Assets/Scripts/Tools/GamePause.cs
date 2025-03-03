@@ -18,25 +18,27 @@ public class GamePause : MonoBehaviour {
         // Pause
         pauseState = GamePauseState.Pausing;
         // Show pause menu
-        if (showMenu) animator.SetBool("ShowMenu", true); // timeScale changed in animation
-        else timeScale = 0;
+        if (showMenu) {
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
+            AudioManager.Instance.PauseGame(); // start pause menu audio
+            animator.SetBool("ShowMenu", true); // timeScale changed in animation
+        } else timeScale = 0;
         menuVisible = true;
         // Enable cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        // Start pause menu audio
-        AudioManager.Instance.PauseGame();
     }
 
     public void ResumeGame() {
-        // Stop pause menu audio
-        AudioManager.Instance.ResumeGame();
         // Disable cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         // Hide pause menu
-        if (menuVisible) animator.SetBool("ShowMenu", false); // timeScale changed in animation
-        else timeScale = 1f;
+        if (menuVisible) {
+            animator.SetBool("ShowMenu", false); // timeScale changed in animation
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
+            AudioManager.Instance.ResumeGame(); // stop pause menu audio
+        } else timeScale = 1f;
         // Resume
         pauseState = GamePauseState.Resuming;
     }
@@ -45,6 +47,8 @@ public class GamePause : MonoBehaviour {
         // Change state to running
         pauseState = GamePauseState.Running;
         Time.timeScale = 1f;
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
+        AudioManager.Instance.ResumeGame(); // stop pause menu audio
     }
 
 	private void Start() {

@@ -3346,6 +3346,31 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 548dd12260ce3dd42babacd2f1251f0c,
         type: 3}
+    - target: {fileID: 8758573984176211416, guid: f0bd0e68b35665542868db1ed9b4bed7,
+        type: 3}
+      propertyPath: EventReference.Path
+      value: event:/SFX/GUI/PanelOpen
+      objectReference: {fileID: 0}
+    - target: {fileID: 8758573984176211416, guid: f0bd0e68b35665542868db1ed9b4bed7,
+        type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -1457585156
+      objectReference: {fileID: 0}
+    - target: {fileID: 8758573984176211416, guid: f0bd0e68b35665542868db1ed9b4bed7,
+        type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1081842778
+      objectReference: {fileID: 0}
+    - target: {fileID: 8758573984176211416, guid: f0bd0e68b35665542868db1ed9b4bed7,
+        type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: -374527096
+      objectReference: {fileID: 0}
+    - target: {fileID: 8758573984176211416, guid: f0bd0e68b35665542868db1ed9b4bed7,
+        type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 293069318
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0bd0e68b35665542868db1ed9b4bed7, type: 3}
 --- !u!224 &271281725 stripped
@@ -4808,7 +4833,6 @@ GameObject:
   - component: {fileID: 629087753}
   - component: {fileID: 629087752}
   - component: {fileID: 629087751}
-  - component: {fileID: 629087754}
   m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
@@ -4930,37 +4954,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629087749}
   m_CullTransparentMesh: 1
---- !u!114 &629087754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 629087749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -2114112211
-      Data2: 1095452818
-      Data3: 2027842442
-      Data4: -1301646981
-    Path: event:/SFX/GUI/Click
-  Event: 
-  EventPlayTrigger: 19
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &655464368
 GameObject:
   m_ObjectHideFlags: 0

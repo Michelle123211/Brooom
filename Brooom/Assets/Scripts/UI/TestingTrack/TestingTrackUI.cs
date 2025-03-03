@@ -22,11 +22,6 @@ public class TestingTrackUI : MonoBehaviour {
 
 	private TagsMapping tagsMapping;
 
-	public void ReturnBack() {
-		SceneLoader.Instance.SetBoolParameterForNextScene("OpenShop", true); // go straight to the Shop
-        SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
-	}
-
 	#region Speed and altitude
 	public void UpdatePlayerState() {
 		speedText.text = Math.Round(playerMovementController.GetCurrentSpeed(), 1).ToString();
@@ -122,8 +117,6 @@ public class TestingTrackUI : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (InputManager.Instance.GetBoolValue("Pause"))
-			ReturnBack();
 		UpdatePlayerState();
 	}
 

@@ -7,33 +7,33 @@ using FMODUnity;
 [CreateAssetMenu(fileName = "FMODEvents", menuName = "Audio/FMOD Events")]
 public class FMODEvents : ScriptableObject
 {
-    [field: SerializeField]
-    public GUIEvents GUI { get; private set; }
+    [field: SerializeField] public GUIEvents GUI { get; private set; }
 
-    [field: SerializeField]
-    public GameEvents Game { get; private set; }
+    [field: SerializeField]  public GameEvents Game { get; private set; }
 }
 
 [System.Serializable]
 public class GUIEvents {
 
-    [field: SerializeField]
-    public EventReference Click { get; private set; }
+    [field: SerializeField] public EventReference Click { get; private set; }
 
-    [field: SerializeField]
+    [field: SerializeField] public EventReference Release { get; private set; }
 
-    public EventReference Release { get; private set; }
+    [field: SerializeField] public EventReference Toggle { get; private set; }
 
-    [field: SerializeField]
+    [field: SerializeField] public EventReference SliderValue { get; private set; }
 
-    public EventReference SliderValue { get; private set; }
+    [field: SerializeField] public EventReference ScrollbarValue { get; private set; }
+
+    [field: SerializeField] public EventReference PanelOpen { get; private set; }
+
+    [field: SerializeField] public EventReference PanelClose { get; private set; }
 
 }
 
 [System.Serializable]
 public class GameEvents {
 
-    [field: SerializeField]
-    public EventReference SpellCast { get; private set; }
+    [field: SerializeField] public EventReference SpellCast { get; private set; }
 
 }

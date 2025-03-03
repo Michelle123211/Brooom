@@ -23,6 +23,17 @@ public class TestingTrackManager : MonoBehaviour {
 		playerSpellController.RechargeAllSpells();
 	}
 
+	private void ReturnBack() {
+		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
+		SceneLoader.Instance.SetBoolParameterForNextScene("OpenShop", true); // go straight to the Shop
+		SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
+	}
+
+	private void Update() {
+		if (InputManager.Instance.GetBoolValue("Pause"))
+			ReturnBack();
+	}
+
 	private void Start() {
 		playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 		// Disable mana - it will be unlimited
