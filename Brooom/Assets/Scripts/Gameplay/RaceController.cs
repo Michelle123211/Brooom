@@ -181,9 +181,11 @@ public class RaceController : MonoBehaviour {
         // Show the race countdown
         for (int i = 3; i > 0; i--) {
             raceHUD.ShowCountdown(i.ToString());
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.CountdownRace);
             yield return new WaitForSeconds(1);
         }
         raceHUD.ShowCountdown("START!");
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.RaceStarted);
         // Actually start the race
         State = RaceState.RaceInProgress;
 		// Send message

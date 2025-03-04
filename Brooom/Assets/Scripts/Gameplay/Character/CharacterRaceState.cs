@@ -58,9 +58,11 @@ public class CharacterRaceState : MonoBehaviour {
             lastHoopTime = RaceController.Instance.raceTime;
             hoopsPassedArray[hoopIndex] = true;
             if (RaceController.Instance.level.track[hoopIndex].isCheckpoint) {
+                if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.CheckpointPassed);
                 checkpointsPassed++;
                 onPassedCheckpointsChanged?.Invoke(checkpointsPassed);
             } else {
+                if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.HoopPassed);
                 hoopsPassed++;
                 onPassedHoopsChanged?.Invoke(hoopsPassed);
             }
@@ -82,6 +84,7 @@ public class CharacterRaceState : MonoBehaviour {
     public void OnCheckpointMissed(int hoopIndex) {
         if (hoopIndex != lastCheckpointMissed) {  // Should be warned only once for the same checkpoint
             lastCheckpointMissed = hoopIndex;
+            if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.CheckpointMissed);
             onCheckpointMissed?.Invoke();
             // Checkpoint cannot be missed, so no progress is made
         }
@@ -90,6 +93,7 @@ public class CharacterRaceState : MonoBehaviour {
     public void OnHoopMissed(int hoopIndex) {
         lastHoopTime = RaceController.Instance.raceTime;
         hoopsMissed++;
+        if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.HoopMissed);
         onMissedHoopsChanged?.Invoke(hoopsMissed);
         onHoopMissed?.Invoke();
         AddTimePenalization(RaceController.Instance.missedHoopPenalization);

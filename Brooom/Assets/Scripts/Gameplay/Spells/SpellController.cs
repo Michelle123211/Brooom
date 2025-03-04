@@ -34,7 +34,10 @@ public class SpellController : MonoBehaviour {
 				break;
 			}
 		}
-		if (selectedSpell != previouslySelectedSpell) onSelectedSpellChanged?.Invoke(selectedSpell);
+		if (selectedSpell != previouslySelectedSpell) {
+			if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.SpellSwapped);
+			onSelectedSpellChanged?.Invoke(selectedSpell);
+		}
 		return selectedSpell;
 	}
 
@@ -63,14 +66,15 @@ public class SpellController : MonoBehaviour {
 			// Cast spell and pass correct parameters (source, target)
 			SpellTarget spellTarget = spellTargetSelection.GetCurrentTarget();
 			if (!spellTarget.HasTargetAssigned) {
+				if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.SpellCastFailed);
 				Debug.Log("No suitable spell target was found.");
 				return;
 			}
 			currentSpell.CastSpell(
-				new SpellCastParameters { 
-					Spell = currentSpell.Spell, 
-					SourceObject = gameObject, 
-					Target = spellTarget, 
+				new SpellCastParameters {
+					Spell = currentSpell.Spell,
+					SourceObject = gameObject,
+					Target = spellTarget,
 					castDirection = (spellTarget.GetTargetPosition() - transform.position).normalized
 				});
 			AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.SpellCast, gameObject);
@@ -81,6 +85,8 @@ public class SpellController : MonoBehaviour {
 				Messaging.SendMessage("SpellCasted", currentSpell.Spell.Identifier);
 				PlayerState.Instance.MarkSpellAsUsed(currentSpell.Spell.Identifier);
 			}
+		} else {
+			if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.SpellCastFailed);
 		}
 	}
 

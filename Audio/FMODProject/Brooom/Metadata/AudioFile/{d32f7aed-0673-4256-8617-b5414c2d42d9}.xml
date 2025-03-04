@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d32f7aed-0673-4256-8617-b5414c2d42d9}">
+		<property name="assetPath">
+			<value>SoundEffects/InGame/RaceStarted.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.45945833333333336</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{dba35553-9e0f-452d-8055-c8fc5948a18e}</destination>
+		</relationship>
+	</object>
+</objects>

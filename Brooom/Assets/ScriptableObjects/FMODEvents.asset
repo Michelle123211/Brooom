@@ -91,3 +91,73 @@ MonoBehaviour:
         Data3: -1835075692
         Data4: -1118603065
       Path: event:/SFX/GAME/SpellCast
+    <SpellCastFailed>k__BackingField:
+      Guid:
+        Data1: -606707234
+        Data2: 1197861682
+        Data3: 1937734584
+        Data4: -913527501
+      Path: event:/SFX/GAME/SpellCastFailed
+    <SpellSwapped>k__BackingField:
+      Guid:
+        Data1: -1272780098
+        Data2: 1089241397
+        Data3: 1567407761
+        Data4: -705291810
+      Path: event:/SFX/GAME/SpellSwapped
+    <CountdownRace>k__BackingField:
+      Guid:
+        Data1: -2109849118
+        Data2: 1258402765
+        Data3: -842500727
+        Data4: -299473605
+      Path: event:/SFX/GAME/CountdownRace
+    <CountdownStartingZone>k__BackingField:
+      Guid:
+        Data1: 780905787
+        Data2: 1208321877
+        Data3: 521467285
+        Data4: 1859658420
+      Path: event:/SFX/GAME/CountdownStartingZone
+    <RaceStarted>k__BackingField:
+      Guid:
+        Data1: 1739719069
+        Data2: 1336239677
+        Data3: 718650250
+        Data4: 2094421617
+      Path: event:/SFX/GAME/RaceStarted
+    <HoopPassed>k__BackingField:
+      Guid:
+        Data1: 97749640
+        Data2: 1287938192
+        Data3: -323505786
+        Data4: -144760308
+      Path: event:/SFX/GAME/HoopPassed
+    <HoopMissed>k__BackingField:
+      Guid:
+        Data1: 815196579
+        Data2: 1306399869
+        Data3: 30911661
+        Data4: -2096881681
+      Path: event:/SFX/GAME/HoopMissed
+    <CheckpointPassed>k__BackingField:
+      Guid:
+        Data1: -1248976349
+        Data2: 1193617529
+        Data3: 595469483
+        Data4: -641154552
+      Path: event:/SFX/GAME/CheckpointPassed
+    <CheckpointMissed>k__BackingField:
+      Guid:
+        Data1: 338487943
+        Data2: 1318324225
+        Data3: -742424665
+        Data4: -1617618529
+      Path: event:/SFX/GAME/CheckpointMissed
+    <BonusPickedUp>k__BackingField:
+      Guid:
+        Data1: -1236144442
+        Data2: 1130214565
+        Data3: -714375546
+        Data4: 1711695102
+      Path: event:/SFX/GAME/BonusPickedUp

@@ -34,6 +34,7 @@ public class Bonus : MonoBehaviour {
                 Debug.LogWarning("OnTriggerEnter() in bonus object is invoked but no CharacterMovementController was found.");
                 return;
             }
+            AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.BonusPickedUp, character.gameObject);
             // Invoke the specific event
             BonusEffect effect = GetComponent<BonusEffect>();
             if (effect != null && character != null)

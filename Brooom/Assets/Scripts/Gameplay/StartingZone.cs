@@ -14,12 +14,14 @@ public class StartingZone : MonoBehaviour
 
 	private bool isCountingDown = false;
 	private float currentTime = 0;
+	private int secondsLeft = int.MaxValue;
 
 	private string countdownText = string.Empty;
 
 	private void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player") && !other.isTrigger) {
 			currentTime = durationToStart;
+			secondsLeft = int.MaxValue;
 			isCountingDown = true;
 			// Initialize and show UI
 			UpdateCountdownUI();
@@ -36,7 +38,12 @@ public class StartingZone : MonoBehaviour
 	}
 
 	private void UpdateCountdownUI() {
-		countdownLabel.text = string.Format(countdownText, Mathf.CeilToInt(currentTime));
+		int newSecondsLeft = Mathf.CeilToInt(currentTime);
+		if (newSecondsLeft < secondsLeft) { // play countdown sound each second
+			AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.CountdownStartingZone);
+			secondsLeft = newSecondsLeft;
+		}
+		countdownLabel.text = string.Format(countdownText, newSecondsLeft);
 	}
 
 	private void Update() {

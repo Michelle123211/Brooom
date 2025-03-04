@@ -41,5 +41,22 @@ public class GUIEvents {
 public class GameEvents {
 
     [field: SerializeField] public EventReference SpellCast { get; private set; }
+    [field: SerializeField] public EventReference SpellCastFailed { get; private set; }
+
+    [field: SerializeField] public EventReference SpellSwapped { get; private set; }
+
+    [field: SerializeField] public EventReference CountdownRace { get; private set; }
+
+    [field: SerializeField] public EventReference CountdownStartingZone { get; private set; }
+
+    [field: SerializeField] public EventReference RaceStarted { get; private set; }
+
+    [field: SerializeField] public EventReference HoopPassed { get; private set; }
+    [field: SerializeField] public EventReference HoopMissed { get; private set; }
+
+    [field: SerializeField] public EventReference CheckpointPassed { get; private set; }
+    [field: SerializeField] public EventReference CheckpointMissed { get; private set; }
+
+    [field: SerializeField] public EventReference BonusPickedUp { get; private set; }
 
 }
