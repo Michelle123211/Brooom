@@ -206,6 +206,7 @@ public class RaceController : MonoBehaviour {
         playerRacer.characterController.DisableActions(CharacterMovementController.StopMethod.BrakeStop);
         playerRacer.spellInput.DisableSpellCasting();
         // Start playing the sequence
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.RaceFinished);
         PlayableDirector endCutscene = Cutscenes.Instance.PlayCutscene("RaceEnd");
         double remainingDuration = 0;
         if (endCutscene != null) {

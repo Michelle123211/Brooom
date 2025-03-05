@@ -40,16 +40,27 @@ public class GUIEvents {
 [System.Serializable]
 public class GameEvents {
 
+    [field:Header("Spells")]
+
     [field: SerializeField] public EventReference SpellCast { get; private set; }
     [field: SerializeField] public EventReference SpellCastFailed { get; private set; }
+    [field: SerializeField] public EventReference SpellHit { get; private set; }
+    [field: SerializeField] public EventReference SpellBlocked { get; private set; }
 
     [field: SerializeField] public EventReference SpellSwapped { get; private set; }
+
+
+    [field: Header("Race")]
 
     [field: SerializeField] public EventReference CountdownRace { get; private set; }
 
     [field: SerializeField] public EventReference CountdownStartingZone { get; private set; }
 
     [field: SerializeField] public EventReference RaceStarted { get; private set; }
+    [field: SerializeField] public EventReference RaceFinished { get; private set; }
+
+
+    [field: Header("Track")]
 
     [field: SerializeField] public EventReference HoopPassed { get; private set; }
     [field: SerializeField] public EventReference HoopMissed { get; private set; }

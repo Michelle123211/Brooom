@@ -31,6 +31,9 @@
 		<relationship name="parameters">
 			<destination>{d0b7ea2e-e16d-4c44-9c48-92f04733aa71}</destination>
 		</relationship>
+		<relationship name="banks">
+			<destination>{d6c7b684-c3af-42fc-ba2b-52e6c4a52e3d}</destination>
+		</relationship>
 	</object>
 	<object class="EventMixer" id="{dd0860b9-5a04-4d73-84c3-abc1a60e3d5e}">
 		<relationship name="masterBus">
@@ -53,7 +56,7 @@
 			<destination>{82b2acf0-45d8-4ab5-b2b3-0fc82bcdccbc}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{098c8ad7-c5d7-412e-8ce2-d08564a0dd84}</destination>
+			<destination>{d9f8c6a4-7eb4-4bb2-986e-5cafeec56194}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{c2576ba5-bc25-400a-a324-1c9b44d9c8b7}" />
@@ -69,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{03beec2e-d5f3-41ec-a269-7aebe1466494}">
+		<property name="volume">
+			<value>-4</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{c972ee95-58a5-4959-bfed-fdc4a81d3aaa}</destination>
 		</relationship>
@@ -79,7 +85,11 @@
 			<destination>{dd0860b9-5a04-4d73-84c3-abc1a60e3d5e}</destination>
 		</relationship>
 	</object>
-	<object class="MultiSound" id="{96afe2c9-a6a1-42ed-8c7c-1d5d398fd281}" />
+	<object class="MultiSound" id="{96afe2c9-a6a1-42ed-8c7c-1d5d398fd281}">
+		<relationship name="sounds">
+			<destination>{bdbf1549-c2bc-45cd-8eff-6a51d1aa1750}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusEffectChain" id="{f2680803-25eb-45d0-95c1-9dee41b74d07}">
 		<relationship name="effects">
 			<destination>{3860a536-5b8a-4f1e-b249-61c8fa3fba65}</destination>
@@ -90,10 +100,66 @@
 		<relationship name="effects">
 			<destination>{5889461c-26f8-4180-9edc-c747631ec64b}</destination>
 			<destination>{90c1d733-6ba9-42cf-8202-a66d90576f55}</destination>
+			<destination>{7fa9b9cc-9173-424f-b595-f751f413160d}</destination>
+			<destination>{b7ede05f-6a6f-4407-a9d0-95eb26d1c23c}</destination>
+			<destination>{ddd64d20-2133-423c-bd82-d646f9760078}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{e00b6729-0254-4f56-bd53-d5e00da56b81}" />
+	<object class="SingleSound" id="{bdbf1549-c2bc-45cd-8eff-6a51d1aa1750}">
+		<relationship name="audioFile">
+			<destination>{36679771-b9d2-40b9-be7c-23bde1ddaa9c}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{3860a536-5b8a-4f1e-b249-61c8fa3fba65}" />
 	<object class="MixerBusFader" id="{5889461c-26f8-4180-9edc-c747631ec64b}" />
 	<object class="SpatialiserEffect" id="{90c1d733-6ba9-42cf-8202-a66d90576f55}" />
+	<object class="LowpassSimpleEffect" id="{7fa9b9cc-9173-424f-b595-f751f413160d}">
+		<property name="cutoff">
+			<value>14500</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{6777ad70-cdc6-4004-a782-759f1cc3e1da}</destination>
+		</relationship>
+	</object>
+	<object class="HighpassSimpleEffect" id="{b7ede05f-6a6f-4407-a9d0-95eb26d1c23c}">
+		<property name="cutoff">
+			<value>55</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{aa516f9d-505f-420b-96f4-5081f4ea1e90}</destination>
+		</relationship>
+	</object>
+	<object class="SFXReverbEffect" id="{ddd64d20-2133-423c-bd82-d646f9760078}">
+		<property name="decayTime">
+			<value>230</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{d58c21d9-9afa-40dd-b75b-959835682306}</destination>
+		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{6777ad70-cdc6-4004-a782-759f1cc3e1da}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cutoff</value>
+		</property>
+		<property name="amount">
+			<value>29</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{aa516f9d-505f-420b-96f4-5081f4ea1e90}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cutoff</value>
+		</property>
+		<property name="amount">
+			<value>10</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{d58c21d9-9afa-40dd-b75b-959835682306}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>decayTime</value>
+		</property>
+		<property name="amount">
+			<value>22</value>
+		</property>
+	</object>
 </objects>

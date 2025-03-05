@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{20618b25-caac-4e7b-b682-df781258ec94}">
+		<property name="volume">
+			<value>-3</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{a64e3afe-c608-4126-b133-b545c71d757e}</destination>
 		</relationship>
@@ -84,7 +87,7 @@
 	</object>
 	<object class="MultiSound" id="{d8382eab-9126-4c25-a6b0-331aa61c05f9}">
 		<relationship name="sounds">
-			<destination>{64868043-4432-4186-a87c-0beedc9a003b}</destination>
+			<destination>{0f7a6c4e-fe56-4056-8274-1e7c3be35edc}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{0d7921d5-a6d4-4646-b930-e36f811fe441}">
@@ -96,23 +99,18 @@
 	<object class="MixerBusEffectChain" id="{a64e3afe-c608-4126-b133-b545c71d757e}">
 		<relationship name="effects">
 			<destination>{d0935fa1-5bb7-4f0a-b021-dea89122b7be}</destination>
-			<destination>{6be91c35-5130-4b95-a7db-3ed484f3fbe8}</destination>
 			<destination>{5790f481-5c80-417f-ae81-1360c02931db}</destination>
+			<destination>{6be91c35-5130-4b95-a7db-3ed484f3fbe8}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{8346b40c-dc1d-4f37-ab7e-48740cc2bfcb}" />
-	<object class="SingleSound" id="{64868043-4432-4186-a87c-0beedc9a003b}">
+	<object class="SingleSound" id="{0f7a6c4e-fe56-4056-8274-1e7c3be35edc}">
 		<relationship name="audioFile">
-			<destination>{5331ac9d-6ee1-4679-9e50-3c250117484d}</destination>
+			<destination>{ecec7621-5159-4536-99ad-2d8fbfeccc5e}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{59fcead3-5b1d-4313-b560-ef4a4f5e05d7}" />
 	<object class="MixerBusFader" id="{d0935fa1-5bb7-4f0a-b021-dea89122b7be}" />
-	<object class="LowpassSimpleEffect" id="{6be91c35-5130-4b95-a7db-3ed484f3fbe8}">
-		<property name="cutoff">
-			<value>1000</value>
-		</property>
-	</object>
 	<object class="SFXReverbEffect" id="{5790f481-5c80-417f-ae81-1360c02931db}">
 		<property name="decayTime">
 			<value>2000</value>
@@ -122,6 +120,11 @@
 		</property>
 		<property name="wetLevel">
 			<value>0</value>
+		</property>
+	</object>
+	<object class="LowpassSimpleEffect" id="{6be91c35-5130-4b95-a7db-3ed484f3fbe8}">
+		<property name="cutoff">
+			<value>1600</value>
 		</property>
 	</object>
 </objects>

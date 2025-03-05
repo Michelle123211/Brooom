@@ -98,6 +98,20 @@ MonoBehaviour:
         Data3: 1937734584
         Data4: -913527501
       Path: event:/SFX/GAME/SpellCastFailed
+    <SpellHit>k__BackingField:
+      Guid:
+        Data1: 2124837482
+        Data2: 1127091371
+        Data3: -29853795
+        Data4: 1186157990
+      Path: event:/SFX/GAME/SpellHit
+    <SpellBlocked>k__BackingField:
+      Guid:
+        Data1: -1992830162
+        Data2: 1149594994
+        Data3: 1667840902
+        Data4: -1835585106
+      Path: event:/SFX/GAME/SpellBlocked
     <SpellSwapped>k__BackingField:
       Guid:
         Data1: -1272780098
@@ -126,6 +140,13 @@ MonoBehaviour:
         Data3: 718650250
         Data4: 2094421617
       Path: event:/SFX/GAME/RaceStarted
+    <RaceFinished>k__BackingField:
+      Guid:
+        Data1: 648657955
+        Data2: 1302353602
+        Data3: -1087620217
+        Data4: 1383428218
+      Path: event:/SFX/GAME/RaceFinished
     <HoopPassed>k__BackingField:
       Guid:
         Data1: 97749640

@@ -35,6 +35,7 @@ public class SpellEffectController : MonoBehaviour {
 
     public void InvokeSpellEffect(SpellCastParameters castParameters) {
         this.castParameters = castParameters;
+        AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.SpellCast, gameObject);
         // Let the target racer know there is an incoming spell
         if (castParameters.Spell.TargetType == SpellTargetType.Opponent)
             castParameters.Target.TargetObject.GetComponentInChildren<IncomingSpellsTracker>().AddIncomingSpell(this);
@@ -61,12 +62,15 @@ public class SpellEffectController : MonoBehaviour {
         if (currentState == SpellCastState.HIT) {
             // If the target has shield and is not the racer themselves, don't continue and finish casting the spell
             GameObject targetObject = castParameters.Target.TargetObject;
-            if (castParameters.Spell.TargetType != SpellTargetType.Self && targetObject != null && targetObject.GetComponentInChildren<SpellShield>() != null)
+            if (castParameters.Spell.TargetType != SpellTargetType.Self && targetObject != null && targetObject.GetComponentInChildren<SpellShield>() != null) {
+                AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.SpellBlocked, targetObject);
                 currentState = SpellCastState.FINISHED;
-            // Otherwise, continue invoking the spell effect
-            else {
+            } else {
+                // Otherwise, continue invoking the spell effect
                 if (targetHitVisualEffect != null)
                     targetHitVisualEffect.StartPlaying();
+                if (castParameters.Spell.TargetType != SpellTargetType.Self && targetObject != null)
+                    AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.SpellHit, targetObject);
                 onSpellHit?.Invoke(this);
                 currentState = SpellCastState.EFFECT;
                 actualSpellEffect.ApplySpellEffect(castParameters);

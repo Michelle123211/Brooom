@@ -5,7 +5,7 @@
 			<value>HoopMissed</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{42328504-28eb-4363-b5bc-360323273a99}</destination>
@@ -72,9 +72,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{27f0de21-25e5-4689-89ef-5e65508c19dc}">
-		<property name="volume">
-			<value>-4</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{91fdea97-eb5c-42f9-8b9b-7bce248c50fb}</destination>
 		</relationship>
@@ -86,8 +83,11 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{33b100de-b968-418d-aab9-3f57654ce708}">
+		<property name="playbackMode">
+			<value>1</value>
+		</property>
 		<relationship name="sounds">
-			<destination>{6d4aa01f-f728-4ab0-a000-95957a57e0bd}</destination>
+			<destination>{4ccff899-f40a-422d-a55b-4053c10f22ba}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{6dff16a4-1a10-4a3e-b3c2-eace90fad825}">
@@ -99,22 +99,16 @@
 	<object class="MixerBusEffectChain" id="{91fdea97-eb5c-42f9-8b9b-7bce248c50fb}">
 		<relationship name="effects">
 			<destination>{b4c44a3d-6611-45a2-b4b1-aecc57835e2f}</destination>
-			<destination>{ba10b971-5b68-4425-a530-c4bbd506bcbe}</destination>
 			<destination>{689ea25a-adce-4a2b-af42-aa6981e4af56}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{2610a271-3b7e-4f52-81b4-11ac91885f1e}" />
-	<object class="SingleSound" id="{6d4aa01f-f728-4ab0-a000-95957a57e0bd}">
+	<object class="SingleSound" id="{4ccff899-f40a-422d-a55b-4053c10f22ba}">
 		<relationship name="audioFile">
-			<destination>{0b65243d-6f28-4861-a3e5-4798813a3e2b}</destination>
+			<destination>{837a6bc5-1838-4f8d-86a2-3e2ba544fa5c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{45826828-5751-44a8-9ba1-63c37abc3f74}" />
 	<object class="MixerBusFader" id="{b4c44a3d-6611-45a2-b4b1-aecc57835e2f}" />
-	<object class="LowpassSimpleEffect" id="{ba10b971-5b68-4425-a530-c4bbd506bcbe}">
-		<property name="cutoff">
-			<value>5000</value>
-		</property>
-	</object>
 	<object class="SFXReverbEffect" id="{689ea25a-adce-4a2b-af42-aa6981e4af56}" />
 </objects>
