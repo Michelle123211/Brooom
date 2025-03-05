@@ -84,7 +84,7 @@
 	</object>
 	<object class="MultiSound" id="{ae29148b-32fe-4508-a569-1eda7084c832}">
 		<relationship name="sounds">
-			<destination>{c9178896-c385-491e-b9d2-251aca341495}</destination>
+			<destination>{25d5182e-8a97-442a-a94d-6f483aea2a90}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{49e012bc-5dd9-405c-b6de-388e12985759}">
@@ -97,15 +97,78 @@
 		<relationship name="effects">
 			<destination>{b4da8f8f-a5b8-4d61-95d1-e1542ee64f28}</destination>
 			<destination>{4420445c-9534-440d-89e6-984f1318c54f}</destination>
+			<destination>{4b613588-d4bd-425a-b59f-ba5f4408acc2}</destination>
+			<destination>{5857d7bb-5530-4521-90ba-ba89ab2eca68}</destination>
+			<destination>{e2e5569d-0c40-44fb-8189-dcc832c51ca0}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{577eebf5-409c-4a71-845a-86887811d090}" />
-	<object class="SingleSound" id="{c9178896-c385-491e-b9d2-251aca341495}">
+	<object class="SingleSound" id="{25d5182e-8a97-442a-a94d-6f483aea2a90}">
 		<relationship name="audioFile">
-			<destination>{486186e3-774e-4fe2-965c-594a38501b73}</destination>
+			<destination>{864c98ff-fbef-4ace-aa8f-b79d400ae731}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{1bd62e7c-361d-4f14-a4dd-cc990f130748}" />
 	<object class="MixerBusFader" id="{b4da8f8f-a5b8-4d61-95d1-e1542ee64f28}" />
 	<object class="SpatialiserEffect" id="{4420445c-9534-440d-89e6-984f1318c54f}" />
+	<object class="LowpassSimpleEffect" id="{4b613588-d4bd-425a-b59f-ba5f4408acc2}">
+		<property name="cutoff">
+			<value>9500</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{d7efd6cd-a0d2-452a-b425-c9faa0a91392}</destination>
+		</relationship>
+	</object>
+	<object class="HighpassSimpleEffect" id="{5857d7bb-5530-4521-90ba-ba89ab2eca68}">
+		<property name="cutoff">
+			<value>320</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{4101a2db-6ef6-4773-ae9a-44d47409733a}</destination>
+		</relationship>
+	</object>
+	<object class="SFXReverbEffect" id="{e2e5569d-0c40-44fb-8189-dcc832c51ca0}">
+		<property name="decayTime">
+			<value>200</value>
+		</property>
+		<property name="wetLevel">
+			<value>4.5</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{3f5c5673-befa-4fc8-893e-b8dc15d09211}</destination>
+			<destination>{97b252ed-45dd-4726-8578-aa50d896377f}</destination>
+		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{d7efd6cd-a0d2-452a-b425-c9faa0a91392}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cutoff</value>
+		</property>
+		<property name="amount">
+			<value>40</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{4101a2db-6ef6-4773-ae9a-44d47409733a}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cutoff</value>
+		</property>
+		<property name="amount">
+			<value>30.5</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{3f5c5673-befa-4fc8-893e-b8dc15d09211}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>decayTime</value>
+		</property>
+		<property name="amount">
+			<value>20</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{97b252ed-45dd-4726-8578-aa50d896377f}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>wetLevel</value>
+		</property>
+		<property name="amount">
+			<value>10</value>
+		</property>
+	</object>
 </objects>
