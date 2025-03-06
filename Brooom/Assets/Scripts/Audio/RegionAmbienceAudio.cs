@@ -31,7 +31,7 @@ public class RegionAmbienceAudio : MonoBehaviour {
 		}
 
 		// Set Altitude parameter
-		float altitudeAboveGround = playerPosition.y - nearestTerrainPoint.position.y;
+		float altitudeAboveGround = playerPosition.y - Mathf.Max(0, nearestTerrainPoint.position.y); // above terrain or water level, whichever is higher
 		ambienceSound.SetParameter("Altitude", altitudeAboveGround); // would not work for more complicated terrain (e.g. tunnel)
 	}
 
