@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{2ac47b80-3d38-48fc-a259-e911998ec672}">
+		<property name="name">
+			<value>NoiseIntensity</value>
+		</property>
+		<relationship name="folder">
+			<destination>{454826da-d74a-4195-87a0-9d09d192d2e1}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{47f62170-0fc9-427e-b24d-105b1c5012e3}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{47f62170-0fc9-427e-b24d-105b1c5012e3}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

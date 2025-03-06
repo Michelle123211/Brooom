@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{997a1715-b9de-4a69-8765-9599efea6089}">
+		<property name="name">
+			<value>TreeCrackIntensity</value>
+		</property>
+		<relationship name="folder">
+			<destination>{454826da-d74a-4195-87a0-9d09d192d2e1}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{532bd7f5-033b-4900-8841-003ae9a42baa}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{532bd7f5-033b-4900-8841-003ae9a42baa}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

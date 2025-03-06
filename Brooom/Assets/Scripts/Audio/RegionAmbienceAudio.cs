@@ -16,7 +16,6 @@ public class RegionAmbienceAudio : MonoBehaviour {
 			LevelRegionType.SnowyMountain => 3,
 			LevelRegionType.BloomingMeadow => 4,
 			LevelRegionType.StormyArea => 5,
-			LevelRegionType.AboveClouds => 6,
 			_ => throw new System.NotImplementedException(),
 		};
 	}
