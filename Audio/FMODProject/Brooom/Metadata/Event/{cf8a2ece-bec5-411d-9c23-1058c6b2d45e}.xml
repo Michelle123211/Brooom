@@ -5,7 +5,7 @@
 			<value>MeadowOneShots</value>
 		</property>
 		<property name="outputFormat">
-			<value>5</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{03b3743e-1b13-4f54-b927-36601a5d6f1b}</destination>
@@ -116,6 +116,12 @@
 		</property>
 		<property name="maximumTimeBetweenSounds">
 			<value>7000</value>
+		</property>
+		<property name="minimumScatterDistance">
+			<value>0</value>
+		</property>
+		<property name="maximumScatterDistance">
+			<value>0</value>
 		</property>
 		<relationship name="sound">
 			<destination>{e81c499a-74c4-425a-85db-d628505390d4}</destination>

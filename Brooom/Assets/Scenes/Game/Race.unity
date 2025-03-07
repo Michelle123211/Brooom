@@ -1222,7 +1222,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 247.255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
@@ -11002,7 +11002,7 @@ PrefabInstance:
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 117.125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236244, guid: fad4e07ab27d2764f8f7fa719f0b13fe,
         type: 3}
@@ -11690,7 +11690,7 @@ PrefabInstance:
     - target: {fileID: 3638260363610183833, guid: f0451ec7c47179e47aba16e3e66e6934,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 134.41998
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3638260363610183833, guid: f0451ec7c47179e47aba16e3e66e6934,
         type: 3}
@@ -11715,7 +11715,7 @@ PrefabInstance:
     - target: {fileID: 3638260364119642149, guid: f0451ec7c47179e47aba16e3e66e6934,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 157.33002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3638260364119642149, guid: f0451ec7c47179e47aba16e3e66e6934,
         type: 3}
@@ -11827,6 +11827,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ambience
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952198551253945406, guid: c918fae33488c7b47b8373e5c9218e8b,
+        type: 3}
+      propertyPath: Params.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952198551253945406, guid: c918fae33488c7b47b8373e5c9218e8b,
+        type: 3}
+      propertyPath: EventReference.Path
+      value: event:/AMBIENCE/Internal/One-shots/RegionOneShots
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952198551253945406, guid: c918fae33488c7b47b8373e5c9218e8b,
+        type: 3}
+      propertyPath: EventReference.Guid.Data1
+      value: -1298291060
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952198551253945406, guid: c918fae33488c7b47b8373e5c9218e8b,
+        type: 3}
+      propertyPath: EventReference.Guid.Data2
+      value: 1292813533
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952198551253945406, guid: c918fae33488c7b47b8373e5c9218e8b,
+        type: 3}
+      propertyPath: EventReference.Guid.Data3
+      value: -1134440801
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952198551253945406, guid: c918fae33488c7b47b8373e5c9218e8b,
+        type: 3}
+      propertyPath: EventReference.Guid.Data4
+      value: 954285948
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952198551253945406, guid: c918fae33488c7b47b8373e5c9218e8b,
+        type: 3}
+      propertyPath: Params.Array.data[0].Name
+      value: Region
+      objectReference: {fileID: 0}
+    - target: {fileID: 8952198551253945406, guid: c918fae33488c7b47b8373e5c9218e8b,
+        type: 3}
+      propertyPath: Params.Array.data[0].Value
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c918fae33488c7b47b8373e5c9218e8b, type: 3}

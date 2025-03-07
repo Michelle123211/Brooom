@@ -5,7 +5,7 @@
 			<value>ForestOneShots</value>
 		</property>
 		<property name="outputFormat">
-			<value>5</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{03b3743e-1b13-4f54-b927-36601a5d6f1b}</destination>
@@ -137,6 +137,12 @@
 		<property name="maximumTimeBetweenSounds">
 			<value>7000</value>
 		</property>
+		<property name="minimumScatterDistance">
+			<value>0</value>
+		</property>
+		<property name="maximumScatterDistance">
+			<value>0</value>
+		</property>
 		<relationship name="sound">
 			<destination>{8af27dc5-743f-4755-9d63-269c5840dd57}</destination>
 		</relationship>
@@ -159,6 +165,12 @@
 		<property name="length">
 			<value>10</value>
 		</property>
+		<property name="minimumScatterDistance">
+			<value>0</value>
+		</property>
+		<property name="maximumScatterDistance">
+			<value>0</value>
+		</property>
 		<relationship name="sound">
 			<destination>{03bc4c90-f036-4a88-83bb-2c82c5c63583}</destination>
 		</relationship>
@@ -180,6 +192,12 @@
 	<object class="SoundScatterer" id="{eb6a90ef-e674-4c52-aa0b-6d0876d3439c}">
 		<property name="length">
 			<value>10</value>
+		</property>
+		<property name="minimumScatterDistance">
+			<value>0</value>
+		</property>
+		<property name="maximumScatterDistance">
+			<value>0</value>
 		</property>
 		<relationship name="sound">
 			<destination>{e7af5bc5-bdd0-4a5e-9e95-145c71c8e612}</destination>
@@ -267,7 +285,7 @@
 	<object class="EventSound" id="{1a0d7f1f-a05d-4cff-8c5b-e030d7b2b1df}">
 		<relationship name="parameters">
 			<destination>{e4a71279-c2d7-432d-9e8f-4c9132cffd04}</destination>
-			<destination>{db75bab6-80d4-4b55-822a-2e6c56bc4acb}</destination>
+			<destination>{b88c8526-fe54-4549-80ae-e8407b7587df}</destination>
 		</relationship>
 		<relationship name="event">
 			<destination>{57b3803f-74c9-441f-b6cb-ebc8596bcc96}</destination>
@@ -299,7 +317,7 @@
 			<destination>{8750d448-178c-4961-be7a-fac23fa8ab2b}</destination>
 		</relationship>
 	</object>
-	<object class="ParameterProperty" id="{db75bab6-80d4-4b55-822a-2e6c56bc4acb}">
+	<object class="ParameterProperty" id="{b88c8526-fe54-4549-80ae-e8407b7587df}">
 		<relationship name="parameter">
 			<destination>{1403bb36-db7b-483e-a8a3-adfb140a83b2}</destination>
 		</relationship>

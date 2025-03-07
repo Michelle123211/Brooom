@@ -165,14 +165,14 @@
 	<object class="MixerBusFader" id="{15287f69-f823-4ba7-8fdc-3531c5d6c483}" />
 	<object class="EventSound" id="{9f6b5258-983a-41b2-b5cc-8f5af3613a1d}">
 		<relationship name="parameters">
-			<destination>{a172b27a-f9b3-494f-8e6c-ed458ce669e7}</destination>
+			<destination>{dfd8a76d-0b93-4164-a7b0-7b9b79e7a803}</destination>
 		</relationship>
 		<relationship name="event">
 			<destination>{62b9a93d-9dd3-4e07-b1ab-06f1f5cb23f8}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{c0f6d1c3-513b-4895-8f50-4ca660b8800a}" />
-	<object class="ParameterProperty" id="{a172b27a-f9b3-494f-8e6c-ed458ce669e7}">
+	<object class="ParameterProperty" id="{dfd8a76d-0b93-4164-a7b0-7b9b79e7a803}">
 		<relationship name="parameter">
 			<destination>{b94e4247-a1ad-40da-b009-891977d5bf8e}</destination>
 		</relationship>
