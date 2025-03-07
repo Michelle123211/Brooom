@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{f2504c21-5e5c-4b39-99e6-fbeb35424df8}">
+		<property name="assetPath">
+			<value>Ambience/Loops/RainWithThunder1.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>36.090333333333334</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{dba35553-9e0f-452d-8055-c8fc5948a18e}</destination>
+		</relationship>
+	</object>
+</objects>
