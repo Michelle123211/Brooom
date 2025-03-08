@@ -133,9 +133,15 @@
 		<property name="isCutoff">
 			<value>true</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{8bd6ffb9-9d1d-43fd-a37c-b4cd24888a25}</destination>
+		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{5d281c8b-3f48-452a-b135-b48411e2ca54}</destination>
 		</relationship>
@@ -153,9 +159,15 @@
 		<property name="length">
 			<value>0.80000000000000004</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{193769a3-99ba-4b41-8f8c-ee1edb0c7749}</destination>
+		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{991865d3-ffb6-4ef0-bf03-1964a7b55bad}</destination>
 		</relationship>
@@ -173,9 +185,15 @@
 		<property name="length">
 			<value>0.59999999999999998</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{402473bc-3288-45a4-9277-d31cabf8c4d8}</destination>
+		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{df3f70e1-4f43-414d-a065-dce34b9efd0e}</destination>
 		</relationship>
@@ -193,9 +211,15 @@
 		<property name="length">
 			<value>0.40000000000000008</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{94cc9ae7-890b-4584-b921-ddd3df567909}</destination>
+		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{58c8d744-88d6-48ac-8f95-5d8c36a956b4}</destination>
 		</relationship>
@@ -280,6 +304,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{1a22aac9-2788-49d2-9742-eb89d94c6add}" />
 	<object class="MixerBusFader" id="{a7503726-a803-4034-95f2-7a8d1520dcf7}" />
+	<object class="RandomizerModulator" id="{8bd6ffb9-9d1d-43fd-a37c-b4cd24888a25}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="FadeCurve" id="{5d281c8b-3f48-452a-b135-b48411e2ca54}">
 		<relationship name="startPoint">
 			<destination>{1809923f-d5c1-4915-9965-331d3efca55c}</destination>
@@ -287,6 +319,14 @@
 		<relationship name="endPoint">
 			<destination>{29ec3e04-508a-4615-b6e3-e28dc35fd1e3}</destination>
 		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{193769a3-99ba-4b41-8f8c-ee1edb0c7749}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
+		</property>
 	</object>
 	<object class="FadeCurve" id="{991865d3-ffb6-4ef0-bf03-1964a7b55bad}">
 		<relationship name="startPoint">
@@ -296,6 +336,14 @@
 			<destination>{75afd4c5-5ac7-46e8-b43a-78e6e13a10bd}</destination>
 		</relationship>
 	</object>
+	<object class="RandomizerModulator" id="{402473bc-3288-45a4-9277-d31cabf8c4d8}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="FadeCurve" id="{df3f70e1-4f43-414d-a065-dce34b9efd0e}">
 		<relationship name="startPoint">
 			<destination>{1be1b233-b353-4ddb-adfe-e4555b870450}</destination>
@@ -303,6 +351,14 @@
 		<relationship name="endPoint">
 			<destination>{f4b99da2-c948-4421-a587-a2d6a4f3dcb9}</destination>
 		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{94cc9ae7-890b-4584-b921-ddd3df567909}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
+		</property>
 	</object>
 	<object class="FadeCurve" id="{58c8d744-88d6-48ac-8f95-5d8c36a956b4}">
 		<relationship name="startPoint">

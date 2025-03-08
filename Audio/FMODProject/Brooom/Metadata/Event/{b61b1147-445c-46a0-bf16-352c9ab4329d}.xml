@@ -118,9 +118,15 @@
 		<property name="isCutoff">
 			<value>true</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{cf25e3f4-2509-4005-9b55-42f111accd16}</destination>
+		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{20b35ec3-8879-4bf1-9eaf-42add67dbe6f}</destination>
 		</relationship>
@@ -138,9 +144,15 @@
 		<property name="length">
 			<value>0.69999999999999996</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{9c78451b-cb68-47f1-81ee-80205fc9c33b}</destination>
+		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{9c1441a6-2fc2-4db6-aea6-03f9c460fe20}</destination>
 		</relationship>
@@ -158,9 +170,15 @@
 		<property name="length">
 			<value>0.39999999999999997</value>
 		</property>
+		<property name="startOffset">
+			<value>50</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{995ff886-cdb8-4bfd-bccf-c842ed0483c3}</destination>
+		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{74cc1eef-bb95-469f-99b4-0a017e3fbe31}</destination>
 		</relationship>
@@ -195,6 +213,14 @@
 	</object>
 	<object class="MixerBusPanner" id="{5d8d38bd-0040-41b3-91e8-d9a3ebc1a056}" />
 	<object class="MixerBusFader" id="{5a232b38-6b22-4bc9-b795-2419825a26d3}" />
+	<object class="RandomizerModulator" id="{cf25e3f4-2509-4005-9b55-42f111accd16}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="FadeCurve" id="{20b35ec3-8879-4bf1-9eaf-42add67dbe6f}">
 		<relationship name="startPoint">
 			<destination>{9dd43070-421d-45b7-88b7-f44d2ca97146}</destination>
@@ -203,6 +229,14 @@
 			<destination>{f2223850-531e-4640-b125-353b90c705fe}</destination>
 		</relationship>
 	</object>
+	<object class="RandomizerModulator" id="{9c78451b-cb68-47f1-81ee-80205fc9c33b}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
+		</property>
+	</object>
 	<object class="FadeCurve" id="{9c1441a6-2fc2-4db6-aea6-03f9c460fe20}">
 		<relationship name="startPoint">
 			<destination>{38267b59-7c99-413e-ae47-509d2fa7a121}</destination>
@@ -210,6 +244,14 @@
 		<relationship name="endPoint">
 			<destination>{8a85f4c1-ca34-4c14-a713-f8ac0a29c35d}</destination>
 		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{995ff886-cdb8-4bfd-bccf-c842ed0483c3}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
+		</property>
 	</object>
 	<object class="FadeCurve" id="{74cc1eef-bb95-469f-99b4-0a017e3fbe31}">
 		<relationship name="startPoint">
