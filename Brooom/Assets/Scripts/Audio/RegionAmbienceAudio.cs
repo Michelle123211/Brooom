@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class RegionAmbienceAudio : MonoBehaviour {
 
-	private FMODUnity.StudioEventEmitter ambienceSound;
+	[SerializeField] FMODUnity.StudioEventEmitter ambienceSound;
+	[SerializeField] FMODUnity.StudioEventEmitter underwaterSnapshot;
 
 	private LevelRegionType lastRegion = LevelRegionType.NONE;
+
+	private bool underwater = false;
 
 	private float GetFMODRegionParameterValue(LevelRegionType region) {
 		return region switch {
@@ -33,9 +36,14 @@ public class RegionAmbienceAudio : MonoBehaviour {
 		// Set Altitude parameter
 		float altitudeAboveGround = playerPosition.y - Mathf.Max(0, nearestTerrainPoint.position.y); // above terrain or water level, whichever is higher
 		ambienceSound.SetParameter("Altitude", altitudeAboveGround); // would not work for more complicated terrain (e.g. tunnel)
-	}
 
-	private void Start() {
-		ambienceSound = GetComponent<FMODUnity.StudioEventEmitter>();
+		// Handle being underwater
+		if (playerPosition.y < 0 && !underwater) { // Play underwater effect
+			underwaterSnapshot.Play();
+			underwater = true;
+		} else if (playerPosition.y > 0 && underwater) { // Stop playing underwater effect
+			underwaterSnapshot.Stop();
+			underwater = false;
+		}
 	}
 }
