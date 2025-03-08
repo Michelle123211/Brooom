@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{c3adc217-96fc-4050-95a4-62ca6f135233}">
+		<property name="assetPath">
+			<value>SpellFlying2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>5.0229583333333334</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{dba35553-9e0f-452d-8055-c8fc5948a18e}</destination>
+		</relationship>
+	</object>
+</objects>
