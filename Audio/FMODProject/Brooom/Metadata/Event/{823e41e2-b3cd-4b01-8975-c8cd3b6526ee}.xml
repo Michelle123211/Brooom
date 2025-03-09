@@ -113,7 +113,7 @@
 	<object class="MixerBusFader" id="{d0935fa1-5bb7-4f0a-b021-dea89122b7be}" />
 	<object class="SFXReverbEffect" id="{5790f481-5c80-417f-ae81-1360c02931db}">
 		<property name="decayTime">
-			<value>2000</value>
+			<value>1400</value>
 		</property>
 		<property name="HFDecayRatio">
 			<value>70</value>
@@ -124,7 +124,7 @@
 	</object>
 	<object class="LowpassSimpleEffect" id="{6be91c35-5130-4b95-a7db-3ed484f3fbe8}">
 		<property name="cutoff">
-			<value>1600</value>
+			<value>1500</value>
 		</property>
 	</object>
 </objects>
