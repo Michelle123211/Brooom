@@ -137,7 +137,7 @@
 			<destination>{f394d609-4d90-47f0-9dee-8f8260de4157}</destination>
 		</relationship>
 		<relationship name="audioFile">
-			<destination>{8a3bd347-019c-49a8-b388-dd9baebe74b3}</destination>
+			<destination>{0bbecddd-c212-4d01-a622-11d2cc63f3da}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{edd2e2b7-0912-4ab5-a063-be94647925ca}">
@@ -259,7 +259,7 @@
 			<value>0.99917898193760257</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>6</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{34dd0fa0-4848-4a46-9f92-05108e0fb475}">
@@ -267,7 +267,7 @@
 			<value>0.99671592775041051</value>
 		</property>
 		<property name="value">
-			<value>-8</value>
+			<value>10</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{49e19432-2fdd-4cad-84ef-b2eeda243a8f}">
@@ -278,15 +278,15 @@
 			<value>-80</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.599278569</value>
+			<value>-0.385263354</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{6d8be3bc-51f2-41bc-bdde-da1713131ab7}">
 		<property name="position">
-			<value>0.17999999999999999</value>
+			<value>0.040000000000000001</value>
 		</property>
 		<property name="value">
-			<value>-17</value>
+			<value>-12</value>
 		</property>
 		<property name="curveShape">
 			<value>-0.103807271</value>
