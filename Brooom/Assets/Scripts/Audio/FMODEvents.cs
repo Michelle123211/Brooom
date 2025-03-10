@@ -15,6 +15,8 @@ public class FMODEvents : ScriptableObject
 [System.Serializable]
 public class GUIEvents {
 
+    [field:Header("General UI")]
+
     [field: SerializeField] public EventReference Click { get; private set; }
 
     [field: SerializeField] public EventReference Release { get; private set; }
@@ -31,9 +33,21 @@ public class GUIEvents {
 
     [field: SerializeField] public EventReference KeyDown { get; private set; }
 
+
+    [field:Header("Shop UI")]
+
     [field: SerializeField] public EventReference Purchase { get; private set; }
 
     [field: SerializeField] public EventReference PurchaseDenied { get; private set; }
+
+
+    [field:Header("Game end UI")]
+
+    [field: SerializeField] public EventReference Applause { get; private set; }
+
+    [field: SerializeField] public EventReference FireworkWhistle { get; private set; }
+
+    [field: SerializeField] public EventReference FireworkHit { get; private set; }
 
 }
 

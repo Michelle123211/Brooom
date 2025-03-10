@@ -22,6 +22,14 @@ public class EndingStarUI : MonoBehaviour {
 		return this.animator.GetCurrentAnimatorStateInfo(0).IsName("StarIdle");
 	}
 
+	public void PlayFireworkWhistleSound() {
+		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.FireworkWhistle);
+	}
+
+	public void PlayFireworkExplosionSound() {
+		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.FireworkHit);
+	}
+
 	public void PlaySpawnAnimation() {
 		this.animator.SetTrigger("Spawn");
 	}

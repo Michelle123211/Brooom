@@ -46,6 +46,9 @@ public class EndingUI : MonoBehaviour {
         // Get all stars
         stars = GetComponentsInChildren<EndingStarUI>();
         isStarBeingSpawn = new bool[stars.Length];
+
+        // Play applause sound
+        AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.Applause);
     }
 
 }
