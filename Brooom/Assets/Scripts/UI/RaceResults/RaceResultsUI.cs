@@ -12,11 +12,14 @@ public class RaceResultsUI : MonoBehaviour {
     [Tooltip("A prefab of a results table row which is instantiated several times.")]
     [SerializeField] RaceResultRowUI resultRowPrefab;
 
+    int playerIndex;
+
     public void GoToPlayerOverview() {
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
     public void SetResultsTable(RaceResultData[] results, int playerPlace) {
+        playerIndex = playerPlace - 1;
         // Remove all existing rows from the table
         UtilsMonoBehaviour.RemoveAllChildren(resultRowsParent);
         // Instantiate rows according to the results
@@ -24,7 +27,7 @@ public class RaceResultsUI : MonoBehaviour {
             RaceResultRowUI row = Instantiate<RaceResultRowUI>(resultRowPrefab, resultRowsParent);
             row.Initialize(i + 1, results[i]);
             // Highlight player
-            if (i + 1 == playerPlace)
+            if (i == playerIndex)
                 row.HighlightPlayer();
         }
     }
@@ -35,6 +38,11 @@ public class RaceResultsUI : MonoBehaviour {
 
     private IEnumerator ShowResultsOneByOne() {
         for (int i = 0; i < resultRowsParent.childCount; i++) {
+            AudioManager.Instance.PlayOneShot(
+                i == playerIndex
+                    ? AudioManager.Instance.Events.GUI.RaceResultPlayer
+                    : AudioManager.Instance.Events.GUI.RaceResult
+            );
             resultRowsParent.GetChild(i).gameObject.TweenAwareEnable();
             yield return new WaitForSeconds(0.2f);
         }

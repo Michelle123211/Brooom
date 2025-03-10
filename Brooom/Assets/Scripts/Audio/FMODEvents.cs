@@ -41,6 +41,13 @@ public class GUIEvents {
     [field: SerializeField] public EventReference PurchaseDenied { get; private set; }
 
 
+    [field: Header("Race results UI")]
+
+    [field: SerializeField] public EventReference RaceResult { get; private set; }
+
+    [field: SerializeField] public EventReference RaceResultPlayer { get; private set; }
+
+
     [field:Header("Game end UI")]
 
     [field: SerializeField] public EventReference Applause { get; private set; }
