@@ -10,6 +10,8 @@ public class LoadingSceneUI : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI loadingText;
 
+    private FMODUnity.StudioEventEmitter loadingSound;
+
     private float timeout;
     private int numberOfDots = 0;
     private string loadingString = "";
@@ -29,9 +31,15 @@ public class LoadingSceneUI : MonoBehaviour
         }
     }
 
-	private void OnEnable() {
+    private void OnEnable() {
         timeout = durationOfOneDot;
         loadingString = LocalizationManager.Instance.GetLocalizedString("LoadingLabel");
         loadingText.text = loadingString;
+        if (loadingSound == null) loadingSound = GetComponent<FMODUnity.StudioEventEmitter>();
+        loadingSound.Play();
     }
+
+    private void OnDisable() {
+        loadingSound.Stop();
+	}
 }

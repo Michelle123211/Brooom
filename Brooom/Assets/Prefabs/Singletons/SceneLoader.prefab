@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 4291003544061281305}
   - component: {fileID: 4291003544061281311}
   - component: {fileID: 4291003544061281310}
+  - component: {fileID: 69951883996305625}
   m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
@@ -392,6 +393,37 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &69951883996305625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4291003544061281304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1189740534
+      Data2: 1307500395
+      Data3: 1739110034
+      Data4: 1623662272
+    Path: event:/SFX/GUI/Loading
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &4291003544986131276
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,7 +469,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf3e1177aa6c0447b81d27df710a294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScene: Start
   animator: {fileID: 1538307267892136609}
 --- !u!1 &4291003545612039541
 GameObject:

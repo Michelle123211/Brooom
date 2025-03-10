@@ -5,7 +5,7 @@
 			<value>BackgroundMusicStart</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{cd790cf4-a1f2-4629-8d3b-52774c63530a}</destination>
@@ -57,7 +57,7 @@
 	<object class="MarkerTrack" id="{5e6da450-a029-417a-9902-dd7c75f628bf}" />
 	<object class="GroupTrack" id="{8aa37b54-c1c9-418c-bc40-14f67433654d}">
 		<relationship name="modules">
-			<destination>{e91c27c0-f969-4b70-8c61-56760bcaa3e3}</destination>
+			<destination>{a07ea754-3050-47ed-9814-c793e2895797}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{3d34bd04-a0c7-4496-8180-d37c6b797952}</destination>
@@ -65,7 +65,7 @@
 	</object>
 	<object class="Timeline" id="{c2d28150-4e0d-4197-90a6-1151ebec011f}">
 		<relationship name="modules">
-			<destination>{e91c27c0-f969-4b70-8c61-56760bcaa3e3}</destination>
+			<destination>{a07ea754-3050-47ed-9814-c793e2895797}</destination>
 		</relationship>
 		<relationship name="markers">
 			<destination>{aae0297f-8c5c-4e1e-8bc1-c1c00bb1a5f0}</destination>
@@ -88,12 +88,9 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6375fdc0-2bd4-4730-a9ea-dd9f231c7d69}" />
-	<object class="SingleSound" id="{e91c27c0-f969-4b70-8c61-56760bcaa3e3}">
-		<property name="length">
-			<value>8.5101133786848067</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{bf4417a1-692c-4874-88bf-3ee5b9883b34}</destination>
+	<object class="EventSound" id="{a07ea754-3050-47ed-9814-c793e2895797}">
+		<relationship name="event">
+			<destination>{d079b5ef-576e-4150-bf6c-429a73673d8c}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{3d34bd04-a0c7-4496-8180-d37c6b797952}">
@@ -118,7 +115,7 @@
 			<value>0</value>
 		</property>
 		<property name="length">
-			<value>8.5101133786848067</value>
+			<value>1</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{c2d28150-4e0d-4197-90a6-1151ebec011f}</destination>
