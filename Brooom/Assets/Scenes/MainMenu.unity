@@ -310,7 +310,7 @@ PrefabInstance:
     - target: {fileID: 5357457002500734764, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
       propertyPath: EventReference.Path
-      value: event:/SFX/GUI/PanelOpen
+      value: event:/SFX/GUI/General/PanelOpen
       objectReference: {fileID: 0}
     - target: {fileID: 5357457002500734764, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
@@ -1275,136 +1275,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &703774677
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1054762114}
-    m_Modifications:
-    - target: {fileID: 1868143783121236243, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_text
-      value: 'TODO: Fill with non-localized text'
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 1783
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 40.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 891.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -116.19
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1868143783121236245, guid: 6a8674091571ae54b90a7526d80a1ed3,
-        type: 3}
-      propertyPath: m_Name
-      value: Attributions
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6a8674091571ae54b90a7526d80a1ed3, type: 3}
---- !u!224 &703774678 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1868143783121236244, guid: 6a8674091571ae54b90a7526d80a1ed3,
-    type: 3}
-  m_PrefabInstance: {fileID: 703774677}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &827188289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,7 +1389,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.000061035156}
-  m_SizeDelta: {x: 0, y: 790.14}
+  m_SizeDelta: {x: 0, y: 749.92004}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &957652195
 MonoBehaviour:
@@ -1592,14 +1462,13 @@ RectTransform:
   m_Children:
   - {fileID: 1215457270}
   - {fileID: 1075874295}
-  - {fileID: 703774678}
   m_Father: {fileID: 957652194}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 911.5, y: -483.11002}
-  m_SizeDelta: {x: 1783, y: 136.3}
+  m_AnchoredPosition: {x: 911.49994, y: -463.00003}
+  m_SizeDelta: {x: 1783, y: 96.08}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1054762115
 MonoBehaviour:
@@ -1915,7 +1784,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 911.5, y: -296.22003}
+  m_AnchoredPosition: {x: 911.49994, y: -296.22003}
   m_SizeDelta: {x: 1783, y: 137.48001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1143929195
@@ -2507,7 +2376,7 @@ MonoBehaviour:
       Data2: 1110728541
       Data3: -737567056
       Data4: 577436568
-    Path: event:/SFX/GUI/ScrollbarValue
+    Path: event:/SFX/GUI/General/ScrollbarValue
   soundInterval: 0.1
 --- !u!1 &1381716465
 GameObject:
@@ -2728,7 +2597,7 @@ MonoBehaviour:
       Data2: 1095452818
       Data3: 2027842442
       Data4: -1301646981
-    Path: event:/SFX/GUI/Click
+    Path: event:/SFX/GUI/General/Click
   Event: 
   EventPlayTrigger: 19
   EventStopTrigger: 0
@@ -3045,7 +2914,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 911.5, y: -690.7}
+  m_AnchoredPosition: {x: 911.49994, y: -650.48004}
   m_SizeDelta: {x: 1783, y: 178.88}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1612784611
@@ -3470,7 +3339,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 911.5, y: -108.740005}
+  m_AnchoredPosition: {x: 911.49994, y: -108.740005}
   m_SizeDelta: {x: 1783, y: 137.48001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1694986404
@@ -4967,7 +4836,7 @@ MonoBehaviour:
       Data2: 1110234439
       Data3: 1662389902
       Data4: 1140197855
-    Path: event:/SFX/GUI/PanelClose
+    Path: event:/SFX/GUI/General/PanelClose
   Event: 
   EventPlayTrigger: 19
   EventStopTrigger: 0
@@ -5028,7 +4897,7 @@ MonoBehaviour:
       Data2: 1095452818
       Data3: 2027842442
       Data4: -1301646981
-    Path: event:/SFX/GUI/Click
+    Path: event:/SFX/GUI/General/Click
   Event: 
   EventPlayTrigger: 19
   EventStopTrigger: 0
@@ -5089,7 +4958,7 @@ MonoBehaviour:
       Data2: 1081842778
       Data3: -374527096
       Data4: 293069318
-    Path: event:/SFX/GUI/PanelOpen
+    Path: event:/SFX/GUI/General/PanelOpen
   Event: 
   EventPlayTrigger: 19
   EventStopTrigger: 0

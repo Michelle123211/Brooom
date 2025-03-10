@@ -278,7 +278,7 @@ PrefabInstance:
     - target: {fileID: 5582466758091345372, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
       propertyPath: EventReference.Path
-      value: event:/SFX/GUI/PanelOpen
+      value: event:/SFX/GUI/General/PanelOpen
       objectReference: {fileID: 0}
     - target: {fileID: 5582466758091345372, guid: 8e18f0453978d8a4288bb2cd198d1902,
         type: 3}
@@ -12272,7 +12272,7 @@ MonoBehaviour:
       Data2: 1110234439
       Data3: 1662389902
       Data4: 1140197855
-    Path: event:/SFX/GUI/PanelClose
+    Path: event:/SFX/GUI/General/PanelClose
   Event: 
   EventPlayTrigger: 19
   EventStopTrigger: 0
