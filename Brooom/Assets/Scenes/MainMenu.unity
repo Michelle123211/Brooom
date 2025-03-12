@@ -1825,6 +1825,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Start Again
       objectReference: {fileID: 0}
+    - target: {fileID: 8187462408966023352, guid: 31a857ba14895054eb81797935aeff9d,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8187462408966023353, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
       propertyPath: assignedKey
@@ -2621,6 +2626,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Multiplayer
       objectReference: {fileID: 0}
+    - target: {fileID: 8187462408966023352, guid: 31a857ba14895054eb81797935aeff9d,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8187462408966023353, guid: 31a857ba14895054eb81797935aeff9d,
         type: 3}
       propertyPath: assignedKey
@@ -3018,8 +3028,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: CONTINUE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 132f53987652bbf44b1a01ec566a6ef2, type: 2}
+  m_sharedMaterial: {fileID: -6159640702537183660, guid: 132f53987652bbf44b1a01ec566a6ef2,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3043,8 +3054,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3669,8 +3680,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8187462408966023352, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}
+      propertyPath: m_fontSize
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187462408966023352, guid: f0bd0e68b35665542868db1ed9b4bed7,
+        type: 3}
       propertyPath: m_fontSizeBase
-      value: 50
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 8187462408966023353, guid: f0bd0e68b35665542868db1ed9b4bed7,
         type: 3}

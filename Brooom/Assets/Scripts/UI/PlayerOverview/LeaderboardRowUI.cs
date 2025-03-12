@@ -45,7 +45,6 @@ public class LeaderboardRowUI : MonoBehaviour {
 		SetAverageChange(currentAverageChange);
 		// Highlight
 		background.color = ColorPalette.Instance.GetColor(ColorFromPalette.MainUI_HighlightColor);
-		nameText.text = "<b>" + nameText.text + "</b>";
 		// Tween the values
 		DOTween.To(() => currentPlaceChange, x => { currentPlaceChange = x; SetPlaceChange(x); }, placeChange, tweenDuration).SetDelay(tweenDelay);
 		DOTween.To(() => currentAverageChange, x => { currentAverageChange = x; SetAverageChange(x); }, averageChange, tweenDuration).SetDelay(tweenDelay);

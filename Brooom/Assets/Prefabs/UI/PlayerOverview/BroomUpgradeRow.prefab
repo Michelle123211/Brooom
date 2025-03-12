@@ -1201,9 +1201,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236243, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1868143783121236243, guid: 6a8674091571ae54b90a7526d80a1ed3,
         type: 3}
       propertyPath: m_HorizontalAlignment
