@@ -80,3 +80,13 @@
 - Added new cheats for spells
 - Testing track (unlimited mana, no spell cooldown)
 - Automatic build on GitHub
+
+**Milestone 10** (12th March 2025, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone10.zip)):
+
+- Skybox (also with clouds)
+- UI improvements
+  - Color palette
+  - New sprites - also icons for spells and achievements
+  - New font and custom cursor
+- Audio - music, ambience, sound effects
+- Achievements implementation finished
