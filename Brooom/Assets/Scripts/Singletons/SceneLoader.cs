@@ -58,6 +58,17 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 
 	#endregion
 
+	#region Registration of objects with long initialization
+
+	private List<MonoBehaviourLongInitialization> objectsWithLongInitialization = new List<MonoBehaviourLongInitialization>();
+
+	public void RegisterForLongInitialization(MonoBehaviourLongInitialization objectWithLongInitialization) {
+		// Remember the object to invoke its initialization later
+		objectsWithLongInitialization.Add(objectWithLongInitialization);
+	}
+
+	#endregion
+
 	// Loads scene with the given name (using fade in/out and loading screen) - one parameter variant to be used in UnityEvent
 	public void LoadScene(string sceneName) {
 		LoadScene(Enum.Parse<Scene>(sceneName), true, true);
@@ -98,6 +109,12 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		yield return new WaitUntil(() => loadingScene.isDone);
 		CurrentScene = scene;
 		PassAndResetCurrentParameters();
+		// Initialize all registered objects with long initialization outside of Awake() or Start() methods
+		Time.timeScale = 0;
+		foreach (var objectWithLongInitialization in objectsWithLongInitialization)
+			yield return objectWithLongInitialization.Initialize();
+		objectsWithLongInitialization.Clear();
+		Time.timeScale = 1;
 		// Fade into the new scene
 		if (fade) {
 			animator.SetTrigger("FadeIn");

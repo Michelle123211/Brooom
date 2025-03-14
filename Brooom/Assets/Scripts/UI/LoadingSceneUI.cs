@@ -20,7 +20,7 @@ public class LoadingSceneUI : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        timeout -= Time.deltaTime;
+        timeout -= Time.unscaledDeltaTime;
         if (timeout < 0) {
             numberOfDots = Utils.Wrap(numberOfDots + 1, 0, 3);
             if (numberOfDots == 0)

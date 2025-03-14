@@ -41,11 +41,12 @@
 			<destination>{914cfcb3-faf7-4f35-8d21-3539776f69d8}</destination>
 			<destination>{46fc5bc9-a24f-48dc-8437-06fb85d83b28}</destination>
 			<destination>{5a50495b-6574-4e32-8089-e5baf1ad1bc8}</destination>
+			<destination>{c64c0060-bbd2-46d9-b7aa-ae16da02764f}</destination>
 		</relationship>
 	</object>
 	<object class="AutomationPoint" id="{93db3e9e-9aae-4b45-b3aa-802e790a2cf3}">
 		<property name="position">
-			<value>5</value>
+			<value>6</value>
 		</property>
 		<property name="value">
 			<value>1</value>
@@ -53,7 +54,7 @@
 	</object>
 	<object class="AutomationPoint" id="{1b8c186b-7c3a-4d6a-8992-b1445f4017aa}">
 		<property name="position">
-			<value>4</value>
+			<value>5</value>
 		</property>
 		<property name="value">
 			<value>0.0500000007</value>
@@ -61,7 +62,7 @@
 	</object>
 	<object class="AutomationPoint" id="{6a758951-3846-4706-8d10-a7ab97bab402}">
 		<property name="position">
-			<value>3</value>
+			<value>4</value>
 		</property>
 		<property name="value">
 			<value>0.599999964</value>
@@ -69,7 +70,7 @@
 	</object>
 	<object class="AutomationPoint" id="{914cfcb3-faf7-4f35-8d21-3539776f69d8}">
 		<property name="position">
-			<value>2</value>
+			<value>3</value>
 		</property>
 		<property name="value">
 			<value>0.099999994</value>
@@ -77,7 +78,7 @@
 	</object>
 	<object class="AutomationPoint" id="{46fc5bc9-a24f-48dc-8437-06fb85d83b28}">
 		<property name="position">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<property name="value">
 			<value>0.399999976</value>
@@ -85,10 +86,18 @@
 	</object>
 	<object class="AutomationPoint" id="{5a50495b-6574-4e32-8089-e5baf1ad1bc8}">
 		<property name="position">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<property name="value">
 			<value>0.0500000007</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{c64c0060-bbd2-46d9-b7aa-ae16da02764f}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>0</value>
 		</property>
 	</object>
 </objects>

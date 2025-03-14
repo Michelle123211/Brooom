@@ -53,6 +53,7 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 
 	// For the given racer, returns approximate reached distance in the track
 	protected float GetDistanceRaced(CharacterRaceState raceState) {
+		if (!RaceController.Instance.IsInitialized) return 0;
 		float distanceRaced;
 		// Sum up distances between all track points reached (+ the following one)
 		distanceRaced = TrackPointDistanceSum[raceState.followingTrackPoint];
@@ -67,6 +68,7 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 
 	// For the given racer, returns fraction of the track reached so far (normalized between 0 and 1)
 	protected float GetNormalizedDistanceRaced(CharacterRaceState raceState) {
+		if (!RaceController.Instance.IsInitialized) return 0;
 		// Get distance reached so far
 		float distanceRaced = GetDistanceRaced(raceState);
 		// Get total length of the track
@@ -78,6 +80,7 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 	}
 
 	protected float GetDistanceBetweenAgentAndPlayer() {
+		if (!RaceController.Instance.IsInitialized) return 0;
 		// Compute difference between agent's and player's distance raced
 		float distanceDifference = GetDistanceRaced(this.agentRaceState) - GetDistanceRaced(RaceController.Instance.playerRacer.state);
 		return distanceDifference;

@@ -21,7 +21,7 @@ public abstract class ScriptedRubberBanding : SkillLevelImplementation {
 	private PlayerStats temporaryStatsValues; // stats values used as a reference for tweening the values in the last segment of race
 
 	public override PlayerStats GetCurrentStats() {
-		float raceFraction = GetNormalizedDistanceRaced(RaceController.Instance.playerRacer.state);
+		float raceFraction = RaceController.Instance.IsInitialized ? GetNormalizedDistanceRaced(RaceController.Instance.playerRacer.state) : 0f;
 		// Maximum stats in the first 5 % of the race
 		if (raceFraction < 0.05f) {
 			currentStatsValues = maxStatsValues;

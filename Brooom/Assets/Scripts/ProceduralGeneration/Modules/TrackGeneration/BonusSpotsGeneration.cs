@@ -26,14 +26,8 @@ public class BonusSpotsGeneration : LevelGeneratorModule {
     }
 
     private void ComputeReferenceGridPoints(LevelRepresentation level) {
-        int i, j;
-        Vector3 topleft = level.terrain[0, 0].position; // position of the top-left grid point
-        float offset = level.pointOffset; // distance between adjacent grid points
         foreach (var bonusSpot in level.bonuses) {
-            // Compute the closest terrain grid point
-            i = Mathf.RoundToInt(Mathf.Abs(bonusSpot.position.x - topleft.x) / offset);
-            j = Mathf.RoundToInt(Mathf.Abs(bonusSpot.position.z - topleft.z) / offset);
-            bonusSpot.gridCoords = new Vector2Int(i, j);
+            bonusSpot.gridCoords = level.GetNearestGridPoint(bonusSpot.position);
         }
     }
 }

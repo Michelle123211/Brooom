@@ -12,12 +12,14 @@ public class RegionAmbienceAudio : MonoBehaviour {
 	private bool underwater = false;
 
 	protected virtual Vector3 GetCurrentPlayerPosition() {
+		if (!RaceController.Instance.IsInitialized) return Vector3.zero;
 		return RaceController.Instance.playerRacer.characterController.transform.position;
 	}
 
 	// Returns LevelRegionType.NONE if there is no need for change
 	protected virtual LevelRegionType GetCurrentRegion(Vector3 playerPosition) {
-		TerrainPoint nearestTerrainPoint = RaceController.Instance.level.GetNearestGridPoint(playerPosition);
+		if (!RaceController.Instance.IsInitialized) return LevelRegionType.NONE;
+		TerrainPoint nearestTerrainPoint = RaceController.Instance.level.GetNearestTerrainPoint(playerPosition);
 		LevelRegionType region = nearestTerrainPoint.region;
 		if (region != LastRegion) {
 			return region;
@@ -27,19 +29,21 @@ public class RegionAmbienceAudio : MonoBehaviour {
 	}
 
 	protected virtual float GetCurrentAltitude(Vector3 playerPosition) {
-		TerrainPoint nearestTerrainPoint = RaceController.Instance.level.GetNearestGridPoint(playerPosition);
+		if (!RaceController.Instance.IsInitialized) return 0f;
+		TerrainPoint nearestTerrainPoint = RaceController.Instance.level.GetNearestTerrainPoint(playerPosition);
 		float altitudeAboveGround = playerPosition.y - Mathf.Max(0, nearestTerrainPoint.position.y); // above terrain or water level, whichever is higher
 		return altitudeAboveGround; // would not work for more complicated terrain (e.g. tunnel)
 	}
 
 	private float GetFMODRegionParameterValue(LevelRegionType region) {
 		return region switch {
-			LevelRegionType.AboveWater => 0,
-			LevelRegionType.EnchantedForest => 1,
-			LevelRegionType.AridDesert => 2,
-			LevelRegionType.SnowyMountain => 3,
-			LevelRegionType.BloomingMeadow => 4,
-			LevelRegionType.StormyArea => 5,
+			LevelRegionType.NONE => 0,
+			LevelRegionType.AboveWater => 1,
+			LevelRegionType.EnchantedForest => 2,
+			LevelRegionType.AridDesert => 3,
+			LevelRegionType.SnowyMountain => 4,
+			LevelRegionType.BloomingMeadow => 5,
+			LevelRegionType.StormyArea => 6,
 			_ => throw new System.NotImplementedException(),
 		};
 	}

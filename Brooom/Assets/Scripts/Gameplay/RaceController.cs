@@ -5,7 +5,7 @@ using System;
 using DG.Tweening;
 using UnityEngine.Playables;
 
-public class RaceController : MonoBehaviour {
+public class RaceController : MonoBehaviourLongInitialization {
 
     // Simple singleton
     public static RaceController Instance;
@@ -302,10 +302,11 @@ public class RaceController : MonoBehaviour {
         statsComputer = GetComponent<StatsComputer>();
     }
 
-    protected void GenerateLevel() {
+    protected IEnumerator GenerateLevel() {
         // Generate level (terrain + track)
         SetLevelGeneratorParameters();
-        level = levelGenerator.GenerateLevel();
+        yield return levelGenerator.GenerateLevel();
+        level = levelGenerator.Level;
         levelDifficulty = ComputeLevelDifficulty();
     }
 
@@ -327,30 +328,6 @@ public class RaceController : MonoBehaviour {
             racer.spellInput.DisableSpellCasting();
         }
     }
-
-    void Start()
-    {
-        InitializeRelatedObjects();
-        GenerateLevel();
-        InitializeRacers();
-        // Initialize HUD
-        int checkpointsTotal = 0, hoopsTotal = 0;
-        foreach (var trackPoint in level.track) {
-            if (trackPoint.isCheckpoint) checkpointsTotal++;
-            else hoopsTotal++;
-        }
-        raceHUD.InitializeCheckpointsAndHoops(checkpointsTotal, hoopsTotal);
-        // Register callbacks on player race state changes
-        playerRacer.state.onHoopAdvance += HighlightNextHoop;
-        playerRacer.state.onCheckpointMissed += ReactOnCheckpointMissed;
-        playerRacer.state.onHoopMissed += ReactOnHoopMissed;
-        // Initialize training
-        StartTraining();
-    }
-
-	private void Awake() {
-        Instance = this;
-	}
 
 	private void OnDestroy() {
         Instance = null;
@@ -418,34 +395,6 @@ public class RaceController : MonoBehaviour {
             level.track[nextHoopIndex].assignedHoop.StartHighlighting();
     }
 
-    private void Update() {
-        // Update state
-        switch (State) {
-            case RaceState.Training:
-                // Handle restart
-                if (GamePause.pauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
-                    playerRacer.characterController.ResetPosition(level.playerStartPosition);
-                    restartCountInTraining++;
-				}
-                break;
-            case RaceState.RaceInProgress:
-                // Update time from the start of the race
-                raceTime += Time.deltaTime;
-                raceHUD.UpdateTime(raceTime + playerRacer.state.timePenalization);
-                // Update racers' place
-                ComputeRacerPlaces();
-                break;
-            case RaceState.RaceFinished:
-                // Update time from the start of the race
-                raceTime += Time.deltaTime;
-                break;
-        }
-        // Update UI
-        raceHUD.UpdatePlayerState(
-            playerRacer.characterController.GetCurrentSpeed(),
-            playerRacer.characterController.GetCurrentAltitude());
-    }
-
     private void ReactOnCheckpointMissed() {
         // Make the screen red briefly
         raceHUD.FlashScreenColor(Color.red);
@@ -474,6 +423,59 @@ public class RaceController : MonoBehaviour {
 		}
     }
 
+	protected override void PrepareForInitialization_ReplacingAwake() {
+        Instance = this;
+    }
+
+	protected override void PrepareForInitialization_ReplacingStart() {
+        InitializeRelatedObjects();
+    }
+
+	protected override IEnumerator InitializeAfterPreparation() {
+        yield return GenerateLevel();
+        InitializeRacers();
+        // Initialize HUD
+        int checkpointsTotal = 0, hoopsTotal = 0;
+        foreach (var trackPoint in level.track) {
+            if (trackPoint.isCheckpoint) checkpointsTotal++;
+            else hoopsTotal++;
+        }
+        raceHUD.InitializeCheckpointsAndHoops(checkpointsTotal, hoopsTotal);
+        // Register callbacks on player race state changes
+        playerRacer.state.onHoopAdvance += HighlightNextHoop;
+        playerRacer.state.onCheckpointMissed += ReactOnCheckpointMissed;
+        playerRacer.state.onHoopMissed += ReactOnHoopMissed;
+        // Initialize training
+        StartTraining();
+    }
+
+	protected override void UpdateAfterInitialization() {
+        // Update state
+        switch (State) {
+            case RaceState.Training:
+                // Handle restart
+                if (GamePause.pauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
+                    playerRacer.characterController.ResetPosition(level.playerStartPosition);
+                    restartCountInTraining++;
+                }
+                break;
+            case RaceState.RaceInProgress:
+                // Update time from the start of the race
+                raceTime += Time.deltaTime;
+                raceHUD.UpdateTime(raceTime + playerRacer.state.timePenalization);
+                // Update racers' place
+                ComputeRacerPlaces();
+                break;
+            case RaceState.RaceFinished:
+                // Update time from the start of the race
+                raceTime += Time.deltaTime;
+                break;
+        }
+        // Update UI
+        raceHUD.UpdatePlayerState(
+            playerRacer.characterController.GetCurrentSpeed(),
+            playerRacer.characterController.GetCurrentAltitude());
+    }
 }
 
 public enum RaceState {

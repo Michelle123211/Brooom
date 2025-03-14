@@ -32,7 +32,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 
 
 	// Object-oriented representation
-	private LevelRepresentation level;
+	public LevelRepresentation Level { get; private set; }
 	private Dictionary<LevelRegionType, LevelRegion> terrainRegionsDict;
 	private Dictionary<LevelRegionType, LevelRegion> trackRegionsDict;
 
@@ -46,16 +46,19 @@ public class LevelGenerationPipeline : MonoBehaviour
 
 #if UNITY_EDITOR
 	[ContextMenu("Regenerate level")]
-	private void RegenerateLevel() { // Regenerates the level with previous parameters
-		if (modules == null) return;
-		level.ResetLevelWithDimensions(dimensions, pointOffset);
-		foreach (var moduleSlot in modules) {
-			if (moduleSlot.isModuleEnabled)
-				moduleSlot.module.Generate(level);
+	private IEnumerator RegenerateLevel() { // Regenerates the level with previous parameters
+		if (modules != null) {
+			Level.ResetLevelWithDimensions(dimensions, pointOffset);
+			foreach (var moduleSlot in modules) {
+				if (moduleSlot.isModuleEnabled) {
+					moduleSlot.module.Generate(Level);
+					yield return null;
+				}
+			}
+			CreateMeshData();
+			ConvertMeshFromSmoothToFlat();
+			UpdateMesh();
 		}
-		CreateMeshData();
-		ConvertMeshFromSmoothToFlat();
-		UpdateMesh();
 	}
 
 	[ContextMenu("Save Mesh")]
@@ -74,18 +77,19 @@ public class LevelGenerationPipeline : MonoBehaviour
 	}
 #endif
 
-	public LevelRepresentation GenerateLevel() { // Generates the level with the current parameters
+	public IEnumerator GenerateLevel() { // Generates the level with the current parameters
 		Initialize();
 		if (modules != null) {
 			foreach (var moduleSlot in modules) {
-				if (moduleSlot.isModuleEnabled)
-					moduleSlot.module.Generate(level);
+				if (moduleSlot.isModuleEnabled) {
+					moduleSlot.module.Generate(Level);
+					yield return null;
+				}
 			}
 		}
 		CreateMeshData();
 		ConvertMeshFromSmoothToFlat();
 		UpdateMesh();
-		return level;
 	}
 
 	private void Awake() {
@@ -107,41 +111,41 @@ public class LevelGenerationPipeline : MonoBehaviour
 			trackRegionsDict.Add(region.regionType, region);
 		}
 		// Initialize level representation
-		level = new LevelRepresentation(dimensions, pointOffset, terrainRegionsDict, trackRegionsDict, regionsAvailability);
+		Level = new LevelRepresentation(dimensions, pointOffset, terrainRegionsDict, trackRegionsDict, regionsAvailability);
 	}
 
 	private void CreateMeshData() {
 		// Vertices
-		vertices = new Vector3[level.pointCount.x * level.pointCount.y];
-		for (int x = 0; x < level.pointCount.x; x++) {
-			for (int y = 0; y < level.pointCount.y; y++) {
-				vertices[level.terrain[x, y].vertexIndex] = level.terrain[x, y].position;
+		vertices = new Vector3[Level.pointCount.x * Level.pointCount.y];
+		for (int x = 0; x < Level.pointCount.x; x++) {
+			for (int y = 0; y < Level.pointCount.y; y++) {
+				vertices[Level.terrain[x, y].vertexIndex] = Level.terrain[x, y].position;
 			}
 		}
 		// Triangles
-		triangles = new int[(level.pointCount.x - 1) * (level.pointCount.y - 1) * 6];
-		for (int x = 0, i = 0; x < level.pointCount.x - 1; x++) {
-			for (int y = 0; y < level.pointCount.y - 1; y++) {
+		triangles = new int[(Level.pointCount.x - 1) * (Level.pointCount.y - 1) * 6];
+		for (int x = 0, i = 0; x < Level.pointCount.x - 1; x++) {
+			for (int y = 0; y < Level.pointCount.y - 1; y++) {
 				// For each possible lower left corner add a quad composed of two triangles
-				triangles[i]	 = level.terrain[x, y].vertexIndex;
-				triangles[i + 1] = level.terrain[x, y + 1].vertexIndex;
-				triangles[i + 2] = level.terrain[x + 1, y].vertexIndex;
-				triangles[i + 3] = level.terrain[x + 1, y].vertexIndex;
-				triangles[i + 4] = level.terrain[x, y + 1].vertexIndex;
-				triangles[i + 5] = level.terrain[x + 1, y + 1].vertexIndex;
+				triangles[i]	 = Level.terrain[x, y].vertexIndex;
+				triangles[i + 1] = Level.terrain[x, y + 1].vertexIndex;
+				triangles[i + 2] = Level.terrain[x + 1, y].vertexIndex;
+				triangles[i + 3] = Level.terrain[x + 1, y].vertexIndex;
+				triangles[i + 4] = Level.terrain[x, y + 1].vertexIndex;
+				triangles[i + 5] = Level.terrain[x + 1, y + 1].vertexIndex;
 				i += 6;
 			}
 		}
 		// Colors
-		colors = new Color[level.pointCount.x * level.pointCount.y];
-		for (int x = 0; x < level.pointCount.x - 1; x++) {
-			for (int y = 0; y < level.pointCount.y - 1; y++) {
+		colors = new Color[Level.pointCount.x * Level.pointCount.y];
+		for (int x = 0; x < Level.pointCount.x - 1; x++) {
+			for (int y = 0; y < Level.pointCount.y - 1; y++) {
 				// Assign the color of the region
-				if (terrainRegionsDict.TryGetValue(level.terrain[x, y].region, out LevelRegion region)) {
-					colors[level.terrain[x, y].vertexIndex] = region.color;
+				if (terrainRegionsDict.TryGetValue(Level.terrain[x, y].region, out LevelRegion region)) {
+					colors[Level.terrain[x, y].vertexIndex] = region.color;
 				} else {
-					Debug.Log($"Unknown region: {(int)level.terrain[x, y].region}.");
-					colors[level.terrain[x, y].vertexIndex] = Color.black;
+					Debug.Log($"Unknown region: {(int)Level.terrain[x, y].region}.");
+					colors[Level.terrain[x, y].vertexIndex] = Color.black;
 				}
 			}
 		}
@@ -205,11 +209,11 @@ public class LevelGenerationPipeline : MonoBehaviour
 		// Borders
 		if (showBorders) {
 			Gizmos.color = Color.blue;
-			if (level != null) {
-				for (int x = 0; x < level.pointCount.x; x++) {
-					for (int y = 0; y < level.pointCount.y; y++) {
-						if (level.terrain[x, y].isOnBorder) {
-							Gizmos.DrawSphere(level.terrain[x, y].position, 0.1f);
+			if (Level != null) {
+				for (int x = 0; x < Level.pointCount.x; x++) {
+					for (int y = 0; y < Level.pointCount.y; y++) {
+						if (Level.terrain[x, y].isOnBorder) {
+							Gizmos.DrawSphere(Level.terrain[x, y].position, 0.1f);
 						}
 					}
 				}
@@ -310,16 +314,23 @@ public class LevelRepresentation {
 	}
 
 	// Returns terrain point which is the closest one to the given position
-	public TerrainPoint GetNearestGridPoint(Vector3 fromPosition) {
+	public TerrainPoint GetNearestTerrainPoint(Vector3 fromPosition) {
+		// Get indices of the nearest terrain point
+		Vector2Int indices = GetNearestGridPoint(fromPosition);
+		// Return terrain point with the corresponding indices
+		return terrain[indices.x, indices.y];
+	}
+
+	public Vector2Int GetNearestGridPoint(Vector3 fromPosition) {
 		// Make sure fromPosition is within the grid
 		Vector3 bottomLeft = terrain[0, 0].position;
 		Vector3 topRight = terrain[pointCount.x - 1, pointCount.y - 1].position;
 		fromPosition = new Vector3(Mathf.Clamp(fromPosition.x, bottomLeft.x, topRight.x), fromPosition.y, Mathf.Clamp(fromPosition.z, bottomLeft.z, topRight.z));
 		// Get indices of the nearest terrain point
-		fromPosition -= bottomLeft; // to start at [0,0]
-		fromPosition /= pointOffset; // to get to indices
-		// Round to nearest integer and return terrain point with the corresponding indices
-		return terrain[Mathf.RoundToInt(fromPosition.x), Mathf.RoundToInt(fromPosition.z)];
+		int i = Mathf.RoundToInt(Mathf.Abs(fromPosition.x - bottomLeft.x) / pointOffset);
+		int j = Mathf.RoundToInt(Mathf.Abs(fromPosition.z - bottomLeft.z) / pointOffset);
+		// Return terrain point with the corresponding indices
+		return new Vector2Int(i, j);
 	}
 
 	private void ComputeDependentParameters() {
