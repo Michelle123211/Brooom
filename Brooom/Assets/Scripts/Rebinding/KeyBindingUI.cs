@@ -30,7 +30,7 @@ public class KeyBindingUI : MonoBehaviour {
     private InputAction action;
     private int bindingIndex;
 
-    // Hu8man readable names of the different composite parts
+    // Human readable names of the different composite parts
     private string[] readablePartNames;
 
     // For storing information about an ongoing rebinding operation
@@ -109,7 +109,7 @@ public class KeyBindingUI : MonoBehaviour {
         string partName = "";
         if (action.bindings[bindingIndex].isPartOfComposite) {
             int index = bindingIndex - this.bindingIndex - 1;
-            if (index < readablePartNames.Length - 1) // readable name of the part is provided
+            if (index < readablePartNames.Length) // readable name of the part is provided
                 partName = readablePartNames[index];
             else
                 partName = action.bindings[bindingIndex].name; // default
@@ -171,7 +171,7 @@ public class KeyBindingUI : MonoBehaviour {
         rebindingButton.gameObject.SetActive(false);
         waitingForInputText.SetActive(true);
         string waitingString = LocalizationManager.Instance.GetLocalizedString("RebindingLabelWaiting");
-        rebindOverlay.SetWaitingForInputText(string.Format(waitingString, readablePartNames[bindingIndex - this.bindingIndex - 1]));
+        rebindOverlay.SetWaitingForInputText(string.Format(waitingString, partName));
         rebindOverlay.gameObject.TweenAwareEnable();
 
         // Start rebinding
