@@ -244,7 +244,7 @@ public class CharacterMovementController : MonoBehaviour {
 
     private void FixedUpdate() {
         // Do nothing if the game is paused
-        if (GamePause.pauseState == GamePauseState.Paused) return;
+        if (GamePause.PauseState == GamePauseState.Paused) return;
 
         // Movement
         CharacterMovementValues movementInput = GetMovementInputConsideringDisabledActions();

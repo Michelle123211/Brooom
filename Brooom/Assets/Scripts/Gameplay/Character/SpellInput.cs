@@ -45,7 +45,7 @@ public abstract class SpellInput : MonoBehaviour {
             return;
         }
         // Do nothing if the game is paused
-        if (GamePause.pauseState != GamePauseState.Running) return;
+        if (GamePause.PauseState != GamePauseState.Running) return;
         UpdateWhenGameIsRunning();
     }
 

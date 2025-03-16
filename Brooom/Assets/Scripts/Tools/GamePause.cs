@@ -5,7 +5,9 @@ using DG.Tweening;
 
 public class GamePause : MonoBehaviour {
 
-    public static GamePauseState pauseState = GamePauseState.Running;
+    public static GamePauseState PauseState { get; private set; } = GamePauseState.Running;
+
+    private static bool canBePaused = true;
 
     [Tooltip("Exposed to be used from animations to gradually decrease/increase.")]
     [SerializeField] float timeScale = 0f;
@@ -14,9 +16,19 @@ public class GamePause : MonoBehaviour {
 
     private bool menuVisible = false;
 
+
+    // The following two methods may be used to disable pause when not desirable - e.g. when loading screen is on or after a race is finished
+    public static void EnableGamePause() {
+        canBePaused = true;
+    }
+    public static void DisableGamePause() {
+        canBePaused = false;
+    }
+
     public void PauseGame(bool showMenu = false) {
+        if (!canBePaused) return;
         // Pause
-        pauseState = GamePauseState.Pausing;
+        PauseState = GamePauseState.Pausing;
         // Show pause menu
         if (showMenu) {
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
@@ -30,6 +42,7 @@ public class GamePause : MonoBehaviour {
     }
 
     public void ResumeGame() {
+        if (!canBePaused) return;
         // Disable cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -40,12 +53,12 @@ public class GamePause : MonoBehaviour {
             AudioManager.Instance.ResumeGame(); // stop pause menu audio
         } else timeScale = 1f;
         // Resume
-        pauseState = GamePauseState.Resuming;
+        PauseState = GamePauseState.Resuming;
     }
 
     public void ExitGame() {
         // Change state to running
-        pauseState = GamePauseState.Running;
+        PauseState = GamePauseState.Running;
         Time.timeScale = 1f;
         AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
         AudioManager.Instance.ResumeGame(); // stop pause menu audio
@@ -58,21 +71,21 @@ public class GamePause : MonoBehaviour {
 	private void Update() {
         // Pause game if requested
         if (InputManager.Instance.GetBoolValue("Pause")) {
-            if (pauseState == GamePauseState.Running) {
+            if (PauseState == GamePauseState.Running) {
                 PauseGame(true);
-            } else if (pauseState == GamePauseState.Paused) {
+            } else if (PauseState == GamePauseState.Paused) {
                 ResumeGame();
             }
         }
         // Update time scale
-        if (pauseState == GamePauseState.Pausing || pauseState == GamePauseState.Resuming) {
+        if (PauseState == GamePauseState.Pausing || PauseState == GamePauseState.Resuming) {
             Time.timeScale = timeScale;
         }
         // Update state
-        if (pauseState == GamePauseState.Pausing && timeScale == 0)
-            pauseState = GamePauseState.Paused;
-        if (pauseState == GamePauseState.Resuming && timeScale == 1)
-            pauseState = GamePauseState.Running;
+        if (PauseState == GamePauseState.Pausing && timeScale == 0)
+            PauseState = GamePauseState.Paused;
+        if (PauseState == GamePauseState.Resuming && timeScale == 1)
+            PauseState = GamePauseState.Running;
     }
 }
 

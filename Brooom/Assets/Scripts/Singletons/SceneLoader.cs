@@ -80,6 +80,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	}
 
 	private IEnumerator LoadSceneAsync(Scene scene, bool fade = true, bool showLoading = true) {
+		GamePause.DisableGamePause(); // disable pause while loading screen is on
 		onSceneStartedLoading?.Invoke(scene);
 		// Enable cursor
 		Cursor.lockState = CursorLockMode.None;
@@ -122,6 +123,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		// Reset previous LoadingIn trigger in case it stayed set
 		animator.ResetTrigger("LoadingIn");
 		onSceneLoaded?.Invoke(scene);
+		GamePause.EnableGamePause(); // enable pause again
 	}
 
 	static SceneLoader() { 

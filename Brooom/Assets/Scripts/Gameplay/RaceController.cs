@@ -81,6 +81,7 @@ public class RaceController : MonoBehaviourLongInitialization {
 
     // Called when player finishes the race
     public virtual void EndRace() {
+        GamePause.DisableGamePause();
         // Start animation sequence
         StartCoroutine(PlayRaceEndSequence());
         // Note down visited regions
@@ -454,7 +455,7 @@ public class RaceController : MonoBehaviourLongInitialization {
         switch (State) {
             case RaceState.Training:
                 // Handle restart
-                if (GamePause.pauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
+                if (GamePause.PauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
                     playerRacer.characterController.ResetPosition(level.playerStartPosition);
                     restartCountInTraining++;
                 }
