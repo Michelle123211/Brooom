@@ -211,8 +211,9 @@ public class CharacterMovementController : MonoBehaviour {
             rb.velocity = rb.velocity.WithY(0);
             if (pitchInput == -1) pitchInput = 0;
         }
-        if (transform.position.y <= 0.5 && pitchInput == 1) // TODO: Change this later to distance from the terrain underneath (instead of fixed y)
-            pitchInput = 0;
+        // TODO: Automatically level the broom at a certain altitue above ground
+        //if (transform.position.y <= 0.5 && pitchInput == 1) // TODO: Change this to distance from the terrain underneath (instead of fixed y)
+        //    pitchInput = 0;
         return pitchInput;
     }
 
