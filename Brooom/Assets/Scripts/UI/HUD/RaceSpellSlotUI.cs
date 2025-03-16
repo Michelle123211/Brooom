@@ -55,6 +55,10 @@ public class RaceSpellSlotUI : MonoBehaviour {
 		spellIconFillImage.sprite = spellIconImage.sprite;
 		backgroundFillImage.sprite = backgroundImage.sprite;
 		backgroundFillImage.color = backgroundImage.color;
+		if (!isEmpty) { // images under fill images should be a little transparent
+			spellIconImage.color = spellIconImage.color.WithA(unavailableAlpha);
+			backgroundImage.color = backgroundImage.color.WithA(unavailableAlpha);
+		}
 		// Initialize image fill, scale and alpha of the overlay
 		spellIconFillImage.fillAmount = 0;
 		backgroundFillImage.fillAmount = 0;
