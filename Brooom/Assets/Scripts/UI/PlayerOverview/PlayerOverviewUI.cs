@@ -30,7 +30,7 @@ public class PlayerOverviewUI : MonoBehaviour
         // Show game ending (with a short delay) if the player is on the first place
         if (place == 1 && !PlayerState.Instance.GameComplete) {
             PlayerState.Instance.GameComplete = true;
-            Invoke(nameof(ShowGameEnding), 3);
+            Invoke(nameof(ShowGameEnding), 1);
         }
     }
 
