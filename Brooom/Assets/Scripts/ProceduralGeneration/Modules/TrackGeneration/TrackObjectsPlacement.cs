@@ -47,7 +47,7 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 				point.assignedHoop.GetComponent<Scalable>()?.SetScale(Vector3.one * hoopScale);
 		}
 		// Instantiate starting zone
-		Vector3 startingZonePosition = (level.playerStartPosition + Vector3.back * startingZoneOffset).WithY(level.playerStartPosition.y);
+		Vector3 startingZonePosition = (level.playerStartPosition + Vector3.back * startingZoneOffset).WithY(0);
 		Instantiate(startingZonePrefab, startingZonePosition, Quaternion.identity);
 		// Instantiate finish line
 		// ... orientation is the same as for the last hoop
