@@ -98,6 +98,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				}
 			}
 			message.Append(".");
+			message.Append("\n(Close with Ctrl+Alt+C, use arrow up/down to browse command history.)");
 			DisplayMessage(message.ToString());
 		} else if (commandParts.Length == 2) {
 			string commandName = commandParts[1];
