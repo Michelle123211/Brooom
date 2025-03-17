@@ -1526,11 +1526,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackViewCamera
       objectReference: {fileID: 0}
-    - target: {fileID: 3491125890455740740, guid: 4dec369d405800c47ab332ddcdb7e3d9,
-        type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 3491125890455740741, guid: 4dec369d405800c47ab332ddcdb7e3d9,
         type: 3}
       propertyPath: m_RootOrder
@@ -1727,11 +1722,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BackCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 3491125890455740740, guid: 4dec369d405800c47ab332ddcdb7e3d9,
-        type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3491125890455740741, guid: 4dec369d405800c47ab332ddcdb7e3d9,
         type: 3}
