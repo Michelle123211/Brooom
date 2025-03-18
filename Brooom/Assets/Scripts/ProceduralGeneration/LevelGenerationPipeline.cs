@@ -96,7 +96,7 @@ public class LevelGenerationPipeline : MonoBehaviour {
 				// Instantiate a new terrain block from a prefab as a child of Terrain object
 				TerrainBlock instantiatedBlock = Instantiate<TerrainBlock>(terrainBlockPrefab, terrainParent);
 				instantiatedBlock.Initialize();
-				instantiatedBlock.GenerateTerrainMesh(Level.terrain, x, y, terrainRegionsDict, 1); // TODO: Change detail level based on distance from player
+				instantiatedBlock.GenerateTerrainMesh(Level.terrain, x, y, terrainRegionsDict);
 			}
 		}
 	}
@@ -123,14 +123,11 @@ public class LevelRepresentation {
 	public List<BonusSpot> bonuses;
 	public Vector3 playerStartPosition;
 	public FinishLine finish;
-	private List<GameObject>[,] environmentElementsInBlocks;
 
 	// Dimensions and resolution
 	public Vector2 dimensions = new Vector2(50, 50); // Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.
 	public float pointOffset = 0.5f; // Distance between two adjacent points in the grid.
 	public Vector2Int pointCount; // Number of points on the grid in the X and Z axes
-	private int blockSizePoints; // level is divided into blocks whose width is this many points
-	private Vector2Int blockCount; // number of blocks in each axis
 
 	// Available regions
 	public Dictionary<LevelRegionType, LevelRegion> terrainRegions;
@@ -142,17 +139,13 @@ public class LevelRepresentation {
 		// Terrain
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
-		this.blockSizePoints = blockSizeInPoints;
-		ComputeDependentParameters(); // pointCount and blockCount
+		ComputeDependentParameters(); // pointCount
 		this.regionsAvailability = regionsAvailability;
 		InitializeRegionDictionaries(terrainRegions, trackRegions);
 		this.terrain = new TerrainRepresentation(dimensions, pointOffset, blockSizeInPoints);
 
 		// Track
 		track = new List<TrackPoint>();
-
-		// Environment
-		InitializeEnvironmentElementBlocks();
 	}
 
 	public void ResetLevel() {
@@ -162,42 +155,29 @@ public class LevelRepresentation {
 				terrain[x, y].Reset();
 			}
 		}
-		// Reset track and environment
+		// Reset track
 		track.Clear();
-		foreach (var block in environmentElementsInBlocks) if (block != null) block.Clear();
 	}
 
 	public void ResetLevelWithDimensions(Vector2 dimensions, float pointOffset, int blockSizeInPoints) {
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
-		this.blockSizePoints = blockSizeInPoints;
-		ComputeDependentParameters(); // pointCount and blockCount
-		// Reset terrain, track and environment
+		ComputeDependentParameters(); // pointCount
+		// Reset terrain and track
+		terrain.UpdateParameters(dimensions, pointOffset, blockSizeInPoints);
 		terrain.ResetTerrain();
 		track.Clear();
-		ResetEnvironmentElementBlocks();
 	}
 
 	// May be used to change dimensions during generation (e.g. to adapt terrain dimensions to the track dimensions)
 	public void ChangeDimensions(Vector2 dimensions) {
 		// Store old parameters
 		Vector2Int oldPointCount = this.pointCount;
-		List<GameObject>[,] oldEnvironmentElementsInBlocks = this.environmentElementsInBlocks;
-
 		// Update parameters
 		this.dimensions = dimensions;
 		ComputeDependentParameters();
-
 		// Update terrain
-		terrain.UpdateTerrain(dimensions);
-
-		// Update environment elements stored in blocks
-		InitializeEnvironmentElementBlocks();
-		for (int x = 0; x < Mathf.Min(oldEnvironmentElementsInBlocks.GetLength(0), environmentElementsInBlocks.GetLength(0)); x++) {
-			for (int y = 0; y < Mathf.Min(oldEnvironmentElementsInBlocks.GetLength(1), environmentElementsInBlocks.GetLength(1)); y++) {
-				environmentElementsInBlocks[x, y] = oldEnvironmentElementsInBlocks[x, y];
-			}
-		}
+		terrain.ChangeDimensions(dimensions);
 	}
 
 	// Returns terrain point which is the closest one to the given position
@@ -220,18 +200,9 @@ public class LevelRepresentation {
 		return new Vector2Int(i, j);
 	}
 
-	public void AddEnvironmentElement(GameObject element, Vector3 position) {
-		// TODO: Compute block indices from the position
-		// TODO: Store the element in a corresponding block
-	}
-
 	private void ComputeDependentParameters() {
 		// Compute parameters which are not set from outside
 		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions
-		this.blockCount = new Vector2Int(
-				Mathf.CeilToInt((pointCount.x - 1) / (float)blockSizePoints),
-				Mathf.CeilToInt((pointCount.y - 1) / (float)blockSizePoints)
-			);
 		// Update dimensions to the final ones
 		dimensions = new Vector2((pointCount.x - 1) * pointOffset, (pointCount.y - 1) * pointOffset);
 	}
@@ -254,21 +225,6 @@ public class LevelRepresentation {
 				regionsAvailability.Add(region.Key, false);
 			}
 		}
-	}
-
-	private void InitializeEnvironmentElementBlocks() {
-		environmentElementsInBlocks = new List<GameObject>[blockCount.x, blockCount.y];
-		for (int x = 0; x < environmentElementsInBlocks.GetLength(0); x++) {
-			for (int y = 0; y < environmentElementsInBlocks.GetLength(1); y++) {
-				environmentElementsInBlocks[x, y] = new List<GameObject>();
-			}
-		}
-	}
-
-	private void ResetEnvironmentElementBlocks() {
-		foreach (var block in environmentElementsInBlocks)
-			if (block != null)
-				block.Clear();
 	}
 
 }

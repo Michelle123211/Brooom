@@ -24,7 +24,7 @@ public class TerrainBlock : MonoBehaviour {
 
 
 	// The whole TerrainRepresentation is passed in (and not only one block) because we need acees to adjacent blocks to fill gaps
-	public void GenerateTerrainMesh(TerrainRepresentation terrain, int blockX, int blockY, Dictionary<LevelRegionType, LevelRegion> terrainRegionsDict, int detailLevel) {
+	public void GenerateTerrainMesh(TerrainRepresentation terrain, int blockX, int blockY, Dictionary<LevelRegionType, LevelRegion> terrainRegionsDict) {
 		this.terrainBlock = terrain.GetTerrainBlock(blockX, blockY);
 		this.blockX = blockX;
 		this.blockY = blockY;

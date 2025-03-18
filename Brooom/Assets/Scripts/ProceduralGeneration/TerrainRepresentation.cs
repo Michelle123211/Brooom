@@ -32,7 +32,13 @@ public class TerrainRepresentation {
 		}
 	}
 
-	public void UpdateTerrain(Vector2 newDimensions) {
+	public void UpdateParameters(Vector2 dimensions, float pointOffset, int blockSizeInPoints) {
+		this.pointOffset = pointOffset;
+		this.blockSizePoints = blockSizeInPoints;
+		ComputeDependentParameters(dimensions);
+	}
+
+	public void ChangeDimensions(Vector2 newDimensions) {
 		Vector2Int oldPointCount = this.pointCount;
 		TerrainPoint[,][,] oldTerrainInBlocks = terrainInBlocks;
 		ComputeDependentParameters(newDimensions);
@@ -70,11 +76,11 @@ public class TerrainRepresentation {
 					terrainInBlocks[i, j] = new TerrainPoint[blockSizePoints, blockSizePoints];
 				else { // handle edges
 					if (i == blockCount.x - 1 && j == blockCount.y - 1)
-						terrainInBlocks[i, j] = new TerrainPoint[pointCount.x % blockSizePoints, pointCount.y % blockSizePoints];
+						terrainInBlocks[i, j] = new TerrainPoint[pointCount.x - i * blockSizePoints, pointCount.y - j * blockSizePoints];
 					else if (i == blockCount.x - 1)
-						terrainInBlocks[i, j] = new TerrainPoint[pointCount.x % blockSizePoints, blockSizePoints];
+						terrainInBlocks[i, j] = new TerrainPoint[pointCount.x - i * blockSizePoints, blockSizePoints];
 					else if (j == blockCount.y - 1)
-						terrainInBlocks[i, j] = new TerrainPoint[blockSizePoints, pointCount.y % blockSizePoints];
+						terrainInBlocks[i, j] = new TerrainPoint[blockSizePoints, pointCount.y - j * blockSizePoints];
 				}
 				// Fill the block with terrain points
 				for (int x = 0; x < terrainInBlocks[i, j].GetLength(0); x++) {
