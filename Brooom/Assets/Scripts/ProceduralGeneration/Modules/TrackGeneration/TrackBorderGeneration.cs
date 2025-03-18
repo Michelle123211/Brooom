@@ -20,6 +20,9 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 	public Transform borderParent;
 
 	public override void Generate(LevelRepresentation level) {
+		// Remove any previously instantiated borders
+		UtilsMonoBehaviour.RemoveAllChildren(borderParent);
+
 		Vector3 previousPoint1 = Vector3.zero, previousPoint2 = Vector3.zero;
 		Vector3 nextPoint1, nextPoint2;
 		// Generate borders for each segment

@@ -6,29 +6,31 @@ using UnityEditor;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshCollider))]
-public class LevelGenerationPipeline : MonoBehaviour
-{
+public class LevelGenerationPipeline : MonoBehaviour {
 	[Tooltip("These generators/modules will be used in the exact order. Disabled module is not executed even if part of the pipeline.")]
-	public List<LevelGeneratorModuleSlot> modules;
+	[SerializeField] List<LevelGeneratorModuleSlot> modules;
 
 	[Header("Terrain parameters")]
 	[Tooltip("Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.")]
-	public Vector2 dimensions = new Vector2(50, 50);
+	[SerializeField] Vector2 dimensions = new Vector2(50, 50);
 	[Tooltip("Distance between two adjacent points in the grid.")]
-	public float pointOffset = 0.5f;
+	[SerializeField] float pointOffset = 0.5f;
+
+	[Header("Block-based parameters")]
+	[Tooltip("All level contents are divided into blocks of this size (i.e. number of terrain points on one side) to allow for optimizations (e.g. disabling all objects in blocks far away).")]
+	[SerializeField] int blockSizeInPoints = 25;
+	[Tooltip("Parent object of all terrain blocks.")]
+	[SerializeField] Transform terrainParent;
+	[Tooltip("Prefab containing all necessary components for terrain block")]
+	[SerializeField] TerrainBlock terrainBlockPrefab;
 
 	[Header("Level regions")]
 	[Tooltip("All terrain regions in the game.")]
-	public List<LevelRegion> terrainRegions;
+	[SerializeField] List<LevelRegion> terrainRegions;
 	[Tooltip("All track regions in the game.")]
-	public List<LevelRegion> trackRegions;
+	[SerializeField] List<LevelRegion> trackRegions;
 	[Tooltip("Regions availability in the currently generated level.")]
 	public Dictionary<LevelRegionType, bool> regionsAvailability;
-
-	[Header("Debug")]
-	public bool showVertices = false;
-	public bool showEdges = false;
-	public bool showBorders = false;
 
 
 	// Object-oriented representation
@@ -36,44 +38,25 @@ public class LevelGenerationPipeline : MonoBehaviour
 	private Dictionary<LevelRegionType, LevelRegion> terrainRegionsDict;
 	private Dictionary<LevelRegionType, LevelRegion> trackRegionsDict;
 
-	// Mesh and its data
-	Mesh mesh;
-	Vector3[] vertices;
-	int[] triangles;
-	Color[] colors;
-
-	MeshCollider meshCollider;
 
 #if UNITY_EDITOR
 	[ContextMenu("Regenerate level")]
-	private IEnumerator RegenerateLevel() { // Regenerates the level with previous parameters
+	private void RegenerateLevel() { // Regenerates the level with previous parameters
+		if (Level == null) {
+			regionsAvailability = new Dictionary<LevelRegionType, bool>();
+			regionsAvailability.Add(LevelRegionType.AboveWater, true);
+			regionsAvailability.Add(LevelRegionType.EnchantedForest, true);
+			Initialize();
+		}
 		if (modules != null) {
-			Level.ResetLevelWithDimensions(dimensions, pointOffset);
+			Level.ResetLevelWithDimensions(dimensions, pointOffset, blockSizeInPoints);
 			foreach (var moduleSlot in modules) {
 				if (moduleSlot.isModuleEnabled) {
 					moduleSlot.module.Generate(Level);
-					yield return null;
 				}
 			}
-			CreateMeshData();
-			ConvertMeshFromSmoothToFlat();
-			UpdateMesh();
+			GenerateTerrainMesh();
 		}
-	}
-
-	[ContextMenu("Save Mesh")]
-	private void SaveMesh() {
-		if (mesh == null) return;
-		// Get path from the user
-		string path = EditorUtility.SaveFilePanel("Save Mesh Asset", "Assets/Models/Terrain/", "GeneratedTerrainExample", "asset");
-		if (string.IsNullOrEmpty(path)) return;
-		// Convert the returned absolute path to project-relative to use with AssetDatabase
-		path = FileUtil.GetProjectRelativePath(path);
-		// Optimize the mesh (changes ordering of the geometry and vertices to improve vertex cache utilisation)
-		MeshUtility.Optimize(mesh);
-		// Save the asset
-		AssetDatabase.CreateAsset(mesh, path);
-		AssetDatabase.SaveAssets();
 	}
 #endif
 
@@ -87,15 +70,7 @@ public class LevelGenerationPipeline : MonoBehaviour
 				}
 			}
 		}
-		CreateMeshData();
-		ConvertMeshFromSmoothToFlat();
-		UpdateMesh();
-	}
-
-	private void Awake() {
-		mesh = new Mesh();
-		GetComponent<MeshFilter>().mesh = mesh;
-		meshCollider = GetComponent<MeshCollider>();
+		GenerateTerrainMesh();
 	}
 
 	private void Initialize() {
@@ -111,116 +86,20 @@ public class LevelGenerationPipeline : MonoBehaviour
 			trackRegionsDict.Add(region.regionType, region);
 		}
 		// Initialize level representation
-		Level = new LevelRepresentation(dimensions, pointOffset, terrainRegionsDict, trackRegionsDict, regionsAvailability);
+		Level = new LevelRepresentation(dimensions, pointOffset, terrainRegionsDict, trackRegionsDict, regionsAvailability, blockSizeInPoints);
 	}
 
-	private void CreateMeshData() {
-		// Vertices
-		vertices = new Vector3[Level.pointCount.x * Level.pointCount.y];
-		for (int x = 0; x < Level.pointCount.x; x++) {
-			for (int y = 0; y < Level.pointCount.y; y++) {
-				vertices[Level.terrain[x, y].vertexIndex] = Level.terrain[x, y].position;
-			}
-		}
-		// Triangles
-		triangles = new int[(Level.pointCount.x - 1) * (Level.pointCount.y - 1) * 6];
-		for (int x = 0, i = 0; x < Level.pointCount.x - 1; x++) {
-			for (int y = 0; y < Level.pointCount.y - 1; y++) {
-				// For each possible lower left corner add a quad composed of two triangles
-				triangles[i]	 = Level.terrain[x, y].vertexIndex;
-				triangles[i + 1] = Level.terrain[x, y + 1].vertexIndex;
-				triangles[i + 2] = Level.terrain[x + 1, y].vertexIndex;
-				triangles[i + 3] = Level.terrain[x + 1, y].vertexIndex;
-				triangles[i + 4] = Level.terrain[x, y + 1].vertexIndex;
-				triangles[i + 5] = Level.terrain[x + 1, y + 1].vertexIndex;
-				i += 6;
-			}
-		}
-		// Colors
-		colors = new Color[Level.pointCount.x * Level.pointCount.y];
-		for (int x = 0; x < Level.pointCount.x - 1; x++) {
-			for (int y = 0; y < Level.pointCount.y - 1; y++) {
-				// Assign the color of the region
-				if (terrainRegionsDict.TryGetValue(Level.terrain[x, y].region, out LevelRegion region)) {
-					colors[Level.terrain[x, y].vertexIndex] = region.color;
-				} else {
-					Debug.Log($"Unknown region: {(int)Level.terrain[x, y].region}.");
-					colors[Level.terrain[x, y].vertexIndex] = Color.black;
-				}
+	private void GenerateTerrainMesh() {
+		UtilsMonoBehaviour.RemoveAllChildren(terrainParent);
+		for (int x = 0; x < Level.terrain.blockCount.x; x++) {
+			for (int y = 0; y < Level.terrain.blockCount.y; y++) {
+				// Instantiate a new terrain block from a prefab as a child of Terrain object
+				TerrainBlock instantiatedBlock = Instantiate<TerrainBlock>(terrainBlockPrefab, terrainParent);
+				instantiatedBlock.Initialize();
+				instantiatedBlock.GenerateTerrainMesh(Level.terrain, x, y, terrainRegionsDict, 1); // TODO: Change detail level based on distance from player
 			}
 		}
 	}
-
-	private void ConvertMeshFromSmoothToFlat() { 
-		Vector3[] newVertices = new Vector3[triangles.Length];
-		int[] newTriangles = new int[triangles.Length];
-		Color[] newColors = new Color[triangles.Length];
-		// Duplicate vertices so that they are not shared between triangles and the normals are not smoothed out
-		for (int i = 0; i < triangles.Length; i++) {
-			newVertices[i] = vertices[triangles[i]];
-			newColors[i] = colors[triangles[i]];
-			newTriangles[i] = i;
-		}
-		// Replace the previous arrays with the new ones
-		vertices = newVertices;
-		triangles = newTriangles;
-		colors = newColors;
-	}
-
-	private void UpdateMesh() {
-		mesh.Clear();
-
-		// Choose suitable size of index
-		mesh.indexFormat = triangles.Length > 65535 ? UnityEngine.Rendering.IndexFormat.UInt32 : UnityEngine.Rendering.IndexFormat.UInt16;
-
-		mesh.vertices = vertices;
-		mesh.triangles = triangles;
-		mesh.colors = colors;
-
-		mesh.RecalculateBounds();
-		mesh.RecalculateNormals();
-
-		meshCollider.sharedMesh = mesh; // the Mesh needs to be assigned every time again
-	}
-
-	private void OnDrawGizmosSelected() {
-		// Vertices
-		if (showVertices) {
-			Gizmos.color = Color.black;
-			if (vertices != null) {
-				for (int i = 0; i < vertices.Length; i++) {
-					Gizmos.DrawSphere(vertices[i], 0.05f);
-				}
-			}
-		}
-
-		// Edges
-		if (showEdges) {
-			Gizmos.color = Color.red;
-			if (triangles != null) {
-				for (int i = 0; i < triangles.Length; i += 3) {
-					Gizmos.DrawLine(vertices[triangles[i]], vertices[triangles[i + 1]]);
-					Gizmos.DrawLine(vertices[triangles[i + 1]], vertices[triangles[i + 2]]);
-					Gizmos.DrawLine(vertices[triangles[i + 2]], vertices[triangles[i]]);
-				}
-			}
-		}
-
-		// Borders
-		if (showBorders) {
-			Gizmos.color = Color.blue;
-			if (Level != null) {
-				for (int x = 0; x < Level.pointCount.x; x++) {
-					for (int y = 0; y < Level.pointCount.y; y++) {
-						if (Level.terrain[x, y].isOnBorder) {
-							Gizmos.DrawSphere(Level.terrain[x, y].position, 0.1f);
-						}
-					}
-				}
-			}
-		}
-	}
-
 
 }
 
@@ -239,17 +118,19 @@ public class LevelRepresentation {
 	// TODO: Change access modifiers to better describe use cases
 
 	// Terrain, track and level features
-	public TerrainPoint[,] terrain;
+	public TerrainRepresentation terrain;
 	public List<TrackPoint> track;
 	public List<BonusSpot> bonuses;
 	public Vector3 playerStartPosition;
 	public FinishLine finish;
+	private List<GameObject>[,] environmentElementsInBlocks;
 
 	// Dimensions and resolution
 	public Vector2 dimensions = new Vector2(50, 50); // Dimensions of the terrain in the X and Z axes. Final dimensions will be determined as the closest larger multiple of pointOffset.
 	public float pointOffset = 0.5f; // Distance between two adjacent points in the grid.
 	public Vector2Int pointCount; // Number of points on the grid in the X and Z axes
-	public Vector2 terrainStartPosition; // Position of the bottom left point of Mesh
+	private int blockSizePoints; // level is divided into blocks whose width is this many points
+	private Vector2Int blockCount; // number of blocks in each axis
 
 	// Available regions
 	public Dictionary<LevelRegionType, LevelRegion> terrainRegions;
@@ -257,17 +138,21 @@ public class LevelRepresentation {
 	public Dictionary<LevelRegionType, bool> regionsAvailability; // true if the region may be used in the level
 
 
-	public LevelRepresentation(Vector2 dimensions, float pointOffset, Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions, Dictionary<LevelRegionType, bool> regionsAvailability) {
+	public LevelRepresentation(Vector2 dimensions, float pointOffset, Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions, Dictionary<LevelRegionType, bool> regionsAvailability, int blockSizeInPoints) {
 		// Terrain
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
-		ComputeDependentParameters(); // pointCount and startPosition
+		this.blockSizePoints = blockSizeInPoints;
+		ComputeDependentParameters(); // pointCount and blockCount
 		this.regionsAvailability = regionsAvailability;
 		InitializeRegionDictionaries(terrainRegions, trackRegions);
-		InitializeTerrain();
+		this.terrain = new TerrainRepresentation(dimensions, pointOffset, blockSizeInPoints);
 
 		// Track
 		track = new List<TrackPoint>();
+
+		// Environment
+		InitializeEnvironmentElementBlocks();
 	}
 
 	public void ResetLevel() {
@@ -277,38 +162,40 @@ public class LevelRepresentation {
 				terrain[x, y].Reset();
 			}
 		}
-		// Reset track
+		// Reset track and environment
 		track.Clear();
+		foreach (var block in environmentElementsInBlocks) if (block != null) block.Clear();
 	}
 
-	public void ResetLevelWithDimensions(Vector2 dimensions, float pointOffset) {
+	public void ResetLevelWithDimensions(Vector2 dimensions, float pointOffset, int blockSizeInPoints) {
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
-		ComputeDependentParameters(); // pointCount and startPosition
-		// Initialize terrain
-		InitializeTerrain();
-		// Reset track
+		this.blockSizePoints = blockSizeInPoints;
+		ComputeDependentParameters(); // pointCount and blockCount
+		// Reset terrain, track and environment
+		terrain.ResetTerrain();
 		track.Clear();
+		ResetEnvironmentElementBlocks();
 	}
 
 	// May be used to change dimensions during generation (e.g. to adapt terrain dimensions to the track dimensions)
 	public void ChangeDimensions(Vector2 dimensions) {
 		// Store old parameters
 		Vector2Int oldPointCount = this.pointCount;
-		TerrainPoint[,] oldTerrain = this.terrain;
+		List<GameObject>[,] oldEnvironmentElementsInBlocks = this.environmentElementsInBlocks;
 
 		// Update parameters
 		this.dimensions = dimensions;
 		ComputeDependentParameters();
 
 		// Update terrain
-		InitializeTerrain();
-		for (int x = 0; x < Mathf.Min(oldPointCount.x, pointCount.x); x++) { // copy the upper-left corner of the old terrain
-			for (int y = 0; y < Mathf.Min(oldPointCount.y, pointCount.y); y++) {
-				terrain[x, y].position.y = oldTerrain[x, y].position.y;
-				terrain[x, y].region = oldTerrain[x, y].region;
-				terrain[x, y].isOnBorder = oldTerrain[x, y].isOnBorder;
-				terrain[x, y].color = oldTerrain[x, y].color;
+		terrain.UpdateTerrain(dimensions);
+
+		// Update environment elements stored in blocks
+		InitializeEnvironmentElementBlocks();
+		for (int x = 0; x < Mathf.Min(oldEnvironmentElementsInBlocks.GetLength(0), environmentElementsInBlocks.GetLength(0)); x++) {
+			for (int y = 0; y < Mathf.Min(oldEnvironmentElementsInBlocks.GetLength(1), environmentElementsInBlocks.GetLength(1)); y++) {
+				environmentElementsInBlocks[x, y] = oldEnvironmentElementsInBlocks[x, y];
 			}
 		}
 	}
@@ -333,10 +220,18 @@ public class LevelRepresentation {
 		return new Vector2Int(i, j);
 	}
 
+	public void AddEnvironmentElement(GameObject element, Vector3 position) {
+		// TODO: Compute block indices from the position
+		// TODO: Store the element in a corresponding block
+	}
+
 	private void ComputeDependentParameters() {
 		// Compute parameters which are not set from outside
 		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions
-		this.terrainStartPosition = new Vector2(-(float)(pointCount.x - 1) * pointOffset / 2, -(float)(pointCount.y - 1) * pointOffset / 2); // centre is in zero, distance between adjacent points is pointOffset
+		this.blockCount = new Vector2Int(
+				Mathf.CeilToInt((pointCount.x - 1) / (float)blockSizePoints),
+				Mathf.CeilToInt((pointCount.y - 1) / (float)blockSizePoints)
+			);
 		// Update dimensions to the final ones
 		dimensions = new Vector2((pointCount.x - 1) * pointOffset, (pointCount.y - 1) * pointOffset);
 	}
@@ -361,20 +256,24 @@ public class LevelRepresentation {
 		}
 	}
 
-	private void InitializeTerrain() {
-		terrain = new TerrainPoint[pointCount.x, pointCount.y];
-		for (int x = 0, i = 0; x < pointCount.x; x++) {
-			for (int y = 0; y < pointCount.y; y++) {
-				terrain[x, y] = new TerrainPoint(new Vector3(terrainStartPosition.x + x * pointOffset, 0, terrainStartPosition.y + y * pointOffset), i);
-				i++;
+	private void InitializeEnvironmentElementBlocks() {
+		environmentElementsInBlocks = new List<GameObject>[blockCount.x, blockCount.y];
+		for (int x = 0; x < environmentElementsInBlocks.GetLength(0); x++) {
+			for (int y = 0; y < environmentElementsInBlocks.GetLength(1); y++) {
+				environmentElementsInBlocks[x, y] = new List<GameObject>();
 			}
 		}
+	}
+
+	private void ResetEnvironmentElementBlocks() {
+		foreach (var block in environmentElementsInBlocks)
+			if (block != null)
+				block.Clear();
 	}
 
 }
 
 public class TerrainPoint {
-	public int vertexIndex;
 	public Vector3 position;
 	public Color color;
 	public LevelRegionType region;
@@ -382,9 +281,8 @@ public class TerrainPoint {
 
 	private Vector3 origPosition;
 
-	public TerrainPoint(Vector3 position, int index) {
+	public TerrainPoint(Vector3 position) {
 		origPosition = position;
-		vertexIndex = index;
 		Reset();
 	}
 

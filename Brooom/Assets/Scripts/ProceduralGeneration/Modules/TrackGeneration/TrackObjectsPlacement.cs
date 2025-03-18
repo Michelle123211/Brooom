@@ -20,6 +20,8 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 	public FinishLine finishLinePrefab;
 	[Tooltip("How far behind the last hoop is the finish line placed.")]
 	public float finishLineOffset = 50f;
+	[Tooltip("An object which will be parent of the starting zone and finish line.")]
+	public Transform startFinishParent;
 
 	public override void Generate(LevelRepresentation level) {
 		// Remove any previously instantiated hoops
@@ -46,13 +48,15 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 			if (!point.isCheckpoint)
 				point.assignedHoop.GetComponent<Scalable>()?.SetScale(Vector3.one * hoopScale);
 		}
+		// Remove any previously instantiated starting zone or finish line
+		UtilsMonoBehaviour.RemoveAllChildren(startFinishParent);
 		// Instantiate starting zone
 		Vector3 startingZonePosition = (level.playerStartPosition + Vector3.back * startingZoneOffset).WithY(0);
-		Instantiate(startingZonePrefab, startingZonePosition, Quaternion.identity);
+		Instantiate(startingZonePrefab, startingZonePosition, Quaternion.identity, startFinishParent);
 		// Instantiate finish line
 		// ... orientation is the same as for the last hoop
 		Vector3 finishLinePosition = (level.track[level.track.Count - 1].position + direction.normalized * finishLineOffset).WithY(0);
-		FinishLine finish = Instantiate<FinishLine>(finishLinePrefab, finishLinePosition, Quaternion.FromToRotation(Vector3.forward, direction), transform);
+		FinishLine finish = Instantiate<FinishLine>(finishLinePrefab, finishLinePosition, Quaternion.FromToRotation(Vector3.forward, direction), startFinishParent);
 		level.finish = finish;
 	}
 }

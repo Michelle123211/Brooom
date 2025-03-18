@@ -18,6 +18,8 @@ public class OpponentsGeneration : LevelGeneratorModule {
 	public Color[] opponentColors;
 
 	public override void Generate(LevelRepresentation level) {
+		// Remove any previously instantiated opponents
+		UtilsMonoBehaviour.RemoveAllChildren(opponentsParent);
 		// Prepare list of skill levels to choose from
 		List<AISkillLevel.SkillType> remainingSkillLevels = new List<AISkillLevel.SkillType>();
 		foreach (var skillLevel in skillLevels) remainingSkillLevels.Add(skillLevel);
