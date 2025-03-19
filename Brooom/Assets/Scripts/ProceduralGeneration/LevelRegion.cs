@@ -16,13 +16,14 @@ public enum LevelRegionType {
     NONE = 0,
     // Terrain - default
     AboveWater = 101,
-    EnchantedForest = 102,
+    // Terrain - unlocked by tutorial
+    EnchantedForest = 111, // after first race
     // Terrain - unlocked by level length
-    AridDesert = 111,
-    BloomingMeadow = 112,
-    StormyArea = 113,
+    AridDesert = 121,
+    BloomingMeadow = 122,
+    StormyArea = 123,
     // Terrain - unlocked by broom upgrade
-    SnowyMountain = 121,
+    SnowyMountain = 131,
     // Track - default
     Tunnel = 201,
     // Track - unlocked by broom upgrade

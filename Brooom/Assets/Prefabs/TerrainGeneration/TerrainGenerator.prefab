@@ -505,35 +505,35 @@ MonoBehaviour:
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: -5, y: 0}
-  - region: 102
+  - region: 111
     octaveParams:
       numberOfOctaves: 3
       initialFrequency: 0.03
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0, y: 10}
-  - region: 111
+  - region: 121
     octaveParams:
       numberOfOctaves: 1
       initialFrequency: 0.025
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0, y: 5}
-  - region: 112
+  - region: 122
     octaveParams:
       numberOfOctaves: 2
       initialFrequency: 0.03
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0, y: 7}
-  - region: 113
+  - region: 123
     octaveParams:
       numberOfOctaves: 4
       initialFrequency: 0.02
       frequencyFactor: 2
       scaleFactor: 0.5
     heightRange: {x: 0, y: 12}
-  - region: 121
+  - region: 131
     octaveParams:
       numberOfOctaves: 5
       initialFrequency: 0.05
@@ -602,7 +602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultBorderTolerance: 7
   borderToleranceOverrides:
-  - region: 121
+  - region: 131
     borderTolerance: 4
 --- !u!114 &9042582758647628377
 MonoBehaviour:
@@ -688,7 +688,7 @@ MonoBehaviour:
   - region: 101
     minimumHeight: 2
     isRelativeToGround: 0
-  - region: 111
+  - region: 121
     minimumHeight: 2
     isRelativeToGround: 1
 --- !u!114 &6727678963712564295
@@ -860,7 +860,7 @@ MonoBehaviour:
       heightRange: {x: 0, y: 0}
       castShadows: 1
   - name: Enchanted Forest
-    region: 102
+    region: 111
     elements:
     - name: Tree
       elementPrefabs:
@@ -926,7 +926,7 @@ MonoBehaviour:
       heightRange: {x: 0, y: 0}
       castShadows: 1
   - name: Arid Desert
-    region: 111
+    region: 121
     elements:
     - name: Cactus
       elementPrefabs:
@@ -952,7 +952,7 @@ MonoBehaviour:
       heightRange: {x: 0, y: 0}
       castShadows: 1
   - name: Blooming Meadow
-    region: 112
+    region: 122
     elements:
     - name: Flower
       elementPrefabs:
@@ -985,7 +985,7 @@ MonoBehaviour:
       heightRange: {x: 0, y: 0}
       castShadows: 1
   - name: Stormy Area
-    region: 113
+    region: 123
     elements:
     - name: Tree
       elementPrefabs:
@@ -1029,7 +1029,7 @@ MonoBehaviour:
       heightRange: {x: 0, y: 0}
       castShadows: 1
   - name: Snowy Mountain
-    region: 121
+    region: 131
     elements:
     - name: Tree
       elementPrefabs:

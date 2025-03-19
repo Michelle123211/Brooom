@@ -46,6 +46,7 @@ public class RaceController : MonoBehaviourLongInitialization {
 
     [Header("Regions")]
     public List<LevelRegionType> defaultRegions;
+    public List<RegionUnlockTutorialStage> regionsUnlockedByTutorial;
     public List<RegionUnlockValue> regionsUnlockedByEndurance;
     public List<RegionUnlockValue> regionsUnlockedByAltitude;
 
@@ -350,7 +351,13 @@ public class RaceController : MonoBehaviourLongInitialization {
         Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.CurrentStats.speed / 100f);
         // ... default available regions
         foreach (var region in defaultRegions)
-            PlayerState.Instance.regionsAvailability[region] = true;
+            PlayerState.Instance.SetRegionAvailability(region, true);
+        // ... available regions from tutorial
+        foreach (var regionFromTutorial in regionsUnlockedByTutorial)
+            PlayerState.Instance.SetRegionAvailability(
+                regionFromTutorial.region,
+                Tutorial.Instance.CurrentStage >= regionFromTutorial.tutorialStage ? true : false
+            );
         // ... available regions from Endurance
         foreach (var regionWithValue in regionsUnlockedByEndurance)
             PlayerState.Instance.SetRegionAvailability(
@@ -491,6 +498,14 @@ public class RegionUnlockValue {
     public LevelRegionType region;
     [Tooltip("If the stat is greater then this value, the region becomes available.")]
     public int minValue;
+}
+
+[System.Serializable]
+public class RegionUnlockTutorialStage {
+    [Tooltip("Region unlocked by a specific tutorial stage.")]
+    public LevelRegionType region;
+    [Tooltip("If the player gets into this tutorial stage, the region becomes available.")]
+    public TutorialStage tutorialStage;
 }
 
 // Everything the RaceController needs for a character

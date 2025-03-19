@@ -16,19 +16,19 @@ MonoBehaviour:
   - regionType: 101
     minValues: {x: 0, y: 0}
     maxValues: {x: 1, y: 0.3}
-  - regionType: 102
+  - regionType: 111
     minValues: {x: 0.55, y: 0}
     maxValues: {x: 1, y: 0.7}
-  - regionType: 111
+  - regionType: 121
     minValues: {x: 0.3, y: 0}
     maxValues: {x: 0.55, y: 0.5}
-  - regionType: 112
+  - regionType: 122
     minValues: {x: 0, y: 0}
     maxValues: {x: 0.3, y: 0.7}
-  - regionType: 113
+  - regionType: 123
     minValues: {x: 0.3, y: 0.5}
     maxValues: {x: 0.55, y: 0.75}
-  - regionType: 121
+  - regionType: 131
     minValues: {x: 0, y: 0.5}
     maxValues: {x: 1, y: 1}
   notes: 'Works moderately well for all regions allowed:

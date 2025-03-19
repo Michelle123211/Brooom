@@ -16,13 +16,13 @@ MonoBehaviour:
   - regionType: 101
     minValues: {x: 0, y: 0}
     maxValues: {x: 1, y: 0.3}
-  - regionType: 102
+  - regionType: 111
     minValues: {x: 0.5, y: 0}
     maxValues: {x: 1, y: 0.8}
-  - regionType: 111
+  - regionType: 121
     minValues: {x: 0, y: 0}
     maxValues: {x: 0.5, y: 0.55}
-  - regionType: 121
+  - regionType: 131
     minValues: {x: 0, y: 0.55}
     maxValues: {x: 1, y: 1}
   notes: 'Works quite well for the following allowed regions:

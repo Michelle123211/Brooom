@@ -7,7 +7,7 @@ public class RegionAmbienceAudio : MonoBehaviour {
 	[SerializeField] FMODUnity.StudioEventEmitter ambienceSound;
 	[SerializeField] FMODUnity.StudioEventEmitter underwaterSnapshot;
 
-	protected LevelRegionType LastRegion { get; private set; }  = LevelRegionType.NONE;
+	protected LevelRegionType LastRegion { get; private set; } = LevelRegionType.NONE;
 
 	private bool underwater = false;
 

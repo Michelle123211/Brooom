@@ -7502,42 +7502,42 @@ PrefabInstance:
     - target: {fileID: 650314752155898272, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1704416431875874871, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1713751934342667410, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2155503869580160128, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2553388499109577389, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3068122376443345296, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7380596193040418889, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7497507702008467758, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9042582758647628369, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
@@ -10041,16 +10041,19 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   firstPlaceRewardRange: {x: 100, y: 5000}
-  defaultRegions: 6500000066000000
-  regionsUnlockedByEndurance:
+  defaultRegions: 65000000
+  regionsUnlockedByTutorial:
   - region: 111
+    tutorialStage: 7
+  regionsUnlockedByEndurance:
+  - region: 121
     minValue: 25
-  - region: 112
+  - region: 122
     minValue: 50
-  - region: 113
+  - region: 123
     minValue: 75
   regionsUnlockedByAltitude:
-  - region: 121
+  - region: 131
     minValue: 30
   - region: 211
     minValue: 50
