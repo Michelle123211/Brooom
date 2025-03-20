@@ -39,10 +39,10 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
 
     protected LevelGenerationPipeline levelGenerator;
 
-	protected override void PrepareForInitialization_ReplacingAwake() {
-	}
+    protected override void PrepareForInitialization_ReplacingAwake() {
+    }
 
-	protected override void PrepareForInitialization_ReplacingStart() {
+    protected override void PrepareForInitialization_ReplacingStart() {
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
     }
 
@@ -51,7 +51,7 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
     }
 
     protected override void UpdateAfterInitialization() {
-	}
+    }
 
     protected IEnumerator GenerateLevel() {
         // Generate level (terrain + track)

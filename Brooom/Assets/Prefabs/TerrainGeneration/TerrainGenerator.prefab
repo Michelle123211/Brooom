@@ -485,6 +485,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 411636ece3bafe44db5dc334e96fda11, type: 2}
   trackRegions:
   - {fileID: 11400000, guid: a947588bc3cd91942a8aab910d71ba8d, type: 2}
+  terrainRegionsToInclude: 
 --- !u!114 &9042582758647628382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c67119827cd634db7d81af3e8a158b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionSize: 150
+  regionSize: 200
 --- !u!114 &9042582758647628376
 MonoBehaviour:
   m_ObjectHideFlags: 0
