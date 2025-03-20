@@ -9,6 +9,7 @@ public class LevelRegion : ScriptableObject
     public string displayName;
     public LevelRegionType regionType;
     public Color color;
+    public Sprite regionImage;
     // TODO: Add environment features etc. (with some description how to place them - e.g. random rotation in which axis, lower density at the edges of the region, etc.)
 }
 
@@ -25,7 +26,7 @@ public enum LevelRegionType {
     // Terrain - unlocked by broom upgrade
     SnowyMountain = 131,
     // Track - default
-    Tunnel = 201,
+    MysteriousTunnel = 201,
     // Track - unlocked by broom upgrade
     AboveClouds = 211
 }

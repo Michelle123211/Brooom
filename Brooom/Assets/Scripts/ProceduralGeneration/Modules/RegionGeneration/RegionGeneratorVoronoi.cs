@@ -57,6 +57,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 				// Then select randomly the corresponding region (from the allowed terrain regions)
 				if (level.terrain[centerX, centerY].region == LevelRegionType.NONE) {
 					level.terrain[centerX, centerY].region = allowedTerrainRegions[Random.Range(0, allowedTerrainRegions.Count)];
+					level.regionsInLevel.Add(level.terrain[centerX, centerY].region); // note down this region is used
 				}
 			}
 		}

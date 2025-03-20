@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 
 	[field:SerializeField]
-	public TutorialStage CurrentStage { get; private set; } = TutorialStage.FirstRace; // TODO: Change to Introduction
+	public TutorialStage CurrentStage { get; private set; } = TutorialStage.FirstRace; // TODO: Change to Introduction and hide the field in Inspector
 
 	// Called whenever progress in tutorial changes
 	private void SaveCurrentProgress() { 

@@ -370,7 +370,9 @@ public class RaceController : MonoBehaviourLongInitialization {
                 regionWithValue.region,
                 PlayerState.Instance.maxAltitude >= regionWithValue.minValue ? true : false
             );
-		// And set them
+        // TODO: Choose which terrain regions will be used in the level
+
+		// Set parameters
 		levelGenerator.regionsAvailability = PlayerState.Instance.regionsAvailability;
         TrackPointsGenerationRandomWalk trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
         trackGenerator.numberOfCheckpoints = numOfCheckpoints;

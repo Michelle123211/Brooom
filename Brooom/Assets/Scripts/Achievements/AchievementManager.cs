@@ -523,7 +523,7 @@ class LevelData : AchievementData {
 		// Enumerate all possible regions and make sure they are all available
 		foreach (LevelRegionType region in Enum.GetValues(typeof(LevelRegionType))) {
 			if (region == LevelRegionType.NONE) continue;
-			if (region == LevelRegionType.Tunnel) continue; // TODO: Skipped only temporarily, until it is added to the game
+			if (region == LevelRegionType.MysteriousTunnel) continue; // TODO: Skipped only temporarily, until it is added to the game
 			if (!PlayerState.Instance.regionsAvailability.ContainsKey(region) || !PlayerState.Instance.regionsAvailability[region]) {
 				allAvailable = false;
 				break;
@@ -539,7 +539,7 @@ class LevelData : AchievementData {
 		// Enumerate all possible regions and make sure they have been visited
 		foreach (LevelRegionType region in Enum.GetValues(typeof(LevelRegionType))) {
 			if (region == LevelRegionType.NONE) continue;
-			if (region == LevelRegionType.Tunnel) continue; // TODO: Skipped only temporarily, until it is added to the game
+			if (region == LevelRegionType.MysteriousTunnel) continue; // TODO: Skipped only temporarily, until it is added to the game
 			if (!PlayerState.Instance.regionsVisited.ContainsKey(region) || !PlayerState.Instance.regionsVisited[region]) {
 				allVisited = false;
 				break;

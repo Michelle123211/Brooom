@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using System;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshCollider))]
@@ -26,11 +26,18 @@ public class LevelGenerationPipeline : MonoBehaviour {
 
 	[Header("Level regions")]
 	[Tooltip("All terrain regions in the game.")]
-	[SerializeField] List<LevelRegion> terrainRegions;
+	public List<LevelRegion> terrainRegions;
 	[Tooltip("All track regions in the game.")]
-	[SerializeField] List<LevelRegion> trackRegions;
+	public List<LevelRegion> trackRegions;
 	[Tooltip("Regions availability in the currently generated level.")]
 	public Dictionary<LevelRegionType, bool> regionsAvailability;
+
+	[Tooltip("Terrain regions which should be used when generating the level (for track regions, all available ones will be used).")]
+	[HideInInspector] public List<LevelRegionType> terrainRegionsToInclude; // TODO: Fill from outside, work with only these when generating level
+
+
+	// Anyone can register a callback for when a level is generated
+	public event Action<LevelRepresentation> onLevelGenerated;
 
 
 	// Object-oriented representation
@@ -42,12 +49,7 @@ public class LevelGenerationPipeline : MonoBehaviour {
 #if UNITY_EDITOR
 	[ContextMenu("Regenerate level")]
 	private void RegenerateLevel() { // Regenerates the level with previous parameters
-		if (Level == null) {
-			regionsAvailability = new Dictionary<LevelRegionType, bool>();
-			regionsAvailability.Add(LevelRegionType.AboveWater, true);
-			regionsAvailability.Add(LevelRegionType.EnchantedForest, true);
-			Initialize();
-		}
+		if (Level == null) Initialize();
 		if (modules != null) {
 			Level.ResetLevelWithDimensions(dimensions, pointOffset, blockSizeInPoints);
 			foreach (var moduleSlot in modules) {
@@ -55,8 +57,9 @@ public class LevelGenerationPipeline : MonoBehaviour {
 					moduleSlot.module.Generate(Level);
 				}
 			}
-			GenerateTerrainMesh();
 		}
+		GenerateTerrainMesh();
+		onLevelGenerated?.Invoke(Level);
 	}
 #endif
 
@@ -71,17 +74,19 @@ public class LevelGenerationPipeline : MonoBehaviour {
 			}
 		}
 		GenerateTerrainMesh();
+		onLevelGenerated?.Invoke(Level);
 	}
 
 	private void Initialize() {
+		if (terrainRegionsToInclude == null) terrainRegionsToInclude = new List<LevelRegionType>() { LevelRegionType.AboveWater, LevelRegionType.EnchantedForest };
 		// Initialize regions dictionaries
 		terrainRegionsDict = new Dictionary<LevelRegionType, LevelRegion>();
-		if (terrainRegions == null)
-			terrainRegions = new List<LevelRegion>();
+		if (terrainRegions == null) terrainRegions = new List<LevelRegion>();
 		foreach (var region in terrainRegions) {
 			terrainRegionsDict.Add(region.regionType, region);
 		}
 		trackRegionsDict = new Dictionary<LevelRegionType, LevelRegion>();
+		if (trackRegions == null) trackRegions = new List<LevelRegion>();
 		foreach (var region in trackRegions) {
 			trackRegionsDict.Add(region.regionType, region);
 		}
@@ -134,6 +139,9 @@ public class LevelRepresentation {
 	public Dictionary<LevelRegionType, LevelRegion> trackRegions;
 	public Dictionary<LevelRegionType, bool> regionsAvailability; // true if the region may be used in the level
 
+	// Regions actually in the generated level
+	public HashSet<LevelRegionType> regionsInLevel;
+
 
 	public LevelRepresentation(Vector2 dimensions, float pointOffset, Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions, Dictionary<LevelRegionType, bool> regionsAvailability, int blockSizeInPoints) {
 		// Terrain
@@ -143,6 +151,7 @@ public class LevelRepresentation {
 		this.regionsAvailability = regionsAvailability;
 		InitializeRegionDictionaries(terrainRegions, trackRegions);
 		this.terrain = new TerrainRepresentation(dimensions, pointOffset, blockSizeInPoints);
+		this.regionsInLevel = new HashSet<LevelRegionType>();
 
 		// Track
 		track = new List<TrackPoint>();

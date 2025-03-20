@@ -33,6 +33,8 @@ public class TrackRegionGenerator : LevelGeneratorModule
                 // Interpolate heights on edges
                 int endIndex = startIndex + length - 1;
                 InterpolateHeightsInRegion(level, startIndex, endIndex);
+                // Note down this region is used
+                level.regionsInLevel.Add(region.trackRegion);
             }
         }
 	}

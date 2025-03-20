@@ -37,6 +37,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 				// If the chosen region is available, use it as is, otherwise find the closest available region and use it instead
 				if (!IsRegionAllowed(level.terrain[x, y].region, level.regionsAvailability))
 					level.terrain[x, y].region = GetClosestAllowedRegion(diagramX, diagramY, level.regionsAvailability);
+				level.regionsInLevel.Add(level.terrain[x, y].region); // note down this region is used
 			}
 		}
 	}
