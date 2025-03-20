@@ -36,6 +36,9 @@ public class MaximumAngleCorrection : LevelGeneratorModule {
 		CorrectOneSide(level, maxIndex, startInHoop, -1);
 		// Correct height to the right (end)
 		CorrectOneSide(level, maxIndex, startInHoop, 1);
+
+		// Update height of starting position
+		level.playerStartPosition.y = Mathf.Max(level.playerStartPosition.y, level.track[0].position.y);
 	}
 
 	// index ... index of the track point or bonus spot where to start

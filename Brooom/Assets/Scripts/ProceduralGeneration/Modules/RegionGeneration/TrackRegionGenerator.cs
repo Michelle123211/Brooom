@@ -33,6 +33,8 @@ public class TrackRegionGenerator : LevelGeneratorModule
                 // Interpolate heights on edges
                 int endIndex = startIndex + length - 1;
                 InterpolateHeightsInRegion(level, startIndex, endIndex);
+                // Adjust start position if necessary
+                if (startIndex == 0) level.playerStartPosition.y = Mathf.Max(level.playerStartPosition.y, level.track[0].position.y);
                 // Note down this region is used
                 level.regionsInLevel.Add(region.trackRegion);
             }
