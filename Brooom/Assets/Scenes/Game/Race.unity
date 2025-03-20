@@ -10251,7 +10251,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 150
+  m_SortingOrder: 45
   m_TargetDisplay: 0
 --- !u!224 &1614440048
 RectTransform:
@@ -11000,14 +11000,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9403a7c45cf903742a52c1ed9895cd8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialNumberOfCheckpoints: 4
-  finalNumberOfCheckpoints: 20
-  initialDirectionChange: {x: 10, y: 20}
-  finalDirectionChange: {x: 30, y: 45}
-  initialHoopScale: 1
-  finalHoopScale: 0.4
-  initialHoopDistanceRange: {x: 40, y: 50}
-  finalHoopDistanceRange: {x: 80, y: 100}
   missedHoopPenalization: 10
   firstPlaceReward:
     serializedVersion: 2
@@ -11043,23 +11035,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   firstPlaceRewardRange: {x: 100, y: 5000}
-  regionCountInLevel: 3
-  defaultRegions: 65000000
-  regionsUnlockedByTutorial:
-  - region: 111
-    tutorialStage: 7
-  regionsUnlockedByEndurance:
-  - region: 121
-    minValue: 25
-  - region: 122
-    minValue: 50
-  - region: 123
-    minValue: 75
-  regionsUnlockedByAltitude:
-  - region: 131
-    minValue: 30
-  - region: 211
-    minValue: 50
   raceTime: 0
 --- !u!4 &1820478787
 Transform:
@@ -11907,7 +11882,19 @@ MonoBehaviour:
       m_Calls: []
   onUntweenComplete:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1344390174}
+        m_TargetAssemblyTypeName: GamePause, Assembly-CSharp
+        m_MethodName: EnableGamePause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1840252645
 MonoBehaviour:
   m_ObjectHideFlags: 0

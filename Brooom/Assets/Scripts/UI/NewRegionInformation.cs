@@ -34,6 +34,7 @@ public class NewRegionInformation : MonoBehaviour {
 		regionDescription.text = LocalizationManager.Instance.GetLocalizedString(regionLocalizationKey + "Description");
 		regionImage.sprite = region.regionImage;
 		// Show panel and mouse cursor
+		GamePause.DisableGamePause();
 		Time.timeScale = 0;
 		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
 		regionInformationPanel.TweenAwareEnable();

@@ -137,8 +137,10 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		}
 		// Reset previous LoadingIn trigger in case it stayed set
 		animator.ResetTrigger("LoadingIn");
-		onSceneLoaded?.Invoke(scene);
+		// Wait until the idle animation starts playing
+		yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
 		GamePause.EnableGamePause(); // enable pause again
+		onSceneLoaded?.Invoke(scene);
 	}
 
 	static SceneLoader() { 
