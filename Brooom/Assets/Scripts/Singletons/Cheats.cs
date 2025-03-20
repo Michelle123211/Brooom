@@ -590,7 +590,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				// Distribute the missed hoops but pass all checkpoints
 				int actualMissedHoops = 0;
 				for (int i = 0; i < playerState.hoopsPassedArray.Length; i++) {
-					if (RaceController.Instance.level.track[i].isCheckpoint || missedHoops == 0) {
+					if (RaceController.Instance.Level.track[i].isCheckpoint || missedHoops == 0) {
 						playerState.hoopsPassedArray[i] = true;
 					} else {
 						missedHoops--;

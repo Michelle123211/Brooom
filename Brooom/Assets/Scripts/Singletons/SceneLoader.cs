@@ -60,11 +60,24 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 
 	#region Registration of objects with long initialization
 
+	private int numberOfInitializedObjects = 0;
 	private List<MonoBehaviourLongInitialization> objectsWithLongInitialization = new List<MonoBehaviourLongInitialization>();
 
 	public void RegisterForLongInitialization(MonoBehaviourLongInitialization objectWithLongInitialization) {
 		// Remember the object to invoke its initialization later
 		objectsWithLongInitialization.Add(objectWithLongInitialization);
+		objectWithLongInitialization.onInitializationFinished += IncreaseInitializedObjectCounter;
+	}
+
+	private void IncreaseInitializedObjectCounter() {
+		numberOfInitializedObjects++;
+	}
+
+	private void ResetLongInitializationData() {
+		foreach (var objectWithLongInitialization in objectsWithLongInitialization)
+			objectWithLongInitialization.onInitializationFinished -= IncreaseInitializedObjectCounter;
+		objectsWithLongInitialization.Clear();
+		numberOfInitializedObjects = 0;
 	}
 
 	#endregion
@@ -112,9 +125,11 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 		PassAndResetCurrentParameters();
 		// Initialize all registered objects with long initialization outside of Awake() or Start() methods
 		Time.timeScale = 0;
+		numberOfInitializedObjects = 0;
 		foreach (var objectWithLongInitialization in objectsWithLongInitialization)
-			yield return objectWithLongInitialization.Initialize();
-		objectsWithLongInitialization.Clear();
+			StartCoroutine(objectWithLongInitialization.Initialize());
+		yield return new WaitUntil(() => numberOfInitializedObjects == objectsWithLongInitialization.Count); // Wait until all are initialized
+		ResetLongInitializationData();
 		Time.timeScale = 1;
 		// Fade into the new scene
 		if (fade) {

@@ -196,7 +196,7 @@ public class StatsComputer : MonoBehaviour {
             if (isHoopPassed) passedHoops++;
         // Sum of weights of all the bonuses - from RaceController.Instance.level
         totalBonusWeightSum = 0;
-        foreach (var bonusSpot in RaceController.Instance.level.bonuses) {
+        foreach (var bonusSpot in RaceController.Instance.Level.bonuses) {
             if (bonusSpot.isEmpty) continue;
             totalBonusWeightSum += bonusSpot.bonusInstances[0].bonusWeight;
         }
@@ -204,7 +204,7 @@ public class StatsComputer : MonoBehaviour {
         obstacleCollisionValue = Mathf.Clamp(1 - (obstacleCollisionCount * collisionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100;
         // Total amount of mana which can be picked up (assuming the player picks up only one instance in each bonus spot)
         totalMana = 0;
-        foreach (var bonusSpot in RaceController.Instance.level.bonuses) {
+        foreach (var bonusSpot in RaceController.Instance.Level.bonuses) {
             if (bonusSpot.isEmpty) continue;
             if (bonusSpot.bonusInstances[0].TryGetComponent<ManaBonusEffect>(out ManaBonusEffect manaBonus))
                 totalMana += manaBonus.manaAmount;
@@ -317,14 +317,14 @@ public class StatsComputer : MonoBehaviour {
         // Compute distance between the player and the trajectory
         Vector3 playerPosition = playerRaceState.transform.position;
         // Get positions of two track points between which the player is located
-        Vector3 firstPoint = RaceController.Instance.level.playerStartPosition;
-        Vector3 secondPoint = RaceController.Instance.level.track[0].position;
-        if (playerRaceState.followingTrackPoint >= RaceController.Instance.level.track.Count) { // the player is behind the last hoop
-            firstPoint = RaceController.Instance.level.track[RaceController.Instance.level.track.Count - 1].position;
-            secondPoint = RaceController.Instance.level.finish.transform.position.WithY(firstPoint.y); // finish line but at the same height as the last hoop
+        Vector3 firstPoint = RaceController.Instance.Level.playerStartPosition;
+        Vector3 secondPoint = RaceController.Instance.Level.track[0].position;
+        if (playerRaceState.followingTrackPoint >= RaceController.Instance.Level.track.Count) { // the player is behind the last hoop
+            firstPoint = RaceController.Instance.Level.track[RaceController.Instance.Level.track.Count - 1].position;
+            secondPoint = RaceController.Instance.Level.finish.transform.position.WithY(firstPoint.y); // finish line but at the same height as the last hoop
         } else if (playerRaceState.followingTrackPoint > 0) { // the player is somewhere in the middle of the track
-            firstPoint = RaceController.Instance.level.track[playerRaceState.followingTrackPoint - 1].position;
-            secondPoint = RaceController.Instance.level.track[playerRaceState.followingTrackPoint].position;
+            firstPoint = RaceController.Instance.Level.track[playerRaceState.followingTrackPoint - 1].position;
+            secondPoint = RaceController.Instance.Level.track[playerRaceState.followingTrackPoint].position;
         }
         // Project vector from the first point to the player onto the vector from the first point to the second point
         Vector3 projection = Vector3.Project(playerPosition - firstPoint, (secondPoint - firstPoint).normalized);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,13 @@ public abstract class MonoBehaviourLongInitialization : MonoBehaviour {
 	// Should be checked before any interaction with this object
 	public bool IsInitialized { get; private set; } = false;
 
+	public event Action onInitializationFinished;
+
 	// This method is called from SceneLoader to initialize the object after the standard Awake() and Start() have taken place
 	public IEnumerator Initialize() {
 		yield return InitializeAfterPreparation();
 		IsInitialized = true;
+		onInitializationFinished?.Invoke();
 	}
 
 	private void Awake() {

@@ -22,8 +22,8 @@ public class NavigationBonusEffect : BonusEffect {
 		int nextHoopIndex = raceState.trackPointToPassNext;
 		for (int i = 0; i < numberOfPoints; i++) {
 			int hoopIndex = nextHoopIndex + i;
-			if (hoopIndex >= RaceController.Instance.level.track.Count) break;
-			highlighter.AddTrajectoryPoint(RaceController.Instance.level.track[hoopIndex].position);
+			if (hoopIndex >= RaceController.Instance.Level.track.Count) break;
+			highlighter.AddTrajectoryPoint(RaceController.Instance.Level.track[hoopIndex].position);
 		}
 		highlighter.Play();
 	}

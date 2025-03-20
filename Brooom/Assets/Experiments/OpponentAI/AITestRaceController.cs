@@ -8,10 +8,10 @@ public class AITestRaceController : RaceController {
     public override void StartRace() {
         raceTime = 0;
         // Activate the hoops and finish line
-        for (int i = 0; i < level.track.Count; i++) {
-            level.track[i].assignedHoop.Activate(i);
+        for (int i = 0; i < Level.track.Count; i++) {
+            Level.track[i].assignedHoop.Activate(i);
         }
-        level.finish.Activate();
+        Level.finish.Activate();
         // Actually start the race
         State = RaceState.RaceInProgress;
         // Enable racer actions
@@ -73,8 +73,12 @@ public class AITestRaceController : RaceController {
         //    precision = 50,
         //    magic = 50
         //};
-        GenerateLevel();
-        InitializeRacers();
+
+        // TODO: Set level generator parameters
+        // TODO: Generate level using level generator
+        // TODO: Compute level difficulty
+        // TODO: InitializeRacers();
+
         // Hide HUD
         raceHUD.gameObject.SetActive(false);
     }

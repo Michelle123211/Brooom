@@ -10980,6 +10980,7 @@ GameObject:
   - component: {fileID: 1820478787}
   - component: {fileID: 1820478786}
   - component: {fileID: 1820478788}
+  - component: {fileID: 1820478789}
   m_Layer: 0
   m_Name: RaceController
   m_TagString: Untagged
@@ -11042,6 +11043,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   firstPlaceRewardRange: {x: 100, y: 5000}
+  regionCountInLevel: 3
   defaultRegions: 65000000
   regionsUnlockedByTutorial:
   - region: 111
@@ -11248,6 +11250,43 @@ MonoBehaviour:
     m_RotationOrder: 4
   errorTolerance: 0.1
   givingUpPenalization: 0.95
+--- !u!114 &1820478789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820478785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0091586863fcf4da58fd09f8730383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialNumberOfCheckpoints: 4
+  finalNumberOfCheckpoints: 20
+  initialDirectionChange: {x: 10, y: 20}
+  finalDirectionChange: {x: 30, y: 45}
+  initialHoopScale: 1
+  finalHoopScale: 0.4
+  initialHoopDistanceRange: {x: 40, y: 50}
+  finalHoopDistanceRange: {x: 80, y: 100}
+  regionCountInLevel: 3
+  defaultRegions: 65000000
+  regionsUnlockedByTutorial:
+  - region: 111
+    tutorialStage: 7
+  regionsUnlockedByEndurance:
+  - region: 121
+    minValue: 25
+  - region: 122
+    minValue: 50
+  - region: 123
+    minValue: 75
+  regionsUnlockedByAltitude:
+  - region: 131
+    minValue: 30
+  - region: 211
+    minValue: 50
 --- !u!1 &1840252641
 GameObject:
   m_ObjectHideFlags: 0

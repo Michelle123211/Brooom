@@ -31,8 +31,8 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 			nextGoal = nextTrackGoal;
 			if (nextBonus != -1) {
 				// Check all bonuses in front of the next hoop
-				while (nextBonus < RaceController.Instance.level.bonuses.Count 
-					&& RaceController.Instance.level.bonuses[nextBonus].previousHoopIndex < nextHoop) {
+				while (nextBonus < RaceController.Instance.Level.bonuses.Count 
+					&& RaceController.Instance.Level.bonuses[nextBonus].previousHoopIndex < nextHoop) {
 					if (IsBonusSuitableAsGoal(nextBonus)) {
 						// Compare the bonus goal with the hoop goal (which is better or not null)
 						nextGoal = ChooseBetterGoal(nextTrackGoal, new BonusGoal(this.agent, nextBonus));
@@ -100,7 +100,7 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 	private NavigationGoal CreateTrackGoalFromIndex(int index) {
 		if (index >= raceState.hoopsPassedArray.Length) {
 			return new FinishNavigationGoal(this.agent);
-		} else if (RaceController.Instance.level.track[index].isCheckpoint) {
+		} else if (RaceController.Instance.Level.track[index].isCheckpoint) {
 			return new CheckpointGoal(this.agent, index);
 		} else {
 			return new HoopGoal(this.agent, index);
@@ -112,10 +112,10 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 		float minDistance = float.MaxValue;
 		int bonusIndex = -1;
 		// Select the closest bonus from those which are in front of the agent
-		for (int i = 0; i < RaceController.Instance.level.bonuses.Count; i++) {
+		for (int i = 0; i < RaceController.Instance.Level.bonuses.Count; i++) {
 			if (!IsBonusSuitableAsGoal(i)) continue;
 			// Select the closest bonus
-			float distance = Vector3.Distance(this.agent.transform.position, RaceController.Instance.level.bonuses[i].position);
+			float distance = Vector3.Distance(this.agent.transform.position, RaceController.Instance.Level.bonuses[i].position);
 			if (distance < minDistance) {
 				minDistance = distance;
 				bonusIndex = i;
@@ -127,7 +127,7 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 
 	// Determines whether the bonus with the given index is a suitable goal (regarding it's availability, position and the agent's orientation)
 	private bool IsBonusSuitableAsGoal(int bonusIndex) {
-		BonusSpot bonusSpot = RaceController.Instance.level.bonuses[bonusIndex];
+		BonusSpot bonusSpot = RaceController.Instance.Level.bonuses[bonusIndex];
 		// The bonus must be available (have at least one instance active)
 		if (!bonusSpot.IsBonusAvailable()) return false;
 		// Ignore the bonus if it was picked up as the last one (we don't want to choose it again immediately)

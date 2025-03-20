@@ -15,10 +15,10 @@ public class TrackRegionGenerator : LevelGeneratorModule
         if (trackRegions == null) trackRegions = new List<TrackRegionParameters>();
         foreach (var region in trackRegions) {
             // Skip not available regions
-            if (!level.regionsAvailability.ContainsKey(region.trackRegion) || !level.regionsAvailability[region.trackRegion])
+            if (!level.regionsAvailability.TryGetValue(region.trackRegion, out bool isAvailable) || !isAvailable)
                 continue;
-            // Add the given region with some probability
-            if (Random.Range(0f, 1f) < region.probability) {
+            // Add the given region with some probability - if the region is new, add it automatically
+            if (!level.regionsVisited.TryGetValue(region.trackRegion, out bool isVisited) || !isVisited || Random.Range(0f, 1f) < region.probability) {
                 int length = Random.Range(region.lengthRange.x, region.lengthRange.y); // random length
                 // Choose starting index
                 int startIndex = Random.Range(0, level.track.Count - length);

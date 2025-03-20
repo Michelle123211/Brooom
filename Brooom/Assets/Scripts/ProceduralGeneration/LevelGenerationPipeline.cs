@@ -31,6 +31,8 @@ public class LevelGenerationPipeline : MonoBehaviour {
 	public List<LevelRegion> trackRegions;
 	[Tooltip("Regions availability in the currently generated level.")]
 	public Dictionary<LevelRegionType, bool> regionsAvailability;
+	[Tooltip("Regions which have already been visited (when there is an available but unvisited region, it may be prioritized in the level).")]
+	public Dictionary<LevelRegionType, bool> regionsVisited;
 
 	[Tooltip("Terrain regions which should be used when generating the level (for track regions, all available ones will be used).")]
 	[HideInInspector] public List<LevelRegionType> terrainRegionsToInclude; // TODO: Fill from outside, work with only these when generating level
@@ -91,7 +93,7 @@ public class LevelGenerationPipeline : MonoBehaviour {
 			trackRegionsDict.Add(region.regionType, region);
 		}
 		// Initialize level representation
-		Level = new LevelRepresentation(dimensions, pointOffset, terrainRegionsDict, trackRegionsDict, regionsAvailability, blockSizeInPoints);
+		Level = new LevelRepresentation(dimensions, pointOffset, terrainRegionsDict, trackRegionsDict, terrainRegionsToInclude, regionsAvailability, regionsVisited, blockSizeInPoints);
 	}
 
 	private void GenerateTerrainMesh() {
@@ -137,18 +139,22 @@ public class LevelRepresentation {
 	// Available regions
 	public Dictionary<LevelRegionType, LevelRegion> terrainRegions;
 	public Dictionary<LevelRegionType, LevelRegion> trackRegions;
+	public List<LevelRegionType> terrainRegionsToInclude;
 	public Dictionary<LevelRegionType, bool> regionsAvailability; // true if the region may be used in the level
+	public Dictionary<LevelRegionType, bool> regionsVisited; // true if the region has been visited (and so is not prioritized when generating a level)
 
 	// Regions actually in the generated level
 	public HashSet<LevelRegionType> regionsInLevel;
 
 
-	public LevelRepresentation(Vector2 dimensions, float pointOffset, Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions, Dictionary<LevelRegionType, bool> regionsAvailability, int blockSizeInPoints) {
+	public LevelRepresentation(Vector2 dimensions, float pointOffset, Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions, List<LevelRegionType> terrainRegionsToInclude, Dictionary<LevelRegionType, bool> regionsAvailability, Dictionary<LevelRegionType, bool> regionsVisited, int blockSizeInPoints) {
 		// Terrain
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
 		ComputeDependentParameters(); // pointCount
+		this.terrainRegionsToInclude = terrainRegionsToInclude;
 		this.regionsAvailability = regionsAvailability;
+		this.regionsVisited = regionsVisited;
 		InitializeRegionDictionaries(terrainRegions, trackRegions);
 		this.terrain = new TerrainRepresentation(dimensions, pointOffset, blockSizeInPoints);
 		this.regionsInLevel = new HashSet<LevelRegionType>();

@@ -23,7 +23,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		int randOffsetY1 = Random.Range(0, 1000); // for Y axis in the diagram
 		int randOffsetY2 = Random.Range(0, 1000);
 		// Select a diagram to use (the one supporting all allowed regions if possible)
-		SelectRegionDiagram(level.regionsAvailability);
+		SelectRegionDiagram(level.terrainRegionsToInclude);
 		// Assign each point of the terrain its region
 		for (int x = 0; x < level.pointCount.x; x++) {
 			for (int y = 0; y < level.pointCount.y; y++) {
@@ -35,15 +35,15 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 				// Get corresponding region type
 				level.terrain[x, y].region = GetRegionTypeFromDiagram(diagramX, diagramY);
 				// If the chosen region is available, use it as is, otherwise find the closest available region and use it instead
-				if (!IsRegionAllowed(level.terrain[x, y].region, level.regionsAvailability))
-					level.terrain[x, y].region = GetClosestAllowedRegion(diagramX, diagramY, level.regionsAvailability);
+				if (!IsRegionAllowed(level.terrainRegionsToInclude, level.terrain[x, y].region))
+					level.terrain[x, y].region = GetClosestAllowedRegion(diagramX, diagramY, level.terrainRegionsToInclude);
 				level.regionsInLevel.Add(level.terrain[x, y].region); // note down this region is used
 			}
 		}
 	}
 
 	// Selects an available RegionDiagram which supports the most allowed regions if possible
-	private void SelectRegionDiagram(Dictionary<LevelRegionType, bool> regionsAvailability) {
+	private void SelectRegionDiagram(List<LevelRegionType> regionsToInclude) {
 		// Use the first one as default
 		diagram = availableDiagrams[0];
 		// Find the one supporting the most allowed regions
@@ -51,7 +51,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		foreach (var regionDiagram in availableDiagrams) {
 			int supportedRegions = 0;
 			foreach (var region in regionDiagram.diagramRegions) {
-				if (regionsAvailability.TryGetValue(region.regionType, out bool isAllowed) && isAllowed)
+				if (regionsToInclude.Contains(region.regionType))
 					supportedRegions++;
 			}
 			if (supportedRegions > maxSupportedRegions) {
@@ -73,13 +73,13 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		return regionType;
 	}
 
-	private LevelRegionType GetClosestAllowedRegion(float x, float y, Dictionary<LevelRegionType, bool> regionsAvailability) {
+	private LevelRegionType GetClosestAllowedRegion(float x, float y, List<LevelRegionType> terrainRegionsToInclude) {
 		// Get the allowed region on coordinates closest to the original ones (if none exists, return MapRegionType.NONE)
 		// ... using simple Manhattan distance
 		float minDistance = float.MaxValue;
 		LevelRegionType regionType = LevelRegionType.NONE;
 		foreach (var region in diagram.diagramRegions) {
-			if (IsRegionAllowed(region.regionType, regionsAvailability)) {
+			if (IsRegionAllowed(terrainRegionsToInclude, region.regionType)) {
 				float distance = Mathf.Min(Mathf.Abs(x - region.minValues.x), Mathf.Abs(x - region.maxValues.x)) + Mathf.Min(Mathf.Abs(y - region.minValues.y), Mathf.Abs(y - region.maxValues.y));
 				if (distance < minDistance) {
 					regionType = region.regionType;
@@ -90,7 +90,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		return regionType;
 	}
 
-	private bool IsRegionAllowed(LevelRegionType regionType, Dictionary<LevelRegionType, bool> regionsAvailability) {
-		return regionsAvailability.TryGetValue(regionType, out bool isAllowed) && isAllowed;
+	private bool IsRegionAllowed(List<LevelRegionType> regionsToInclude, LevelRegionType regionType) {
+		return regionsToInclude.Contains(regionType);
 	}
 }

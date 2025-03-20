@@ -57,7 +57,7 @@ public class CharacterRaceState : MonoBehaviour {
         if (hoopIndex == trackPointToPassNext) {
             lastHoopTime = RaceController.Instance.raceTime;
             hoopsPassedArray[hoopIndex] = true;
-            if (RaceController.Instance.level.track[hoopIndex].isCheckpoint) {
+            if (RaceController.Instance.Level.track[hoopIndex].isCheckpoint) {
                 if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.CheckpointPassed);
                 checkpointsPassed++;
                 onPassedCheckpointsChanged?.Invoke(checkpointsPassed);
@@ -122,7 +122,7 @@ public class CharacterRaceState : MonoBehaviour {
 
     // Updates passed checkpoints and hoops
     private void UpdateHoops() {
-        List<TrackPoint> trackPoints = RaceController.Instance.level.track;
+        List<TrackPoint> trackPoints = RaceController.Instance.Level.track;
         if (trackPointToPassNext < trackPoints.Count) {
             // Detect missing a checkpoint/hoop
             HoopRelativePosition relativePosition = GetHoopRelativePosition(trackPoints[trackPointToPassNext]);
@@ -152,7 +152,7 @@ public class CharacterRaceState : MonoBehaviour {
 
     // Updates player's position relatively to the hoops
     private void UpdatePositionWithinRace() {
-        List<TrackPoint> trackPoints = RaceController.Instance.level.track;
+        List<TrackPoint> trackPoints = RaceController.Instance.Level.track;
         // Find between which hoops the player is located
         // ... whether he is after the following hoop
         if (followingTrackPoint < trackPoints.Count &&
@@ -168,7 +168,7 @@ public class CharacterRaceState : MonoBehaviour {
 
     // Detects if player is flying in the opposite direction than they should
     private void UpdateDirection() {
-        List<TrackPoint> trackPoints = RaceController.Instance.level.track;
+        List<TrackPoint> trackPoints = RaceController.Instance.Level.track;
 
         // If the player has completed the track there is nothing more to be done
         if (trackPointToPassNext >= trackPoints.Count)

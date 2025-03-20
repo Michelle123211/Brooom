@@ -10,30 +10,6 @@ public class RaceController : MonoBehaviourLongInitialization {
     // Simple singleton
     public static RaceController Instance;
 
-    [Header("Level length (Endurance)")]
-    [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 0.")]
-    public int initialNumberOfCheckpoints = 4;
-    [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 100.")]
-    public int finalNumberOfCheckpoints = 20;
-
-    [Header("Direction change (Dexterity)")]
-    [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 0.")]
-    public Vector2 initialDirectionChange = new Vector2(10, 20);
-    [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 100.")]
-    public Vector2 finalDirectionChange = new Vector2(30, 45);
-
-    [Header("Hoop scale (Precision)")]
-    [Tooltip("Scale of hoops when the player's Precision stat is 0.")]
-    public float initialHoopScale = 1f;
-    [Tooltip("Scale of hoops when the player's Precision stat is 100.")]
-    public float finalHoopScale = 0.4f;
-
-    [Header("Hoop distance (Speed)")]
-    [Tooltip("The approximate minimum and maximum distance between two hoops when the player's Speed stat is 0.")]
-    public Vector2 initialHoopDistanceRange = new Vector2(40, 50);
-    [Tooltip("The approximate minimum and maximum distance between two hoops when the player's Speed stat is 100.")]
-    public Vector2 finalHoopDistanceRange = new Vector2(80, 100);
-
     [Header("Penalizations")]
     [Tooltip("How many seconds are added to the time when player misses a hoop.")]
     public int missedHoopPenalization = 10;
@@ -44,14 +20,8 @@ public class RaceController : MonoBehaviourLongInitialization {
     [Tooltip("Minimum and maximum reward for the first place.")]
     public Vector2Int firstPlaceRewardRange = new Vector2Int(100, 5000);
 
-    [Header("Regions")]
-    public List<LevelRegionType> defaultRegions;
-    public List<RegionUnlockTutorialStage> regionsUnlockedByTutorial;
-    public List<RegionUnlockValue> regionsUnlockedByEndurance;
-    public List<RegionUnlockValue> regionsUnlockedByAltitude;
-
     // Level - to get access to track points and record racers' position within the track
-    public LevelRepresentation level;
+    public LevelRepresentation Level { get; private set; } = null;
     protected float levelDifficulty; // number between 0 and 1
     // Current time elapsed in the race
     [HideInInspector] public float raceTime = 0;
@@ -122,14 +92,14 @@ public class RaceController : MonoBehaviourLongInitialization {
             return y.state.trackPointToPassNext.CompareTo(x.state.trackPointToPassNext);
         // The one closer to the hoop or finish should be first
         float xDistance, yDistance;
-        if (x.state.trackPointToPassNext >= level.track.Count) { // the finish line is next
+        if (x.state.trackPointToPassNext >= Level.track.Count) { // the finish line is next
             // Get distance on the shortest line to the finish
-            xDistance = Mathf.Abs(level.finish.transform.InverseTransformPoint(x.state.transform.position).z);
-            yDistance = Mathf.Abs(level.finish.transform.InverseTransformPoint(y.state.transform.position).z);
+            xDistance = Mathf.Abs(Level.finish.transform.InverseTransformPoint(x.state.transform.position).z);
+            yDistance = Mathf.Abs(Level.finish.transform.InverseTransformPoint(y.state.transform.position).z);
         } else {
             // Get distance to the next hoop
-            xDistance = Vector3.Distance(x.state.transform.position, level.track[x.state.trackPointToPassNext].position);
-            yDistance = Vector3.Distance(y.state.transform.position, level.track[y.state.trackPointToPassNext].position);
+            xDistance = Vector3.Distance(x.state.transform.position, Level.track[x.state.trackPointToPassNext].position);
+            yDistance = Vector3.Distance(y.state.transform.position, Level.track[y.state.trackPointToPassNext].position);
         }
         return xDistance.CompareTo(yDistance);
     }
@@ -144,7 +114,7 @@ public class RaceController : MonoBehaviourLongInitialization {
         opponentParent = levelGenerator.transform.Find("Opponents");
         if (opponentParent != null) opponentParent.gameObject.SetActive(false);
         // Place the player + enable actions
-        playerRacer.characterController.ResetPosition(level.playerStartPosition);
+        playerRacer.characterController.ResetPosition(Level.playerStartPosition);
         playerRacer.characterController.EnableActions();
     }
 
@@ -158,7 +128,7 @@ public class RaceController : MonoBehaviourLongInitialization {
             remainingDuration -= startCutscene.time;
         }
         // Place the player + disable actions
-        playerRacer.characterController.ResetPosition(level.playerStartPosition);
+        playerRacer.characterController.ResetPosition(Level.playerStartPosition);
         playerRacer.characterController.GetComponent<PlayerCameraController>().ResetCameras();
         playerRacer.characterController.DisableActions();
         // Prepare HUD
@@ -168,12 +138,12 @@ public class RaceController : MonoBehaviourLongInitialization {
         // Show bonuses
         if (bonusParent != null) bonusParent.gameObject.SetActive(true);
         // Activate the hoops and finish line
-        for (int i = 0; i < level.track.Count; i++) {
-            level.track[i].assignedHoop.Activate(i);
+        for (int i = 0; i < Level.track.Count; i++) {
+            Level.track[i].assignedHoop.Activate(i);
         }
-        level.finish.Activate();
+        Level.finish.Activate();
         // Highlight the first hoop
-        level.track[0].assignedHoop.StartHighlighting();
+        Level.track[0].assignedHoop.StartHighlighting();
         // Show the opponents
         if (opponentParent != null) opponentParent.gameObject.SetActive(true);
         // Wait until the end of the sequence
@@ -241,11 +211,11 @@ public class RaceController : MonoBehaviourLongInitialization {
                 float timeForOneHoop = raceTime;
                 if (racer.state.trackPointToPassNext > 0)
                     timeForOneHoop = racer.state.lastHoopTime / racer.state.trackPointToPassNext;
-                racer.state.finishTime = timeForOneHoop * level.track.Count;
+                racer.state.finishTime = timeForOneHoop * Level.track.Count;
                 // Compute time penalization for likely missed hoops
                 if (racer.state.trackPointToPassNext > 0) {
                     float missedHoopsPercentage = racer.state.hoopsMissed / racer.state.trackPointToPassNext;
-                    float missedHoopsInFuture = Mathf.RoundToInt((level.track.Count - racer.state.trackPointToPassNext) * missedHoopsPercentage);
+                    float missedHoopsInFuture = Mathf.RoundToInt((Level.track.Count - racer.state.trackPointToPassNext) * missedHoopsPercentage);
                     racer.state.timePenalization += (missedHoopsInFuture * missedHoopPenalization);
                 }
                 // If the final time is lower than the player's one, increase it
@@ -304,14 +274,6 @@ public class RaceController : MonoBehaviourLongInitialization {
         statsComputer = GetComponent<StatsComputer>();
     }
 
-    protected IEnumerator GenerateLevel() {
-        // Generate level (terrain + track)
-        SetLevelGeneratorParameters();
-        yield return levelGenerator.GenerateLevel();
-        level = levelGenerator.Level;
-        levelDifficulty = ComputeLevelDifficulty();
-    }
-
     protected void InitializeRacers() {
         // Get references to the characters
         List<CharacterMovementController> characters = Utils.FindObject<CharacterMovementController>();
@@ -323,7 +285,7 @@ public class RaceController : MonoBehaviourLongInitialization {
                 state = characters[i].GetComponent<CharacterRaceState>(),
                 spellInput = characters[i].GetComponentInChildren<SpellInput>()
             };
-            racer.state.Initialize(level.track.Count);
+            racer.state.Initialize(Level.track.Count);
             racers.Add(racer);
             if (racer.characterController.isPlayer) playerRacer = racer;
             racer.characterController.DisableActions();
@@ -337,50 +299,6 @@ public class RaceController : MonoBehaviourLongInitialization {
         playerRacer.state.onHoopAdvance -= HighlightNextHoop;
         playerRacer.state.onCheckpointMissed -= ReactOnCheckpointMissed;
         playerRacer.state.onHoopMissed -= ReactOnHoopMissed;
-    }
-
-	private void SetLevelGeneratorParameters() {
-        // Compute parameters based on player's stats
-        // ... number of checkpoints from Endurance
-        int numOfCheckpoints = Mathf.RoundToInt(Mathf.Lerp(initialNumberOfCheckpoints, finalNumberOfCheckpoints, PlayerState.Instance.CurrentStats.endurance / 100f));
-        // ... maximum direction change from Dexterity
-        Vector2 directionChange = Vector2.Lerp(initialDirectionChange, finalDirectionChange, PlayerState.Instance.CurrentStats.dexterity / 100f);
-        // ... hoop scale from Precision
-        float hoopScale = Mathf.Lerp(initialHoopScale, finalHoopScale, PlayerState.Instance.CurrentStats.precision / 100f);
-        // ... distance between adjacent hoops from Speed
-        Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.CurrentStats.speed / 100f);
-        // ... default available regions
-        foreach (var region in defaultRegions)
-            PlayerState.Instance.SetRegionAvailability(region, true);
-        // ... available regions from tutorial
-        foreach (var regionFromTutorial in regionsUnlockedByTutorial)
-            PlayerState.Instance.SetRegionAvailability(
-                regionFromTutorial.region,
-                Tutorial.Instance.CurrentStage >= regionFromTutorial.tutorialStage ? true : false
-            );
-        // ... available regions from Endurance
-        foreach (var regionWithValue in regionsUnlockedByEndurance)
-            PlayerState.Instance.SetRegionAvailability(
-                regionWithValue.region, 
-                PlayerState.Instance.CurrentStats.endurance >= regionWithValue.minValue ? true : false
-            );
-        // ... available regions from max altitude
-        foreach (var regionWithValue in regionsUnlockedByAltitude)
-            PlayerState.Instance.SetRegionAvailability(
-                regionWithValue.region,
-                PlayerState.Instance.maxAltitude >= regionWithValue.minValue ? true : false
-            );
-        // TODO: Choose which terrain regions will be used in the level
-
-		// Set parameters
-		levelGenerator.regionsAvailability = PlayerState.Instance.regionsAvailability;
-        TrackPointsGenerationRandomWalk trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
-        trackGenerator.numberOfCheckpoints = numOfCheckpoints;
-        trackGenerator.maxDirectionChangeAngle = directionChange;
-        trackGenerator.distanceRange = distanceRange;
-        levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale = hoopScale;
-        levelGenerator.GetComponent<MaximumAngleCorrection>().maxAngle = directionChange.x;
-        levelGenerator.GetComponent<OpponentsGeneration>().opponentsCount = 5; // TODO: Change this number if necessary, in the future
     }
 
     private float ComputeLevelDifficulty() {
@@ -400,9 +318,9 @@ public class RaceController : MonoBehaviourLongInitialization {
     // Highlights the next hoop for the player
     private void HighlightNextHoop() {
         int nextHoopIndex = playerRacer.state.trackPointToPassNext;
-        level.track[nextHoopIndex - 1].assignedHoop.StopHighlighting();
-        if (nextHoopIndex < level.track.Count)
-            level.track[nextHoopIndex].assignedHoop.StartHighlighting();
+        Level.track[nextHoopIndex - 1].assignedHoop.StopHighlighting();
+        if (nextHoopIndex < Level.track.Count)
+            Level.track[nextHoopIndex].assignedHoop.StartHighlighting();
     }
 
     private void ReactOnCheckpointMissed() {
@@ -415,22 +333,27 @@ public class RaceController : MonoBehaviourLongInitialization {
     private void ReactOnHoopMissed() {
         // Make the screen red briefly
         raceHUD.FlashScreenColor(Color.red);
-
     }
 
     private void DetectVisitedRegions() {
         // For each track point, set its region as visited
-        for (int i = 0; i < level.track.Count; i++) {
+        for (int i = 0; i < Level.track.Count; i++) {
             // Only passed hoops are considered
             if (!playerRacer.state.hoopsPassedArray[i]) continue;
             // Track region (if any)
-            TrackPoint trackPoint = level.track[i];
+            TrackPoint trackPoint = Level.track[i];
 			if (trackPoint.trackRegion != LevelRegionType.NONE)
 				PlayerState.Instance.SetRegionVisited(trackPoint.trackRegion);
 			// Terrain region
 			Vector2Int gridCoords = trackPoint.gridCoords;
-			PlayerState.Instance.SetRegionVisited(level.terrain[gridCoords.x, gridCoords.y].region);
+			PlayerState.Instance.SetRegionVisited(Level.terrain[gridCoords.x, gridCoords.y].region);
 		}
+    }
+
+    private void OnLevelGenerated(LevelRepresentation level) {
+        this.Level = level;
+        levelGenerator.onLevelGenerated -= OnLevelGenerated;
+        levelDifficulty = ComputeLevelDifficulty();
     }
 
 	protected override void PrepareForInitialization_ReplacingAwake() {
@@ -439,14 +362,15 @@ public class RaceController : MonoBehaviourLongInitialization {
 
 	protected override void PrepareForInitialization_ReplacingStart() {
         InitializeRelatedObjects();
+        levelGenerator.onLevelGenerated += OnLevelGenerated;
     }
 
 	protected override IEnumerator InitializeAfterPreparation() {
-        yield return GenerateLevel();
+        yield return new WaitUntil(() => Level != null); // wait until level is generated
         InitializeRacers();
         // Initialize HUD
         int checkpointsTotal = 0, hoopsTotal = 0;
-        foreach (var trackPoint in level.track) {
+        foreach (var trackPoint in Level.track) {
             if (trackPoint.isCheckpoint) checkpointsTotal++;
             else hoopsTotal++;
         }
@@ -465,7 +389,7 @@ public class RaceController : MonoBehaviourLongInitialization {
             case RaceState.Training:
                 // Handle restart
                 if (GamePause.PauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
-                    playerRacer.characterController.ResetPosition(level.playerStartPosition);
+                    playerRacer.characterController.ResetPosition(Level.playerStartPosition);
                     restartCountInTraining++;
                 }
                 break;

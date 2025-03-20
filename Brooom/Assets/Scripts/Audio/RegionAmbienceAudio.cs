@@ -19,7 +19,7 @@ public class RegionAmbienceAudio : MonoBehaviour {
 	// Returns LevelRegionType.NONE if there is no need for change
 	protected virtual LevelRegionType GetCurrentRegion(Vector3 playerPosition) {
 		if (!RaceController.Instance.IsInitialized) return LevelRegionType.NONE;
-		TerrainPoint nearestTerrainPoint = RaceController.Instance.level.GetNearestTerrainPoint(playerPosition);
+		TerrainPoint nearestTerrainPoint = RaceController.Instance.Level.GetNearestTerrainPoint(playerPosition);
 		LevelRegionType region = nearestTerrainPoint.region;
 		if (region != LastRegion) {
 			return region;
@@ -30,7 +30,7 @@ public class RegionAmbienceAudio : MonoBehaviour {
 
 	protected virtual float GetCurrentAltitude(Vector3 playerPosition) {
 		if (!RaceController.Instance.IsInitialized) return 0f;
-		TerrainPoint nearestTerrainPoint = RaceController.Instance.level.GetNearestTerrainPoint(playerPosition);
+		TerrainPoint nearestTerrainPoint = RaceController.Instance.Level.GetNearestTerrainPoint(playerPosition);
 		float altitudeAboveGround = playerPosition.y - Mathf.Max(0, nearestTerrainPoint.position.y); // above terrain or water level, whichever is higher
 		return altitudeAboveGround; // would not work for more complicated terrain (e.g. tunnel)
 	}
