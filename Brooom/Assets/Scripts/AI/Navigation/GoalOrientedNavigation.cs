@@ -51,7 +51,12 @@ public class GoalOrientedNavigation : CharacterInput {
 		bool goalRational = currentGoal == null ? false : currentGoal.GetRationality() >= rationalityThreshold;
 		// --- deliberation cooldown has been reached
 		bool shouldDeliberate = deliberationCountdown <= 0;
-		if (!goalReached && goalValid && !shouldDeliberate && goalRational) return;
+
+		// If the current goal should be kept, update its position and return
+		if (!goalReached && goalValid && !shouldDeliberate && goalRational) {
+			goalExecutor.UpdateCurrentGoalPosition();
+			return;
+		}
 
 		if (debugLogs) {
 			Debug.Log("-------------------");

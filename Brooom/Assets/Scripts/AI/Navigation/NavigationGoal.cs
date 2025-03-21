@@ -359,12 +359,16 @@ public class FinishNavigationGoal : NavigationGoal {
         Vector3 targetDirection = (target - lastHoopPosition).WithY(0);
         // Find intersection between this direction from the agent and the finish's right vector
         if (Utils.TryGetLineIntersectionXZ(
-            this.agent.transform.position, this.agent.transform.position + targetDirection,
-            this.finishObject.transform.position, this.finishObject.transform.position + this.finishObject.transform.right,
-            out Vector3 betterTarget)) {
+                this.agent.transform.position, this.agent.transform.position + targetDirection,
+                this.finishObject.transform.position, this.finishObject.transform.position + this.finishObject.transform.right,
+                out Vector3 betterTarget)) {
             target = betterTarget;
         }
         // Keep the agent't Y coordinate
-        return target.WithY(this.agent.transform.position.y);
+        target.y = this.agent.transform.position.y;
+        // Adjust Y based on terrain underneath
+        float terrainHeight = RaceController.Instance.Level.GetNearestTerrainPoint(target).position.y;
+        if (target.y < terrainHeight) target.y = terrainHeight + 2; // a bit higher, just to be safe
+        return target;
     }
 }

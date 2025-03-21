@@ -30,6 +30,13 @@ public abstract class NavigationGoalExecutor : MonoBehaviour {
 		}
 	}
 
+	public void UpdateCurrentGoalPosition() {
+		// For now update target position only for finish which is dependent on current character position, others are clearly given
+		if (currentGoal.Type == NavigationGoalType.Finish) {
+			steering.SetTargetPosition(DetermineTargetPositionFromGoal(currentGoal));
+		}
+	}
+
 	protected abstract Vector3 DetermineTargetPositionFromGoal(NavigationGoal goal);
 
 }
