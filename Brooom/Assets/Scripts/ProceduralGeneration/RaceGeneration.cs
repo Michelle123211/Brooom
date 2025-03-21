@@ -8,7 +8,7 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
     [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 0.")]
     public int initialNumberOfCheckpoints = 4;
     [Tooltip("How many checkpoints should be generated when the player's Endurance stat is 100.")]
-    public int finalNumberOfCheckpoints = 20;
+    public int finalNumberOfCheckpoints = 10;
 
     [Header("Direction change (Dexterity)")]
     [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 0.")]
