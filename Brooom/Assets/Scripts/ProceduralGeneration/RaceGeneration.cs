@@ -103,7 +103,6 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
     private List<LevelRegionType> ChooseTerrainRegionsForLevel() {
         List<LevelRegionType> chosenRegions = new List<LevelRegionType>();
         List<LevelRegionType> unvisitedTerrainRegions = new List<LevelRegionType>();
-        List<LevelRegionType> unvisitedTrackRegions = new List<LevelRegionType>();
         List<LevelRegionType> otherAvailableTerrainRegions = new List<LevelRegionType>();
         bool unvisitedAvailableTrackRegionExists = false;
         // Prepare lists of available terrain regions
@@ -126,7 +125,7 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
             }
         }
         // Add one random unvisited terrain region (but only if there is no new track region, to make sure there is at most one new region)
-        if (!unvisitedAvailableTrackRegionExists) {
+        if (!unvisitedAvailableTrackRegionExists && unvisitedTerrainRegions.Count > 0) {
             chosenRegions.Add(unvisitedTerrainRegions[Random.Range(0, unvisitedTerrainRegions.Count)]);
         }
         // Add some other regions randomly, so that a desirable number of regions is chosen at maximum
