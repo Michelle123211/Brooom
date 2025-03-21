@@ -7,7 +7,7 @@ using UnityEngine;
 public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	[Tooltip("Each hoop's Y coordinate is adjusted according to the maximum terrain height in a close neighbourhood of the given radius.")]
-	public int hoopHeightAreaRadius = 5;
+	public int hoopHeightAreaRadius = 3;
 	[Tooltip("Hoops and checkpoints should be placed in this minimum height above ground.")]
 	public float defaultMinimumOffsetAboveGround = 1;
 	[Tooltip("Some regions may prefer different minimum height above ground than the default one (e.g. larger for forest).")]
@@ -28,7 +28,6 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 			// Limit the Y coordinate according to the maximum altitude of the broom
 			trackPoint.position.y = Mathf.Clamp(trackPoint.position.y, 0, PlayerState.Instance.maxAltitude); // TODO: Consider negative height if necessary (e.g. when going underground)
 			// TODO: Distribute any change to 2 or 3 adjacent points in both sides as well to smooth it out - if hoops are too close to each other
-				// May not be necessary if MaximumAngleCorrection module is used
 		}
 
 		// Change Y coordinate of each bonus spot according to the terrain height and adjacent hoops height

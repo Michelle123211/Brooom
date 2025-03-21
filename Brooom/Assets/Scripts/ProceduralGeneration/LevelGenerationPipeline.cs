@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshCollider))]
+
 public class LevelGenerationPipeline : MonoBehaviour {
 	[Tooltip("These generators/modules will be used in the exact order. Disabled module is not executed even if part of the pipeline.")]
 	[SerializeField] List<LevelGeneratorModuleSlot> modules;
@@ -51,7 +50,17 @@ public class LevelGenerationPipeline : MonoBehaviour {
 #if UNITY_EDITOR
 	[ContextMenu("Regenerate level")]
 	private void RegenerateLevel() { // Regenerates the level with previous parameters
-		if (Level == null) Initialize();
+		if (Level == null) {
+			if (terrainRegionsToInclude == null || terrainRegionsToInclude.Count == 0) {
+				terrainRegionsToInclude = new List<LevelRegionType>() { LevelRegionType.AboveWater, LevelRegionType.EnchantedForest }; // TODO: Change if necessary
+				if (regionsAvailability == null) regionsAvailability = new Dictionary<LevelRegionType, bool>();
+				// TODO: Change if necessary
+				regionsAvailability[LevelRegionType.AboveWater] = true;
+				regionsAvailability[LevelRegionType.EnchantedForest] = true;
+			}
+			Initialize();
+		}
+		Debug.Log(terrainRegionsToInclude.Count);
 		if (modules != null) {
 			Level.ResetLevelWithDimensions(dimensions, pointOffset, blockSizeInPoints);
 			foreach (var moduleSlot in modules) {
@@ -80,7 +89,6 @@ public class LevelGenerationPipeline : MonoBehaviour {
 	}
 
 	private void Initialize() {
-		if (terrainRegionsToInclude == null) terrainRegionsToInclude = new List<LevelRegionType>() { LevelRegionType.AboveWater, LevelRegionType.EnchantedForest };
 		// Initialize regions dictionaries
 		terrainRegionsDict = new Dictionary<LevelRegionType, LevelRegion>();
 		if (terrainRegions == null) terrainRegions = new List<LevelRegion>();
