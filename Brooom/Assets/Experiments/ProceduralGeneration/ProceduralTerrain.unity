@@ -1531,7 +1531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b883a295c6dd3746beda8e840af374b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 200
   sensitivity: 5
 --- !u!114 &1960052961
 MonoBehaviour:
@@ -1671,6 +1671,16 @@ PrefabInstance:
         type: 3}
       propertyPath: isModuleEnabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628381, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: modules.Array.data[12].isModuleEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9042582758647628381, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
+        type: 3}
+      propertyPath: modules.Array.data[14].isModuleEnabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9042582758647628381, guid: 0b87dd4f9d563c3499a0243e9f0a7f70,
         type: 3}
