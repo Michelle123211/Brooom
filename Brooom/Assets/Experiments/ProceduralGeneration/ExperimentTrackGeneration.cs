@@ -25,17 +25,16 @@ public class ExperimentTrackGeneration : MonoBehaviour {
 			trackPoints.Add(lastPosition);
 		}
 
-		// Negative angle - up, positive angle - down
 	}
 
 	private Vector3 GetNextDirection(Vector3 lastDirection, Vector3 lastPosition) {
-		// TODO: Don't let it go below zero
 		// Find minimum and maximum angle so that minimum and maximum heights are satisfied
 		Vector3 startPosition = lastPosition;
 		Vector3 endPosition = lastPosition + Vector3.right * pointDistance; //lastPosition + Vector3.forward * pointDistance;
 		Vector3 lowestPosition = endPosition.WithY(minHeight);
 		Vector3 highestPosition = endPosition.WithY(maxHeight);
 
+		// Negative angle - up, positive angle - down
 		float downAngle = Vector3.SignedAngle((endPosition - startPosition), (lowestPosition - startPosition), Vector3.back); //Vector3.right); // positive
 		float upAngle = Vector3.SignedAngle((endPosition - startPosition), (highestPosition - startPosition), Vector3.back); //Vector3.right); // negative
 		//Debug.Log($"Start position {startPosition}, end position {endPosition}, lowest position {lowestPosition}, highest position {highestPosition}. Minimum angle {downAngle}, Maximum angle {upAngle}");

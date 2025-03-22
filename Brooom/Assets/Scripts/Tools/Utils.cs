@@ -77,7 +77,7 @@ public static class Utils
     public static bool AreSegmentsIntersectingXZ(Vector3 a, Vector3 b, Vector3 c, Vector3 d) {
         // Equations taken from: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
         float denominator = (a.x - b.x) * (c.z - d.z) - (a.z - b.z) * (c.x - d.x);
-        if (denominator == 0) return false; // there is no intersection
+        if (System.Math.Abs(denominator) < 0.000001) return false; // there is no intersection
         float t = ((a.x - c.x) * (c.z - d.z) - (a.z - c.z) * (c.x - d.x)) / denominator;
         float u = ((a.x - c.x) * (a.z - b.z) - (a.z - c.z) * (a.x - b.x)) / denominator;
         return t >= 0 && t < 1 && u > 0 && u <= 1; // end point is shared, so t < 1 (not t <= 1) and u > 0 (not u >= 0)
@@ -89,11 +89,11 @@ public static class Utils
     public static bool TryGetLineIntersectionXZ(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out Vector3 intersection) {
         intersection = Vector3.zero;
         // Equations taken from: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-        float denominator = (a.x - b.x) * (c.z - d.z) - (a.z - b.z) * (c.x - d.x);
-        if (denominator == 0) return false; // there is no intersection
-        float t = ((a.x - c.x) * (c.z - d.z) - (a.z - c.z) * (c.x - d.x)) / denominator;
-        float u = ((a.x - c.x) * (a.z - b.z) - (a.z - c.z) * (a.x - b.x)) / denominator;
-        intersection = (a + t * (b - a)).WithY(0);
+        double x1 = a.x, y1 = a.z, x2 = b.x, y2 = b.z, x3 = c.x, y3 = c.z, x4 = d.x, y4 = d.z;
+        double denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+        if (System.Math.Abs(denominator) < 0.000001) return false; // there is no intersection
+        intersection.x = (float)(((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / denominator);
+        intersection.z = (float)(((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / denominator);
         return true;
     }
 

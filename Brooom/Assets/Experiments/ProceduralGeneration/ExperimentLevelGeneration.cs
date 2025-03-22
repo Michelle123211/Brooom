@@ -37,16 +37,15 @@ public class ExperimentLevelGeneration : MonoBehaviour {
         PlayerState.Instance.maxAltitude = 30;
         // Set module parameters
         TrackPointsGenerationRandomWalk trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
-        //trackGenerator.numberOfCheckpoints = 4;
-        trackGenerator.numberOfCheckpoints = 20;
+        trackGenerator.numberOfCheckpoints = 4;
+        //trackGenerator.numberOfCheckpoints = 20;
         //trackGenerator.maxDirectionChangeAngle = new Vector2(10, 20);
         trackGenerator.maxDirectionChangeAngle = new Vector2(30, 45);
-        //trackGenerator.distanceRange = new Vector2(40, 50);
-        trackGenerator.distanceRange = new Vector2(80, 100);
-        //levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale = 1f;
-        levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale = 0.4f;
-        //levelGenerator.GetComponent<MaximumAngleCorrection>().maxAngle = new Vector2(10, 20).x;
-        levelGenerator.GetComponent<MaximumAngleCorrection>().maxAngle = new Vector2(30, 45).x;
+        trackGenerator.distanceRange = new Vector2(40, 50);
+        //trackGenerator.distanceRange = new Vector2(80, 100);
+        levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale = 1f;
+        //levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale = 0.4f;
+        levelGenerator.GetComponent<MaximumAngleCorrection>().maxAngle = trackGenerator.maxDirectionChangeAngle.x;
     }
 
     private void Update() {

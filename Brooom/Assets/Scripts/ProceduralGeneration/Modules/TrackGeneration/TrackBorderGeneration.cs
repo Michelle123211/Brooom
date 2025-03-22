@@ -23,56 +23,83 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		// Remove any previously instantiated borders
 		UtilsMonoBehaviour.RemoveAllChildren(borderParent);
 
-		Vector3 previousPoint1 = Vector3.zero, previousPoint2 = Vector3.zero;
-		Vector3 nextPoint1, nextPoint2;
-		// Generate borders for each segment
+		GenerateBorders(level);
+	}
+
+	private void GenerateBorders(LevelRepresentation level) {
+
+		// Start from points to the sides of the first hoop
+		Vector3 previousDirection = GetSegmentDirection(level, 0);
+		Vector3 orthogonalDirection = GetOrthogonalDirectionXZ(previousDirection);
+		Vector3 previousPoint1 = level.track[0].position + orthogonalDirection * (trackWidth / 2);
+		Vector3 previousPoint2 = level.track[0].position - orthogonalDirection * (trackWidth / 2);
+
+		Vector3 nextPoint1, nextPoint2, nextDirection;
+
+		// Generate border around start
+		CloseBorder(previousPoint1, previousPoint2, -previousDirection, startPadding);
+		// Generate borders for each segment between two hoops
 		for (int i = 0; i < level.track.Count - 1; i++) {
-			// Track points around the current segment
-			Vector3 segmentStart = level.track[i].position;
-			Vector3 segmentEnd = level.track[i + 1].position;
-			Vector3 segmentDirection = (segmentEnd - segmentStart).WithY(0);
-			Vector3 segmentMidpoint = (segmentStart + segmentEnd) / 2;
-			// Find orthogonal vector - in 2D, vector (y, -x) is orthogonal to vector (x, y)
-			Vector3 segmentOrthogonal = new Vector3(segmentDirection.z, 0, -segmentDirection.x).normalized;
-			// Initialize previous end points
-			if (i == 0) {
-				previousPoint1 = segmentStart + segmentOrthogonal * trackWidth / 2;
-				previousPoint2 = segmentStart - segmentOrthogonal * trackWidth / 2;
+			// Get direction of next segment
+			nextDirection = GetSegmentDirection(level, i + 1);
+			orthogonalDirection = GetOrthogonalDirectionXZ(nextDirection);
+			// Get points to the side of next hoop
+			Vector3 point1 = level.track[i + 1].position + orthogonalDirection * (trackWidth / 2);
+			Vector3 point2 = level.track[i + 1].position - orthogonalDirection * (trackWidth / 2);
+			// Get end points for border
+			if (i < level.track.Count - 2) { // if not the last segment, compute intersection with the last one
+				bool isIntersection1 = Utils.TryGetLineIntersectionXZ(
+					previousPoint1, previousPoint1 + previousDirection,
+					point1, point1 + nextDirection,
+					out nextPoint1);
+				bool isIntersection2 = Utils.TryGetLineIntersectionXZ(
+					previousPoint2, previousPoint2 + previousDirection,
+					point2, point2 + nextDirection,
+					out nextPoint2);
+				if (!isIntersection1 || !isIntersection2) {
+					nextPoint1 = point1;
+					nextPoint2 = point2;
+				}
+			} else { // of the last segment, simply take points to the sides of the hoop
+				nextPoint1 = point1;
+				nextPoint2 = point2;
 			}
-			// Get a point on each border
-			Vector3 borderPoint1 = segmentMidpoint + segmentOrthogonal * trackWidth / 2;
-			Vector3 borderPoint2 = segmentMidpoint - segmentOrthogonal * trackWidth / 2;
-			// Find vector orthogonal to the next hoop direction
-			Vector3 hoopDirection = GetTrackPointDirection(level, i + 1);
-			Vector3 orthogonalHoopDirection = new Vector3(hoopDirection.z, 0, -hoopDirection.x).normalized;
-			// Get two points on the orthogonal vector
-			Vector3 orthogonalHoopDirectionPoint1 = segmentEnd + orthogonalHoopDirection;
-			Vector3 orthogonalHoopDirectionPoint2 = segmentEnd - orthogonalHoopDirection;
-			// Find next end points (from intersections of lines)
-			Utils.TryGetLineIntersectionXZ(
-				previousPoint1, borderPoint1,
-				orthogonalHoopDirectionPoint1, orthogonalHoopDirectionPoint2,
-				out nextPoint1);
-			Utils.TryGetLineIntersectionXZ(
-				previousPoint2, borderPoint2,
-				orthogonalHoopDirectionPoint1, orthogonalHoopDirectionPoint2,
-				out nextPoint2);
-			// Instantiate borders
-			InstantiateBorder(previousPoint1, nextPoint1);//, segmentDirection);
-			InstantiateBorder(previousPoint2, nextPoint2);//, segmentDirection);
-			// Move to the next track point
+			// Instantiate border
+			InstantiateBorder(previousPoint1, nextPoint1); // right side
+			InstantiateBorder(previousPoint2, nextPoint2); // left side
+			// Move to next segment
+			previousDirection = nextDirection;
 			previousPoint1 = nextPoint1;
 			previousPoint2 = nextPoint2;
 		}
-		// Close the start
-		CloseBorder(level.track[0].position, Vector3.back, startPadding);
-		// Close the end
-		Vector3 endDirection = Vector3.forward;
-		if (level.track.Count > 1) endDirection = level.track[level.track.Count - 1].position - level.track[level.track.Count - 2].position;
-		CloseBorder(level.track[level.track.Count - 1].position, endDirection, endPadding);
+		// Generate border around finish
+		CloseBorder(previousPoint1, previousPoint2, previousDirection, endPadding);
+	}
+
+	private Vector3 GetOrthogonalDirectionXZ(Vector3 direction) {
+		return Quaternion.Euler(0, 90, 0) * direction.WithY(0).normalized;
+	}
+
+	private Vector3 GetSegmentDirection(LevelRepresentation level, int startHoopIndex) {
+		if (level.track.Count < 2) // not enough points for a segment, return simply forward (implicit first direction when generating track)
+			return Vector3.forward;
+		else if (startHoopIndex == level.track.Count - 1) // last point, there is no segment starting here so return direction of the previous one
+			return (level.track[level.track.Count - 1].position - level.track[level.track.Count - 2].position).WithY(0).normalized;
+		else
+			return (level.track[startHoopIndex + 1].position - level.track[startHoopIndex].position).WithY(0).normalized;
+	}
+
+	private void CloseBorder(Vector3 point1, Vector3 point2, Vector3 direction, float padding) {
+		Vector3 corner1 = point1 + direction * padding;
+		Vector3 corner2 = point2 + direction * padding;
+		// Instantiate borders
+		InstantiateBorder(point1, corner1);
+		InstantiateBorder(point2, corner2);
+		InstantiateBorder(corner1, corner2);
 	}
 
 	private void InstantiateBorder(Vector3 startPoint, Vector3 endPoint) {//, Vector3 direction) {
+		//Debug.Log($"Border from {startPoint} to {endPoint}");
 		Vector3 direction = (endPoint - startPoint).WithY(0).normalized;
 		// Border length and position
 		float length = (endPoint - startPoint).magnitude;
@@ -80,33 +107,5 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		// Instantiate borders
 		GameObject borderInstance = Instantiate(borderPrefab, center, Quaternion.LookRotation(direction, Vector3.up), borderParent);
 		borderInstance.transform.localScale = new Vector3(1, borderHeightRange.y - borderHeightRange.x, length + 0.1f);
-	}
-
-	private void CloseBorder(Vector3 position, Vector3 direction, float padding) {
-		Vector3 direction2D = direction.WithY(0).normalized;
-		// Get orthogonal vector
-		Vector3 orthogonal = new Vector3(direction2D.z, 0, -direction2D.x).normalized;
-		// Get first pair of corners
-		Vector3 corner1 = position + orthogonal * trackWidth / 2;
-		Vector3 corner4 = position - orthogonal * trackWidth / 2;
-		// Get second pair of corners
-		Vector3 end = position + direction2D * padding;
-		Vector3 corner2 = end + orthogonal * trackWidth / 2;
-		Vector3 corner3 = end - orthogonal * trackWidth / 2;
-		// Instantiate borders
-		InstantiateBorder(corner1, corner2);
-		InstantiateBorder(corner2, corner3);
-		InstantiateBorder(corner4, corner3);
-	}
-
-	private Vector3 GetTrackPointDirection(LevelRepresentation level, int trackPointIndex) {
-		TrackPoint point = level.track[trackPointIndex];
-		// Orientation is given by the vector from the previous hoop to the next hoop
-		Vector3 previousPosition = point.position, nextPosition = point.position;
-		if (trackPointIndex > 0)
-			previousPosition = level.track[trackPointIndex - 1].position;
-		if (trackPointIndex < level.track.Count - 1)
-			nextPosition = level.track[trackPointIndex + 1].position;
-		return (nextPosition - previousPosition).WithY(0); // Y = 0 to rotate only around the Y axis
 	}
 }
