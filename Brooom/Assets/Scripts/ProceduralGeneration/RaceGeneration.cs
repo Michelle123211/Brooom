@@ -12,9 +12,9 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
 
     [Header("Direction change (Dexterity)")]
     [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 0.")]
-    public Vector2 initialDirectionChange = new Vector2(10, 20);
+    public Vector2 initialDirectionChange = new Vector2(5, 20);
     [Tooltip("Maximum angle between two consecutive hoops in the X (up/down) and Y (left/right) axis when the player's Dexterity stat is 100.")]
-    public Vector2 finalDirectionChange = new Vector2(30, 45);
+    public Vector2 finalDirectionChange = new Vector2(20, 45);
 
     [Header("Hoop scale (Precision)")]
     [Tooltip("Scale of hoops when the player's Precision stat is 0.")]

@@ -11280,8 +11280,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialNumberOfCheckpoints: 4
   finalNumberOfCheckpoints: 10
-  initialDirectionChange: {x: 10, y: 20}
-  finalDirectionChange: {x: 30, y: 45}
+  initialDirectionChange: {x: 5, y: 20}
+  finalDirectionChange: {x: 20, y: 45}
   initialHoopScale: 1
   finalHoopScale: 0.4
   initialHoopDistanceRange: {x: 40, y: 50}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Moves track points higher if terrain underneath them is too high
+// Moves track points higher according to the terrain underneath them
 public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	[Tooltip("Each hoop's Y coordinate is adjusted according to the maximum terrain height in a close neighbourhood of the given radius.")]
