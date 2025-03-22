@@ -42,7 +42,6 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 		trackPoint.position = position;
 		trackPoint.isCheckpoint = (level.track.Count) % (numberOfHoopsBetween + 1) == 0;
 		level.track.Add(trackPoint);
-		Debug.Log($"Y = {position.y}");
 	}
 
 	// Moves all the points so that the final track is centered around the world origin
