@@ -35,6 +35,11 @@ public class KeyRebindingUI : MonoBehaviour {
         }
     }
 
+    public void UpdateAllDuplicateWarnings() {
+        foreach (var keyBinding in keyBindingParent.GetComponentsInChildren<KeyBindingUI>())
+            keyBinding.UpdateDuplicateWarning();
+    }
+
     // Adds a new KeyBindingUI for all the actions
     private void CreateRebindingUIsForAllActions() {
         PlayerInput playerInput = InputManager.Instance.GetPlayerInput();
@@ -83,6 +88,7 @@ public class KeyRebindingUI : MonoBehaviour {
         // Refresh the list of the bindings
         UtilsMonoBehaviour.RemoveAllChildren(keyBindingParent); // remove all currently displayed
         CreateRebindingUIsForAllActions();
+        UpdateAllDuplicateWarnings();
 	}
 
 	private void OnDisable() {
