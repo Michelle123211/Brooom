@@ -188,7 +188,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 		// Shop commands
 		InitializeCoinsCommand(); // coins - change coins amount
-		InitializeUpgradeCommand(); // upgrade - upgrade the broom, available in Main Menu, Tutorial, Player Overview, Race and Testing Track
+		InitializeUpgradeCommand(); // upgrade - upgrade the broom, available in Tutorial, Player Overview, Race and Testing Track
 
 		// Spell commands
 		InitializeSpellCommand(); // spell - unlock all spells or only the given one
@@ -294,7 +294,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					message = message
 				};
 			}
-		}));
+		},
+		disabledScenes: new Scene[] { Scene.MainMenu }));
 	}
 
 	private void InitializeCoinsCommand() {
@@ -317,7 +318,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				isSuccessful = success,
 				message = message
 			};
-		}));
+		},
+		disabledScenes: new Scene[] { Scene.MainMenu }));
 	}
 	private void InitializeUpgradeCommand() {
 		// upgrade - upgrade the broom
@@ -361,7 +363,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				isSuccessful = success,
 				message = message
 			};
-		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.MainMenu, Scene.Tutorial })); // broom must be available
+		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.Tutorial })); // broom must be available
 	}
 
 	private void InitializeSpellCommand() {
@@ -400,7 +402,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				isSuccessful = success,
 				message = message
 			};
-		}));
+		},
+		disabledScenes: new Scene[] { Scene.MainMenu }));
 	}
 	private void FillManaUp() {
 		SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
@@ -495,7 +498,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 
 	private void InitializeSpeedCommand() {
-		// speed - change maximum speed, available only in Race
+		// speed - change maximum speed, available only in Race, Testing Track and Tutorial
 		commands.Add(new CheatCommand("speed", "Changes the maximum speed. Usage: 'speed <value>', e.g. 'speed 30', 'speed 10'.", (commandParts) => {
 			bool success = false;
 			string message = string.Empty;
@@ -517,7 +520,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		},
-		enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack }));
+		enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack, Scene.Tutorial }));
 	}
 	private void InitializeStartCommand() {
 		// start - quick race start, available only in Race
