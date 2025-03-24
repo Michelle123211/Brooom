@@ -23,8 +23,9 @@ public abstract class MonoBehaviourLongInitialization : MonoBehaviour {
 	}
 
 	private void Start() {
-		SceneLoader.Instance.RegisterForLongInitialization(this); // let SceneLoader know there is an object with long initialization in the scene
+		SceneLoader.Instance?.RegisterForLongInitialization(this); // let SceneLoader know there is an object with long initialization in the scene
 		PrepareForInitialization_ReplacingStart();
+		StartCoroutine(Initialize()); // start long initialization in a coroutine
 	}
 
 	private void Update() {

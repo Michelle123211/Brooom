@@ -117,18 +117,16 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 			yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 		}
 		// Load next scene asycnhronously and activate it right away
+		ResetLongInitializationData();
 		AsyncOperation loadingScene = SceneManager.LoadSceneAsync(scene.ToString());
 		loadingScene.allowSceneActivation = true;
 		// Wait until the scene is loaded
 		yield return new WaitUntil(() => loadingScene.isDone);
 		CurrentScene = scene;
 		PassAndResetCurrentParameters();
-		// Initialize all registered objects with long initialization outside of Awake() or Start() methods
+		// Wait until all registered objects with long initialization outside of Awake() or Start() methods are initialized
 		Time.timeScale = 0;
-		numberOfInitializedObjects = 0;
-		foreach (var objectWithLongInitialization in objectsWithLongInitialization)
-			StartCoroutine(objectWithLongInitialization.Initialize());
-		yield return new WaitUntil(() => numberOfInitializedObjects == objectsWithLongInitialization.Count); // Wait until all are initialized
+		yield return new WaitUntil(() => numberOfInitializedObjects == objectsWithLongInitialization.Count); // objects should be already registered (from their Start() method)
 		ResetLongInitializationData();
 		Time.timeScale = 1;
 		// Fade into the new scene
