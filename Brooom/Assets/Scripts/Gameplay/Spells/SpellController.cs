@@ -18,7 +18,7 @@ public class SpellController : MonoBehaviour {
 	public event Action<int> onSelectedSpellChanged; // parameter: index of the currently selected spell
 	public event Action<int> onSpellCasted; // parameter: index of the spell
 
-	[Tooltip("Component derived from SpellTargetSelection which is responsible for selecting a target for currently seelcted spell.")]
+	[Tooltip("Component derived from SpellTargetSelection which is responsible for selecting a target for currently selected spell.")]
 	[SerializeField] SpellTargetSelection spellTargetSelection;
 
 	private bool isPlayer = false;
@@ -101,7 +101,9 @@ public class SpellController : MonoBehaviour {
 	public void RandomizeEquippedSpells() {
 		if (PlayerState.Instance.availableSpellCount == 0) return;
 		// Create a list of spells to choose from
-		List<Spell> spellsToChooseFrom = GetSpellsForRandomization();
+		GetSpellsForRandomization(out List<Spell> spellsToChooseFrom, out Spell interestingUnavailableSpell);
+		// With a small probability, add interesting unavailable spell to the spells to choose from
+		if (interestingUnavailableSpell != null && UnityEngine.Random.value < 0.3f) spellsToChooseFrom.Add(interestingUnavailableSpell);
 		// Randomly select at most 4 different spells and equip them in a continuous block starting at index 0
 		//	- According to Magic statistic only a subset of equipped spells may be used so we can equip them all
 		int spellCount = Mathf.Min(spellsToChooseFrom.Count, 4);
@@ -125,10 +127,11 @@ public class SpellController : MonoBehaviour {
 		}
 	}
 
-	private List<Spell> GetSpellsForRandomization() {
+	// Returns a list of spells which are already unlocked for player and one bonus spell (i.e. deterministically chosen spell which has not been unlocked yet)
+	private void GetSpellsForRandomization(out List<Spell> selectedSpells, out Spell bonusSpell) {
 		// Get all spells already unlocked for player + deterministically add one more spell which has not been unlocked yet
-		List<Spell> selectedSpells = new List<Spell>();
-		Spell interestingUnavailableSpell = null;
+		selectedSpells = new List<Spell>();
+		bonusSpell = null;
 		int interestingUnavailableSpellPrice = int.MaxValue;
 		foreach (var spell in SpellManager.Instance.AllSpells) {
 			if (PlayerState.Instance.IsSpellPurchased(spell.Identifier))
@@ -136,18 +139,13 @@ public class SpellController : MonoBehaviour {
 				selectedSpells.Add(spell);
 			else {
 				// Find the cheapest interesting unavailable spell (interesting ~ from a specific category, not self-cast)
-				if (interestingUnavailableSpell == null && (
-					spell.Category == SpellCategory.OpponentCurse ||
-						spell.Category == SpellCategory.EnvironmentManipulation ||
-						spell.Category == SpellCategory.ObjectApparition) &&
-					spell.CoinsCost < interestingUnavailableSpellPrice) {
+				if ((spell.Category == SpellCategory.EnvironmentManipulation || spell.Category == SpellCategory.ObjectApparition) 
+					&& spell.CoinsCost < interestingUnavailableSpellPrice) {
 					interestingUnavailableSpellPrice = spell.CoinsCost;
-					interestingUnavailableSpell = spell;
+					bonusSpell = spell;
 				}
 			}
 		}
-		if (interestingUnavailableSpell != null) selectedSpells.Add(interestingUnavailableSpell);
-		return selectedSpells;
 	}
 
 	private void Update() {
