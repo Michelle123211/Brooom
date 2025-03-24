@@ -94,6 +94,16 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         SaveSystem.SaveEquippedSpells(this.equippedSpells);
     }
 
+    public void UnequipSpell(string spellIdentifier) {
+        for (int i = 0; i < equippedSpells.Length; i++) {
+            if (equippedSpells[i] != null && !string.IsNullOrEmpty(equippedSpells[i].Identifier) && equippedSpells[i].Identifier == spellIdentifier) {
+                equippedSpells[i] = null;
+            }
+        }
+        // Save value into a file
+        SaveSystem.SaveEquippedSpells(this.equippedSpells);
+    }
+
     public bool IsSpellPurchased(string spellIdentifier) {
         return (spellAvailability.TryGetValue(spellIdentifier, out bool isPurchased) && isPurchased);
     }
@@ -114,6 +124,15 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         SaveSystem.SavePurchasedSpells(this.spellAvailability);
         // Notify anyone interested that all the spells have been purchased
         if (allUnlocked) Messaging.SendMessage("AllSpellsPurchased");
+    }
+
+    public void LockSpell(string spellIdentifier) {
+        if (IsSpellPurchased(spellIdentifier))
+            availableSpellCount--;
+        spellAvailability[spellIdentifier] = false;
+        UnequipSpell(spellIdentifier);
+        // Save value into a file
+        SaveSystem.SavePurchasedSpells(this.spellAvailability);
     }
 
     public void MarkSpellAsUsed(string spellIdentifier) {

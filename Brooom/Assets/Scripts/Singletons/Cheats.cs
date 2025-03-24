@@ -185,10 +185,12 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		// Basic commands
 		InitializeSceneCommand(); // scene - change scene
 		InitializeStatsCommand(); // stats - change player statistics values
+		InitializeCompletionCommand(); // completion - set or reset flag indicating whether the game has been completed
 
 		// Shop commands
 		InitializeCoinsCommand(); // coins - change coins amount
 		InitializeUpgradeCommand(); // upgrade - upgrade the broom, available in Tutorial, Player Overview, Race and Testing Track
+		InitializeDowngradeCommand(); // downgrade - downgrade broom, available in Tutorial, Player Overview, Race and Testing Track
 
 		// Spell commands
 		InitializeSpellCommand(); // spell - unlock all spells or only the given one
@@ -298,6 +300,37 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		disabledScenes: new Scene[] { Scene.MainMenu }));
 	}
 
+	private void InitializeCompletionCommand() {
+		// completion - set or reset flag indicating whether the game has been completed
+		commands.Add(new CheatCommand("completion", "Sets or resets flag indicating whether the game has been completed. Usage: 'completion set' or 'completion reset'.",
+			(commandParts) => {
+				bool success = false;
+				string message = string.Empty;
+				// Handle errors
+				if (commandParts.Length != 2) message = "Invalid number of parameters, one is required.";
+				else if (commandParts[1] == "set") {
+					// Set the game as completed
+					PlayerState.Instance.GameComplete = true;
+					success = true;
+					message = "The game has been set as completed.";
+				} else if (commandParts[1] == "reset") {
+					// Set the game as not completed
+					PlayerState.Instance.GameComplete = false;
+					success = true;
+					message = "The game has been set as not completed.";
+				} else {
+					message = $"Invalid parameter '{commandParts[1]}', only 'set' or 'reset' possible.";
+				}
+				// Return the result
+				return new CommandParseResult {
+					isSuccessful = success,
+					message = message
+				};
+			},
+			disabledScenes: new Scene[] { Scene.MainMenu })
+		);
+	}
+
 	private void InitializeCoinsCommand() {
 		// coins - change coins amount
 		commands.Add(new CheatCommand("coins", "Adds this amount of coins to the current amount. Usage: 'coins <amount>', e.g. 'coins 1000', 'coins -100'.", (commandParts) => {
@@ -321,6 +354,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		},
 		disabledScenes: new Scene[] { Scene.MainMenu }));
 	}
+
 	private void InitializeUpgradeCommand() {
 		// upgrade - upgrade the broom
 		commands.Add(new CheatCommand("upgrade", "Unlocks all broom upgrades or only levels up the given one. Usage: 'upgrade all' or 'upgrade <upgradeIdentifier>', e.g. 'upgrade Speed'.\nAvailable upgrades: Speed, Control, Elevation.", (commandParts) => {
@@ -365,11 +399,55 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			};
 		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.Tutorial })); // broom must be available
 	}
+	private void InitializeDowngradeCommand() {
+		// downgrade - downgrade the broom
+		commands.Add(new CheatCommand("downgrade", "Resets all broom upgrades or only levels down the given one. Usage: 'downgrade all' or 'downgrade <upgradeIdentifier>', e.g. 'downgrade Speed'.\nAvailable upgrades: Speed, Control, Elevation.", (commandParts) => {
+			bool success = false;
+			string message = string.Empty;
+			// Handle errors
+			if (commandParts.Length != 2) message = "Invalid number of parameters, one is required.";
+			else if (commandParts[1] == "all") {
+				// Reset all broom upgrades
+				Broom broom = UtilsMonoBehaviour.FindObjectOfTypeAndTag<Broom>("Player");
+				if (broom == null)
+					message = "It is not possible to use this command in a scene without a broom.";
+				else {
+					foreach (var upgrade in broom.GetAvailableUpgrades()) {
+						while (upgrade.CurrentLevel > 0) {
+							upgrade.LevelDown();
+							PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, upgrade.CurrentLevel, upgrade.MaxLevel);
+						}
+					}
+					return new CommandParseResult { isSuccessful = true, message = "All broom upgrades have been reset." };
+				}
+			} else {
+				// Downgrade only one level of the given upgrade
+				Broom broom = UtilsMonoBehaviour.FindObjectOfTypeAndTag<Broom>("Player");
+				if (broom == null)
+					message = "It is not possible to use this command in a scene without a broom.";
+				else {
+					foreach (var upgrade in broom.GetAvailableUpgrades()) {
+						if (upgrade.UpgradeName == commandParts[1]) {
+							upgrade.LevelDown();
+							PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, upgrade.CurrentLevel, upgrade.MaxLevel);
+							return new CommandParseResult { isSuccessful = true, message = $"Broom upgrade '{commandParts[1]}' has been leveled down." };
+						}
+					}
+					return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, upgrade '{commandParts[1]}' is not known." };
+				}
+			}
+			// Return the result
+			return new CommandParseResult {
+				isSuccessful = success,
+				message = message
+			};
+		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.Tutorial })); // broom must be available
+	}
 
 	private void InitializeSpellCommand() {
 		// spell - unlock all spells or only the given one
 		// Get list of available spells
-		StringBuilder helpMessage = new StringBuilder($"Unlocks all spells or only the given one. Usage: 'spell all' or 'spell <spellIdentifier>', e.g. 'spell {SpellManager.Instance.AllSpells[0].Identifier}'.\nAvailable spells: ");
+		StringBuilder helpMessage = new StringBuilder($"Unlocks/locks all spells or only the given one. Usage: 'spell all' or 'spell <spellIdentifier>' or 'spell reset all' or 'spell reset <spellIdentifier>', e.g. 'spell {SpellManager.Instance.AllSpells[0].Identifier}'.\nAvailable spells: ");
 		for (int i = 0; i < SpellManager.Instance.AllSpells.Count; i++) {
 			helpMessage.Append(SpellManager.Instance.AllSpells[i].Identifier);
 			if (i < SpellManager.Instance.AllSpells.Count - 1)
@@ -381,20 +459,40 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			bool success = false;
 			string message = string.Empty;
 			// Handle errors
-			if (commandParts.Length != 2) message = "Invalid number of parameters, one is needed.";
-			else if (commandParts[1] == "all") {
-				// Unlock all spells
-				foreach (var spell in SpellManager.Instance.AllSpells) {
-					PlayerState.Instance.UnlockSpell(spell.Identifier);
-				}
-				return new CommandParseResult { isSuccessful = true, message = "All spells have been unlocked." };
-			} else {
-				// Unlock only the given spell
-				if (SpellManager.Instance.CheckIfSpellExists(commandParts[1])) { // if the spell exists
-					PlayerState.Instance.UnlockSpell(commandParts[1]);
-					return new CommandParseResult { isSuccessful = true, message = $"Spell '{commandParts[1]}' has been unlocked." };
+			if (commandParts.Length < 2) message = "Invalid number of parameters, at least one is needed.";
+			else if (commandParts[1] == "reset") {
+				if (commandParts.Length != 3) message = "Invalid number of parameters, two are needed.";
+				else if (commandParts[2] == "all") {
+					// Lock all spells
+					foreach (var spell in SpellManager.Instance.AllSpells) {
+						PlayerState.Instance.LockSpell(spell.Identifier);
+					}
+					return new CommandParseResult { isSuccessful = true, message = "All spells have been locked." };
 				} else {
-					return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, spell '{commandParts[1]}' is not known." };
+					// Lock only the given spell
+					if (SpellManager.Instance.CheckIfSpellExists(commandParts[2])) { // if the spell exists
+						PlayerState.Instance.LockSpell(commandParts[2]);
+						return new CommandParseResult { isSuccessful = true, message = $"Spell '{commandParts[2]}' has been locked." };
+					} else {
+						return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, spell '{commandParts[2]}' is not known." };
+					}
+				}
+			} else { 
+				if (commandParts.Length != 2) message = "Invalid number of parameters, one is needed.";
+				else if (commandParts[1] == "all") {
+					// Unlock all spells
+					foreach (var spell in SpellManager.Instance.AllSpells) {
+						PlayerState.Instance.UnlockSpell(spell.Identifier);
+					}
+					return new CommandParseResult { isSuccessful = true, message = "All spells have been unlocked." };
+				} else {
+					// Unlock only the given spell
+					if (SpellManager.Instance.CheckIfSpellExists(commandParts[1])) { // if the spell exists
+						PlayerState.Instance.UnlockSpell(commandParts[1]);
+						return new CommandParseResult { isSuccessful = true, message = $"Spell '{commandParts[1]}' has been unlocked." };
+					} else {
+						return new CommandParseResult { isSuccessful = false, message = $"Invalid parameter, spell '{commandParts[1]}' is not known." };
+					}
 				}
 			}
 			// Return the result
@@ -550,16 +648,17 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 	private void InitializeFinishCommand() {
 		// finish - quick race finish, available only in Race
-		commands.Add(new CheatCommand("finish", "Immediately finishes the race with the given parameters. Usage: 'finish time=<finishTimeInSeconds> (missed=<numberOfHoopsMissed>)?', e.g. 'finish time=65', 'finish time=137 missed=3'.", (commandParts) => {
+		commands.Add(new CheatCommand("finish", "Immediately finishes the race with the given parameters. Usage: 'finish time=<finishTimeInSeconds> (place=<placeToFinishAt>)? (missed=<numberOfHoopsMissed>)?', e.g. 'finish time=65', 'finish time=82 place=3', 'finish time=137 missed=3'.", (commandParts) => {
 			bool success = false;
 			string message = string.Empty;
 			// Handle errors
-			if (commandParts.Length < 2 || commandParts.Length > 3) message = "Invalid number of parameters, there should be at least one and at most two.";
+			if (commandParts.Length < 2 || commandParts.Length > 4) message = "Invalid number of parameters, there should be at least one and at most three.";
 			else if (RaceController.Instance.State != RaceState.RaceInProgress)
 				message = "The race has not started yet and therefore cannot be finished.";
 			else {
-				int time = -1;
-				int missedHoops = 0;
+				int playerTime = -1;
+				int playerHoopsMissed = 0;
+				int playerPlace = 1;
 				for (int i = 1; i < commandParts.Length; i++) {
 					string[] parameterParts = commandParts[i].Trim().Split('=', StringSplitOptions.RemoveEmptyEntries);
 					if (parameterParts.Length != 2)
@@ -575,39 +674,68 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 							isSuccessful = false, message = "Invalid parameter, the value must be non-negative."
 						};
 					if (parameterParts[0] == "time") {
-						time = parameterValue;
+						playerTime = parameterValue;
+					} else if (parameterParts[0] == "place") {
+						playerPlace = parameterValue;
 					} else if (parameterParts[0] == "missed") {
-						missedHoops = parameterValue;
+						playerHoopsMissed = parameterValue;
 					} else {
 						return new CommandParseResult {
 							isSuccessful = false, message = $"Invalid parameter, the parameter '{parameterParts[0]}' is not known. Available parameters: time, missed."
 						};
 					}
 				}
-				if (time < 0)
+				if (playerTime < 0)
 					return new CommandParseResult {
 						isSuccessful = false, message = $"Invalid parameter, the 'time' parameter must be specified."
 					};
-				// Perform the command
-				CharacterRaceState playerState = RaceController.Instance.playerRacer.state;
-				// Distribute the missed hoops but pass all checkpoints
-				int actualMissedHoops = 0;
-				for (int i = 0; i < playerState.hoopsPassedArray.Length; i++) {
-					if (RaceController.Instance.Level.track[i].isCheckpoint || missedHoops == 0) {
-						playerState.hoopsPassedArray[i] = true;
+				else if (playerTime < 2)
+					return new CommandParseResult {
+						isSuccessful = false, message = $"Invalid parameter, the 'time' must be at least 2."
+					};
+				if (playerPlace < 1 || playerPlace > RaceController.Instance.racers.Count)
+					return new CommandParseResult {
+						isSuccessful = false, message = $"Invalid parameter, the 'place' must be between 1 and {RaceController.Instance.racers.Count} (inclusive)."
+					};
+				// Perform the command - make sure the player finishes at the desired place
+				void FillRaceState(CharacterRaceState raceState, int time, int hoopsMissed) {
+					// Distribute the missed hoops but pass all checkpoints
+					int actualMissedHoops = 0;
+					raceState.hoopsMissed = 0;
+					raceState.hoopsPassed = 0;
+					for (int i = 0; i < raceState.hoopsPassedArray.Length; i++) {
+						if (RaceController.Instance.Level.track[i].isCheckpoint || hoopsMissed <= 0) {
+							raceState.hoopsPassedArray[i] = true;
+							raceState.hoopsPassed++;
+						} else {
+							hoopsMissed--;
+							actualMissedHoops++;
+							raceState.hoopsMissed++;
+						}
+					}
+					// Set time and penalization
+					int penalization = Mathf.RoundToInt(RaceController.Instance.missedHoopPenalization * actualMissedHoops);
+					raceState.finishTime = time;
+					raceState.timePenalization = penalization;
+				}
+				int opponentPlace = 1;
+				foreach (var racer in RaceController.Instance.racers) {
+					if (racer == RaceController.Instance.playerRacer) {
+						FillRaceState(racer.state, playerTime, playerHoopsMissed);
 					} else {
-						missedHoops--;
-						actualMissedHoops++;
+						if (opponentPlace == playerPlace) opponentPlace++;
+						if (opponentPlace < playerPlace) { // this opponent should be better than player
+							FillRaceState(racer.state, playerTime - UnityEngine.Random.Range(1, playerTime), playerHoopsMissed - UnityEngine.Random.Range(1, playerHoopsMissed + 1));
+						} else { // this opponent should be worse than player
+							FillRaceState(racer.state, playerTime + UnityEngine.Random.Range(1, 120), playerHoopsMissed);
+						}
+						opponentPlace++;
 					}
 				}
-				// Set time and penalization
-				int penalization = Mathf.RoundToInt(RaceController.Instance.missedHoopPenalization * actualMissedHoops);
-				playerState.finishTime = time;
-				playerState.timePenalization = penalization;
 				// End race
 				RaceController.Instance.EndRace();
 				success = true;
-				message = $"The race is finishing with finish time {time} s and {actualMissedHoops} missed hoops (resulting in penalization {penalization} s).";
+				message = $"The race is finishing with finish time {playerTime} s, place {playerPlace} and {RaceController.Instance.playerRacer.state.hoopsMissed} missed hoops (resulting in penalization {RaceController.Instance.playerRacer.state.timePenalization} s).";
 			}
 			// Return the result
 			return new CommandParseResult {

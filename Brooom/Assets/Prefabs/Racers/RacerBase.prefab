@@ -1072,12 +1072,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
@@ -1092,12 +1102,22 @@ PrefabInstance:
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 7880505193574360730}
+    - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
@@ -1112,6 +1132,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: SetMaxAltitude
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -1122,12 +1147,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: CharacterMovementController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
-      value: 30
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
@@ -1140,514 +1175,629 @@ PrefabInstance:
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224152, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Target
+      value: 
+      objectReference: {fileID: 7880505193574360730}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Target
+      value: 
+      objectReference: {fileID: 7880505193574360730}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetMaxSpeed
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
       value: SetForwardResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetMaxSpeed
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
       value: SetForwardResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetMaxSpeed
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
       value: SetForwardResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
+      value: SetMaxSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
+      value: SetForwardResponsiveness
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
+      value: CharacterMovementController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
+      value: CharacterMovementController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
-      value: 1
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_FloatArgument
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
-      value: 1
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_FloatArgument
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
-        type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
-        type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_FloatArgument
       value: 0.83
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_FloatArgument
       value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_FloatArgument
       value: 0.91
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_FloatArgument
       value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_FloatArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_FloatArgument
       value: 0.025
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224154, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
       propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_Mode
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
       objectReference: {fileID: 7880505193574360730}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Target
+      value: 
+      objectReference: {fileID: 7880505193574360730}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Target
+      value: 
+      objectReference: {fileID: 7880505193574360730}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetYawResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
       value: SetPitchResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetYawResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
       value: SetPitchResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetYawResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
       value: SetPitchResponsiveness
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
+      value: SetYawResponsiveness
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
+      value: SetPitchResponsiveness
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
       value: CharacterMovementController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
+      value: CharacterMovementController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_TargetAssemblyTypeName
+      value: CharacterMovementController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
-      value: 1
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_FloatArgument
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
-      value: 1
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_FloatArgument
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
-        type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
-        type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_FloatArgument
       value: 0.011
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_FloatArgument
+      value: 0.011
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_FloatArgument
       value: 0.012
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_FloatArgument
       value: 0.012
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
-      value: 0.014
-      objectReference: {fileID: 0}
-    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
-        type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_FloatArgument
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_FloatArgument
       value: 0.013
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
-      value: 0.016
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_FloatArgument
+      value: 0.013
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[0].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[1].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
         type: 3}
-      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      propertyPath: effectsForEachLevel.Array.data[2].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772583381051224155, guid: bf652ccbd63098c4c8122ac78a2164c6,
+        type: 3}
+      propertyPath: effectsForEachLevel.Array.data[3].m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5772583381441234776, guid: bf652ccbd63098c4c8122ac78a2164c6,

@@ -25,13 +25,30 @@ public class BroomUpgrade : MonoBehaviour {
     // Increases the current level and invokes corresponding effects
     public void LevelUp() {
         if (CurrentLevel < MaxLevel) {
-            if (CurrentLevel >= effectsForEachLevel.Count) {
-                Debug.LogWarning($"No effect of the {UpgradeName} upgrade specified for the {CurrentLevel + 1} level!");
-            } else {
-                if (!Utils.IsNullEvent(effectsForEachLevel[CurrentLevel]))
-                    effectsForEachLevel[CurrentLevel].Invoke();
-            }
             CurrentLevel++;
+            ApplyEffectForCurrentLevel();
         } 
     }
+
+    // Decreases the current level and invokes corresponding effects
+    public void LevelDown() {
+        if (CurrentLevel > 0) {
+            CurrentLevel--;
+            ApplyEffectForCurrentLevel();
+        }
+    }
+
+    private void ApplyEffectForCurrentLevel() {
+        if (CurrentLevel > effectsForEachLevel.Count - 1) {
+            Debug.LogWarning($"No effect of the {UpgradeName} upgrade specified for the {CurrentLevel} level!");
+        } else {
+            if (!Utils.IsNullEvent(effectsForEachLevel[CurrentLevel]))
+                effectsForEachLevel[CurrentLevel].Invoke();
+        }
+    }
+
+	private void Start() {
+        // Initialize using events for initial level
+        ApplyEffectForCurrentLevel();
+	}
 }
