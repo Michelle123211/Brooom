@@ -72,7 +72,7 @@
 - Balancing (speed bonus, placing bonuses, speed broom upgrade, missed hoop penalization)
 - Testing
 
-**Milestone 9** (3rd November 2024, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone9.zip)):
+**Milestone 9** - Spells (3rd November 2024, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone9.zip)):
 
 - Spell system - aiming, casting, spells implementation, visual effects, ...
 - Spell casting AI
@@ -81,7 +81,7 @@
 - Testing track (unlimited mana, no spell cooldown)
 - Automatic build on GitHub
 
-**Milestone 10** (12th March 2025, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone10.zip)):
+**Milestone 10** - Effects (12th March 2025, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone10.zip)):
 
 - Skybox (also with clouds)
 - UI improvements
@@ -90,3 +90,12 @@
   - New font and custom cursor
 - Audio - music, ambience, sound effects
 - Achievements implementation finished
+
+**Milestone 11** - Optimizations and bugfixes (24th March 2025, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone11.zip)):
+
+- Level optimization (block-based terrain)
+- Loading screen and pause menu improvements
+- Displaying information about new regions
+- More cheats
+- Several major and minor bugfixes
+- Several other improvements
