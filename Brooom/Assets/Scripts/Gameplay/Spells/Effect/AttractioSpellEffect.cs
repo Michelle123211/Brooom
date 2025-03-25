@@ -25,6 +25,10 @@ public class AttractioSpellEffect : DurativeSpellEffect {
 	}
 
 	protected override void StartApplyingSpellEffect() {
+		// Make sure the target object is still valid - it could be a bonus spawned by Temere Commodum which was picked up while the spell was flying towards it
+		// ... if not, there's nothing to be done anymore
+		if (castParameters.Target.TargetObject == null) return;
+
 		bonusTransform = castParameters.Target.TargetObject.GetComponent<Transform>();
 		// Initialize start and end position between which the bonus would be moved
 		startPosition = castParameters.GetTargetPosition(); // where the bonus is
