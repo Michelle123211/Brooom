@@ -44,13 +44,13 @@ public class SpellTargetDetection : MonoBehaviour {
 		if (spellController.spellSlots[spellIndex] == null) return false;
 		Spell equippedSpell = spellController.spellSlots[spellIndex].Spell;
 		if (equippedSpell == null) return false;
-		// Spell casted at opponents and the target object is a racer different from the one this component is assigned to
+		// Spell cast at opponents and the target object is a racer different from the one this component is assigned to
 		if (equippedSpell.TargetType == SpellTargetType.Opponent &&
 				target.layer == LayerMask.NameToLayer("Characters") &&
 				target.GetInstanceID() != racerRootObject.GetInstanceID()) {
 			return true;
 		}
-		// Spell casted at objects and the target object is a suitable target
+		// Spell cast at objects and the target object is a suitable target
 		if (equippedSpell.TargetType == SpellTargetType.Object &&
 				target.CompareTag(equippedSpell.SpellTargetTag)) {
 			return true;

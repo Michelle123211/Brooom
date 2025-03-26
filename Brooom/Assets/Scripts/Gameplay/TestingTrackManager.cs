@@ -19,7 +19,7 @@ public class TestingTrackManager : MonoBehaviour {
 		}
 	}
 
-	private void RechargeAllSpells(int _) { // the parameter must be there because this method is used as a callback on spell casted
+	private void RechargeAllSpells(int _) { // the parameter must be there because this method is used as a callback on spell cast
 		playerSpellController.RechargeAllSpells();
 	}
 
@@ -42,16 +42,16 @@ public class TestingTrackManager : MonoBehaviour {
 		playerSpellController.onManaAmountChanged += ScheduleFillingManaUp;
 		FillManaUp();
 		// Disable spell cooldown - spells will be recharged immediately after use
-		//	- Whenever a spell is casted, recharge all spells
-		playerSpellController.onSpellCasted -= RechargeAllSpells; // try to unregister in case it wal already registered
-		playerSpellController.onSpellCasted += RechargeAllSpells;
+		//	- Whenever a spell is cast, recharge all spells
+		playerSpellController.onSpellCast -= RechargeAllSpells; // try to unregister in case it wal already registered
+		playerSpellController.onSpellCast += RechargeAllSpells;
 		playerSpellController.RechargeAllSpells();
 	}
 
 	private void OnDestroy() {
 		// Unregister callbacks
 		playerSpellController.onManaAmountChanged -= ScheduleFillingManaUp;
-		playerSpellController.onSpellCasted -= RechargeAllSpells;
+		playerSpellController.onSpellCast -= RechargeAllSpells;
 	}
 
 }

@@ -140,7 +140,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         if (!isKnown || (isKnown && !spellCast[spellIdentifier])) {
             spellCast[spellIdentifier] = true;
             // Save value into a file
-            SaveSystem.SaveCastedSpells(spellCast);
+            SaveSystem.SaveCastSpells(spellCast);
         }
     }
     #endregion

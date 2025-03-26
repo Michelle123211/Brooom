@@ -30,7 +30,7 @@ public abstract class SpellTargetSelection : MonoBehaviour {
 	// Returns a GameObject which is a target of the currently selected spell
 	protected abstract GameObject GetCurrentTargetObject();
 
-	// Returns a direction in which the currently selected spell should be casted
+	// Returns a direction in which the currently selected spell should be cast
 	protected abstract Vector3 GetCurrentTargetDirection();
 
 	private Vector3 GetCurrentTargetPosition() {

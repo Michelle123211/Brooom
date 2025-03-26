@@ -33,7 +33,7 @@ public class AISpellTargetSelection : SpellTargetSelection {
 			// Choose opponent with a probability based on distance from the racer (the closest, the higher probability)
 			return ChooseOpponentBasedOnDistance(potentialTargets, spell);
 		} else {
-			// Choose randomly from the two closest targets - so there is a chance Attractio would not be casted at the bonus the racer is currently flying to, which is better
+			// Choose randomly from the two closest targets - so there is a chance Attractio would not be cast at the bonus the racer is currently flying to, which is better
 			return ChooseClosestOrSecondClosestTarget(potentialTargets);
 		}
 	}
@@ -49,7 +49,7 @@ public class AISpellTargetSelection : SpellTargetSelection {
 	}
 
 	// Chooses a target opponent with probability based on distance (the closest one has the highest probability to be chosen)
-	// If the same spell is already being casted at them, selects a different target
+	// If the same spell is already being cast at them, selects a different target
 	private GameObject ChooseOpponentBasedOnDistance(List<GameObject> potentialTargets, Spell spell) {
 		// Sort targets based on distance from the racer
 		potentialTargets.Sort(
@@ -70,7 +70,7 @@ public class AISpellTargetSelection : SpellTargetSelection {
 			}
 			intervalEnd += (i + 2);
 		}
-		// ... if the same spell is already being casted at that target, try to choose a different target (but don't check again for the spell)
+		// ... if the same spell is already being cast at that target, try to choose a different target (but don't check again for the spell)
 		GameObject targetOpponent = potentialTargets[targetIndex];
 		IncomingSpellsTracker incomingSpellTracker = targetOpponent.GetComponentInChildren<IncomingSpellsTracker>();
 		if (incomingSpellTracker.IsSpellIncoming(spell.Identifier)) { // already being hit by the same spell
@@ -105,10 +105,10 @@ public class AISpellTargetSelection : SpellTargetSelection {
 
 	#region Originally used methods for selecting target opponent (not used anymore but could still prove useful)
 
-	// Tries to find an opponent who is the furthest in the race and the same spell is not already being casted at them
+	// Tries to find an opponent who is the furthest in the race and the same spell is not already being cast at them
 	// If no such opponent exists, then just the furthest one is chosen
 	private GameObject ChooseOpponentFurthestWithoutOvercast(List<GameObject> potentialTargets, Spell spell) {
-		// Choose opponent the furthest in the race but make sure the same spell is not already being casted at him
+		// Choose opponent the furthest in the race but make sure the same spell is not already being cast at him
 		GameObject bestTarget = null;
 		int bestPlace = int.MaxValue;
 		foreach (var opponent in potentialTargets) {

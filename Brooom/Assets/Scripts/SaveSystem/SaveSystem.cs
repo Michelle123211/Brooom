@@ -285,22 +285,22 @@ public class SaveSystem
         return spellsData.EquippedSpells;
     }
 
-    public static void SaveCastedSpells(Dictionary<string, bool> spellsUsage) {
+    public static void SaveCastSpells(Dictionary<string, bool> spellsUsage) {
         // Load everything
         SpellsSaveData spellsData = LoadSpells();
         if (spellsData == null) spellsData = new SpellsSaveData(); // if there is no save file, use default values
-        // Override only the casted spells
+        // Override only the cast spells
         spellsData.SpellsUsage = spellsUsage;
         // Save it back
         SaveSpells(spellsData);
     }
 
-    public static Dictionary<string, bool> LoadCastedSpells() {
+    public static Dictionary<string, bool> LoadCastSpells() {
         // Load everything
         SpellsSaveData spellsData = LoadSpells();
         // If there is no saved state, return null
         if (spellsData == null) return null;
-        // Return only the casted spells
+        // Return only the cast spells
         return spellsData.SpellsUsage;
     }
 	#endregion

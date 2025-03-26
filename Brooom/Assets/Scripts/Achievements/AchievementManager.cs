@@ -243,19 +243,19 @@ class ScoreData : AchievementData {
 [System.Serializable]
 class SpellsData : AchievementData {
 	// Number of spell cast
-	public int spellsCasted = 0;
+	public int spellsCast = 0;
 	// Whether all spells have been purchased
 	public bool allSpellsPurchased = false;
 
 	public override void ResetData() {
-		spellsCasted = 0;
+		spellsCast = 0;
 		allSpellsPurchased = false;
 	}
 
 	public override void LoadData() {
 		SpellsData data = SaveSystem.LoadAchievementData<SpellsData>("spells");
 		if (data != null) {
-			this.spellsCasted = data.spellsCasted;
+			this.spellsCast = data.spellsCast;
 			this.allSpellsPurchased = data.allSpellsPurchased;
 		}
 	}
@@ -265,13 +265,13 @@ class SpellsData : AchievementData {
 	}
 
 	public override void RegisterCallbacks() {
-		Messaging.RegisterForMessage("SpellCasted", OnSpellCasted);
+		Messaging.RegisterForMessage("SpellCasted", OnSpellCast);
 		Messaging.RegisterForMessage("SpellPurchased", OnSpellPurchased);
 		Messaging.RegisterForMessage("AllSpellsPurchased", OnAllSpellsPurchased);
 	}
 
 	public override void UnregisterCallbacks() {
-		Messaging.UnregisterFromMessage("SpellCasted", OnSpellCasted);
+		Messaging.UnregisterFromMessage("SpellCasted", OnSpellCast);
 		Messaging.UnregisterFromMessage("SpellPurchased", OnSpellPurchased);
 		Messaging.UnregisterFromMessage("AllSpellsPurchased", OnAllSpellsPurchased);
 	}
@@ -279,7 +279,7 @@ class SpellsData : AchievementData {
 	public override int GetAchievementLevel(Achievement achievement) {
 		switch (achievement.type) {
 			case AchievementType.SpellsCasted:
-				return GetAchievementLevelFromValues(achievement, spellsCasted);
+				return GetAchievementLevelFromValues(achievement, spellsCast);
 			case AchievementType.AllSpells:
 				return allSpellsPurchased ? 1 : 0;
 			default: // Unknown type
@@ -287,8 +287,8 @@ class SpellsData : AchievementData {
 		}
 	}
 
-	private void OnSpellCasted(string spellIdentifier) {
-		spellsCasted++;
+	private void OnSpellCast(string spellIdentifier) {
+		spellsCast++;
 		SaveData();
 	}
 

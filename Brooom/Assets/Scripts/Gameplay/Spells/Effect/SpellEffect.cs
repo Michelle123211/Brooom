@@ -105,7 +105,7 @@ public abstract class RacerAffectingSpellEffect : ReversibleSpellEffect {
         EffectibleCharacter targetRacer = null;
         if (castParameters.Target.TargetObject != null) targetRacer = castParameters.Target.TargetObject.GetComponent<EffectibleCharacter>();
         if (castParameters.Target.TargetObject == null || targetRacer == null)
-            throw new System.NotSupportedException($"{nameof(RacerAffectingSpellEffect)} and derived classes may be used only for spells casted at other racers.");
+            throw new System.NotSupportedException($"{nameof(RacerAffectingSpellEffect)} and derived classes may be used only for spells cast at other racers.");
         // Add the spell among effects affecting the target racer (+ add the visual effect)
         CharacterEffect characterEffect = new CharacterEffect(castParameters.Spell.Icon, effectDuration, castParameters.Spell.IsPositive);
         characterEffect.onEffectStart += StartSpellEffect_Internal;

@@ -125,7 +125,7 @@ public class StatsComputer : MonoBehaviour {
         equippedSpellCount = 0;
         foreach (var spell in playerSpellController.spellSlots)
             if (spell != null && !spell.IsEmpty()) equippedSpellCount++;
-        playerSpellController.onSpellCasted += OnSpellCasted;
+        playerSpellController.onSpellCast += OnSpellCast;
 }
 
     // Called from RaceController at the end of the race
@@ -136,7 +136,7 @@ public class StatsComputer : MonoBehaviour {
         Messaging.UnregisterFromMessage("BonusPickedUp", OnBonusPickedUp);
         playerRaceState.onWrongDirectionChanged -= OnWrongDirectionChanged;
         playerSpellController.onManaAmountChanged -= OnManaAmountChanged;
-        playerSpellController.onSpellCasted -= OnSpellCasted;
+        playerSpellController.onSpellCast -= OnSpellCast;
     }
 
     public void UpdateStats() {
@@ -212,12 +212,12 @@ public class StatsComputer : MonoBehaviour {
         ManaRegeneration manaRegeneration = playerSpellController.GetComponentInChildren<ManaRegeneration>();
         totalMana += (manaRegeneration.TotalManaGenerated / 2); // add mana regenerated automatically (divided by two to account for situations when mana is regenerated too fast)
         // Spell usage
-        equippedSpellUsageValue = notUsedSpellPenalization.Evaluate(spellUsedCount / (float)equippedSpellCount); // number between 0 and 1 describing how diverse spells the player has casted during the race
+        equippedSpellUsageValue = notUsedSpellPenalization.Evaluate(spellUsedCount / (float)equippedSpellCount); // number between 0 and 1 describing how diverse spells the player has cast during the race
         totalSpellUsedCount = 0; // how many of the total spells the player has ever used
         foreach (var spellCast in PlayerState.Instance.spellCast)
             if (spellCast.Value) totalSpellUsedCount++;
         totalSpellCount = Mathf.Max(SpellManager.Instance.AllSpells.Count, 1); // how many spells are available in the game (must be > 0 for further computation)
-        spellUsageValue = (totalSpellUsedCount / (float)totalSpellCount); // number between 0 and 1 describing how diverse spells the player has ever casted
+        spellUsageValue = (totalSpellUsedCount / (float)totalSpellCount); // number between 0 and 1 describing how diverse spells the player has ever cast
         // Weight of the new stat value when cimbining it with the old one
         float middle = (totalRacers - 1) / 2f + 1;
         statWeightBasedOnPlace = Mathf.FloorToInt(Mathf.Abs(middle - playerPlace) + 1); // e.g. 3 for 1st place among 5-6 racers
@@ -353,9 +353,9 @@ public class StatsComputer : MonoBehaviour {
         currentMana = newValue;
     }
 
-    private void OnSpellCasted(int index) {
+    private void OnSpellCast(int index) {
         if (spellUsed[index]) return;
-        // The spell has not been casted yet during this race
+        // The spell has not been cast yet during this race
         spellUsedCount++;
         spellUsed[index] = true;
     }

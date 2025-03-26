@@ -11,7 +11,7 @@ public abstract class MovementAffectingSpellEffect : RacerAffectingSpellEffect {
 		this.targetRacer = null;
 		if (castParameters.Target.TargetObject != null) targetRacer = castParameters.Target.TargetObject.GetComponent<CharacterMovementController>();
 		if (castParameters.Target.TargetObject == null || targetRacer == null)
-			throw new System.NotSupportedException($"{nameof(CongelatioSpellEffect)} may be casted only at an object with {nameof(CharacterMovementController)} component.");
+			throw new System.NotSupportedException($"{nameof(CongelatioSpellEffect)} may be cast only at an object with {nameof(CharacterMovementController)} component.");
 		// Disable the racer's controls
 		DisableRacerMovement(targetRacer);
 	}

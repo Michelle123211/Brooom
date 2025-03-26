@@ -19,7 +19,7 @@ public class SpellTrajectoryVisualEffectEditor : Editor {
 		SerializedProperty spellTrailProperty = serializedObject.FindProperty("spellCastTrail");
 		SerializedProperty spellCastParticles = serializedObject.FindProperty("spellCastParticles");
 		if (spellVisualProperty.objectReferenceValue == null && spellTrailProperty.objectReferenceValue == null && spellCastParticles.objectReferenceValue == null)
-			EditorGUILayout.HelpBox("Consider asigning the 'Spell Cast Visual', 'Spell Cast Trail' or 'Spell Cast Particles' field, so the spell is visible when casted. Also don't forget to change 'Spell Cast Color' if necessary.", MessageType.Warning);
+			EditorGUILayout.HelpBox("Consider asigning the 'Spell Cast Visual', 'Spell Cast Trail' or 'Spell Cast Particles' field, so the spell is visible when cast. Also don't forget to change 'Spell Cast Color' if necessary.", MessageType.Warning);
 	}
 
 }

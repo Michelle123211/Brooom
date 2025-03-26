@@ -52,7 +52,7 @@ public class Spell : MonoBehaviour {
     private Sprite icon;
     public Sprite Icon { get => icon; private set => icon = value; }
 
-    [Tooltip("Spell icon used to indicate a spell being casted towards the player.")]
+    [Tooltip("Spell icon used to indicate a spell being cast towards the player.")]
     [SerializeField]
     private Sprite indicatorIcon;
     public Sprite IndicatorIcon { get => indicatorIcon; private set => indicatorIcon = value; }
@@ -69,7 +69,7 @@ public class Spell : MonoBehaviour {
     private int manaCost = 20;
     public int ManaCost { get => manaCost; private set => manaCost = value; }
 
-    [Tooltip("For how long you have to wait before the spell is charged again and ready to be casted.")]
+    [Tooltip("For how long you have to wait before the spell is charged again and ready to be cast.")]
     [SerializeField]
     private float cooldown = 10f; // how long it takes to recharge the spell
     public float Cooldown { get => cooldown; private set => cooldown = value; }
@@ -79,12 +79,12 @@ public class Spell : MonoBehaviour {
     private SpellCategory category = SpellCategory.Invalid;
     public SpellCategory Category { get => category; private set => category = value; }
 
-    [Tooltip("What is the spell casted at, e.g. opponent, general direction etc.")]
+    [Tooltip("What is the spell cast at, e.g. opponent, general direction etc.")]
     [SerializeField]
     private SpellTargetType targetType = SpellTargetType.Invalid;
     public SpellTargetType TargetType { get => targetType; private set => targetType = value; }
 
-    [Tooltip("If the spell is casted at objects, only objects with the given tag are considered.")]
+    [Tooltip("If the spell is cast at objects, only objects with the given tag are considered.")]
     [SerializeField]
     private string spellTargetTag = string.Empty; // tag of the target object in case of SpellTargetType.Object
     public string SpellTargetTag { get => spellTargetTag; private set => spellTargetTag = value; }
@@ -102,7 +102,7 @@ public class Spell : MonoBehaviour {
     }
 
     public void CastSpell(SpellCastParameters castParameters) {
-        // Create a separate instance of the spell effect controller (so it could be casted by several racers at once)
+        // Create a separate instance of the spell effect controller (so it could be cast by several racers at once)
         SpellEffectController effect = Instantiate<SpellEffectController>(effectControllerPrefab, castParameters.GetCastPosition(), Quaternion.identity);
         effect.InvokeSpellEffect(castParameters);
     }

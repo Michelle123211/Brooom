@@ -557,7 +557,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 	private void InitializeRechargeCommand() {
 		// recharge - change spells' charge or enable/disable cooldown, available only in Race
-		void RechargeAllSpells(int _) { // the parameter must be there because this method is used as a callback on spell casted
+		void RechargeAllSpells(int _) { // the parameter must be there because this method is used as a callback on spell cast
 			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 			playerSpellController.RechargeAllSpells();
 		}
@@ -575,12 +575,12 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					return new CommandParseResult { isSuccessful = true, message = "All spells have been recharged." };
 				} else if (commandParts[1] == "on") {
 					// Enable spells' cooldown
-					playerSpellController.onSpellCasted -= RechargeAllSpells;
+					playerSpellController.onSpellCast -= RechargeAllSpells;
 					return new CommandParseResult { isSuccessful = true, message = "Spells' cooldown has been enabled." };
 				} else if (commandParts[1] == "off") {
 					// Disable spells' cooldown
-					playerSpellController.onSpellCasted -= RechargeAllSpells; // try to unregister in case it wal already registered
-					playerSpellController.onSpellCasted += RechargeAllSpells;
+					playerSpellController.onSpellCast -= RechargeAllSpells; // try to unregister in case it wal already registered
+					playerSpellController.onSpellCast += RechargeAllSpells;
 					playerSpellController.RechargeAllSpells();
 					return new CommandParseResult { isSuccessful = true, message = "Spells' cooldown has been disabled." };
 				} else {

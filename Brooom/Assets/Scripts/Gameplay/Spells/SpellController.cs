@@ -16,7 +16,7 @@ public class SpellController : MonoBehaviour {
 	// Callbacks
 	public event Action<int> onManaAmountChanged; // parameter: new mana value
 	public event Action<int> onSelectedSpellChanged; // parameter: index of the currently selected spell
-	public event Action<int> onSpellCasted; // parameter: index of the spell
+	public event Action<int> onSpellCast; // parameter: index of the spell
 
 	[Tooltip("Component derived from SpellTargetSelection which is responsible for selecting a target for currently selected spell.")]
 	[SerializeField] SpellTargetSelection spellTargetSelection;
@@ -78,8 +78,8 @@ public class SpellController : MonoBehaviour {
 					castDirection = (spellTarget.GetTargetPosition() - transform.position).normalized
 				});
 			ChangeManaAmount(-currentSpell.Spell.ManaCost);
-			// Notify anyone interested that a spell has been casted
-			onSpellCasted?.Invoke(selectedSpell);
+			// Notify anyone interested that a spell has been cast
+			onSpellCast?.Invoke(selectedSpell);
 			if (isPlayer) {
 				Messaging.SendMessage("SpellCasted", currentSpell.Spell.Identifier);
 				PlayerState.Instance.MarkSpellAsUsed(currentSpell.Spell.Identifier);
@@ -197,7 +197,7 @@ public struct SpellCastParameters {
 
 	public SpellTarget Target { get; set; }
 
-	public Vector3 castDirection; // direction in which the spell is casted
+	public Vector3 castDirection; // direction in which the spell is cast
 
 	public Vector3 GetCastPosition() {
 		if (castPoint != null) return castPoint.GetAbsolutePosition();

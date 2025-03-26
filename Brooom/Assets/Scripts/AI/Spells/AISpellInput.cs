@@ -30,7 +30,7 @@ public class AISpellInput : SpellInput {
 		// Compute parameters dependent on Magic statistic
 		float magicMistakeProbability = 0f;
 		if (skillLevel != null) magicMistakeProbability = skillLevel.GetMagicMistakeProbability();
-		float spellCastProbability = GetSpellCastProbability(magicMistakeProbability); // spell is casted with a certain probability
+		float spellCastProbability = GetSpellCastProbability(magicMistakeProbability); // spell is cast with a certain probability
 		int allowedSpellCount = GetNumberOfEquippedSpellsToUse(magicMistakeProbability); // only first few equipped spells may be used
 
 		if (debugLogs)
@@ -65,12 +65,12 @@ public class AISpellInput : SpellInput {
 
 	// Casts a random spell from the ones which are ready while considering only first maxSpellToUseCount equipped spells
 	private void SelectAndCastSpell(int allowedSpellCount, float spellCastProbability) {
-		if (allowedSpellCount > 0 && readySpellCount > 0 && Random.value < spellCastProbability) { // spell is casted only with a certain probability
+		if (allowedSpellCount > 0 && readySpellCount > 0 && Random.value < spellCastProbability) { // spell is cast only with a certain probability
 			// Select a random spell from the ones which are ready and allowed
 			int randomIndex = Random.Range(0, readySpellCount);
 			// Find this spell and cast it
 			for (int i = 0; i < isSpellReady.Length; i++) {
-				if (isSpellReady[i] && randomIndex == 0) { // this is the spell to be casted
+				if (isSpellReady[i] && randomIndex == 0) { // this is the spell to be cast
 					SwitchToSpell(i);
 					spellController.CastCurrentlySelectedSpell();
 					return;
@@ -78,7 +78,7 @@ public class AISpellInput : SpellInput {
 				if (isSpellReady[i]) randomIndex--;
 			}
 		} else {
-			if (debugLogs) Debug.Log($"Spell is not casted because conditions were not met.");
+			if (debugLogs) Debug.Log($"Spell is not cast because conditions were not met.");
 		}
 	}
 
