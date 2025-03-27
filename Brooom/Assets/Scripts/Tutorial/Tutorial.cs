@@ -5,13 +5,47 @@ using UnityEngine;
 
 public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 
-	public TutorialStage CurrentStage { get; private set; } = TutorialStage.Introduction;
+	public TutorialStage CurrentStage { get; private set; } = TutorialStage.NotStarted;
 
 	//public TutorialUIHighlight highlighter;	// TODO: Initialize it so that individual tutorial stages can access it and use it
 	//public TutorialPanel panel;				// TODO: Initialize it so that individual tutorial stages can access it and use it
 
 	private TutorialStageBase currentStageRepresentation;
 
+	// Called whenever progress in tutorial changes
+	public void SaveCurrentProgress() {
+		// Get current stage's substate
+		string stageState = string.Empty;
+		if (currentStageRepresentation != null) stageState = currentStageRepresentation.GetCurrentState();
+		// Store current tutorial progress persistently
+		SaveSystem.SaveTutorialData(new TutorialSaveData { mainStage = CurrentStage.ToString(), subState = stageState });
+	}
+	// Called when continuing a game
+	public void LoadCurrentProgress() {
+		// Load persistently saved tutorial progress to continue from there
+		TutorialSaveData savedState = SaveSystem.LoadTutorialData();
+		if (savedState != null) {
+			// Initialize current stage according to the saved state
+			CurrentStage = Enum.Parse<TutorialStage>(savedState.mainStage);
+			currentStageRepresentation = GetTutorialStageRepresentation(CurrentStage);
+			if (currentStageRepresentation != null) {
+				currentStageRepresentation.SetCurrentState(savedState.subState);
+			}
+			SaveCurrentProgress(); // just to make sure (e.g. if the substate changed because it was set back to a previous checkpoint)
+		} else {
+			// If there is no saved state, simply start from the beginning
+			ResetCurrentProgress();
+		}
+
+	}
+	// Called when starting a new game
+	public void ResetCurrentProgress() {
+		// Move to the first stage
+		CurrentStage = TutorialStage.NotStarted;
+		MoveToNextStage(); // state is also saved there
+	}
+
+	// Returns an instance of class derived from TutorialStageBase corresponding to the given stage
 	private TutorialStageBase GetTutorialStageRepresentation(TutorialStage stage) {
 		return stage switch {
 			TutorialStage.Introduction => new IntroductionTutorial(),
@@ -24,38 +58,33 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 		};
 	}
 
+	// Moves to the next stage (if possible)
 	private void MoveToNextStage() {
 		if (CurrentStage == TutorialStage.Finished) return;
 		// Find the next stage - the least number greater than the current stage (there could be gaps)
 		int nextStage = (int)TutorialStage.Finished;
 		foreach (int i in Enum.GetValues(typeof(TutorialStage)))
 			if (i > (int)CurrentStage && i < nextStage) nextStage = i;
-		// Set next stage and update it right away
+		// Set next stage
 		CurrentStage = (TutorialStage)nextStage;
 		currentStageRepresentation = GetTutorialStageRepresentation(CurrentStage);
-		if (currentStageRepresentation != null) {
-			currentStageRepresentation.Update();
-		}
 		SaveCurrentProgress();
 	}
 
-	// Called whenever progress in tutorial changes
-	private void SaveCurrentProgress() {
-		// TODO: Store persistently current tutorial progress
-		string stageState = string.Empty;
-		if (currentStageRepresentation != null) stageState = currentStageRepresentation.GetCurrentState();
+	// Moves to the next stage (if possible) and updates it right away (so that it can be triggered as soon as possible)
+	private void MoveToNextStageAndUpdate() {
+		MoveToNextStage();
+		if (currentStageRepresentation != null)
+			currentStageRepresentation.Update();
 	}
 
-	private void LoadCurrentProgress() { 
-		// TODO: Load persistently saved tutorial progress to continue from there
-	}
-
+	// Updates the current stage representation to ensure tutorial is progressing
 	private void Update() {
 		if (CurrentStage == TutorialStage.Finished) return;
 		if (currentStageRepresentation == null) return;
-		// Update current tutorial stage and check if it time to move to a next one
+		// Update current tutorial stage and check if it is time to move to a next one
 		if (!currentStageRepresentation.Update()) {
-			MoveToNextStage();
+			MoveToNextStageAndUpdate(); // update it right away so that it can be triggered as soon as possible
 		}
 	}
 
@@ -78,6 +107,7 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 
 public enum TutorialStage { 
 	// TODO: Add more stages if necessary, but make sure stages are assigned correctly to regions in RaceController's Inspector
+	NotStarted = 0,
 	Introduction = 10, // story, motivation, movement, track elements
 	FirstRace = 20, // training, reset position, starting zone
 	PlayerOverview = 30, // leaderboard, stats
@@ -89,6 +119,7 @@ public enum TutorialStage {
 
 public abstract class TutorialStageBase {
 
+	// Tutorial stage may be in one of several states - could be checked to make sure we don't trigger or initialize it twice
 	private enum TutorialStageState {
 		NotTriggered,
 		Initializing,

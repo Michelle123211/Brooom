@@ -243,6 +243,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         SaveSystem.SaveRegions(new RegionsSaveData { RegionsVisited = this.regionsVisited });
         // Save AchievementManager data
         AchievementManager.Instance.SaveAchievementsProgress();
+        // Save Tutorial data
+        Tutorial.Instance.SaveCurrentProgress();
     }
 
     public void LoadSavedState() {
@@ -262,6 +264,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         LoadFromSavedRegions(regions);
         // Load AchievementManager data
         AchievementManager.Instance.LoadAchievementsProgress();
+        // Load Tutorial data
+        Tutorial.Instance.LoadCurrentProgress();
     }
 
 	public void ResetState() {
@@ -270,6 +274,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         broomUpgradesLoaded = true;
         // Reset AchievementManager data
         AchievementManager.Instance.ResetAchievementsProgress();
+        // Reset Tutorial data
+        Tutorial.Instance.ResetCurrentProgress();
         // Save the default state
         SaveCurrentState();
     }

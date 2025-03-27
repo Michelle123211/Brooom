@@ -15,6 +15,7 @@ public class SaveSystem
     private static readonly string spellsFileName = "spells";
     private static readonly string regionsFileName = "regions";
     private static readonly string achievementsFileName = "achievements";
+    private static readonly string tutorialFileName = "tutorial";
 
     // Other parts of the path
     private static readonly string fileExtension = ".json";
@@ -29,6 +30,7 @@ public class SaveSystem
     private static readonly string spellsPath = saveFolder + spellsFileName + fileExtension;
     private static readonly string regionsPath = saveFolder + regionsFileName + fileExtension;
     private static readonly string achievementsPartialPath = saveFolder + achievementsFileName;
+    private static readonly string tutorialPath = saveFolder + tutorialFileName + fileExtension;
 
 
     static SaveSystem() {
@@ -361,4 +363,22 @@ public class SaveSystem
         }
     }
     #endregion
+
+    #region Tutorial
+    public static void SaveTutorialData(TutorialSaveData data) {
+        // Save the whole data
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(tutorialPath, json);
+    }
+    public static TutorialSaveData LoadTutorialData() {
+        // Load the whole data
+        if (File.Exists(tutorialPath)) { // If there is a save file, load the data from there
+            string json = File.ReadAllText(tutorialPath);
+            TutorialSaveData tutorialState = JsonUtility.FromJson<TutorialSaveData>(json);
+            return tutorialState;
+        } else { // Otherwise return null
+            return null;
+        }
+    }
+	#endregion
 }
