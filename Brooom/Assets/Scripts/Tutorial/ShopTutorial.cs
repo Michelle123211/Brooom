@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShopTutorial : TutorialStageBase {
+
+	private enum Step {
+		Started,
+		Shop, // button to enter shop
+		Spells,
+		BroomUpgrades,
+		Finished
+	}
+	private Step currentStep = Step.Started;
+
 	public override void Finish() {
 		// TODO
 	}
@@ -17,12 +27,12 @@ public class ShopTutorial : TutorialStageBase {
 	}
 
 	protected override bool CheckTriggerConditions() {
-		// TODO
+		// TODO: Player Overview scene + enough coins to buy first item in a shop
 		return true;
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		// TODO
+		// TODO: Set initial state and prepare everything necessary
 		yield break;
 	}
 

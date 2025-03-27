@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TestingTrackTutorial : TutorialStageBase {
+
+	private enum Step {
+		Started,
+		TestingTrack, // button to enter testing track
+		Finished
+	}
+	private Step currentStep = Step.Started;
+
 	public override void Finish() {
 		// TODO
 	}
@@ -17,12 +25,12 @@ public class TestingTrackTutorial : TutorialStageBase {
 	}
 
 	protected override bool CheckTriggerConditions() {
-		// TODO
+		// TODO: Player Overview scene with Shop open
 		return true;
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		// TODO
+		// TODO: Set initial state and prepare everything necessary
 		yield break;
 	}
 

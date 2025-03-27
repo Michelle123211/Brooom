@@ -4,6 +4,27 @@ using UnityEngine;
 
 public class SpellsTutorial : TutorialStageBase {
 
+	private enum Step {
+		Started,
+		Equip_Slots,
+		Equip_Selection,
+		Equip_MoveOn, // move to a scene to learn how to use spells
+		Cast_AvailableSpells, // spells in HUD
+		Cast_Mana, // mana in HUD
+		Cast_ManaBonus,
+		Cast_FillMana, // fly around, colect mana bonuses and fill mana bar up
+		Cast_ManaFull, // mana is full
+		Cast_Targets, // possible targets
+		Cast_SpellTarget, // target of the currently selected spell
+		Cast_CastSpell, // find target, cast spell
+		Cast_Cooldown, // there is a cooldown
+		Cast_RechargeBonus,
+		Cast_CastSpell2, // fly around, collect recharge bonus and cast spell again
+		Cast_SwitchSpell,
+		Finished
+	}
+	private Step currentStep = Step.Started;
+
 	private enum SpellsTutorialState { 
 		EquipSpell,
 		CastSpell // mana bonus, cast spell, recharge bonus
@@ -23,12 +44,12 @@ public class SpellsTutorial : TutorialStageBase {
 	}
 
 	protected override bool CheckTriggerConditions() {
-		// TODO
+		// TODO: Player Overview scene with Shop open + first spell purchased
 		return true;
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		// TODO
+		// TODO: Set initial state and prepare everything necessary
 		yield break;
 	}
 

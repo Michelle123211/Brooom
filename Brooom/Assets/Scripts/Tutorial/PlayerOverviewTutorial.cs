@@ -3,6 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerOverviewTutorial : TutorialStageBase {
+
+	private enum Step {
+		Started,
+		Coins,
+		Leaderboard,
+		Stats,
+		Endurance,
+		Speed,
+		Dexterity,
+		Precision,
+		Magic,
+		Finished
+	}
+	private Step currentStep = Step.Started;
+
 	public override void Finish() {
 		// TODO
 	}
@@ -17,12 +32,12 @@ public class PlayerOverviewTutorial : TutorialStageBase {
 	}
 
 	protected override bool CheckTriggerConditions() {
-		// TODO
+		// TODO: Player Overview scene
 		return true;
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		// TODO
+		// TODO: Set initial state and prepare everything necessary
 		yield break;
 	}
 

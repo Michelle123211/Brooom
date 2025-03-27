@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FirstRaceTutorial : TutorialStageBase {
+
+	private enum Step {
+		Started,
+		Training, // training, reset
+		StartingZone,
+		FreeMovement, // can fly freely and proceed whenever
+		SkipTraining, // an option to skip training from now on
+		Finished
+	}
+	private Step currentStep = Step.Started;
+
 	public override void Finish() {
 		// TODO
 	}
@@ -17,12 +28,12 @@ public class FirstRaceTutorial : TutorialStageBase {
 	}
 
 	protected override bool CheckTriggerConditions() {
-		// TODO
+		// TODO: Race scene
 		return true;
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		// TODO
+		// TODO: Set initial state and prepare everything necessary
 		yield break;
 	}
 
