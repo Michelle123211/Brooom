@@ -91,7 +91,7 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
             PlayerState.Instance.SetRegionAvailability(region, true);
         // ... available regions from tutorial
         foreach (var regionFromTutorial in regionsUnlockedByTutorial)
-            PlayerState.Instance.SetRegionAvailability(regionFromTutorial.region, Tutorial.Instance.CurrentStage >= regionFromTutorial.tutorialStage);
+            PlayerState.Instance.SetRegionAvailability(regionFromTutorial.region, Tutorial.Instance.CurrentStage > regionFromTutorial.tutorialStage);
         // ... available regions from Endurance
         foreach (var regionWithValue in regionsUnlockedByEndurance)
             PlayerState.Instance.SetRegionAvailability(regionWithValue.region, PlayerState.Instance.CurrentStats.endurance >= regionWithValue.minValue);
