@@ -2396,6 +2396,7 @@ GameObject:
   - component: {fileID: 1381716468}
   - component: {fileID: 1381716467}
   - component: {fileID: 1381716466}
+  - component: {fileID: 1381716472}
   m_Layer: 5
   m_Name: MainMenuUI
   m_TagString: Untagged
@@ -2506,6 +2507,14 @@ MonoBehaviour:
   startButtonText: {fileID: 1901134708}
   continueButtonText: {fileID: 1621437931}
   startAgainButton: {fileID: 1154674478}
+--- !u!222 &1381716472
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381716465}
+  m_CullTransparentMesh: 1
 --- !u!1 &1398114512
 GameObject:
   m_ObjectHideFlags: 0
