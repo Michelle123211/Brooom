@@ -7,8 +7,13 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 
 	public TutorialStage CurrentStage { get; private set; } = TutorialStage.NotStarted;
 
+	[Tooltip("An object capable of highlighting a certain part of the screen.")]
 	public TutorialUIHighlight highlighter;
+	[Tooltip("An object responsible for displaying different panels with text during tutorial.")]
 	public TutorialPanels panel;
+
+	[Tooltip("An Image used as a fadeout to black.")]
+	[SerializeField] GameObject fadeout;
 
 	private TutorialStageBase currentStageRepresentation;
 
@@ -43,6 +48,14 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 		// Move to the first stage
 		CurrentStage = TutorialStage.NotStarted;
 		MoveToNextStage(); // state is also saved there
+	}
+
+	public void FadeOut() {
+		fadeout.TweenAwareEnable();
+		highlighter.StopHighlighting(); // stop highlighting anything when fading out
+	}
+	public void FadeIn() {
+		fadeout.TweenAwareDisable();
 	}
 
 	// Returns an instance of class derived from TutorialStageBase corresponding to the given stage
