@@ -7,8 +7,8 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 
 	public TutorialStage CurrentStage { get; private set; } = TutorialStage.NotStarted;
 
-	//public TutorialUIHighlight highlighter;	// TODO: Initialize it so that individual tutorial stages can access it and use it
-	//public TutorialPanel panel;				// TODO: Initialize it so that individual tutorial stages can access it and use it
+	public TutorialUIHighlight highlighter;
+	public TutorialPanels panel;
 
 	private TutorialStageBase currentStageRepresentation;
 
