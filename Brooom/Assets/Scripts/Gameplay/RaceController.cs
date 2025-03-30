@@ -42,6 +42,8 @@ public class RaceController : MonoBehaviourLongInitialization {
 
     private int restartCountInTraining = 0;
 
+    private bool isTrainingSkipped = false; // whether the training is already being skipped
+
 
     // Called when entering the race
     public virtual void StartRace() {
@@ -384,9 +386,15 @@ public class RaceController : MonoBehaviourLongInitialization {
     }
 
 	protected override void UpdateAfterInitialization() {
-        // Update state
-        switch (State) {
+		// Update state
+		switch (State) {
             case RaceState.Training:
+				// Handle skipping training - remove starting zone and start race immediately
+				if (SettingsUI.skipTraining && !isTrainingSkipped) { // if not being skipped already
+                    isTrainingSkipped = true; // prevent this from triggering again
+					Destroy(FindObjectOfType<StartingZone>().transform.parent.gameObject);
+					Invoke(nameof(StartRace), 3); // after 3 s to allow information about new region to appear
+				}
                 // Handle restart
                 if (GamePause.PauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
                     playerRacer.characterController.ResetPosition(Level.playerStartPosition);

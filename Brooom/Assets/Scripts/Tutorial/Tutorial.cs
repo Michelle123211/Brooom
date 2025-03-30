@@ -147,6 +147,9 @@ public abstract class TutorialStageBase {
 		// Check if it is possible to trigger this tutorial stage
 		if (stageState == TutorialStageState.NotTriggered) {
 			if (CheckTriggerConditions()) {
+				// If tutorial is disabled in the settings, simply stop immediately (and move on to the next stage)
+				if (!SettingsUI.enableTutorial) return false;
+				// Otherwise invoke the initialization
 				stageState = TutorialStageState.Initializing;
 				Tutorial.Instance.StartCoroutine(Initialize());
 			}

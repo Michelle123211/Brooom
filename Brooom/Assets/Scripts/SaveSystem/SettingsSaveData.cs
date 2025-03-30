@@ -9,6 +9,9 @@ public class SettingsSaveData
     
     public float mouseSensitivity = 3;
 
+    public bool enableTutorial = true;
+    public bool skipTraining = false;
+
     public float masterVolume = 100;
     public float musicVolume = 100;
     public float ambienceVolume = 100;
