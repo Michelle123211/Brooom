@@ -15,6 +15,7 @@ public class GamePause : MonoBehaviour {
     private Animator animator;
 
     private bool menuVisible = false;
+    private int pauseCount = 0; // increment when paused, decrement when unpaused - allows for nested pauses (with correct unpausing)
 
 
     // The following two methods may be used to disable pause when not desirable - e.g. when loading screen is on or after a race is finished
@@ -29,31 +30,36 @@ public class GamePause : MonoBehaviour {
         if (!canBePaused) return;
         // Pause
         PauseState = GamePauseState.Pausing;
+        pauseCount++;
+        AudioManager.Instance.PauseGame(); // start pause menu audio
         // Show pause menu
         if (showMenu) {
-            AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
-            AudioManager.Instance.PauseGame(); // start pause menu audio
+            menuVisible = true;
             animator.SetBool("ShowMenu", true); // timeScale changed in animation
+            AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
+            // Enable cursor
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         } else timeScale = 0;
-        menuVisible = true;
-        // Enable cursor
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     public void ResumeGame() {
         if (!canBePaused) return;
-        // Disable cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         // Hide pause menu
         if (menuVisible) {
+            menuVisible = false;
             animator.SetBool("ShowMenu", false); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
-            AudioManager.Instance.ResumeGame(); // stop pause menu audio
+            // Disable cursor
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         } else timeScale = 1f;
-        // Resume
-        PauseState = GamePauseState.Resuming;
+        // Resume - only if there is no more nested pause
+        pauseCount--;
+        if (pauseCount == 0) {
+            PauseState = GamePauseState.Resuming;
+            AudioManager.Instance.ResumeGame(); // stop pause menu audio
+        }
     }
 
     public void ExitGame() {
@@ -64,17 +70,28 @@ public class GamePause : MonoBehaviour {
         AudioManager.Instance.ResumeGame(); // stop pause menu audio
     }
 
+	private void Awake() {
+        // Initialize all values (pause state is not kept between scenes)
+        PauseState = GamePauseState.Running;
+        Time.timeScale = 1f;
+        timeScale = 1f;
+        pauseCount = 0;
+        menuVisible = false;
+    }
+
 	private void Start() {
         animator = GetComponent<Animator>();
     }
 
 	private void Update() {
-        // Pause game if requested
+        // Pause game if requested (with pause menu)
         if (InputManager.Instance.GetBoolValue("Pause")) {
-            if (PauseState == GamePauseState.Running) {
-                PauseGame(true);
-            } else if (PauseState == GamePauseState.Paused) {
-                ResumeGame();
+            if (PauseState == GamePauseState.Running || PauseState == GamePauseState.Paused) { // not in the middle of pausing/resuming
+                if (!menuVisible) {
+                    PauseGame(true);
+                } else {
+                    ResumeGame();
+                }
             }
         }
         // Update time scale
