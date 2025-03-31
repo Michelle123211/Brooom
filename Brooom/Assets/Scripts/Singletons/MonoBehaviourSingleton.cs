@@ -23,9 +23,9 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
     private static void TrySetSingletonInstance() {
         if (_Instance != null) return;
         // Try to find it in the scene (even hidden)
-        List<T> objectsFound = Utils.FindObject<T>();
-        if (objectsFound.Count > 0) {
-            _Instance = objectsFound[0];
+        T objectFound = Utils.FindObject<T>();
+        if (objectFound != null) {
+            _Instance = objectFound;
         }
         // Call AwakeSingleton()
         if (_Instance != null) {

@@ -50,6 +50,13 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 		MoveToNextStage(); // state is also saved there
 	}
 
+	public void SkipCurrentTutorialStage() {
+		if (currentStageRepresentation != null) {
+			currentStageRepresentation.Finish();
+		}
+		MoveToNextStageAndUpdate();
+	}
+
 	public void FadeOut() {
 		fadeout.TweenAwareEnable();
 		highlighter.StopHighlighting(); // stop highlighting anything when fading out

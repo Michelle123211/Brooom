@@ -271,14 +271,14 @@ public class RaceController : MonoBehaviourLongInitialization {
 
     protected void InitializeRelatedObjects() {
         raceHUD = FindObjectOfType<RaceUI>();
-        raceResults = Utils.FindObject<RaceResultsUI>()[0];
+        raceResults = Utils.FindObject<RaceResultsUI>();
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
         statsComputer = GetComponent<StatsComputer>();
     }
 
     protected void InitializeRacers() {
         // Get references to the characters
-        List<CharacterMovementController> characters = Utils.FindObject<CharacterMovementController>();
+        List<CharacterMovementController> characters = Utils.FindObjects<CharacterMovementController>();
         racers = new List<RacerRepresentation>();
         for (int i = 0; i < characters.Count; i++) {
             RacerRepresentation racer = new RacerRepresentation {

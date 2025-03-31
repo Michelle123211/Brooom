@@ -114,12 +114,17 @@ public static class Utils
         => new Vector3(v.x, v.y, z);
 
 
-    public static List<T> FindObject<T>() where T : Component {
+    public static List<T> FindObjects<T>() where T : Component {
         List<T> result = new List<T>();
         foreach (GameObject root in SceneManager.GetActiveScene().GetRootGameObjects()) {
             AddHidden(root, result);
         }
         return result;
+    }
+    public static T FindObject<T>() where T : Component {
+        List<T> result = FindObjects<T>();
+        if (result == null || result.Count == 0) return null;
+        else return result[0];
     }
 
 

@@ -9,10 +9,20 @@ public class GamePause : MonoBehaviour {
 
     private static bool canBePaused = true;
 
+    [Tooltip("Set to true if options specific for tutorial should be displayed.")]
+    [SerializeField] bool isInTutorial = false;
+
+    [Tooltip("Objects representing menu options which should be displayed when pausing the game in race.")]
+    [SerializeField] List<GameObject> optionsInRace = new List<GameObject>();
+    [Tooltip("Objects representing menu options which should be displayed when pausing the game in tutorial.")]
+    [SerializeField] List<GameObject> optionsInTutorial = new List<GameObject>();
+
     [Tooltip("Exposed to be used from animations to gradually decrease/increase.")]
     [SerializeField] float timeScale = 0f;
 
     private Animator animator;
+
+    private ShowHidePanelUI settings;
 
     private bool menuVisible = false;
     private int pauseCount = 0; // increment when paused, decrement when unpaused - allows for nested pauses (with correct unpausing)
@@ -62,7 +72,47 @@ public class GamePause : MonoBehaviour {
         }
     }
 
-    public void ExitGame() {
+    public void OpenSettings() {
+        DisableGamePause();
+        settings.ShowPanel();
+    }
+
+    public void GiveUpRace() {
+        Exit();
+        RaceController.Instance.GiveUpRace();
+    }
+
+    public void SkipTutorial() {
+        Tutorial.Instance.SkipCurrentTutorialStage();
+    }
+
+    public void LeaveTutorial() {
+        Tutorial.Instance.SaveCurrentProgress();
+        Exit();
+        SceneLoader.Instance.LoadScene(Scene.MainMenu);
+    }
+
+    public void SetupOptionsForRace() {
+        isInTutorial = false;
+        // Disable all other options
+        foreach (var option in optionsInTutorial)
+            option.SetActive(false);
+        // Enable options for pause in race
+        foreach (var option in optionsInRace)
+            option.SetActive(true);
+    }
+
+    public void SetupOptionsForTutorial() {
+        isInTutorial = true;
+        // Disable all other options
+        foreach (var option in optionsInRace)
+            option.SetActive(false);
+        // Enable options for pause in tutorial
+        foreach (var option in optionsInTutorial)
+            option.SetActive(true);
+    }
+
+    private void Exit() {
         // Change state to running
         PauseState = GamePauseState.Running;
         Time.timeScale = 1f;
@@ -77,10 +127,14 @@ public class GamePause : MonoBehaviour {
         timeScale = 1f;
         pauseCount = 0;
         menuVisible = false;
+        // Initialize options
+        if (isInTutorial) SetupOptionsForTutorial();
+        else SetupOptionsForRace();
     }
 
 	private void Start() {
         animator = GetComponent<Animator>();
+        settings = Utils.FindObject<SettingsUI>().GetComponent<ShowHidePanelUI>();
     }
 
 	private void Update() {
