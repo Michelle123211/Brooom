@@ -24,8 +24,6 @@ public class CharacterCreatorUI : MonoBehaviour
 
     private string currentName;
 
-    private List<string> possibleNames;
-
     public void ReturnBack() {
         SceneLoader.Instance.LoadScene(Scene.MainMenu);
     }
@@ -41,7 +39,8 @@ public class CharacterCreatorUI : MonoBehaviour
         PlayerPrefs.SetString("GameStarted", "true");
         Messaging.SendMessage("GameStarted");
         // Change scene
-        SceneLoader.Instance.LoadScene(Scene.Tutorial);
+        if (SettingsUI.enableTutorial) SceneLoader.Instance.LoadScene(Scene.Tutorial);
+        else SceneLoader.Instance.LoadScene(Scene.Race); // if tutorial is disabled, go directly to race
     }
 
     public void NameChanged(string name) {
