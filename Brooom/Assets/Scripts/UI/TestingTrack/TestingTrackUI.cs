@@ -4,30 +4,19 @@ using System;
 using UnityEngine;
 using TMPro;
 
-public class TestingTrackUI : MonoBehaviour {
 
-	[Header("Basic info")]
-	[SerializeField] TextMeshProUGUI speedText;
-	[SerializeField] TextMeshProUGUI altitudeText;
+// HUD in Testing Track
+// Displaying speed, altitude, spell slots and description of currently selected spell and instructions on how to use spells
+public sealed class TestingTrackUI : SimplifiedHUD {
 
-	[Header("Spells")]
-	[SerializeField] RaceSpellsUI spellsUI; // TODO: Delete, only temporary
 	[SerializeField] TooltipPanel spellDescriptionUI;
 	[SerializeField] TooltipPanel spellInstructionsUI;
 	[Tooltip("Custom tags and their style which is used to format spell description and spell instructions texts.")]
 	[SerializeField] TooltipStyle tooltipStyle;
 
-	private CharacterMovementController playerMovementController;
 	private SpellController playerSpellController;
-
 	private TagsMapping tagsMapping;
 
-	#region Speed and altitude
-	public void UpdatePlayerState() {
-		speedText.text = Math.Round(playerMovementController.GetCurrentSpeed(), 1).ToString();
-		altitudeText.text = Math.Round(playerMovementController.GetCurrentAltitude(), 1).ToString();
-	}
-	#endregion
 
 	#region Currently selected spell description
 	private void ShowSpellDescription(int _) { // parameter is there because it is used as a callback on currently selected spell changed
@@ -94,10 +83,10 @@ public class TestingTrackUI : MonoBehaviour {
 	}
 	#endregion
 
-	private void Start() {
+	protected override void Start_Derived() {
 		// Initialize data fields
-		playerMovementController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<CharacterMovementController>("Player");
 		playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+		base.Start_Derived();
 		// Initialize spell description
 		playerSpellController.onSelectedSpellChanged += ShowSpellDescription;
 		if (tooltipStyle == null)
@@ -108,16 +97,10 @@ public class TestingTrackUI : MonoBehaviour {
 			ShowSpellDescription(playerSpellController.selectedSpell);
 			ShowSpellInstructions();
 		}
-		// Initialize and show spells UI
-		spellsUI.Initialize(playerMovementController.gameObject);
 	}
 
 	private void OnDestroy() {
 		playerSpellController.onSelectedSpellChanged -= ShowSpellDescription;
-	}
-
-	private void Update() {
-		UpdatePlayerState();
 	}
 
 }
