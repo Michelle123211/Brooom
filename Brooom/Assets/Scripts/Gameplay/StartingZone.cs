@@ -19,7 +19,7 @@ public class StartingZone : MonoBehaviour
 	private string countdownText = string.Empty;
 
 	private void OnTriggerEnter(Collider other) {
-		if (other.CompareTag("Player") && !other.isTrigger) {
+		if (other.CompareTag("Player") && !other.isTrigger) { // only actual collider, not trigger around player to detect potential spell targets
 			currentTime = durationToStart;
 			secondsLeft = int.MaxValue;
 			isCountingDown = true;
@@ -30,7 +30,7 @@ public class StartingZone : MonoBehaviour
 	}
 
 	private void OnTriggerExit(Collider other) {
-		if (other.CompareTag("Player") && !other.isTrigger) {
+		if (other.CompareTag("Player") && !other.isTrigger) { // only actual collider, not trigger around player to detect potential spell targets
 			isCountingDown = false;
 			// Hide UI
 			Utils.TweenAwareDisable(countdownLabel.gameObject);

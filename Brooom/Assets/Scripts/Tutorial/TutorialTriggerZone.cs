@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class TutorialTriggerZone : MonoBehaviour {
 
-	public event Action onTutorialTriggerEnter;
-	public event Action onTutorialTriggerExit;
+	public event Action onPlayerEntered;
+	public event Action OnPlayerExited;
 
 	private void OnTriggerEnter(Collider other) {
-		onTutorialTriggerEnter?.Invoke();
+		if (other.CompareTag("Player") && !other.isTrigger) { // only actual collider, not trigger around player to detect potential spell targets
+			onPlayerEntered?.Invoke();
+		}
 	}
 
 	private void OnTriggerExit(Collider other) {
-		onTutorialTriggerExit?.Invoke();
+		if (other.CompareTag("player") && !other.isTrigger) { // only actual collider, not trigger around player to detect potential spell targets
+			OnPlayerExited?.Invoke();
+		}
 	}
 
 }
