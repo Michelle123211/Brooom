@@ -11,6 +11,8 @@ public class TestingTrackTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.Started;
 
+	protected override string LocalizationKeyPrefix => "TestingTrack";
+
 	public override void Finish() {
 		// TODO
 	}

@@ -14,7 +14,7 @@ public class TutorialCamera : MonoBehaviour {
 	// Offset could be specified to look at a different point than the origin
 	public void MoveCameraToLookAt(Transform target, float distance, Vector3 direction, Vector3 lookAtOffset) {
 		// Initialize position and rotation of camera and enable it
-		Vector3 relativePosition = -direction * distance;
+		Vector3 relativePosition = lookAtOffset - direction * distance;
 		cutsceneCamera.SetToFollowObject(target, relativePosition, lookAtOffset);
 		cutsceneCamera.gameObject.SetActive(true);
 	}

@@ -34,13 +34,40 @@ public class TutorialPanels : MonoBehaviour {
 		escapePanel.ShowPanel(LocalizationManager.Instance.GetLocalizedString(localizationKey));
 	}
 
-	public void HideEscapePanel() { 
+	public void HideEscapePanel() {
 		escapePanel.HidePanel();
 	}
 
 	public void HideAllTutorialPanels() {
 		HideTutorialPanel();
 		escapePanel.HidePanel();
+	}
+
+	// The following methods may be used as coroutines to be able to wait until they finish
+	private bool wasClick = false;
+	public IEnumerator ShowTutorialPanelAndWaitForClick(string text, TutorialPanelAlignment alignment = TutorialPanelAlignment.Bottom) {
+		// Show panel
+		ShowTutorialPanel(text, true, alignment);
+		yield return new WaitForSeconds(0.3f);
+		// Wait for click
+		wasClick = false;
+		yield return new WaitUntil(() => wasClick);
+		// Hide panel
+		HideTutorialPanel();
+		yield return new WaitForSeconds(0.3f);
+	}
+	public IEnumerator ShowTutorialPanelAndWaitUntilVisible(string text, TutorialPanelAlignment alignment = TutorialPanelAlignment.Bottom) {
+		ShowTutorialPanel(text, false, alignment);
+		yield return new WaitForSeconds(0.3f);
+	}
+	public IEnumerator HideTutorialPanelAndWaitUntilInvisible() {
+		HideTutorialPanel();
+		yield return new WaitForSeconds(0.3f);
+	}
+
+	private void Update() {
+		// Detect clicks - necessary for ShowPanelTextAndWaitForClick()
+		if (Input.GetMouseButtonDown(0)) wasClick = true;
 	}
 
 }

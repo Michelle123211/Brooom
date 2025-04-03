@@ -13,6 +13,8 @@ public class ShopTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.Started;
 
+	protected override string LocalizationKeyPrefix => "Shop";
+
 	public override void Finish() {
 		// TODO
 	}

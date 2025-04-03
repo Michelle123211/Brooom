@@ -87,7 +87,7 @@ public class GamePause : MonoBehaviour {
     }
 
     public void LeaveTutorial() {
-        Tutorial.Instance.SaveCurrentProgress();
+        Tutorial.Instance.LeaveCurrentTutorialStage();
         Exit();
         SceneLoader.Instance.LoadScene(Scene.MainMenu);
     }

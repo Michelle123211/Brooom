@@ -25,6 +25,8 @@ public class IntroductionTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.Started;
 
+	protected override string LocalizationKeyPrefix => "Introduction";
+
 	public override void Finish() {
 		// TODO
 	}

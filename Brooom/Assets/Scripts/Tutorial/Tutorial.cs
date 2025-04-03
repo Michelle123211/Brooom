@@ -57,6 +57,12 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 		MoveToNextStage();
 	}
 
+	public void LeaveCurrentTutorialStage() {
+		SaveCurrentProgress();
+		panel.HideAllTutorialPanels();
+		highlighter.StopHighlighting();
+	}
+
 	public void FadeOut() {
 		fadeout.TweenAwareEnable();
 		highlighter.StopHighlighting(); // stop highlighting anything when fading out
@@ -93,9 +99,9 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 
 	// Updates the current stage representation to ensure tutorial is progressing
 	private void Update() {
+		// Update current tutorial stage and check if it is time to move to a next one
 		if (CurrentStage == TutorialStage.Finished) return;
 		if (currentStageRepresentation == null) return;
-		// Update current tutorial stage and check if it is time to move to a next one
 		if (!currentStageRepresentation.Update()) {
 			MoveToNextStage();
 		}
@@ -132,6 +138,8 @@ public enum TutorialStage {
 
 public abstract class TutorialStageBase {
 
+	protected abstract string LocalizationKeyPrefix { get; }
+
 	// Tutorial stage may be in one of several states - could be checked to make sure we don't trigger or initialize it twice
 	private enum TutorialStageState {
 		NotTriggered,
@@ -141,6 +149,7 @@ public abstract class TutorialStageBase {
 	}
 
 	private TutorialStageState stageState = TutorialStageState.NotTriggered;
+	private TutorialStepProgressTracker currentStepProgress = null;
 
 	// Returns true if this tutorial stage is still running, false if it should finish
 	public bool Update() {
@@ -156,6 +165,7 @@ public abstract class TutorialStageBase {
 		}
 		// If the tutorial stage is running, update it and check if it is finished
 		if (stageState == TutorialStageState.Running) {
+			if (currentStepProgress != null) currentStepProgress.UpdateProgress();
 			if (!UpdateTutorialStage()) {
 				stageState = TutorialStageState.Finished;
 				Finish();
@@ -185,5 +195,51 @@ public abstract class TutorialStageBase {
 	protected abstract IEnumerator InitializeTutorialStage();
 	// Returns true if this tutorial stage is still running, false if it should finish
 	protected abstract bool UpdateTutorialStage();
+
+	// Returns localized string stored under the key "Tutorial<LocalizationKeyPrefix>_<LocalizationKeySuffix>"
+	protected string GetLocalizedText(string localizationKeySuffix) {
+		return LocalizationManager.Instance.GetLocalizedString($"Tutorial{LocalizationKeyPrefix}_{localizationKeySuffix}");
+	}
+
+	protected IEnumerator WaitUntilStepIsFinished<T>() where T : TutorialStepProgressTracker, new() {
+		currentStepProgress = new T();
+		currentStepProgress.StartTrackingProgress();
+		yield return new WaitUntil(() => currentStepProgress.IsFinished);
+		currentStepProgress.StopTrackingProgress();		currentStepProgress = null;	}
+
+}
+
+
+// A base class for representation of a single step in a tutorial stage
+// A class derived from TutorialStageBase may use it to track progress (elapsed time, check for player events, check if it is possible to move on)
+public abstract class TutorialStepProgressTracker {
+
+	public bool IsFinished { get; private set; } = false;
+
+	private bool isRunning = false;
+	protected float elapsedTime;
+
+	public void StartTrackingProgress() {
+		IsFinished = false;
+		elapsedTime = 0;
+		InitializeStepProgress();
+		isRunning = true;
+	}
+
+	public void UpdateProgress() {
+		if (!isRunning) return;
+		elapsedTime += Time.deltaTime;
+		UpdateStepProgress();
+		IsFinished = CheckIfPossibleToMoveToNextStep();
+	}
+
+	public void StopTrackingProgress() {
+		FinishStepProgress();
+	}
+
+	protected abstract bool CheckIfPossibleToMoveToNextStep();
+	protected abstract void InitializeStepProgress(); // initialize all values, register callbacks, ...
+	protected abstract void UpdateStepProgress(); // detect events, accumulate results, ...
+	protected abstract void FinishStepProgress(); // unregister callbacks, ...
 
 }

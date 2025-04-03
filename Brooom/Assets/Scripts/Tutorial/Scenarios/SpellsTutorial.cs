@@ -25,6 +25,8 @@ public class SpellsTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.Started;
 
+	protected override string LocalizationKeyPrefix => "Spells";
+
 	private enum SpellsTutorialState { 
 		EquipSpell,
 		CastSpell // mana bonus, cast spell, recharge bonus

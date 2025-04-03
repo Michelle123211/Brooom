@@ -14,6 +14,8 @@ public class FirstRaceTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.Started;
 
+	protected override string LocalizationKeyPrefix => "FirstRace";
+
 	public override void Finish() {
 		// TODO
 		// TODO: The following is throwing exception right now because we are not checking for Race scene in trigger conditions, so this tutorial stage is invoked immediately

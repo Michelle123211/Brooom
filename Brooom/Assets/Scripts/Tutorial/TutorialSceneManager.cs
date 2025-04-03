@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TutorialSceneManager : MonoBehaviour {
 
+	// Just a simple singleton
+	[HideInInspector] public static TutorialSceneManager Instance { get; private set; }
+
 	[Header("Tutorial trigger zone")]
 	[Tooltip("Sometimes the player has to enter the zone to progress further in the tutorial.")]
 	public TutorialTriggerZone tutorialTriggerZone;
@@ -24,14 +27,29 @@ public class TutorialSceneManager : MonoBehaviour {
 	[Tooltip("Parent object containing all recharge bonus objects.")]
 	[SerializeField] GameObject rechargeBonusParent;
 
+	[Header("Player")]
+	[SerializeField] GameObject player;
+	private Vector3 initialPlayerPosition;
+	private Vector3 initialPlayerRotation;
+
 	[Header("Other")]
-	public GameObject player;
 	[Tooltip("An opponent circling around the level, used as a potential spell target.")]
 	[SerializeField] GameObject opponent;
 	[Tooltip("Virtual camera which is moved around and rotated to focus on a specific object as part of the tutorial.")]
 	public TutorialCamera cutsceneCamera;
 
 	#region Level elements manipulation
+
+	public void ResetAll() {
+		ResetPlayerPositionAndRotation();
+		HideTutorialTriggerZone();
+		HideSimpleTrack();
+		speedBonusParent.SetActive(false);
+		manaBonusParent.SetActive(false);
+		rechargeBonusParent.SetActive(false);
+		opponent.SetActive(false);
+	}
+
 	public void ShowTutorialTriggerZone() {
 		triggerZoneParent.SetActive(true);
 		borderToTriggerZone.SetActive(false);
@@ -52,6 +70,15 @@ public class TutorialSceneManager : MonoBehaviour {
 	#endregion
 
 	#region Player manipulation
+	public void ResetPlayerPositionAndRotation() {
+		player.transform.position = initialPlayerPosition;
+		player.transform.eulerAngles = initialPlayerRotation;
+	}
+
+	public void MovePlayerTo(Vector3 position) {
+		player.transform.position = position;
+	}
+
 	public void RotatePlayerTowards(Transform target) {
 		// Only rotation around Y
 		Vector3 lookDirection = target.position - player.transform.position;
@@ -60,4 +87,16 @@ public class TutorialSceneManager : MonoBehaviour {
 	}
 	#endregion
 
+	private void Awake() {
+		Instance = this;
+	}
+
+	private void Start() {
+		this.initialPlayerPosition = player.transform.position;
+		this.initialPlayerRotation = player.transform.eulerAngles;
+	}
+
+	private void OnDestroy() {
+		Instance = null;
+	}
 }

@@ -18,6 +18,8 @@ public class PlayerOverviewTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.Started;
 
+	protected override string LocalizationKeyPrefix => "PlayerOverview";
+
 	public override void Finish() {
 		// TODO
 	}

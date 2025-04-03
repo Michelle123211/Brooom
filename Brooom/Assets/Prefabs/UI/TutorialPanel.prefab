@@ -66,6 +66,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: {fileID: 3626996247922883251}
+  playSoundEffectWhenOpened: 1
+  playSoundEffectWhenClosed: 0
   alignment: 0
   clickToContinue: {fileID: 7531877403246969902}
 --- !u!114 &6671972837628274198
