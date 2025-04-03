@@ -54,7 +54,7 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 		if (currentStageRepresentation != null) {
 			currentStageRepresentation.Finish();
 		}
-		MoveToNextStageAndUpdate();
+		MoveToNextStage();
 	}
 
 	public void FadeOut() {
@@ -91,20 +91,13 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 		SaveCurrentProgress();
 	}
 
-	// Moves to the next stage (if possible) and updates it right away (so that it can be triggered as soon as possible)
-	private void MoveToNextStageAndUpdate() {
-		MoveToNextStage();
-		if (currentStageRepresentation != null)
-			currentStageRepresentation.Update();
-	}
-
 	// Updates the current stage representation to ensure tutorial is progressing
 	private void Update() {
 		if (CurrentStage == TutorialStage.Finished) return;
 		if (currentStageRepresentation == null) return;
 		// Update current tutorial stage and check if it is time to move to a next one
 		if (!currentStageRepresentation.Update()) {
-			MoveToNextStageAndUpdate(); // update it right away so that it can be triggered as soon as possible
+			MoveToNextStage();
 		}
 	}
 
