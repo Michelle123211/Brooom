@@ -67,7 +67,7 @@ public class GamePause : MonoBehaviour {
         pauseCount--;
         if (pauseCount == 0) {
             PauseState = GamePauseState.Resuming;
-            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.25f).SetUpdate(true);
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 1.2f).SetDelay(0.4f).SetUpdate(true);
         }
     }
 
