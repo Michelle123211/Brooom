@@ -59,12 +59,12 @@ public class TutorialUIHighlight : MonoBehaviour {
 		bottom.sizeDelta = bottom.sizeDelta.WithY(canvasScaler.referenceResolution.y - rect.y - rect.height);
 		// Set the highlighted area
 		highlightFade.raycastTarget = blockRaycasts; // if necessary, block raycasts also in the highlighted area
-		highlightMask.DOSizeDelta(new Vector2(rect.width, rect.height), tweenDuration);
-		highlightMask.DOAnchorPos(new Vector2(rect.x, -rect.y), tweenDuration);
+		highlightMask.DOSizeDelta(new Vector2(rect.width, rect.height), tweenDuration).SetUpdate(true);
+		highlightMask.DOAnchorPos(new Vector2(rect.x, -rect.y), tweenDuration).SetUpdate(true);
 		// If this is the first highlight (it was stopped before or did not even start), then tween fade color as well
 		if (shouldFadeOut) {
 			highlightFade.color = Color.black.WithA(0f);
-			highlightFade.DOColor(Color.black.WithA(0.95f), tweenDuration);
+			highlightFade.DOColor(Color.black.WithA(0.95f), tweenDuration).SetUpdate(true);
 			shouldFadeOut = false;
 		}
 	}
@@ -75,10 +75,10 @@ public class TutorialUIHighlight : MonoBehaviour {
 		right.sizeDelta = right.sizeDelta.WithX(0);
 		top.sizeDelta = top.sizeDelta.WithY(0);
 		bottom.sizeDelta = bottom.sizeDelta.WithY(0);
-		highlightFade.DOColor(Color.black.WithA(0f), tweenDuration);
+		highlightFade.DOColor(Color.black.WithA(0f), tweenDuration).SetUpdate(true);
 		highlightFade.raycastTarget = false;
-		highlightMask.DOSizeDelta(new Vector2(canvasScaler.referenceResolution.x, canvasScaler.referenceResolution.y), tweenDuration);
-		highlightMask.DOAnchorPos(Vector2.zero, tweenDuration);
+		highlightMask.DOSizeDelta(new Vector2(canvasScaler.referenceResolution.x, canvasScaler.referenceResolution.y), tweenDuration).SetUpdate(true);
+		highlightMask.DOAnchorPos(Vector2.zero, tweenDuration).SetUpdate(true);
 		// Note down that next time we should fade out to black again
 		shouldFadeOut = true;
 	}

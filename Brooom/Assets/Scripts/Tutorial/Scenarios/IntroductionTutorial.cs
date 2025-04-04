@@ -178,7 +178,7 @@ public class IntroductionTutorial : TutorialStageBase {
 		// Effects introduction
 		currentStep = Step.Track_Effects;
 		yield return new WaitForSecondsRealtime(1);
-		yield return Tutorial.Instance.highlighter.HighlightAndWaitUntilFinished(UtilsMonoBehaviour.FindObject<EffectsUI>().GetComponent<RectTransform>(), padding: 10);
+		Tutorial.Instance.highlighter.Highlight(UtilsMonoBehaviour.FindObject<EffectsUI>().GetComponent<RectTransform>(), padding: 10);
 		PauseGame();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Bonus respawn + pick up
