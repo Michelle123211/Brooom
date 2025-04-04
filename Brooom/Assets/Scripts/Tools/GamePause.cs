@@ -135,7 +135,7 @@ public class GamePause : MonoBehaviour {
 
 	private void Start() {
         animator = GetComponent<Animator>();
-        settings = Utils.FindObject<SettingsUI>().GetComponent<ShowHidePanelUI>();
+        settings = UtilsMonoBehaviour.FindObject<SettingsUI>().GetComponent<ShowHidePanelUI>();
     }
 
 	private void Update() {

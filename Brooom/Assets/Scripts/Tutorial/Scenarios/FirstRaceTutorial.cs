@@ -19,7 +19,7 @@ public class FirstRaceTutorial : TutorialStageBase {
 	public override void Finish() {
 		// TODO
 		// TODO: The following is throwing exception right now because we are not checking for Race scene in trigger conditions, so this tutorial stage is invoked immediately
-		Utils.FindObject<GamePause>().SetupOptionsForRace();
+		UtilsMonoBehaviour.FindObject<GamePause>().SetupOptionsForRace();
 	}
 
 	public override string GetCurrentState() {
@@ -38,7 +38,7 @@ public class FirstRaceTutorial : TutorialStageBase {
 
 	protected override IEnumerator InitializeTutorialStage() {
 		// TODO: Set initial state and prepare everything necessary
-		Utils.FindObject<GamePause>().SetupOptionsForTutorial();
+		UtilsMonoBehaviour.FindObject<GamePause>().SetupOptionsForTutorial();
 		yield break;
 	}
 

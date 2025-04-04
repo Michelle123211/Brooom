@@ -23,7 +23,7 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
     private static void TrySetSingletonInstance() {
         if (_Instance != null) return;
         // Try to find it in the scene (even hidden)
-        T objectFound = Utils.FindObject<T>();
+        T objectFound = UtilsMonoBehaviour.FindObject<T>();
         if (objectFound != null) {
             _Instance = objectFound;
         }

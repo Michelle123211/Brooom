@@ -79,6 +79,6 @@ public class MainMenuUI : MonoBehaviour
             startAgainButton.SetActive(false);
         }
         // Initialize settings values
-        Utils.FindObject<SettingsUI>().LoadSettingsValues();
+        UtilsMonoBehaviour.FindObject<SettingsUI>().LoadSettingsValues();
     }
 }
