@@ -83,6 +83,20 @@ public class TutorialUIHighlight : MonoBehaviour {
 		shouldFadeOut = true;
 	}
 
+	// The following methods may be used as coroutines to be able to wait until they finish
+	public IEnumerator HighlightAndWaitUntilFinished(RectTransform rectTransform, bool blockRaycasts = false, int padding = 0) {
+		Highlight(rectTransform, blockRaycasts, padding);
+		yield return new WaitForSecondsRealtime(tweenDuration);
+	}
+	public IEnumerator HighlightAndWaitUntilFinished(Rect rect, bool blockRaycasts = false) {
+		Highlight(rect, blockRaycasts);
+		yield return new WaitForSecondsRealtime(tweenDuration);
+	}
+	public IEnumerator StopHighlightingAndWaitUntilFinished() {
+		StopHighlighting();
+		yield return new WaitForSecondsRealtime(tweenDuration);
+	}
+
 	private void OnSceneLoaded(Scene scene) {
 		// Sometimes, after loading a scene, the fade is not visible for some reason, even though functionally it is there
 		// - Changing the sprite helped every time so hopefully this will fix it

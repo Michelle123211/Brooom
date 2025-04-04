@@ -168,6 +168,7 @@ public abstract class TutorialStageBase {
 		}
 		// If the tutorial stage is running, update it and check if it is finished
 		if (stageState == TutorialStageState.Running) {
+			HandlePauseIfNecessary();
 			if (currentStepProgress != null) currentStepProgress.UpdateProgress();
 			if (!UpdateTutorialStage()) {
 				stageState = TutorialStageState.Finished;
@@ -209,6 +210,34 @@ public abstract class TutorialStageBase {
 		currentStepProgress.StartTrackingProgress();
 		yield return new WaitUntil(() => currentStepProgress.IsFinished);
 		currentStepProgress.StopTrackingProgress();		currentStepProgress = null;	}
+
+	// Methods for pausing and resuming game
+	// - Game cannot be paused/resumed from a coroutine because of synchronization issues, but more tutorial stages may need this functionality,
+	//   so it is extracted there and all stages have access to it and don't have to handle it separately
+	private bool shouldPauseGame = false;
+	protected void PauseGame() {
+		// Note down the game should be paused and pause it during the next update
+		shouldPauseGame = true;
+	}
+	private bool shouldResumeGame = false;
+	protected void ResumeGame() {
+		// Note down the game should be resumed and resume it during the next update
+		shouldResumeGame = true;
+	}
+	private void HandlePauseIfNecessary() {
+		if (shouldPauseGame || shouldResumeGame) {
+			GamePause gamePause = UtilsMonoBehaviour.FindObject<GamePause>();
+			if (shouldPauseGame) {
+				if (gamePause != null) gamePause.PauseGame();
+				else Time.timeScale = 0;
+				shouldPauseGame = false;
+			} else if (shouldResumeGame) {
+				if (gamePause != null) gamePause.ResumeGame();
+				else Time.timeScale = 1;
+				shouldResumeGame = false;
+			}
+		}
+	}
 
 }
 

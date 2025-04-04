@@ -16,20 +16,21 @@ public class TutorialSceneManager : MonoBehaviour {
 	[SerializeField] GameObject borderToTriggerZone;
 
 	[Header("Track elements")]
-	[Tooltip("Parent object containing all objects which are part of a simple track.")]
-	[SerializeField] GameObject simpleTrackParent;
+	[Tooltip("All hoops in the level.")]
+	public List<Hoop> hoops;
+	[Tooltip("All checkpoints in the level.")]
+	public List<Hoop> checkpoints;
 
 	[Header("Bonuses")]
-	[Tooltip("Parent object containing all speed bonus objects.")]
-	[SerializeField] GameObject speedBonusParent;
-	[HideInInspector] public Transform speedBonus;
-	[Tooltip("Parent object containing all mana bonus objects.")]
-	[SerializeField] GameObject manaBonusParent;
-	[Tooltip("Parent object containing all recharge bonus objects.")]
-	[SerializeField] GameObject rechargeBonusParent;
+	[Tooltip("All speed bonuses in the level.")]
+	public List<Bonus> speedBonuses;
+	[Tooltip("All mana bonuses in the level.")]
+	public List<Bonus> manaBonuses;
+	[Tooltip("All recharge bonuses in the level.")]
+	public List<Bonus> rechargeBonuses;
 
 	[Header("Player")]
-	[SerializeField] GameObject player;
+	public GameObject player;
 	private Vector3 initialPlayerPosition;
 	private Vector3 initialPlayerRotation;
 
@@ -45,9 +46,9 @@ public class TutorialSceneManager : MonoBehaviour {
 		ResetPlayerPositionAndRotation();
 		HideTutorialTriggerZone();
 		HideSimpleTrack();
-		speedBonusParent.SetActive(false);
-		manaBonusParent.SetActive(false);
-		rechargeBonusParent.SetActive(false);
+		UtilsMonoBehaviour.SetActiveForAll(speedBonuses, false);
+		UtilsMonoBehaviour.SetActiveForAll(manaBonuses, false);
+		UtilsMonoBehaviour.SetActiveForAll(rechargeBonuses, false);
 		opponent.SetActive(false);
 	}
 
@@ -62,11 +63,13 @@ public class TutorialSceneManager : MonoBehaviour {
 	}
 
 	public void ShowSimpleTrack() {
-		simpleTrackParent.SetActive(true);
+		UtilsMonoBehaviour.SetActiveForAll(hoops, true);
+		UtilsMonoBehaviour.SetActiveForAll(checkpoints, true);
 	}
 
 	public void HideSimpleTrack() {
-		simpleTrackParent.SetActive(false);
+		UtilsMonoBehaviour.SetActiveForAll(hoops, false);
+		UtilsMonoBehaviour.SetActiveForAll(checkpoints, false);
 	}
 	#endregion
 
@@ -87,12 +90,12 @@ public class TutorialSceneManager : MonoBehaviour {
 		player.transform.eulerAngles = player.transform.eulerAngles.WithY(rotation.eulerAngles.y);
 	}
 
-	public void DisablePlayerActions(bool includingLookingAround = false) {
+	public void DisablePlayerActions(bool includingLookingAround = true) {
 		player.GetComponent<CharacterMovementController>().DisableActions(CharacterMovementController.StopMethod.ImmediateStop);
 		player.GetComponentInChildren<SpellInput>().DisableSpellCasting();
 		if (includingLookingAround) player.GetComponent<PlayerCameraController>().DisableRotation();
 	}
-	public void EnablePlayerActions(bool includingLookingAround = false) {
+	public void EnablePlayerActions(bool includingLookingAround = true) {
 		player.GetComponent<CharacterMovementController>().EnableActions();
 		player.GetComponentInChildren<SpellInput>().TryEnableSpellCasting();
 		if (includingLookingAround) player.GetComponent<PlayerCameraController>().EnableRotation();
@@ -113,7 +116,6 @@ public class TutorialSceneManager : MonoBehaviour {
 	private void Start() {
 		this.initialPlayerPosition = player.transform.position;
 		this.initialPlayerRotation = player.transform.eulerAngles;
-		this.speedBonus = speedBonusParent.GetComponentInChildren<Bonus>().transform;
 	}
 
 	private void OnDestroy() {

@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
 public class Hoop : MonoBehaviour {
+
+    // An option to register callback on hoop passed (it is used e.g. in a tutorial)
+    public event Action<int> onHoopPassed;
+
     [Tooltip("Object representing an arrow above the hoop.")]
     [SerializeField] GameObject highlightArrow;
     [Tooltip("Sprite Renderer representing a minimap icon of the hoop.")]
@@ -55,6 +60,7 @@ public class Hoop : MonoBehaviour {
         // If there are 2 triggers active simultaneously, the racer has passed through the hoop
         if (activeTriggersCount.GetValueOrDefault(instanceID) == 2) {
             rootObject.GetComponent<CharacterRaceState>()?.OnHoopPassed(index); // root object has CharacterRaceState component
+            onHoopPassed?.Invoke(index);
         }
     }
 

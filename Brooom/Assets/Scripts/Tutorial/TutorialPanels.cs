@@ -48,26 +48,29 @@ public class TutorialPanels : MonoBehaviour {
 	public IEnumerator ShowTutorialPanelAndWaitForClick(string text, TutorialPanelAlignment alignment = TutorialPanelAlignment.Bottom) {
 		// Show panel
 		ShowTutorialPanel(text, true, alignment);
-		yield return new WaitForSeconds(0.3f);
+		yield return new WaitForSecondsRealtime(0.3f);
 		// Wait for click
 		wasClick = false;
 		yield return new WaitUntil(() => wasClick);
 		// Hide panel
 		HideTutorialPanel();
-		yield return new WaitForSeconds(0.3f);
+		yield return new WaitForSecondsRealtime(0.3f);
 	}
 	public IEnumerator ShowTutorialPanelAndWaitUntilVisible(string text, TutorialPanelAlignment alignment = TutorialPanelAlignment.Bottom) {
 		ShowTutorialPanel(text, false, alignment);
-		yield return new WaitForSeconds(0.3f);
+		yield return new WaitForSecondsRealtime(0.3f);
 	}
 	public IEnumerator HideTutorialPanelAndWaitUntilInvisible() {
 		HideTutorialPanel();
-		yield return new WaitForSeconds(0.3f);
+		yield return new WaitForSecondsRealtime(0.3f);
 	}
 
 	private void Update() {
 		// Detect clicks - necessary for ShowPanelTextAndWaitForClick()
-		if (GamePause.PauseState == GamePauseState.Running && Input.GetMouseButtonDown(0)) wasClick = true; // only if game is running
+		if (Input.GetMouseButtonDown(0) && (!GamePause.isPauseMenuVisible || GamePause.PauseState == GamePauseState.Running)) {
+			// Only if game is running or pause menu is not visible
+			wasClick = true;
+		}
 	}
 
 }

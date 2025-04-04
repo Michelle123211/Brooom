@@ -6,6 +6,7 @@ using DG.Tweening;
 public class GamePause : MonoBehaviour {
 
     public static GamePauseState PauseState { get; private set; } = GamePauseState.Running;
+    public static bool isPauseMenuVisible = false;
 
     private static bool canBePaused = true;
 
@@ -24,7 +25,6 @@ public class GamePause : MonoBehaviour {
 
     private ShowHidePanelUI settings;
 
-    private bool menuVisible = false;
     private int pauseCount = 0; // increment when paused, decrement when unpaused - allows for nested pauses (with correct unpausing)
 
 
@@ -44,7 +44,7 @@ public class GamePause : MonoBehaviour {
         AudioManager.Instance.PauseGame(); // start pause menu audio
         // Show pause menu
         if (showMenu) {
-            menuVisible = true;
+            isPauseMenuVisible = true;
             animator.SetBool("ShowMenu", true); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
             // Enable cursor
@@ -56,8 +56,8 @@ public class GamePause : MonoBehaviour {
     public void ResumeGame() {
         if (!canBePaused) return;
         // Hide pause menu
-        if (menuVisible) {
-            menuVisible = false;
+        if (isPauseMenuVisible) {
+            isPauseMenuVisible = false;
             animator.SetBool("ShowMenu", false); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
             // Disable cursor
@@ -116,6 +116,7 @@ public class GamePause : MonoBehaviour {
     private void Exit() {
         // Change state to running
         PauseState = GamePauseState.Running;
+        isPauseMenuVisible = false;
         Time.timeScale = 1f;
         AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
         AudioManager.Instance.ResumeGame(); // stop pause menu audio
@@ -127,7 +128,7 @@ public class GamePause : MonoBehaviour {
         Time.timeScale = 1f;
         timeScale = 1f;
         pauseCount = 0;
-        menuVisible = false;
+        isPauseMenuVisible = false;
         // Initialize options
         if (isInTutorial) SetupOptionsForTutorial();
         else SetupOptionsForRace();
@@ -142,7 +143,7 @@ public class GamePause : MonoBehaviour {
         // Pause game if requested (with pause menu)
         if (InputManager.Instance.GetBoolValue("Pause")) {
             if (PauseState == GamePauseState.Running || PauseState == GamePauseState.Paused) { // not in the middle of pausing/resuming
-                if (!menuVisible) {
+                if (!isPauseMenuVisible) {
                     PauseGame(true);
                 } else {
                     ResumeGame();
