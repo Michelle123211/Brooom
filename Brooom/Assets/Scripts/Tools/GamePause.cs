@@ -18,9 +18,6 @@ public class GamePause : MonoBehaviour {
     [Tooltip("Objects representing menu options which should be displayed when pausing the game in tutorial.")]
     [SerializeField] List<GameObject> optionsInTutorial = new List<GameObject>();
 
-    [Tooltip("Exposed to be used from animations to gradually decrease/increase.")]
-    [SerializeField] float timeScale = 0f;
-
     private Animator animator;
 
     private ShowHidePanelUI settings;
@@ -50,7 +47,8 @@ public class GamePause : MonoBehaviour {
             // Enable cursor
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-        } else timeScale = 0;
+        }
+        DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.25f).SetUpdate(true);
     }
 
     public void ResumeGame() {
@@ -64,11 +62,12 @@ public class GamePause : MonoBehaviour {
             // Disable cursor
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-        } else timeScale = 1f;
+        }
         // Resume - only if there is no more nested pause
         pauseCount--;
         if (pauseCount == 0) {
             PauseState = GamePauseState.Resuming;
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.25f).SetUpdate(true);
         }
     }
 
@@ -126,7 +125,6 @@ public class GamePause : MonoBehaviour {
         // Initialize all values (pause state is not kept between scenes)
         PauseState = GamePauseState.Running;
         Time.timeScale = 1f;
-        timeScale = 1f;
         pauseCount = 0;
         isPauseMenuVisible = false;
         // Initialize options
@@ -140,6 +138,12 @@ public class GamePause : MonoBehaviour {
     }
 
 	private void Update() {
+        if (InputManager.Instance.GetBoolValue("Restart")) {
+            if (PauseState == GamePauseState.Running || PauseState == GamePauseState.Paused) { // not in the middle of pausing/resuming
+                if (PauseState == GamePauseState.Running) PauseGame();
+                else ResumeGame();
+            }
+        }
         // Pause game if requested (with pause menu)
         if (InputManager.Instance.GetBoolValue("Pause")) {
             if (PauseState == GamePauseState.Running || PauseState == GamePauseState.Paused) { // not in the middle of pausing/resuming
@@ -150,14 +154,10 @@ public class GamePause : MonoBehaviour {
                 }
             }
         }
-        // Update time scale
-        if (PauseState == GamePauseState.Pausing || PauseState == GamePauseState.Resuming) {
-            Time.timeScale = timeScale;
-        }
         // Update state
-        if (PauseState == GamePauseState.Pausing && timeScale == 0)
+        if (PauseState == GamePauseState.Pausing && Time.timeScale == 0)
             PauseState = GamePauseState.Paused;
-        if (PauseState == GamePauseState.Resuming && timeScale == 1)
+        if (PauseState == GamePauseState.Resuming && Time.timeScale == 1)
             PauseState = GamePauseState.Running;
     }
 }
