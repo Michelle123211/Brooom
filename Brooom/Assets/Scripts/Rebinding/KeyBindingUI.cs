@@ -112,23 +112,7 @@ public class KeyBindingUI : MonoBehaviour {
 
     public string GetBindingText(int bindingIndex) {
         string bindingText = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
-
-        // Handle special cases (to display better human readable text)
-        if (deviceLayoutName == "Mouse" && bindingText == "Delta") {
-            bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscMouse");
-        }
-        if (deviceLayoutName == "Mouse" && bindingText == "LMB") {
-            bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscLMB");
-        }
-        if (bindingText == "Scroll Up/Scroll Down") {
-            bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscScroll");
-        }
-        if (bindingText.Contains("Space")) {
-            string localizedSpace = LocalizationManager.Instance.GetLocalizedString("RebindingMiscSpace");
-            bindingText = bindingText.Replace("Space", localizedSpace);
-        }
-
-        return bindingText;
+        return InputManager.Instance.PrettifyBindingText(bindingText, deviceLayoutName);
     }
 
     private void PerformSingleRebinding(int bindingIndex, bool allCompositeParts = false) {

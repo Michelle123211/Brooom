@@ -67,7 +67,7 @@ public class TutorialPanels : MonoBehaviour {
 
 	private void Update() {
 		// Detect clicks - necessary for ShowPanelTextAndWaitForClick()
-		if (Input.GetMouseButtonDown(0)) wasClick = true;
+		if (GamePause.PauseState == GamePauseState.Running && Input.GetMouseButtonDown(0)) wasClick = true; // only if game is running
 	}
 
 }

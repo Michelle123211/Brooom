@@ -120,6 +120,11 @@
     "Czech": "Levé tlačítko myši"
   },
   {
+    "Key": "RebindingMiscRMB",
+    "English": "Right Mouse Button",
+    "Czech": "Pravé tlačítko myši"
+  },
+  {
     "Key": "RebindingMiscSpace",
     "English": "Space",
     "Czech": "Mezerník"
@@ -1108,5 +1113,78 @@
     "Key": "SpellNubesMalignaTarget",
     "English": "Position/direction",
     "Czech": "Pozice/směr"
+  },
+  {},
+  {},
+  {},
+  {
+    "Key": "TutorialIntroduction_Intro",
+    "English": "So you want to become the best broom racer there ever was?\nHm, let's see if you have what it takes.",
+    "Czech": "Tak ty by ses chtěl stát nejlepším závodníkem na koštěti na celém světě?\nNo, tak se podívejme, jestli na to máš."
+  },
+  {
+    "Key": "TutorialIntroduction_Movement_Basics",
+    "English": "Let's try some basic movement first.\n   - <b>{0}</b> to fly <b>forward</b>\n   - <b>{1}</b> to <b>brake</b>\n   - <b>{2}/{3}</b> to <b>turn</b> left/right\nGive it a try.",
+    "Czech": "Nejprve vyzkoušíme základní pohyb.\n   - <b>{0}</b> pro let <b>dopředu</b>\n   - <b>{1}</b> pro <b>zabrždění</b>\n   - <b>{2}/{3}</b> pro <b>zatáčení</b> doleva/doprava\nZkus si to."
+  },
+  {
+    "Key": "TutorialIntroduction_Movement_UpAndDown",
+    "English": "All right, not bad! Let's make it a bit harder.\n   - <b>{0}</b> to fly <b>up</b>\n   - <b>{1}</b> to fly <b>down</b>",
+    "Czech": "Vida, to nebylo špatné. Zkusme trochu přitvrdit.\n   - <b>{0}</b> pro let <b>nahoru</b>\n   - <b>{1}</b> pro let <b>dolů</b>"
+  },
+  {
+    "Key": "TutorialIntroduction_Movement_LookingAround",
+    "English": "You also need to be aware of your surroundings.\nUse <b>mouse</b> to <b>look around</b> and <b>{0}</b> to <b>look back</b>.\nAnd if you feel disoriented, you can always use <b>{1}</b> to <b>reset view</b> forward.",
+    "Czech": "Musíš také vnímat své okolí.\nPoužij <b>myš</b> pro <b>rozhlížení se</b> kolem a <b>{0}</b> pro <b>pohled dozadu</b>.\nA pokud jsi dezorientovaný, můžeš kdykoliv použít <b>{1}</b> pro <b>reset pohledu</b> dopředu."
+  },
+  {
+    "Key": "TutorialIntroduction_Movement_Zone",
+    "English": "This is all there is to know about how to control your broom.\nFeel free to practise as much as you want.\nWhen you're ready, enter this zone.",
+    "Czech": "To by mělo být vše ohledně toho, jak ovládat koště.\nMůžeš si to teď libovolně procvičovat.\nAž budeš připravený, vleť do této zóny."
+  },
+  {
+    "Key": "TutorialIntroduction_Movement_FreeMovement",
+    "English": "<b>{0}</b> to fly forward, <b>{1}</b> to brake, <b>{2}/{3}</b> to turn left/right\n<b>{4}/{5}</b> to fly up/down\n<b>Mouse</b> to look around\n<b>{6}</b> to look back\n<b>{7}</b> to reset view",
+    "Czech": "<b>{0}</b> pro let dopředu, <b>{1}</b> pro zabrždění, <b>{2}/{3}</b> pro zatočení doleva/doprava\n<b>{4}/{5}</b> pro let nahoru/dolů\n<b>Myš</b> pro rozhlížení se\n<b>{6}</b> pro pohled dozadu\n<b>{7}</b> pro reset pohledu"
+  },
+  {
+    "Key": "TutorialIntroduction_Track_Hoop",
+    "English": "This is a <b>hoop</b>.\nHoops are places along a track, defining its shape.\nYou should fly through them, otherwise there is <b>time penalization</b> for every hoop missed.",
+    "Czech": "Toto je <b>obruč</b>.\nObruče jsou umístěné podél trati a udávají tak její tvar.\nMěl bys skrz ně prolétávat, jinak dostaneš <b>časovou penalizaci</b> za každou minutou obruč."
+  },
+  {
+    "Key": "TutorialIntroduction_Track_Checkpoint",
+    "English": "And this is a <b>checkpoint</b>.\nAs opposed to hoops, you <b>have to</b> fly through them.\nIf you miss, you have to go back to it.",
+    "Czech": "A toto je <b>kontrolní bod</b>.\nOproti obruči jím <b>musíš</b> proletět.\nPokud hi mineš, musíš se k němu vrátit zpět."
+  },
+  {
+    "Key": "TutorialIntroduction_Track_Practice",
+    "English": "There are three hoops and a checkpoint now.\nTry to fly through each of them.",
+    "Czech": "Teď jsou tu tři obruče a jeden kontrolní bod.\nZkus jimi všemi proletět."
+  },
+  {
+    "Key": "TutorialIntroduction_Track_Bonus",
+    "English": "Hoops and checkpoints are important, but there are also <b>bonuses</b> along the track.\nDifferent colors have <b>different effects</b>.",
+    "Czech": "Obruče a kontrolní body jsou důležité, ale podél trati jsou také <b>bonusy</b>.\nRůzné barvy mají <b>různé účinky</b>."
+  },
+  {
+    "Key": "TutorialIntroduction_Track_BonusPickUp",
+    "English": "Try to pick this <b>green</b> bonus up to see what it does.",
+    "Czech": "Zkus sebrat tento <b>zelený</b> bonus, ať zjistíš, co dělá."
+  },
+  {
+    "Key": "TutorialIntroduction_Track_Effects",
+    "English": "This bonus <b>speeds you up</b> for a limited time.\nYou can see it affecting you in the top-right corner.",
+    "Czech": "Tento bonus tě <b>zrychluje</b> po omezenou dobu.\nVpravo nahoře můžeš vidět, že na tebe působí."
+  },
+  {
+    "Key": "TutorialIntroduction_Track_BonusRespawn",
+    "English": "When you pick a bonus up, it will <b>spawn again</b> at the same place after a while.\nWait for the bonus to respawn and pick it up once more.",
+    "Czech": "Když bonus sebereš, po určité době se <b>objeví znovu</b> na tom samém místě.\nPočkej, dokud se bonus neobjeví a ještě jednou ho seber."
+  },
+  {
+    "Key": "TutorialIntroduction_Track_Zone",
+    "English": "This should be everything you need to know before heading into your first race.\nPractise as much as you want and when you're ready, enter this zone.",
+    "Czech": "To by mělo být vše, co bys měl vědět, než se pustíš do svého prvního závodu.\nProcvičuj si vše, jak je libo, a až budeš připraven, vleť do této zóny."
   }
 ]

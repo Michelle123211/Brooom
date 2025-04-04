@@ -50,6 +50,8 @@ public class PlayerCameraController : MonoBehaviour {
 
     private bool isResetting = false;
 
+    private bool rotationEnabled = true;
+
     // Resets rotations of all cameras available
     public void ResetCameras(bool rotationOnly = false) {
         // Reset rotation
@@ -91,6 +93,14 @@ public class PlayerCameraController : MonoBehaviour {
         foreach (var camera in virtualCameras)
             ShakeCamera(camera, duration, intensity);
         ShakeCamera(backVirtualCamera, duration, intensity);
+    }
+
+    public void EnableRotation() {
+        rotationEnabled = true;
+    }
+    public void DisableRotation() {
+        rotationEnabled = false;
+        TweenToResetView();
     }
 
     private void ShakeCamera(CinemachineVirtualCamera camera, float duration, float intensity) {
@@ -178,6 +188,9 @@ public class PlayerCameraController : MonoBehaviour {
             currentT = Mathf.Clamp(currentT + Time.deltaTime / sensitivityEaseInDuration, 0, 1);
             currentSensitivity = currentT * currentT * currentT * currentT * SettingsUI.mouseSensitivity; // EaseInQuart
         }
+
+        // Don't continue if camera rotation is disabled
+        if (!rotationEnabled) return;
 
         // Mouse inputs are already framerate independent - multiplying with Time.deltaTime would make it framerate dependent
         float mouseX = Input.GetAxis("Mouse X") * currentSensitivity * Time.timeScale; // multiplied by Time.timeScale to support game pause

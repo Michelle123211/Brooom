@@ -83,6 +83,7 @@ public class GamePause : MonoBehaviour {
     }
 
     public void SkipTutorial() {
+        Exit();
         Tutorial.Instance.SkipCurrentTutorialStage();
     }
 

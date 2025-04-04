@@ -92,6 +92,41 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, ISingleton
 		return playerInput;
 	}
 
+	public string GetBindingTextForAction(string actionName) {
+		if (playerInput == null) return string.Empty;
+		InputAction action = playerInput.actions.FindAction(actionName);
+		// Get binding index
+		int bindingIndex = 0;
+		for (int i = 0; i < action.bindings.Count; i++) {
+			if (action.bindings[i].isComposite) // composite binding has higher priority
+				bindingIndex = i;
+		}
+		// Get binding text
+		string bindingText = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
+		return PrettifyBindingText(bindingText, deviceLayoutName);
+	}
+
+	public string PrettifyBindingText(string bindingText, string deviceLayoutName) {
+		// Handle special cases (to return better human readable text)
+		if (deviceLayoutName == "Mouse" && bindingText == "Delta") {
+			bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscMouse");
+		}
+		if (deviceLayoutName == "Mouse" && bindingText == "LMB") {
+			bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscLMB");
+		}
+		if (deviceLayoutName == "Mouse" && bindingText == "RMB") {
+			bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscRMB");
+		}
+		if (bindingText == "Scroll Up/Scroll Down") {
+			bindingText = LocalizationManager.Instance.GetLocalizedString("RebindingMiscScroll");
+		}
+		if (bindingText.Contains("Space")) {
+			string localizedSpace = LocalizationManager.Instance.GetLocalizedString("RebindingMiscSpace");
+			bindingText = bindingText.Replace("Space", localizedSpace);
+		}
+		return bindingText;
+	}
+
 	private void Update() {
 		UpdateInputs();
 	}

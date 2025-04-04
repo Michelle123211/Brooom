@@ -22,6 +22,7 @@ public class TutorialSceneManager : MonoBehaviour {
 	[Header("Bonuses")]
 	[Tooltip("Parent object containing all speed bonus objects.")]
 	[SerializeField] GameObject speedBonusParent;
+	[HideInInspector] public Transform speedBonus;
 	[Tooltip("Parent object containing all mana bonus objects.")]
 	[SerializeField] GameObject manaBonusParent;
 	[Tooltip("Parent object containing all recharge bonus objects.")]
@@ -65,7 +66,7 @@ public class TutorialSceneManager : MonoBehaviour {
 	}
 
 	public void HideSimpleTrack() {
-		simpleTrackParent.SetActive(true);
+		simpleTrackParent.SetActive(false);
 	}
 	#endregion
 
@@ -85,6 +86,24 @@ public class TutorialSceneManager : MonoBehaviour {
 		Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, lookDirection);
 		player.transform.eulerAngles = player.transform.eulerAngles.WithY(rotation.eulerAngles.y);
 	}
+
+	public void DisablePlayerActions(bool includingLookingAround = false) {
+		player.GetComponent<CharacterMovementController>().DisableActions(CharacterMovementController.StopMethod.ImmediateStop);
+		player.GetComponentInChildren<SpellInput>().DisableSpellCasting();
+		if (includingLookingAround) player.GetComponent<PlayerCameraController>().DisableRotation();
+	}
+	public void EnablePlayerActions(bool includingLookingAround = false) {
+		player.GetComponent<CharacterMovementController>().EnableActions();
+		player.GetComponentInChildren<SpellInput>().TryEnableSpellCasting();
+		if (includingLookingAround) player.GetComponent<PlayerCameraController>().EnableRotation();
+	}
+
+	public void DisableLookingAround() {
+		player.GetComponent<PlayerCameraController>().DisableRotation();
+	}
+	public void EnableLookingAround() {
+		player.GetComponent<PlayerCameraController>().EnableRotation();
+	}
 	#endregion
 
 	private void Awake() {
@@ -94,6 +113,7 @@ public class TutorialSceneManager : MonoBehaviour {
 	private void Start() {
 		this.initialPlayerPosition = player.transform.position;
 		this.initialPlayerRotation = player.transform.eulerAngles;
+		this.speedBonus = speedBonusParent.GetComponentInChildren<Bonus>().transform;
 	}
 
 	private void OnDestroy() {

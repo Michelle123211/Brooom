@@ -51,6 +51,7 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 	}
 
 	public void SkipCurrentTutorialStage() {
+		LeaveCurrentTutorialStage(); // to reset all panels, highlights, fadeouts
 		if (currentStageRepresentation != null) {
 			currentStageRepresentation.Finish();
 		}
@@ -58,7 +59,9 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 	}
 
 	public void LeaveCurrentTutorialStage() {
+		StopAllCoroutines();
 		SaveCurrentProgress();
+		FadeIn();
 		panel.HideAllTutorialPanels();
 		highlighter.StopHighlighting();
 	}
