@@ -41,10 +41,10 @@ public class GamePause : MonoBehaviour {
         // Pause
         PauseState = GamePauseState.Pausing;
         pauseCount++;
-        AudioManager.Instance.PauseGame(); // start pause menu audio
         // Show pause menu
         if (showMenu) {
             isPauseMenuVisible = true;
+            AudioManager.Instance.PauseGame(); // start pause menu audio
             animator.SetBool("ShowMenu", true); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
             // Enable cursor
@@ -58,6 +58,7 @@ public class GamePause : MonoBehaviour {
         // Hide pause menu
         if (isPauseMenuVisible) {
             isPauseMenuVisible = false;
+            AudioManager.Instance.ResumeGame(); // stop pause menu audio
             animator.SetBool("ShowMenu", false); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
             // Disable cursor
@@ -68,7 +69,6 @@ public class GamePause : MonoBehaviour {
         pauseCount--;
         if (pauseCount == 0) {
             PauseState = GamePauseState.Resuming;
-            AudioManager.Instance.ResumeGame(); // stop pause menu audio
         }
     }
 
