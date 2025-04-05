@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class GamePause : MonoBehaviour {
 
@@ -64,7 +65,7 @@ public class GamePause : MonoBehaviour {
             Cursor.visible = false;
         }
         // Resume - only if there is no more nested pause
-        pauseCount--;
+        pauseCount = Math.Max(0, pauseCount - 1); // don't go below zero (allows for game being resumed speculatively, e.g. when skipping tutorial)
         if (pauseCount == 0) {
             PauseState = GamePauseState.Resuming;
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 1.2f).SetDelay(0.4f).SetUpdate(true);
@@ -82,7 +83,7 @@ public class GamePause : MonoBehaviour {
     }
 
     public void SkipTutorial() {
-        Exit();
+        ResumeGame();
         Tutorial.Instance.SkipCurrentTutorialStage();
     }
 

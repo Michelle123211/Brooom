@@ -22,14 +22,14 @@ public class FirstRaceTutorial : TutorialStageBase {
 
 	public override void Finish() {
 		// We should stay in the Race scene, so we need to reset everything
-		UtilsMonoBehaviour.FindObject<GamePause>().SetupOptionsForRace();
+		GamePause gamePause = UtilsMonoBehaviour.FindObject<GamePause>();
+		gamePause.SetupOptionsForRace();
+		gamePause.ResumeGame(); // calling directly and not through ResumeGame() because that would postpone it to update which will no longer happen
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		Tutorial.Instance.skipTrainingPanel.TweenAwareDisable();
 		if (currentStep != Step.Finished) // tutorial was skipped
 			TutorialBasicManager.Instance.EnablePlayerActions();
 		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
-		if (GamePause.PauseState == GamePauseState.Paused && !GamePause.isPauseMenuVisible)
-			ResumeGame();
 	}
 
 	public override string GetCurrentState() {

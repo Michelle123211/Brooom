@@ -42,4 +42,12 @@ public abstract class TooltipBase : MonoBehaviour, IPointerEnterHandler, IPointe
 			}
 		}
 	}
+
+	private void OnDestroy() {
+		if (pointerHasEntered) TooltipController.Instance.HideTooltip();
+	}
+
+	private void OnDisable() {
+		if (pointerHasEntered) TooltipController.Instance.HideTooltip();
+	}
 }
