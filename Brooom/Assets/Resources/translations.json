@@ -466,8 +466,8 @@
   },
   {
     "Key": "PlayerStatTooltipMagic",
-    "English": "The ~~Magic~~ denotes how effectively you **cast spells** and **collect mana**.",
-    "Czech": "~~Magie~~ zachycuje, jak efektivně **sesíláš kouzla** a **sbíráš manu**."
+    "English": "The ~~Magic~~ denotes how broad is your **knowledge of magic**, how effectively you **cast spells** and **collect mana**.",
+    "Czech": "~~Magie~~ zachycuje, jak rozsáhlou máš **znalost magie**, jak efektivně **sesíláš kouzla** a **sbíráš manu**."
   },
   {
     "Key": "ShopLabelTitle",
@@ -1217,5 +1217,46 @@
     "Key": "TutorialFirstRace_SkipTraining_Settings",
     "English": "(You can change this in <b>Settings</b> anytime.)",
     "Czech": "(Toto můžeš kdykoliv změnit v <b>nastavení</b>.)"
+  },
+  {},
+  {
+    "Key": "TutorialPlayerOverview_Coins",
+    "English": "For a good place in race, you get some <b>coins</b>.\nYou can then spend these in a <b>shop</b>.",
+    "Czech": "Za dobré umístění v závodě získáváš <b>mince</b>.\nTy pak můžeš utratit v <b>obchodě</b>."
+  },
+  {
+    "Key": "TutorialPlayerOverview_Leaderboard",
+    "English": "All racers are <b>ranked worldwide</b> based on their performance in races.",
+    "Czech": "Závodníci z celého světa jsou uspořádáni v <b>globálním žebříčku</b> na základě ohodnocení v závodech."
+  },
+  {
+    "Key": "TutorialPlayerOverview_Stats",
+    "English": "Performance is evaluated in <b>five different categories</b>.\nThen a weighted average is computed.\nIn the <b>graph</b>, ou can see you current values.",
+    "Czech": "Ohodnocení probíhá v <b>pěti různých kategoriích</b>.\nNásledně se spočítá vážený průměr.\nV <b>grafu</b> můžeš vidět své aktuální hodnoty."
+  },
+  {
+    "Key": "TutorialPlayerOverview_Endurance",
+    "English": "The <b>{0}</b> denotes how <b>long tracks</b> you are able to finish.",
+    "Czech": "<b>{0}</b> zachycuje, jak <b>dlouhé trati</b> dokážeš dokončit."
+  },
+  {
+    "Key": "TutorialPlayerOverview_Speed",
+    "English": "The <b>{0}</b> denotes how well you can utilize the <b>maximum speed</b> throughout the race.",
+    "Czech": "<b>{0}</b> zachycuje, jak dobře dokážeš využít <b>maximální rychlost</b>."
+  },
+  {
+    "Key": "TutorialPlayerOverview_Dexterity",
+    "English": "The <b>{0}</b> denotes how well you can handle sudden <b>change of direction</b>.",
+    "Czech": "<b>{0}</b> zachycuje, jak dobře dokážeš zvládat náhlé <b>změny směru</b>."
+  },
+  {
+    "Key": "TutorialPlayerOverview_Precision",
+    "English": "The <b>{0}</b> denotes how well you fly through the <b>hoops</b>, collect <b>bonuses</b> and avoid <b>obstacles</b>.",
+    "Czech": "<b>{0}</b> zachycuje, jak dobře prolétáváš <b>obručemi</b>, sbíráš <b>bonusy</b> a vyhýbáš se <b>překážkám</b>."
+  },
+  {
+    "Key": "TutorialPlayerOverview_Magic",
+    "English": "The <b>{0}</b> denotes how broad is your <b>knowledge of magic</b>, how effectively you <b>cast spells</b> and <b>collect mana</b>.",
+    "Czech": "<b>{0}</b> zachycuje, jak rozsáhlou máš <b>znalost magie</b>, jak efektivně <b>sesíláš kouzla</b> a <b>sbíráš manu</b>."
   }
 ]
