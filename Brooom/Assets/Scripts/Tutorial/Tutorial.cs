@@ -84,7 +84,8 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 			TutorialStage.FirstRace => new FirstRaceTutorial(),
 			TutorialStage.PlayerOverview => new PlayerOverviewTutorial(),
 			TutorialStage.Shop => new ShopTutorial(),
-			TutorialStage.Spells => new SpellsTutorial(),
+			TutorialStage.EquipSpells => new EquipSpellsTutorial(),
+			TutorialStage.CastSpells => new CastSpellsTutorial(),
 			TutorialStage.TestingTrack => new TestingTrackTutorial(),
 			_ => null
 		};
@@ -137,8 +138,9 @@ public enum TutorialStage {
 	FirstRace = 20, // training, reset position, starting zone
 	PlayerOverview = 30, // leaderboard, stats
 	Shop = 40, // button to go there, spells, broom upgrades
-	Spells = 50, // equip spell, mana, mana bonus, spell target and aiming, spell cast, recharge bonus
-	TestingTrack = 60,
+	EquipSpells = 50, // equip spell
+	CastSpells = 60, // mana, mana bonus, spell target and aiming, spell cast, recharge bonus
+	TestingTrack = 70,
 	Finished = 99
 }
 
