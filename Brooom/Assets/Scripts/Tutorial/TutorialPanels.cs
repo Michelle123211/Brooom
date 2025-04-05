@@ -12,6 +12,8 @@ public class TutorialPanels : MonoBehaviour {
 	[Tooltip("Panel in the top-left corner displaying information")]
 	[SerializeField] SimpleTutorialPanel escapePanel;
 
+	private bool canBeSkipped = false; // if ESC should skip current tutorial immediately (without pause menu)
+
 	public void ShowTutorialPanel(string text, bool showClickToContinue = false, TutorialPanelAlignment alignment = TutorialPanelAlignment.Bottom) {
 		foreach (var panel in panels) {
 			// Show only the panel corresponding to the selected alignment, hide all the others
@@ -30,11 +32,13 @@ public class TutorialPanels : MonoBehaviour {
 	}
 
 	public void ShowEscapePanel(bool withPause = true) {
+		canBeSkipped = !withPause; // if there is no pause menu, then ESC skips tutorial directly
 		string localizationKey = withPause ? "TutorialLabelEscapeToPause" : "TutorialLabelEscapeToSkip";
 		escapePanel.ShowPanel(LocalizationManager.Instance.GetLocalizedString(localizationKey));
 	}
 
 	public void HideEscapePanel() {
+		canBeSkipped = false;
 		escapePanel.HidePanel();
 	}
 
@@ -70,6 +74,10 @@ public class TutorialPanels : MonoBehaviour {
 		if (Input.GetMouseButtonDown(0) && (!GamePause.isPauseMenuVisible || GamePause.PauseState == GamePauseState.Running)) {
 			// Only if game is running or pause menu is not visible
 			wasClick = true;
+		}
+		// Handle ESC for skipping tutorial
+		if (InputManager.Instance.GetBoolValue("Pause") && canBeSkipped) {
+			Tutorial.Instance.SkipCurrentTutorialStage();
 		}
 	}
 
