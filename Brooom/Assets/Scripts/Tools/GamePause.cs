@@ -136,12 +136,6 @@ public class GamePause : MonoBehaviour {
     }
 
 	private void Update() {
-        if (InputManager.Instance.GetBoolValue("Restart")) {
-            if (PauseState == GamePauseState.Running || PauseState == GamePauseState.Paused) { // not in the middle of pausing/resuming
-                if (PauseState == GamePauseState.Running) PauseGame();
-                else ResumeGame();
-            }
-        }
         // Pause game if requested (with pause menu)
         if (InputManager.Instance.GetBoolValue("Pause")) {
             if (PauseState == GamePauseState.Running || PauseState == GamePauseState.Paused) { // not in the middle of pausing/resuming
