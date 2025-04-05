@@ -16,8 +16,6 @@ public class ShopTutorial : TutorialStageBase {
 
 	protected override string LocalizationKeyPrefix => "Shop";
 
-	private TutorialPlayerOverviewReferences objectReferences;
-
 	private int cheapestItemPrice = int.MaxValue; // store price of the cheapest item (to be able to determine if the player has enough coins to buy something)
 
 	public override void Finish() {
@@ -41,7 +39,6 @@ public class ShopTutorial : TutorialStageBase {
 
 	protected override IEnumerator InitializeTutorialStage() {
 		Tutorial.Instance.panel.ShowEscapePanel(false);
-		objectReferences = UtilsMonoBehaviour.FindObject<TutorialPlayerOverviewReferences>();
 		yield break;
 	}
 
@@ -57,14 +54,17 @@ public class ShopTutorial : TutorialStageBase {
 	private IEnumerator GoThroughTutorialScenario() {
 		// Shop button
 		currentStep = Step.Shop;
-		Tutorial.Instance.highlighter.Highlight(objectReferences.shopButton, padding: 10);
+		Tutorial.Instance.highlighter.Highlight(
+			TutorialPlayerOverviewReferences.Instance.shopButton, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(GetLocalizedText(currentStep.ToString()));
 		yield return WaitUntilStepIsFinished<ShopButtonProgress>();
 		// Spells
-		currentStep = Step.Spells; Tutorial.Instance.highlighter.Highlight(objectReferences.spells, true, padding: 10);
+		currentStep = Step.Spells; Tutorial.Instance.highlighter.Highlight(
+			TutorialPlayerOverviewReferences.Instance.spells, true, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Broom upgrades
-		currentStep = Step.BroomUpgrades; Tutorial.Instance.highlighter.Highlight(objectReferences.broomUpgrades, true, padding: 10);
+		currentStep = Step.BroomUpgrades; Tutorial.Instance.highlighter.Highlight(
+			TutorialPlayerOverviewReferences.Instance.broomUpgrades, true, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// End
 		currentStep = Step.Finished;
@@ -84,9 +84,7 @@ public class ShopTutorial : TutorialStageBase {
 				cheapestItemPrice = spell.CoinsCost;
 		}
 		// Go through all broom upgrades
-		if (objectReferences == null)
-			objectReferences = UtilsMonoBehaviour.FindObject<TutorialPlayerOverviewReferences>();
-		foreach (var upgrade in objectReferences.broom.GetAvailableUpgrades()) {
+		foreach (var upgrade in TutorialPlayerOverviewReferences.Instance.broom.GetAvailableUpgrades()) {
 			if (upgrade.CoinsCostOfEachLevel[0] < cheapestItemPrice) // check only the first level
 				cheapestItemPrice = upgrade.CoinsCostOfEachLevel[0];
 		}

@@ -8,6 +8,9 @@ using TMPro;
 // - These are then used e.g. when highlighting something during tutorial
 public class TutorialPlayerOverviewReferences : MonoBehaviour {
 
+	// Just a simple singleton
+	public static TutorialPlayerOverviewReferences Instance { get; private set; }
+
 	[Header("Player overview")]
 
 	[Tooltip("RectTransform containing coins amount.")]
@@ -58,6 +61,14 @@ public class TutorialPlayerOverviewReferences : MonoBehaviour {
 		}
 
 		isInitialized = true;
+	}
+
+	private void Awake() {
+		Instance = this;
+	}
+
+	private void OnDestroy() {
+		Instance = null;
 	}
 
 }

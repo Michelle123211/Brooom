@@ -7,7 +7,7 @@ using UnityEngine;
 public class TutorialBasicManager : MonoBehaviour {
 
 	// Just a simple singleton
-	[HideInInspector] public static TutorialBasicManager Instance { get; private set; }
+	public static TutorialBasicManager Instance { get; private set; }
 
 	public GameObject player;
 

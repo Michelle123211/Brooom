@@ -7,7 +7,7 @@ using UnityEngine;
 public class TutorialSceneManager : MonoBehaviour {
 
 	// Just a simple singleton
-	[HideInInspector] public static TutorialSceneManager Instance { get; private set; }
+	public static TutorialSceneManager Instance { get; private set; }
 
 	[Header("Tutorial trigger zone")]
 	[Tooltip("Sometimes the player has to enter the zone to progress further in the tutorial.")]
