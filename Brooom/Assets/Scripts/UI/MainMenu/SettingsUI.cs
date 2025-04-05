@@ -43,15 +43,7 @@ public class SettingsUI : MonoBehaviour {
 		}
 	}
 
-	private void OnEnable() {
-		LoadSettingsValues();
-		mouseSensitivitySlider.value = SettingsUI.mouseSensitivity;
-		tutorialToggle.isOn = SettingsUI.enableTutorial;
-		trainingToggle.isOn = SettingsUI.skipTraining;
-	}
-
-	private void OnDisable() {
-		// Save settings values
+	public void SaveSettingsValues() {
 		SaveSystem.SaveSettings(new SettingsSaveData {
 			mouseSensitivity = SettingsUI.mouseSensitivity,
 			enableTutorial = enableTutorial,
@@ -61,5 +53,16 @@ public class SettingsUI : MonoBehaviour {
 			ambienceVolume = ambienceVolumeSlider.GetValue(),
 			soundEffectsVolume = soundEffectsVolumeSlider.GetValue()
 		});
+	}
+
+	private void OnEnable() {
+		LoadSettingsValues();
+		mouseSensitivitySlider.value = SettingsUI.mouseSensitivity;
+		tutorialToggle.isOn = SettingsUI.enableTutorial;
+		trainingToggle.isOn = SettingsUI.skipTraining;
+	}
+
+	private void OnDisable() {
+		SaveSettingsValues();
 	}
 }

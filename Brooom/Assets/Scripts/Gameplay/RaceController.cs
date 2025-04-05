@@ -29,6 +29,8 @@ public class RaceController : MonoBehaviourLongInitialization {
     public List<RacerRepresentation> racers;
     public RacerRepresentation playerRacer;
 
+    public bool isInTutorial = false; // whether First Race tutorial is running during this race - it may affect behaviour
+
     // Related objects
     protected RaceUI raceHUD;
     protected RaceResultsUI raceResults;
@@ -57,8 +59,9 @@ public class RaceController : MonoBehaviourLongInitialization {
         GamePause.DisableGamePause();
         // Start animation sequence
         StartCoroutine(PlayRaceEndSequence());
-        // Note down visited regions
-        DetectVisitedRegions();
+        // Note down visited regions (but not during First Race tutorial)
+        if (!isInTutorial)
+            DetectVisitedRegions();
 	}
 
     public virtual void GiveUpRace() {
@@ -117,7 +120,8 @@ public class RaceController : MonoBehaviourLongInitialization {
         if (opponentParent != null) opponentParent.gameObject.SetActive(false);
         // Place the player + enable actions
         playerRacer.characterController.ResetPosition(Level.playerStartPosition);
-        playerRacer.characterController.EnableActions();
+        if (Tutorial.Instance.CurrentStage != TutorialStage.FirstRace) // otherwise it is driven by tutorial
+            playerRacer.characterController.EnableActions();
     }
 
     private IEnumerator PlayRaceStartSequence() {
@@ -390,7 +394,7 @@ public class RaceController : MonoBehaviourLongInitialization {
 		switch (State) {
             case RaceState.Training:
 				// Handle skipping training - remove starting zone and start race immediately
-				if (SettingsUI.skipTraining && !isTrainingSkipped) { // if not being skipped already
+				if (SettingsUI.skipTraining && !isTrainingSkipped && !isInTutorial) { // if not being skipped already and not in tutorial
                     isTrainingSkipped = true; // prevent this from triggering again
 					Destroy(FindObjectOfType<StartingZone>().transform.parent.gameObject);
 					Invoke(nameof(StartRace), 3); // after 3 s to allow information about new region to appear

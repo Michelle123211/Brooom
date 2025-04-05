@@ -15,6 +15,9 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 	[Tooltip("An Image used as a fadeout to black.")]
 	[SerializeField] GameObject fadeout;
 
+	[Tooltip("A prefab of panel asking the player if they want to enable or disable training before race.")]
+	public GameObject skipTrainingPanel;
+
 	private TutorialStageBase currentStageRepresentation;
 
 	// Called whenever progress in tutorial changes

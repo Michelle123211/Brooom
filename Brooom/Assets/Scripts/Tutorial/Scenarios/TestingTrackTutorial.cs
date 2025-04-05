@@ -5,11 +5,12 @@ using UnityEngine;
 public class TestingTrackTutorial : TutorialStageBase {
 
 	private enum Step {
+		NotStarted,
 		Started,
 		TestingTrack, // button to enter testing track
 		Finished
 	}
-	private Step currentStep = Step.Started;
+	private Step currentStep = Step.NotStarted;
 
 	protected override string LocalizationKeyPrefix => "TestingTrack";
 

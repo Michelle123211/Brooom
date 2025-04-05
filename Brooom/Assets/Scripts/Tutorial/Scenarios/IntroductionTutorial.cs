@@ -6,7 +6,7 @@ using UnityEngine;
 public class IntroductionTutorial : TutorialStageBase {
 
 	private enum Step {
-		Started,
+		NotStarted,
 		Part1_Start,
 		Intro,
 		Movement_Basics, // forward, turn, brake
@@ -29,7 +29,7 @@ public class IntroductionTutorial : TutorialStageBase {
 		Part2_End,
 		Finished
 	}
-	private Step currentStep = Step.Started;
+	private Step currentStep = Step.NotStarted;
 
 	protected override string LocalizationKeyPrefix => "Introduction";
 
@@ -50,7 +50,7 @@ public class IntroductionTutorial : TutorialStageBase {
 		else if (lastStep >= Step.BeforePart2) // in the middle of second part, go to the beginning
 			lastStep = Step.BeforePart2;
 		else // possibly in the middle of first part, go to the beginning
-			lastStep = Step.Started;
+			lastStep = Step.NotStarted;
 		currentStep = lastStep;
 	}
 
@@ -61,7 +61,6 @@ public class IntroductionTutorial : TutorialStageBase {
 		return SceneLoader.Instance.CurrentScene == Scene.Tutorial;
 	}
 
-	// Prepares everything necessary based on the initial step (e.g. move player if starting in Track_Hoop)
 	protected override IEnumerator InitializeTutorialStage() {
 		// We should be already in Tutorial scene
 		TutorialSceneManager.Instance.ResetAll();
@@ -72,7 +71,7 @@ public class IntroductionTutorial : TutorialStageBase {
 	protected override bool UpdateTutorialStage() {
 		// Handle moving from one part to another
 		switch (currentStep) {
-			case Step.Started:
+			case Step.NotStarted:
 				currentStep = Step.Part1_Start;
 				Tutorial.Instance.StartCoroutine(GoThroughPart1());
 				break;
@@ -90,14 +89,14 @@ public class IntroductionTutorial : TutorialStageBase {
 
 	private IEnumerator GoThroughPart1() {
 		// Introduction
-		TutorialSceneManager.Instance.DisablePlayerActions();
+		TutorialBasicManager.Instance.DisablePlayerActions();
 		currentStep = Step.Intro;
 		Tutorial.Instance.FadeOut();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()), TutorialPanelAlignment.Middle);
 		// Forward, brake, turn
 		currentStep = Step.Movement_Basics;
 		Tutorial.Instance.FadeIn();
-		TutorialSceneManager.Instance.EnablePlayerActions(false);
+		TutorialBasicManager.Instance.EnablePlayerActions(false);
 		string[] forwardBrake = InputManager.Instance.GetBindingTextForAction("Forward").Split('/');
 		string[] leftRight = InputManager.Instance.GetBindingTextForAction("Turn").Split('/');
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(
@@ -116,22 +115,22 @@ public class IntroductionTutorial : TutorialStageBase {
 		string backView = InputManager.Instance.GetBindingTextForAction("BackView");
 		string resetView = InputManager.Instance.GetBindingTextForAction("ResetView");
 		yield return Tutorial.Instance.panel.HideTutorialPanelAndWaitUntilInvisible();
-		TutorialSceneManager.Instance.EnableLookingAround();
+		TutorialBasicManager.Instance.EnableLookingAround();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(
 			string.Format(GetLocalizedText(currentStep.ToString()), backView, resetView));
 		yield return WaitUntilStepIsFinished<LookAroundMovementProgress>();
 		// Showing trigger zone
 		currentStep = Step.Movement_Zone;
 		yield return Tutorial.Instance.panel.HideTutorialPanelAndWaitUntilInvisible();
-		TutorialSceneManager.Instance.DisablePlayerActions();
+		TutorialBasicManager.Instance.DisablePlayerActions();
 		TutorialSceneManager.Instance.ShowTutorialTriggerZone();
-		TutorialSceneManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.tutorialTriggerZone.transform, new Vector3(0, -20, 50));
+		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.tutorialTriggerZone.transform, new Vector3(0, -20, 50));
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Flying freely
 		currentStep = Step.Movement_FreeMovement;
-		TutorialSceneManager.Instance.RotatePlayerTowards(TutorialSceneManager.Instance.tutorialTriggerZone.transform);
-		TutorialSceneManager.Instance.EnablePlayerActions();
-		TutorialSceneManager.Instance.cutsceneCamera.ResetView();
+		TutorialBasicManager.Instance.RotatePlayerTowards(TutorialSceneManager.Instance.tutorialTriggerZone.transform);
+		TutorialBasicManager.Instance.EnablePlayerActions();
+		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(
 			string.Format(GetLocalizedText(currentStep.ToString()),
 			forwardBrake[0], forwardBrake[1], leftRight[0], leftRight[1], upDown[0], upDown[1], backView, resetView));
@@ -145,34 +144,34 @@ public class IntroductionTutorial : TutorialStageBase {
 	private IEnumerator GoThroughPart2() {
 		// Hoop introduction
 		currentStep = Step.Track_Hoop;
-		TutorialSceneManager.Instance.DisablePlayerActions();
+		TutorialBasicManager.Instance.DisablePlayerActions();
 		TutorialSceneManager.Instance.ShowSimpleTrack();
-		TutorialSceneManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.hoops[0].transform, 10, Vector3.forward);
+		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.hoops[0].transform, 10, Vector3.forward);
 		TutorialSceneManager.Instance.HideTutorialTriggerZone();
-		TutorialSceneManager.Instance.ResetPlayerPositionAndRotation();
+		TutorialBasicManager.Instance.ResetPlayerPositionAndRotation();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Checkpoint introduction
 		currentStep = Step.Track_Checkpoint;
-		TutorialSceneManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.checkpoints[0].transform, 15, Vector3.forward);
+		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.checkpoints[0].transform, 15, Vector3.forward);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Small track - flying through hoops and checkpoints
 		currentStep = Step.Track_Practice;
-		TutorialSceneManager.Instance.EnablePlayerActions();
-		TutorialSceneManager.Instance.cutsceneCamera.ResetView();
+		TutorialBasicManager.Instance.EnablePlayerActions();
+		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(GetLocalizedText(currentStep.ToString()));
 		yield return WaitUntilStepIsFinished<SmallTrackProgress>();
 		// Bonus introduction
 		currentStep = Step.Track_Bonus;
-		TutorialSceneManager.Instance.DisablePlayerActions();
+		TutorialBasicManager.Instance.DisablePlayerActions();
 		TutorialSceneManager.Instance.HideSimpleTrack();
 		UtilsMonoBehaviour.SetActiveForAll(TutorialSceneManager.Instance.speedBonuses, true);
-		TutorialSceneManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.speedBonuses[0].transform, 4, Vector3.forward);
+		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.speedBonuses[0].transform, 4, Vector3.forward);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Pick up bonus
 		currentStep = Step.Track_BonusPickUp;
-		TutorialSceneManager.Instance.RotatePlayerTowards(TutorialSceneManager.Instance.speedBonuses[0].transform);
-		TutorialSceneManager.Instance.EnablePlayerActions();
-		TutorialSceneManager.Instance.cutsceneCamera.ResetView();
+		TutorialBasicManager.Instance.RotatePlayerTowards(TutorialSceneManager.Instance.speedBonuses[0].transform);
+		TutorialBasicManager.Instance.EnablePlayerActions();
+		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(GetLocalizedText(currentStep.ToString()));
 		yield return WaitUntilStepIsFinished<BonusProgress<SpeedBonusEffect>>();
 		// Effects introduction
@@ -191,19 +190,19 @@ public class IntroductionTutorial : TutorialStageBase {
 		// Showing trigger zone
 		currentStep = Step.Track_Zone;
 		yield return Tutorial.Instance.panel.HideTutorialPanelAndWaitUntilInvisible();
-		TutorialSceneManager.Instance.DisablePlayerActions();
+		TutorialBasicManager.Instance.DisablePlayerActions();
 		TutorialSceneManager.Instance.ShowTutorialTriggerZone();
-		TutorialSceneManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.tutorialTriggerZone.transform, new Vector3(0, -20, 50));
+		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.tutorialTriggerZone.transform, new Vector3(0, -20, 50));
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Flying freely
 		currentStep = Step.Track_FreeMovement;
-		TutorialSceneManager.Instance.RotatePlayerTowards(TutorialSceneManager.Instance.tutorialTriggerZone.transform);
-		TutorialSceneManager.Instance.EnablePlayerActions();
-		TutorialSceneManager.Instance.cutsceneCamera.ResetView();
+		TutorialBasicManager.Instance.RotatePlayerTowards(TutorialSceneManager.Instance.tutorialTriggerZone.transform);
+		TutorialBasicManager.Instance.EnablePlayerActions();
+		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
 		yield return WaitUntilStepIsFinished<TutorialTriggerZoneProgress>();
 		// End
-		currentStep = Step.Part2_End;
 		Tutorial.Instance.panel.HideAllTutorialPanels();
+		currentStep = Step.Part2_End;
 	}
 
 }

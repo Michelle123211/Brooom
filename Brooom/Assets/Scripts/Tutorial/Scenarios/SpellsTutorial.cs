@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpellsTutorial : TutorialStageBase {
 
 	private enum Step {
+		NotStarted,
 		Started,
 		Equip_Slots,
 		Equip_Selection,
@@ -23,7 +24,7 @@ public class SpellsTutorial : TutorialStageBase {
 		Cast_SwitchSpell,
 		Finished
 	}
-	private Step currentStep = Step.Started;
+	private Step currentStep = Step.NotStarted;
 
 	protected override string LocalizationKeyPrefix => "Spells";
 

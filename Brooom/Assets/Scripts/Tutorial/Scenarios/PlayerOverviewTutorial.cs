@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerOverviewTutorial : TutorialStageBase {
 
 	private enum Step {
+		NotStarted,
 		Started,
 		Coins,
 		Leaderboard,
@@ -16,7 +17,7 @@ public class PlayerOverviewTutorial : TutorialStageBase {
 		Magic,
 		Finished
 	}
-	private Step currentStep = Step.Started;
+	private Step currentStep = Step.NotStarted;
 
 	protected override string LocalizationKeyPrefix => "PlayerOverview";
 

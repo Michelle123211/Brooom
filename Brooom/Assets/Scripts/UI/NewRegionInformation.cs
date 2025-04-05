@@ -85,8 +85,11 @@ public class NewRegionInformation : MonoBehaviour {
 	}
 
 	private void Start() {
-		levelGenerator.onLevelGenerated += OnLevelGenerated;
-		SceneLoader.Instance.onSceneLoaded += OnSceneLoaded;
+		// Show information about new regions only outside of First Race tutorial
+		if (Tutorial.Instance.CurrentStage != TutorialStage.FirstRace) {
+			levelGenerator.onLevelGenerated += OnLevelGenerated;
+			SceneLoader.Instance.onSceneLoaded += OnSceneLoaded;
+		}
 	}
 
 	private void OnDestroy() {

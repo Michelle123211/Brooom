@@ -5,13 +5,14 @@ using UnityEngine;
 public class ShopTutorial : TutorialStageBase {
 
 	private enum Step {
+		NotStarted,
 		Started,
 		Shop, // button to enter shop
 		Spells,
 		BroomUpgrades,
 		Finished
 	}
-	private Step currentStep = Step.Started;
+	private Step currentStep = Step.NotStarted;
 
 	protected override string LocalizationKeyPrefix => "Shop";
 
