@@ -36,7 +36,12 @@ public class TutorialUIHighlight : MonoBehaviour {
 	// Highlights area given by RectTransform, blocks raycasts everywhere around it
 	// If blockRaycasts is true, raycasts in the highlighted area will be blocked as well
 	public void Highlight(RectTransform rectTransform, bool blockRaycasts = false, int padding = 0) {
-		if (rectTransform == null) StopHighlighting();
+		// If rectTransform is null, stop highlighting but consider blocking raycasts
+		if (rectTransform == null) {
+			StopHighlighting();
+			highlightFade.raycastTarget = blockRaycasts;
+			return;
+		}
 		// Get corners of RectTransform
 		Vector3[] corners = new Vector3[4];
 		rectTransform.GetWorldCorners(corners);

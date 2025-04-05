@@ -7,6 +7,7 @@ public class PlayerOverviewTutorial : TutorialStageBase {
 	private enum Step {
 		NotStarted,
 		Started,
+		Overview,
 		Coins,
 		Leaderboard,
 		Stats,
@@ -58,8 +59,14 @@ public class PlayerOverviewTutorial : TutorialStageBase {
 	}
 
 	private IEnumerator GoThroughTutorialScenario() {
+		// Overview introduction
+		currentStep = Step.Overview;
+		Tutorial.Instance.FadeOut();
+		Tutorial.Instance.highlighter.Highlight(null, true); // don't highlight anything, but block raycasts
+		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Coins
 		currentStep = Step.Coins;
+		Tutorial.Instance.FadeIn();
 		Tutorial.Instance.highlighter.Highlight(objectReferences.coins, true, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Leaderboard
