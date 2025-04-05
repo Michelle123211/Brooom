@@ -43,7 +43,6 @@ public class PlayerOverviewTutorial : TutorialStageBase {
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		// TODO: Set initial state and prepare everything necessary
 		Tutorial.Instance.panel.ShowEscapePanel(false);
 		objectReferences = UtilsMonoBehaviour.FindObject<TutorialPlayerOverviewReferences>();
 		yield break;

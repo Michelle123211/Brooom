@@ -737,7 +737,7 @@
     "English": "Tunnel",
     "Czech": "Záhadný tunel"
   },
-  {},
+  { "Key": "RegionTunnelDescription" },
   {
     "Key": "RegionAboveClouds",
     "English": "AboveClouds",
@@ -1227,7 +1227,7 @@
   {
     "Key": "TutorialPlayerOverview_Leaderboard",
     "English": "All racers are <b>ranked worldwide</b> based on their performance in races.",
-    "Czech": "Závodníci z celého světa jsou uspořádáni v <b>globálním žebříčku</b> na základě ohodnocení v závodech."
+    "Czech": "Závodníci z celého světa jsou uspořádáni v <b>globálním žebříčku</b> na základě hodnocení jejich výkonu v závodech."
   },
   {
     "Key": "TutorialPlayerOverview_Stats",
@@ -1258,5 +1258,21 @@
     "Key": "TutorialPlayerOverview_Magic",
     "English": "The <b>{0}</b> denotes how broad is your <b>knowledge of magic</b>, how effectively you <b>cast spells</b> and <b>collect mana</b>.",
     "Czech": "<b>{0}</b> zachycuje, jak rozsáhlou máš <b>znalost magie</b>, jak efektivně <b>sesíláš kouzla</b> a <b>sbíráš manu</b>."
+  },
+  {},
+  {
+    "Key": "TutorialShop_Shop",
+    "English": "It seems you have enough coins to <b>buy something</b> in the shop.\nLet's have a look.",
+    "Czech": "Zdá se, že už máš dost mincí na <b>zakoupení něčeho</b> v obchodě.\nPojďme se tam podívat."
+  },
+  {
+    "Key": "TutorialShop_Spells",
+    "English": "Here you can <b>buy spells</b> which you can then use to your advantage in a race.",
+    "Czech": "Tady si můžeš <b>koupit kouzla</b>, která pak můžeš využít pro ovlivnění průběhu závodu."
+  },
+  {
+    "Key": "TutorialShop_BroomUpgrades",
+    "English": "And here you can <b>upgrade your broom</b> which gives you an immediate advantage.",
+    "Czech": "A tady si můžeš <b>vylepšit své koště</b>, což ti poskytne okamžitou výhodu."
   }
 ]
