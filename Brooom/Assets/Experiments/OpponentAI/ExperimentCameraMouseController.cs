@@ -8,8 +8,7 @@ public class ExperimentCameraMouseController : MonoBehaviour
     public float sensitivity = 5f;
 
     private void Start() {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Utils.DisableCursor();
     }
 
     void Update() {

@@ -38,16 +38,14 @@ public class NewRegionInformation : MonoBehaviour {
 		Time.timeScale = 0;
 		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
 		regionInformationPanel.TweenAwareEnable();
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
+		Utils.EnableCursor();
 	}
 
 	public void HideRegionInformation() {
 		// Hide panel and mouse cursor
 		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
 		regionInformationPanel.TweenAwareDisable();
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+		Utils.DisableCursor();
 		Time.timeScale = 1;
 		// Consider other new regions
 		currentRegionIndex++;

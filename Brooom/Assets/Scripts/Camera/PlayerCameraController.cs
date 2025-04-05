@@ -154,8 +154,7 @@ public class PlayerCameraController : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         // Lock the cursor to the center of the screen and hide it
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Utils.DisableCursor();
         // Enable only the first virtual camera
         if (virtualCameras.Count == 0)
             Debug.LogError("There are no virtual cameras assigned.");

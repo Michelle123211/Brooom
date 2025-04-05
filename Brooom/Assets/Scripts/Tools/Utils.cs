@@ -147,4 +147,23 @@ public static class Utils
         }
         return true;
     }
+
+
+
+    public static void EnableCursor() {
+        // Unlock the cursor and show it
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public static void DisableCursor() {
+        // Lock the cursor to the center of the screen and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public static bool IsCursorLocked() {
+        return Cursor.lockState != CursorLockMode.None;
+    }
+
 }

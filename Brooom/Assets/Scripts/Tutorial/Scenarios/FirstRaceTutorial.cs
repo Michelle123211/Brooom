@@ -84,15 +84,13 @@ public class FirstRaceTutorial : TutorialStageBase {
 		// Skip training option
 		currentStep = Step.SkipTraining;
 		PauseGame();
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
+		Utils.EnableCursor();
 		Tutorial.Instance.skipTrainingPanel.TweenAwareEnable();
 		yield return WaitUntilStepIsFinished<SkipTrainingPanelProgress>();
 		// End
 		Tutorial.Instance.skipTrainingPanel.TweenAwareDisable();
 		ResumeGame();
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+		Utils.DisableCursor();
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		currentStep = Step.Finished;
 	}

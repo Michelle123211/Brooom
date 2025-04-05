@@ -49,16 +49,13 @@ public class RaceResultsUI : MonoBehaviour {
     }
 
 	private void OnEnable() {
-        // Enable cursor
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Utils.EnableCursor();
     }
 
 	private void Update() {
-        // Enable cursor
-        if (Cursor.lockState != CursorLockMode.None) {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+        // Enable cursor if not already
+        if (Utils.IsCursorLocked()) {
+            Utils.EnableCursor();
         }
     }
 }

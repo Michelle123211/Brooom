@@ -39,30 +39,26 @@ public class GamePause : MonoBehaviour {
         // Pause
         PauseState = GamePauseState.Pausing;
         pauseCount++;
-        // Show pause menu
+        // Show pause menu and enable cursor
         if (showMenu) {
             isPauseMenuVisible = true;
             AudioManager.Instance.PauseGame(); // start pause menu audio
             animator.SetBool("ShowMenu", true); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
-            // Enable cursor
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            Utils.EnableCursor();
         }
         DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.25f).SetUpdate(true);
     }
 
     public void ResumeGame() {
         if (!canBePaused) return;
-        // Hide pause menu
+        // Hide pause menu and disable cursor
         if (isPauseMenuVisible) {
             isPauseMenuVisible = false;
             AudioManager.Instance.ResumeGame(); // stop pause menu audio
             animator.SetBool("ShowMenu", false); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
-            // Disable cursor
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Utils.DisableCursor();
         }
         // Resume - only if there is no more nested pause
         pauseCount = Math.Max(0, pauseCount - 1); // don't go below zero (allows for game being resumed speculatively, e.g. when skipping tutorial)

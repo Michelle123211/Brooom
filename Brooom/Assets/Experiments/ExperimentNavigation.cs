@@ -17,8 +17,7 @@ public class ExperimentNavigation : MonoBehaviour
     {
         foreach (var keyAndScene in keysAndCorrespondingScenes) {
             if (Input.GetKeyDown(keyAndScene.key)) {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                Utils.EnableCursor();
                 SceneLoader.Instance.LoadScene(keyAndScene.scene);
             }
         }

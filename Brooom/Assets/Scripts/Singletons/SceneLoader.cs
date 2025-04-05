@@ -95,9 +95,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	private IEnumerator LoadSceneAsync(Scene scene, bool fade = true, bool showLoading = true) {
 		GamePause.DisableGamePause(); // disable pause while loading screen is on
 		onSceneStartedLoading?.Invoke(scene);
-		// Enable cursor
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
+		Utils.EnableCursor();
 		// It does not make sense to display loading without the fade
 		if (!fade && showLoading)
 			showLoading = false;
