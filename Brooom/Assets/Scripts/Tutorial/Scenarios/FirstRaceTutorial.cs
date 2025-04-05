@@ -25,6 +25,7 @@ public class FirstRaceTutorial : TutorialStageBase {
 		GamePause gamePause = UtilsMonoBehaviour.FindObject<GamePause>();
 		gamePause.SetupOptionsForRace();
 		gamePause.ResumeGame(); // calling directly and not through ResumeGame() because that would postpone it to update which will no longer happen
+		Utils.DisableCursor();
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		Tutorial.Instance.skipTrainingPanel.TweenAwareDisable();
 		if (currentStep != Step.Finished) // tutorial was skipped
@@ -54,6 +55,7 @@ public class FirstRaceTutorial : TutorialStageBase {
 		Tutorial.Instance.panel.ShowEscapePanel();
 		// Let RaceController know tutorial is running (so that training is not skipped and visited regions are not stored)
 		yield return new WaitUntil(() => RaceController.Instance.IsInitialized);
+		RaceController.Instance.isInTutorial = true;
 	}
 
 	protected override bool UpdateTutorialStage() {
@@ -74,7 +76,7 @@ public class FirstRaceTutorial : TutorialStageBase {
 				InputManager.Instance.GetBindingTextForAction("Restart")));
 		// Showing starting zone
 		currentStep = Step.StartingZone;
-		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(UtilsMonoBehaviour.FindObject<StartingZone>().transform, new Vector3(0, -20, -50));
+		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(UtilsMonoBehaviour.FindObject<StartingZone>().transform, new Vector3(0, -20, 50));
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Fly freely and proceed whenever
 		currentStep = Step.FreeMovement;
