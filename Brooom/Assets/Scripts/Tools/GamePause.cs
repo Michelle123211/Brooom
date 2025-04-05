@@ -24,7 +24,7 @@ public class GamePause : MonoBehaviour {
     private ShowHidePanelUI settings;
 
     private int pauseCount = 0; // increment when paused, decrement when unpaused - allows for nested pauses (with correct unpausing)
-
+    private bool wasCursorLocked = false; // before opening pause menu, rememeber cursor state so it can be restored correctly after closing the menu
 
     // The following two methods may be used to disable pause when not desirable - e.g. when loading screen is on or after a race is finished
     public static void EnableGamePause() {
@@ -45,6 +45,7 @@ public class GamePause : MonoBehaviour {
             AudioManager.Instance.PauseGame(); // start pause menu audio
             animator.SetBool("ShowMenu", true); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
+            wasCursorLocked = Utils.IsCursorLocked();
             Utils.EnableCursor();
         }
         DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.25f).SetUpdate(true);
@@ -52,13 +53,13 @@ public class GamePause : MonoBehaviour {
 
     public void ResumeGame() {
         if (!canBePaused) return;
-        // Hide pause menu and disable cursor
+        // Hide pause menu and restore cursor
         if (isPauseMenuVisible) {
             isPauseMenuVisible = false;
             AudioManager.Instance.ResumeGame(); // stop pause menu audio
             animator.SetBool("ShowMenu", false); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
-            Utils.DisableCursor();
+            if (wasCursorLocked) Utils.DisableCursor();
         }
         // Resume - only if there is no more nested pause
         pauseCount = Math.Max(0, pauseCount - 1); // don't go below zero (allows for game being resumed speculatively, e.g. when skipping tutorial)
