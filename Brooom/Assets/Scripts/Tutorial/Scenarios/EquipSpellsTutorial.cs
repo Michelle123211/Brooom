@@ -9,7 +9,7 @@ public class EquipSpellsTutorial : TutorialStageBase {
 		Started,
 		Slots,
 		Selection,
-		MoveOn,
+		Equipped,
 		Finished
 	}
 	private Step currentStep = Step.NotStarted;
@@ -20,13 +20,6 @@ public class EquipSpellsTutorial : TutorialStageBase {
 		Tutorial.Instance.FadeIn();
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		Tutorial.Instance.highlighter.StopHighlighting();
-		// Load Tutorial scene so that the next stage can be started - but only if at least one spell is equipped
-		foreach (var equippedSpell in PlayerState.Instance.equippedSpells) {
-			if (equippedSpell != null && !string.IsNullOrEmpty(equippedSpell.Identifier)) {
-				SceneLoader.Instance.LoadScene(Scene.Tutorial);
-				break;
-			}
-		}
 	}
 
 	public override string GetCurrentState() {
@@ -39,10 +32,15 @@ public class EquipSpellsTutorial : TutorialStageBase {
 	}
 
 	protected override bool CheckTriggerConditions() {
-		// Player Overview scene with Shop open + spell purchased
-		return SceneLoader.Instance.CurrentScene == Scene.PlayerOverview
-			&& TutorialPlayerOverviewReferences.Instance.shopUI.activeInHierarchy
-			&& PlayerState.Instance.availableSpellCount == 1;
+		// Player Overview scene with Shop open + one spell purchased + no equipped spell
+		if (SceneLoader.Instance.CurrentScene != Scene.PlayerOverview || !TutorialPlayerOverviewReferences.Instance.shopUI.activeInHierarchy) return false;
+		if (PlayerState.Instance.availableSpellCount != 1) return false;
+		foreach (var equippedSpell in PlayerState.Instance.equippedSpells) {
+			if (equippedSpell != null && !string.IsNullOrEmpty(equippedSpell.Identifier)) { // there is an equipped spell
+				return false;
+			}
+		}
+		return true;
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
@@ -64,8 +62,11 @@ public class EquipSpellsTutorial : TutorialStageBase {
 		// Click on equipped spells slot
 		currentStep = Step.Slots;
 		Tutorial.Instance.highlighter.Highlight(
+			TutorialPlayerOverviewReferences.Instance.equippedSpells, true, padding: 10);
+		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(
+			GetLocalizedText(currentStep.ToString()), alignment: TutorialPanelAlignment.Middle);
+		Tutorial.Instance.highlighter.Highlight(
 			TutorialPlayerOverviewReferences.Instance.equippedSpells, false, padding: 10);
-		Tutorial.Instance.panel.ShowTutorialPanel(GetLocalizedText(currentStep.ToString()), alignment: TutorialPanelAlignment.Middle);
 		yield return new WaitUntil(() => TutorialPlayerOverviewReferences.Instance.spellSelection.activeInHierarchy); // spell selection is displayed (i.e. an equipped spell slot was clicked)
 		// Choose spell
 		currentStep = Step.Selection;
@@ -76,10 +77,10 @@ public class EquipSpellsTutorial : TutorialStageBase {
 			TutorialPlayerOverviewReferences.Instance.GetSpellFromSelection(), false, padding: 5);
 		Tutorial.Instance.panel.ShowTutorialPanel(GetLocalizedText(currentStep.ToString()));
 		yield return new WaitUntil(() => !TutorialPlayerOverviewReferences.Instance.spellSelection.activeInHierarchy); // spell selection is not displayed (i.e. a spell was assign to an equipped spell slot)
-		// Moving on to how to use it
-		currentStep = Step.MoveOn;
-		Tutorial.Instance.highlighter.Highlight(null, true);
-		Tutorial.Instance.FadeOut();
+		// Show equipped spell
+		currentStep = Step.Equipped;
+		Tutorial.Instance.highlighter.Highlight(
+			TutorialPlayerOverviewReferences.Instance.equippedSpells, true, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(
 			GetLocalizedText(currentStep.ToString()), alignment: TutorialPanelAlignment.Middle);
 		// End
