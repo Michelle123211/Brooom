@@ -1758,9 +1758,12 @@ MonoBehaviour:
   leaderboard: {fileID: 2082619687}
   graph: {fileID: 1787257476}
   broom: {fileID: 1276086001}
+  shopUI: {fileID: 7603993139792378031}
   shopButton: {fileID: 17275041}
   spells: {fileID: 1896257270}
   broomUpgrades: {fileID: 1245157119}
+  equippedSpells: {fileID: 1184357874}
+  spellSelection: {fileID: 7227445170057141976}
 --- !u!4 &269928902
 Transform:
   m_ObjectHideFlags: 0
@@ -5797,7 +5800,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 7227445170057141975}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7227445170057141976}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0af564299b45b9c4193c613599e6ae69, type: 3}
@@ -12360,7 +12363,7 @@ PrefabInstance:
     - target: {fileID: 3742516424760074218, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -624.8261
+      value: -624.8431
       objectReference: {fileID: 0}
     - target: {fileID: 3742516424854894630, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
@@ -12390,7 +12393,7 @@ PrefabInstance:
     - target: {fileID: 3742516424854894630, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -454.8261
+      value: -454.84308
       objectReference: {fileID: 0}
     - target: {fileID: 3742516425037659205, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
@@ -12420,7 +12423,7 @@ PrefabInstance:
     - target: {fileID: 3742516425037659205, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -454.8261
+      value: -454.84308
       objectReference: {fileID: 0}
     - target: {fileID: 3742516425266808539, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
@@ -12450,7 +12453,7 @@ PrefabInstance:
     - target: {fileID: 3742516425266808539, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -454.8261
+      value: -454.84308
       objectReference: {fileID: 0}
     - target: {fileID: 3742516426043482158, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
@@ -12480,7 +12483,7 @@ PrefabInstance:
     - target: {fileID: 3742516426043482158, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -624.8261
+      value: -624.8431
       objectReference: {fileID: 0}
     - target: {fileID: 3742516426378673022, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
@@ -12510,7 +12513,7 @@ PrefabInstance:
     - target: {fileID: 3742516426378673022, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -624.8261
+      value: -624.8431
       objectReference: {fileID: 0}
     - target: {fileID: 3742516426386883283, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
@@ -12540,7 +12543,7 @@ PrefabInstance:
     - target: {fileID: 3742516426386883283, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -624.8261
+      value: -624.8431
       objectReference: {fileID: 0}
     - target: {fileID: 3742516426476416139, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
@@ -12570,7 +12573,7 @@ PrefabInstance:
     - target: {fileID: 3742516426476416139, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -454.8261
+      value: -454.84308
       objectReference: {fileID: 0}
     - target: {fileID: 7227445169611137796, guid: e2d663d01655a7c49b730703b1033a7c,
         type: 3}
@@ -12689,6 +12692,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2d663d01655a7c49b730703b1033a7c, type: 3}
+--- !u!1 &7227445170057141976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7227445169611137822, guid: e2d663d01655a7c49b730703b1033a7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 7227445170057141975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7603993139792378024
 MonoBehaviour:
   m_ObjectHideFlags: 0

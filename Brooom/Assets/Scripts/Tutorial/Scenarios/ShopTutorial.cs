@@ -57,10 +57,11 @@ public class ShopTutorial : TutorialStageBase {
 		Tutorial.Instance.highlighter.Highlight(
 			TutorialPlayerOverviewReferences.Instance.shopButton, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(GetLocalizedText(currentStep.ToString()));
-		yield return WaitUntilStepIsFinished<ShopButtonProgress>();
+		yield return new WaitUntil(() => TutorialPlayerOverviewReferences.Instance.shopUI.activeInHierarchy); // Shop has been opened
 		// Spells
 		currentStep = Step.Spells; Tutorial.Instance.highlighter.Highlight(
 			TutorialPlayerOverviewReferences.Instance.spells, true, padding: 10);
+		yield return Tutorial.Instance.panel.HideTutorialPanelAndWaitUntilInvisible();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		// Broom upgrades
 		currentStep = Step.BroomUpgrades; Tutorial.Instance.highlighter.Highlight(
@@ -90,24 +91,4 @@ public class ShopTutorial : TutorialStageBase {
 		}
 	}
 
-}
-
-internal class ShopButtonProgress : TutorialStepProgressTracker {
-
-	private ShopUI shopUI;
-
-	protected override bool CheckIfPossibleToMoveToNextStep() {
-		// Show has been opened
-		return shopUI.gameObject.activeInHierarchy;
-	}
-
-	protected override void FinishStepProgress() {
-	}
-
-	protected override void InitializeStepProgress() {
-		shopUI = UtilsMonoBehaviour.FindObject<ShopUI>();
-	}
-
-	protected override void UpdateStepProgress() {
-	}
 }

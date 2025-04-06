@@ -24,23 +24,29 @@ public class TutorialPlayerOverviewReferences : MonoBehaviour {
 
 	[Tooltip("A broom object in the scene which provides preview in the shop.")]
 	public Broom broom;
+	[Tooltip("An object containing all shop UI.")]
+	public GameObject shopUI;
 	[Tooltip("RectTransform containing shop button.")]
 	public RectTransform shopButton;
 	[Tooltip("RectTransform containing spells catalogue.")]
 	public RectTransform spells;
 	[Tooltip("RectTransform containing broom upgrades catalogue.")]
 	public RectTransform broomUpgrades;
+	[Tooltip("RectTransform containing equipped spells.")]
+	public RectTransform equippedSpells;
+	[Tooltip("Object containing selection of spells to assign to a slot.")]
+	public GameObject spellSelection;
 
 
-	private bool isInitialized = false;
+	private bool areGraphLabelsInitialized = false;
 	private Dictionary<string, RectTransform> statsLabels;
 
 	public RectTransform GetGraphLabel(string localizedStatName) {
-		if (!isInitialized) InitializeReferences();
+		if (!areGraphLabelsInitialized) InitializeGraphLabels();
 		return statsLabels.GetValueOrDefault(localizedStatName);
 	}
 
-	private void InitializeReferences() {
+	private void InitializeGraphLabels() {
 		statsLabels = new Dictionary<string, RectTransform>();
 		// Find all labels in the scene
 		List<RadarGraphLabelUI> labelsInScene = UtilsMonoBehaviour.FindObjects<RadarGraphLabelUI>();
@@ -60,7 +66,18 @@ public class TutorialPlayerOverviewReferences : MonoBehaviour {
 			}
 		}
 
-		isInitialized = true;
+		areGraphLabelsInitialized = true;
+	}
+
+	public RectTransform GetSpellFromSelection() {
+		// Go through slots in spell seelction and find the first non-empty one
+		List<SpellSelectionSlotUI> spellsInSelection = UtilsMonoBehaviour.FindObjects<SpellSelectionSlotUI>();
+		foreach (var spellInSelection in spellsInSelection) {
+			SpellSlotUI spellSlot = spellInSelection.GetComponentInChildren<SpellSlotUI>();
+			if (spellSlot.assignedSpell != null && !string.IsNullOrEmpty(spellSlot.assignedSpell.Identifier))
+				return spellInSelection.GetComponent<RectTransform>();
+		}
+		return null;
 	}
 
 	private void Awake() {
