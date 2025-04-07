@@ -94,6 +94,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 
 	private IEnumerator LoadSceneAsync(Scene scene, bool fade = true, bool showLoading = true) {
 		GamePause.DisableGamePause(); // disable pause while loading screen is on
+		CurrentScene = Scene.None;
 		onSceneStartedLoading?.Invoke(scene);
 		Utils.EnableCursor();
 		// It does not make sense to display loading without the fade
@@ -164,6 +165,6 @@ public enum Scene {
 	Ending = 7,
 	Exit = 8,
 
-
+	None = 8888,
 	ProceduralTerrain = 9999 // TODO: Remove when not necessary (it is there for debugging purposes only)
 }
