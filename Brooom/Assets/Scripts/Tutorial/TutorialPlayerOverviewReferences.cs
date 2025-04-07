@@ -38,6 +38,8 @@ public class TutorialPlayerOverviewReferences : MonoBehaviour {
 	public RectTransform equippedSpellsShop;
 	[Tooltip("Object containing selection of spells to assign to a slot.")]
 	public GameObject spellSelection;
+	[Tooltip("RectTransform containing button for entering Testing track.")]
+	public RectTransform testingTrackButton;
 
 
 	private bool areGraphLabelsInitialized = false;

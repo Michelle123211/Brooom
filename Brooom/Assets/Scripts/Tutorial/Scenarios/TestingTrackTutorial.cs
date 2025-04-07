@@ -15,30 +15,46 @@ public class TestingTrackTutorial : TutorialStageBase {
 	protected override string LocalizationKeyPrefix => "TestingTrack";
 
 	public override void Finish() {
-		// TODO
+		Tutorial.Instance.panel.HideAllTutorialPanels();
+		Tutorial.Instance.highlighter.StopHighlighting();
 	}
 
 	public override string GetCurrentState() {
-		// TODO
-		return string.Empty;
+		return currentStep.ToString();
 	}
 
 	public override void SetCurrentState(string state) {
-		// TODO
+		// Always starting from the beginning
+		currentStep = Step.NotStarted;
 	}
 
 	protected override bool CheckTriggerConditions() {
-		// TODO: Player Overview scene with Shop open
-		return true;
+		// Player Overview scene with Shop open
+		return SceneLoader.Instance.CurrentScene == Scene.PlayerOverview && TutorialPlayerOverviewReferences.Instance.shopUI.activeInHierarchy;
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		// TODO: Set initial state and prepare everything necessary
+		Tutorial.Instance.panel.ShowEscapePanel(false);
+		Tutorial.Instance.highlighter.Highlight(null, true); // block raycasts
 		yield break;
 	}
 
 	protected override bool UpdateTutorialStage() {
-		// TODO
-		return true;
+		// Handle starting the tutorial scenario
+		if (currentStep == Step.NotStarted) {
+			currentStep = Step.Started;
+			Tutorial.Instance.StartCoroutine(GoThroughTutorialScenario());
+		}
+		return currentStep != Step.Finished;
 	}
+
+	private IEnumerator GoThroughTutorialScenario() {
+		// Testing Track button
+		currentStep = Step.TestingTrack;
+		Tutorial.Instance.highlighter.Highlight(TutorialPlayerOverviewReferences.Instance.testingTrackButton, true, padding: 10);
+		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
+		// End
+		currentStep = Step.Finished;
+	}
+
 }
