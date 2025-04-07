@@ -34,6 +34,14 @@ public class TutorialSceneManager : MonoBehaviour {
 	[Header("Player")]
 	public GameObject player;
 
+	[Header("HUD")]
+	[Tooltip("RectTransform containing available spells.")]
+	public RectTransform availableSpellsRect;
+	[Tooltip("RectTransform containing mana bar.")]
+	public RectTransform manaBarRect;
+	[Tooltip("RectTransform containing available spells and mana bar.")]
+	public RectTransform spellsAndManaBarRect;
+
 	[Header("Other")]
 	[Tooltip("An opponent circling around the level, used as a potential spell target.")]
 	[SerializeField] GameObject opponent;
@@ -68,6 +76,14 @@ public class TutorialSceneManager : MonoBehaviour {
 	public void HideSimpleTrack() {
 		UtilsMonoBehaviour.SetActiveForAll(hoops, false);
 		UtilsMonoBehaviour.SetActiveForAll(checkpoints, false);
+	}
+
+	public void ShowAllPossibleSpellTargets() {
+		// Opponent
+		opponent.SetActive(true);
+		// Bonuses
+		UtilsMonoBehaviour.SetActiveForAll(manaBonuses, true);
+		// TODO: Hoop (in the future)
 	}
 	#endregion
 

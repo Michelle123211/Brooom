@@ -62,11 +62,11 @@ public class EquipSpellsTutorial : TutorialStageBase {
 		// Click on equipped spells slot
 		currentStep = Step.Slots;
 		Tutorial.Instance.highlighter.Highlight(
-			TutorialPlayerOverviewReferences.Instance.equippedSpells, true, padding: 10);
+			TutorialPlayerOverviewReferences.Instance.equippedSpellsShop, true, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(
 			GetLocalizedText(currentStep.ToString()), alignment: TutorialPanelAlignment.Middle);
 		Tutorial.Instance.highlighter.Highlight(
-			TutorialPlayerOverviewReferences.Instance.equippedSpells, false, padding: 10);
+			TutorialPlayerOverviewReferences.Instance.equippedSpellsShop, false, padding: 10);
 		yield return new WaitUntil(() => TutorialPlayerOverviewReferences.Instance.spellSelection.activeInHierarchy); // spell selection is displayed (i.e. an equipped spell slot was clicked)
 		// Choose spell
 		currentStep = Step.Selection;
@@ -80,7 +80,7 @@ public class EquipSpellsTutorial : TutorialStageBase {
 		// Show equipped spell
 		currentStep = Step.Equipped;
 		Tutorial.Instance.highlighter.Highlight(
-			TutorialPlayerOverviewReferences.Instance.equippedSpells, true, padding: 10);
+			TutorialPlayerOverviewReferences.Instance.equippedSpellsShop, true, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(
 			GetLocalizedText(currentStep.ToString()), alignment: TutorialPanelAlignment.Middle);
 		// End

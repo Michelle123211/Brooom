@@ -392,7 +392,7 @@ internal class SmallTrackProgress : TutorialStepProgressTracker {
 }
 
 // A certain type of bonus has been picked up a certain number of times
-internal class BonusProgress<T> : TutorialStepProgressTracker where T : BonusEffect {
+public class BonusProgress<T> : TutorialStepProgressTracker where T : BonusEffect {
 	
 	public static int count = 1; // How many times the bonus should be picked up before the progress is finished (static so we can set it without instantiation)
 

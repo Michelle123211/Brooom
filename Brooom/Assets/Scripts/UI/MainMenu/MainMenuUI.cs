@@ -22,13 +22,11 @@ public class MainMenuUI : MonoBehaviour
         if (saveExists) {
             PlayerState.Instance.LoadSavedState();
             Messaging.SendMessage("GameStarted");
-            // If tutorial is enabled and some stages haven't been finished yet, load appropriate scene
+            // If tutorial is enabled and first two stages haven't been finished yet, load appropriate scene
             if (SettingsUI.enableTutorial && Tutorial.Instance.CurrentStage == TutorialStage.Introduction)
                 SceneLoader.Instance.LoadScene(Scene.Tutorial); // Introduction tutorial takes place in Tutorial scene
             else if (SettingsUI.enableTutorial && Tutorial.Instance.CurrentStage == TutorialStage.FirstRace)
                 SceneLoader.Instance.LoadScene(Scene.Race); // First Race tutorial takes place in Race scene
-            else if (SettingsUI.enableTutorial && Tutorial.Instance.CurrentStage == TutorialStage.CastSpells)
-                SceneLoader.Instance.LoadScene(Scene.Tutorial); // CastSpells tutorial takes place in Tutorial scene
             // Otherwise, load the PlayerOverview scene
             else SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
         } else {

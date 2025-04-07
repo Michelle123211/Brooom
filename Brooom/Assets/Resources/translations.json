@@ -1124,13 +1124,13 @@
   },
   {
     "Key": "TutorialIntroduction_Movement_Basics",
-    "English": "Let's try some basic movement first.\n   - <b>{0}</b> to fly <b>forward</b>\n   - <b>{1}</b> to <b>brake</b>\n   - <b>{2}/{3}</b> to <b>turn</b> left/right\nGive it a try.",
-    "Czech": "Nejprve vyzkoušíme základní pohyb.\n   - <b>{0}</b> pro let <b>dopředu</b>\n   - <b>{1}</b> pro <b>zabrždění</b>\n   - <b>{2}/{3}</b> pro <b>zatáčení</b> doleva/doprava\nZkus si to."
+    "English": "Let's try some basic movement first.\n- <b>{0}</b> to fly <b>forward</b>\n- <b>{1}</b> to <b>brake</b>\n- <b>{2}/{3}</b> to <b>turn</b> left/right\nGive it a try.",
+    "Czech": "Nejprve vyzkoušíme základní pohyb.\n- <b>{0}</b> pro let <b>dopředu</b>\n- <b>{1}</b> pro <b>zabrždění</b>\n- <b>{2}/{3}</b> pro <b>zatáčení</b> doleva/doprava\nZkus si to."
   },
   {
     "Key": "TutorialIntroduction_Movement_UpAndDown",
-    "English": "All right, not bad! Let's make it a bit harder.\n   - <b>{0}</b> to fly <b>up</b>\n   - <b>{1}</b> to fly <b>down</b>",
-    "Czech": "Vida, to nebylo špatné. Zkusme trochu přitvrdit.\n   - <b>{0}</b> pro let <b>nahoru</b>\n   - <b>{1}</b> pro let <b>dolů</b>"
+    "English": "All right, not bad! Let's make it a bit harder.\n- <b>{0}</b> to fly <b>up</b>\n- <b>{1}</b> to fly <b>down</b>",
+    "Czech": "Vida, to nebylo špatné. Zkusme trochu přitvrdit.\n- <b>{0}</b> pro let <b>nahoru</b>\n- <b>{1}</b> pro let <b>dolů</b>"
   },
   {
     "Key": "TutorialIntroduction_Movement_LookingAround",
@@ -1295,5 +1295,71 @@
     "Key": "TutorialEquipSpells_Equipped",
     "English": "As you can see, the spell is <b>equipped</b> in the slot and <b>ready to be used</b>.",
     "Czech": "Jak můžeš vidět, kouzlo je <b>vybaveno</b> ve slotu a <b>připraveno k použití</b>."
+  },
+  {},
+  {
+    "Key": "TutorialCastSpells_LetsGo",
+    "English": "With the spell equipped, let's see <b>how it it used</b>.",
+    "Czech": "Když už máš vybavené kouzlo, pojďme se podívat, <b>jak se používá</b>."
+  },
+  {
+    "Key": "TutorialCastSpells_AvailableSpells",
+    "English": "On the right side, you can see which <b>spells are available</b> to you, because you have equipped them.",
+    "Czech": "Napravo vidíš, která <b>kouzla máš k dispozici</b>, protože ses jimi vybavil."
+  },
+  {
+    "Key": "TutorialCastSpells_Mana",
+    "English": "Casting a spell <b>costs mana</b>.\nMana is <b>accumulated automatically</b> over time.\nOn the right, you can see how much mana you currently have.",
+    "Czech": "Seslání kouzla <b>stojí manu</b>.\nMana se <b>dobíjí postupně</b> sama.\nVpravo vidíš, kolik many aktuálně máš."
+  },
+  {
+    "Key": "TutorialCastSpells_ManaBonus",
+    "English": "But you can also get mana from <b>collecting bonuses</b>.\nThis is a <b>mana bonus</b> and it immediately gives you some mana.",
+    "Czech": "Manu ale můžeš získat také <b>sbíráním bonusů</b>.\nToto je <b>mana bonus</b> a jeho sebráním se okamžitě doplní určité množství many."
+  },
+  {
+    "Key": "TutorialCastSpells_FillMana",
+    "English": "Fly around and collect mana bonuses, until you mana bar is completely full.",
+    "Czech": "Proleť se a sbírej mana bonusy, dokud nebudeš mít ukazatel many úplně plný."
+  },
+  {
+    "Key": "TutorialCastSpells_ManaFull",
+    "English": "Your mana bar is full and your spell is ready to be used.\nBut before you can cast it, you need to find a <b>suitable target</b>.",
+    "Czech": "Tvůj ukazatel many je plný a kouzlo je připraveno k použití.\nNež ho ale můžeš seslat, musíš pro něj najít <b>vhodný cíl</b>."
+  },
+  {
+    "Key": "TutorialCastSpells_Targets",
+    "English": "Different spells are cast at <b>different targets</b>. It could be:\n- yourself,\n- your opponent,\n- a specific object (e.g. hoop or bonus),\n- general direction.",
+    "Czech": "Různá kouzla jsou sesílána na <b>různé cíle</b>, a to\n- na sebe sama,\n- na soupeře,\n- na konkrétní objekt (např. obruč nebo bonus),\n- určitým směrem."
+  },
+  {
+    "Key": "TutorialCastSpells_SpellTarget",
+    "English": "Your <b>current spell's target</b> is: <b>{0}</b>.\nFly around, find a suitable target and <b>cast the spell</b> using <b>Left mouse button</b>.",
+    "Czech": "Cílem tvého <b>aktuálního kouzla</b> je: <b>{0}</b>.\nProleť se, najdi vhodný cíl a <b>kouzlo sešli</b> použitím <b>levého tlačítka myši</b>."
+  },
+  {
+    "Key": "TutorialCastSpells_CastSpell",
+    "English": "<b>Choose target</b> - move mouse (<b>crosshair</b> highlights current target, i.e. object/direction)\n<b>Cast spell</b> - left mouse button",
+    "Czech": "<b>Volba cíle</b> - pohyb myši (<b>zaměřovač</b> ukazuje aktuální cíl, tj. objekt/směr)\n<b>Seslání kouzla</b> - levé tlačítko myši"
+  },
+  {
+    "Key": "TutorialCastSpells_Cooldown",
+    "English": "When you cast a spell, it is on <b>cooldown</b> and you can't cast it again for some time.",
+    "Czech": "Poté co sešleš kouzlo, potřebuje se <b>dobít</b> a nějakou dobu ho tedy nemůžeš seslat znovu."
+  },
+  {
+    "Key": "TutorialCastSpells_RechargeBonus",
+    "English": "However, if you pick this <b>bonus</b> up, it will <b>immediately recharge</b> all spells on cooldown.",
+    "Czech": "Můžeš ale sebrat tento <b>bonus</b>, který všechna kouzla <b>okamžitě dobije</b>."
+  },
+  {
+    "Key": "TutorialCastSpells_CastSpell2",
+    "English": "Fly, collect the bonus and cast the spell once more.",
+    "Czech": "Proleť se, seber tento bonus a sešli kouzlo ještě jednou."
+  },
+  {
+    "Key": "TutorialCastSpells_SwitchSpell",
+    "English": "When you have more spells equipped, you can <b>switch</b> between them using <b>Mouse Scroll Wheel</b>.\nThis should be everything you need to know about casting spells.",
+    "Czech": "Když máš více kouzel vybavených naráz, můžeš mezi nimi <b>přepínat</b> pomocí <b>kolečka myši</b>.\nTo by mělo být vše, co bys měl vědět o sesílání kouzel."
   }
 ]

@@ -1757,12 +1757,13 @@ MonoBehaviour:
   coins: {fileID: 412143934}
   leaderboard: {fileID: 2082619687}
   graph: {fileID: 1787257476}
+  equippedSpellsOverview: {fileID: 479021233}
   broom: {fileID: 1276086001}
   shopUI: {fileID: 7603993139792378031}
   shopButton: {fileID: 17275041}
   spells: {fileID: 1896257270}
   broomUpgrades: {fileID: 1245157119}
-  equippedSpells: {fileID: 1184357874}
+  equippedSpellsShop: {fileID: 1184357874}
   spellSelection: {fileID: 7227445170057141976}
 --- !u!4 &269928902
 Transform:

@@ -19,6 +19,8 @@ public class TutorialPlayerOverviewReferences : MonoBehaviour {
 	public RectTransform leaderboard;
 	[Tooltip("RectTransform containing graph of player stats.")]
 	public RectTransform graph;
+	[Tooltip("RectTransform containing equipped spells.")]
+	public RectTransform equippedSpellsOverview;
 
 	[Header("Shop")]
 
@@ -33,7 +35,7 @@ public class TutorialPlayerOverviewReferences : MonoBehaviour {
 	[Tooltip("RectTransform containing broom upgrades catalogue.")]
 	public RectTransform broomUpgrades;
 	[Tooltip("RectTransform containing equipped spells.")]
-	public RectTransform equippedSpells;
+	public RectTransform equippedSpellsShop;
 	[Tooltip("Object containing selection of spells to assign to a slot.")]
 	public GameObject spellSelection;
 
