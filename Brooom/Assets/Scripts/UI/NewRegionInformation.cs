@@ -64,7 +64,7 @@ public class NewRegionInformation : MonoBehaviour {
 		currentRegionIndex = int.MaxValue;
 
 		// Get list of all unvisited regions which are in the level
-		foreach (var region in level.regionsInLevel) {
+		foreach (var region in level.RegionsInLevel) {
 			if (!PlayerState.Instance.regionsVisited.TryGetValue(region, out bool isVisited) || !isVisited) {
 				// New region detected, get its data
 				foreach (var regionData in levelGenerator.terrainRegions) {

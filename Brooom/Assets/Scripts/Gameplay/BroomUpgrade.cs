@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class BroomUpgrade : MonoBehaviour {
     // TODO: Show some warning that changing the name will cause problems with save files from previous game versions
-    // TODO: Show some warning when length of List is not equal to MaxLevel
+    // TODO: Show some warning when length of List is not equal to MaxLevel + 1
 
 
     [field: SerializeField]

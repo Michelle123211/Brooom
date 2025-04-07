@@ -8,8 +8,8 @@ public class AITestRaceController : RaceController {
     public override void StartRace() {
         raceTime = 0;
         // Activate the hoops and finish line
-        for (int i = 0; i < Level.track.Count; i++) {
-            Level.track[i].assignedHoop.Activate(i);
+        for (int i = 0; i < Level.Track.Count; i++) {
+            Level.Track[i].assignedHoop.Activate(i);
         }
         Level.finish.Activate();
         // Actually start the race

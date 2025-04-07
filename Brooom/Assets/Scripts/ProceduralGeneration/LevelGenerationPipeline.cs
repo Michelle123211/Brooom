@@ -34,7 +34,7 @@ public class LevelGenerationPipeline : MonoBehaviour {
 	public Dictionary<LevelRegionType, bool> regionsVisited;
 
 	[Tooltip("Terrain regions which should be used when generating the level (for track regions, all available ones will be used).")]
-	[HideInInspector] public List<LevelRegionType> terrainRegionsToInclude; // TODO: Fill from outside, work with only these when generating level
+	[HideInInspector] public List<LevelRegionType> terrainRegionsToInclude; // Fill from outside, work with only these when generating level
 
 
 	// Anyone can register a callback for when a level is generated
@@ -106,12 +106,12 @@ public class LevelGenerationPipeline : MonoBehaviour {
 
 	private void GenerateTerrainMesh() {
 		UtilsMonoBehaviour.RemoveAllChildren(terrainParent);
-		for (int x = 0; x < Level.terrain.blockCount.x; x++) {
-			for (int y = 0; y < Level.terrain.blockCount.y; y++) {
+		for (int x = 0; x < Level.Terrain.blockCount.x; x++) {
+			for (int y = 0; y < Level.Terrain.blockCount.y; y++) {
 				// Instantiate a new terrain block from a prefab as a child of Terrain object
 				TerrainBlock instantiatedBlock = Instantiate<TerrainBlock>(terrainBlockPrefab, terrainParent);
 				instantiatedBlock.Initialize();
-				instantiatedBlock.GenerateTerrainMesh(Level.terrain, x, y, terrainRegionsDict);
+				instantiatedBlock.GenerateTerrainMesh(Level.Terrain, x, y, terrainRegionsDict);
 			}
 		}
 	}
@@ -130,11 +130,10 @@ public class LevelGeneratorModuleSlot {
 
 // Holds all the important information necessary for the level generation
 public class LevelRepresentation {
-	// TODO: Change access modifiers to better describe use cases
 
 	// Terrain, track and level features
-	public TerrainRepresentation terrain;
-	public List<TrackPoint> track;
+	public TerrainRepresentation Terrain { get; private set; }
+	public List<TrackPoint> Track { get; private set; }
 	public List<BonusSpot> bonuses;
 	public Vector3 playerStartPosition;
 	public FinishLine finish;
@@ -145,14 +144,14 @@ public class LevelRepresentation {
 	public Vector2Int pointCount; // Number of points on the grid in the X and Z axes
 
 	// Available regions
-	public Dictionary<LevelRegionType, LevelRegion> terrainRegions;
-	public Dictionary<LevelRegionType, LevelRegion> trackRegions;
-	public List<LevelRegionType> terrainRegionsToInclude;
-	public Dictionary<LevelRegionType, bool> regionsAvailability; // true if the region may be used in the level
-	public Dictionary<LevelRegionType, bool> regionsVisited; // true if the region has been visited (and so is not prioritized when generating a level)
+	public Dictionary<LevelRegionType, LevelRegion> TerrainRegions { get; private set; }
+	public Dictionary<LevelRegionType, LevelRegion> TrackRegions { get; private set; }
+	public List<LevelRegionType> TerrainRegionsToInclude { get; private set; }
+	public Dictionary<LevelRegionType, bool> RegionsAvailability { get; private set; } // true if the region may be used in the level
+	public Dictionary<LevelRegionType, bool> RegionsVisited { get; private set; } // true if the region has been visited (and so is not prioritized when generating a level)
 
 	// Regions actually in the generated level
-	public HashSet<LevelRegionType> regionsInLevel;
+	public HashSet<LevelRegionType> RegionsInLevel { get; private set; }
 
 
 	public LevelRepresentation(Vector2 dimensions, float pointOffset, Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions, List<LevelRegionType> terrainRegionsToInclude, Dictionary<LevelRegionType, bool> regionsAvailability, Dictionary<LevelRegionType, bool> regionsVisited, int blockSizeInPoints) {
@@ -160,26 +159,26 @@ public class LevelRepresentation {
 		this.dimensions = dimensions;
 		this.pointOffset = pointOffset;
 		ComputeDependentParameters(); // pointCount
-		this.terrainRegionsToInclude = terrainRegionsToInclude;
-		this.regionsAvailability = regionsAvailability;
-		this.regionsVisited = regionsVisited;
+		this.TerrainRegionsToInclude = terrainRegionsToInclude;
+		this.RegionsAvailability = regionsAvailability;
+		this.RegionsVisited = regionsVisited;
 		InitializeRegionDictionaries(terrainRegions, trackRegions);
-		this.terrain = new TerrainRepresentation(dimensions, pointOffset, blockSizeInPoints);
-		this.regionsInLevel = new HashSet<LevelRegionType>();
+		this.Terrain = new TerrainRepresentation(dimensions, pointOffset, blockSizeInPoints);
+		this.RegionsInLevel = new HashSet<LevelRegionType>();
 
 		// Track
-		track = new List<TrackPoint>();
+		Track = new List<TrackPoint>();
 	}
 
 	public void ResetLevel() {
 		// Reset terrain points
 		for (int x = 0; x < pointCount.x; x++) {
 			for (int y = 0; y < pointCount.y; y++) {
-				terrain[x, y].Reset();
+				Terrain[x, y].Reset();
 			}
 		}
 		// Reset track
-		track.Clear();
+		Track.Clear();
 	}
 
 	public void ResetLevelWithDimensions(Vector2 dimensions, float pointOffset, int blockSizeInPoints) {
@@ -187,9 +186,9 @@ public class LevelRepresentation {
 		this.pointOffset = pointOffset;
 		ComputeDependentParameters(); // pointCount
 		// Reset terrain and track
-		terrain.UpdateParameters(dimensions, pointOffset, blockSizeInPoints);
-		terrain.ResetTerrain();
-		track.Clear();
+		Terrain.UpdateParameters(dimensions, pointOffset, blockSizeInPoints);
+		Terrain.ResetTerrain();
+		Track.Clear();
 	}
 
 	// May be used to change dimensions during generation (e.g. to adapt terrain dimensions to the track dimensions)
@@ -200,7 +199,7 @@ public class LevelRepresentation {
 		this.dimensions = dimensions;
 		ComputeDependentParameters();
 		// Update terrain
-		terrain.ChangeDimensions(dimensions);
+		Terrain.ChangeDimensions(dimensions);
 	}
 
 	// Returns terrain point which is the closest one to the given position
@@ -208,13 +207,13 @@ public class LevelRepresentation {
 		// Get indices of the nearest terrain point
 		Vector2Int indices = GetNearestGridPoint(fromPosition);
 		// Return terrain point with the corresponding indices
-		return terrain[indices.x, indices.y];
+		return Terrain[indices.x, indices.y];
 	}
 
 	public Vector2Int GetNearestGridPoint(Vector3 fromPosition) {
 		// Make sure fromPosition is within the grid
-		Vector3 bottomLeft = terrain[0, 0].position;
-		Vector3 topRight = terrain[pointCount.x - 1, pointCount.y - 1].position;
+		Vector3 bottomLeft = Terrain[0, 0].position;
+		Vector3 topRight = Terrain[pointCount.x - 1, pointCount.y - 1].position;
 		fromPosition = new Vector3(Mathf.Clamp(fromPosition.x, bottomLeft.x, topRight.x), fromPosition.y, Mathf.Clamp(fromPosition.z, bottomLeft.z, topRight.z));
 		// Get indices of the nearest terrain point
 		int i = Mathf.RoundToInt(Mathf.Abs(fromPosition.x - bottomLeft.x) / pointOffset);
@@ -231,21 +230,21 @@ public class LevelRepresentation {
 	}
 
 	private void InitializeRegionDictionaries(Dictionary<LevelRegionType, LevelRegion> terrainRegions, Dictionary<LevelRegionType, LevelRegion> trackRegions) {
-		this.terrainRegions = terrainRegions;
-		if (this.terrainRegions == null) this.terrainRegions = new Dictionary<LevelRegionType, LevelRegion>();
-		this.trackRegions = trackRegions;
-		if (trackRegions == null) this.trackRegions = new Dictionary<LevelRegionType, LevelRegion>();
+		this.TerrainRegions = terrainRegions;
+		if (this.TerrainRegions == null) this.TerrainRegions = new Dictionary<LevelRegionType, LevelRegion>();
+		this.TrackRegions = trackRegions;
+		if (trackRegions == null) this.TrackRegions = new Dictionary<LevelRegionType, LevelRegion>();
 		// Store all the regions in the dictionary
 		foreach (var region in terrainRegions) {
 			// If the region is not in the availability dictionary, it is not allowed
-			if (!regionsAvailability.ContainsKey(region.Key)) {
-				regionsAvailability.Add(region.Key, false);
+			if (!RegionsAvailability.ContainsKey(region.Key)) {
+				RegionsAvailability.Add(region.Key, false);
 			}
 		}
 		foreach (var region in trackRegions) {
 			// If the region is not in the availability dictionary, it is not allowed
-			if (!regionsAvailability.ContainsKey(region.Key)) {
-				regionsAvailability.Add(region.Key, false);
+			if (!RegionsAvailability.ContainsKey(region.Key)) {
+				RegionsAvailability.Add(region.Key, false);
 			}
 		}
 	}

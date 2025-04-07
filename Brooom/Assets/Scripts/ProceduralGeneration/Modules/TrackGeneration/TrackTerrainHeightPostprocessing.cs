@@ -22,7 +22,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		PrepareRegionHeightDictionary(level);
 
 		// Change Y coordinate of each track point according to the terrain height in a close neighbourhood, ensure minimum height above ground
-		foreach (var trackPoint in level.track) {
+		foreach (var trackPoint in level.Track) {
 			float height = FindMaximumHeightInNeighbourhood(level, trackPoint.gridCoords); // already including offset above terrain
 			if (trackPoint.position.y < height) trackPoint.position.y = height;
 			// Limit the Y coordinate according to the maximum altitude of the broom
@@ -33,7 +33,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		// Change Y coordinate of each bonus spot according to the terrain height and adjacent hoops height
 		foreach (var bonus in level.bonuses) {
 			// Get height according to the adjacent hoops
-			bonus.position.y = Mathf.Lerp(level.track[bonus.previousHoopIndex].position.y, level.track[bonus.previousHoopIndex + 1].position.y, bonus.distanceFraction);
+			bonus.position.y = Mathf.Lerp(level.Track[bonus.previousHoopIndex].position.y, level.Track[bonus.previousHoopIndex + 1].position.y, bonus.distanceFraction);
 			// Get height according to the terrain
 			float heightTerrain = FindMaximumHeightInNeighbourhood(level, bonus.gridCoords);
 			if (bonus.position.y < heightTerrain) bonus.position.y = heightTerrain;
@@ -42,7 +42,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		}
 
 		// Change Y coordinate of the player's start position according to the terrain height
-		Vector3 topleft = level.terrain[0, 0].position; // position of the top-left grid point
+		Vector3 topleft = level.Terrain[0, 0].position; // position of the top-left grid point
 		float offset = level.pointOffset; // distance between adjacent grid points
 		int x = Mathf.RoundToInt(Mathf.Abs(level.playerStartPosition.x - topleft.x) / offset); // closest terrain grid point coordinates
 		int z = Mathf.RoundToInt(Mathf.Abs(level.playerStartPosition.z - topleft.z) / offset);
@@ -55,7 +55,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		// Prepare Dictionary of minimum height for each region type
 		minimumOffsetAboveGround = new Dictionary<LevelRegionType, float>();
 		minimumAbsoluteHeight = new Dictionary<LevelRegionType, float>();
-		foreach (var region in level.terrainRegions) {
+		foreach (var region in level.TerrainRegions) {
 			minimumOffsetAboveGround.Add(region.Key, defaultMinimumOffsetAboveGround);
 		}
 		// Override minimum height for specific regions
@@ -71,7 +71,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	private float FindMaximumHeightInNeighbourhood(LevelRepresentation level, Vector2Int gridCoords) {
 		// Get maximum height in some small neighbourhood
-		float maxHeight = GetMinimumHeightInPoint(level.terrain[gridCoords.x, gridCoords.y]);
+		float maxHeight = GetMinimumHeightInPoint(level.Terrain[gridCoords.x, gridCoords.y]);
 		float height;
 		int x, y;
 		for (int i = -hoopHeightAreaRadius; i <= hoopHeightAreaRadius; i++) {
@@ -81,7 +81,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 				y = gridCoords.y + j;
 				if (y < 0 || y >= level.pointCount.y) continue; // out of bounds check
 				// Get minimum height (either terrain height + minimum offset above ground, or minimun absolute height)
-				height = GetMinimumHeightInPoint(level.terrain[x, y]);
+				height = GetMinimumHeightInPoint(level.Terrain[x, y]);
 				if (height > maxHeight)
 					maxHeight = height;
 			}

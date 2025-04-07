@@ -14,7 +14,7 @@ public abstract class NavigationGoal {
     protected CharacterRaceState raceState;
 
     // If the agent is at most at this distance from the goal, the goal is considered reached
-    protected const float REACHED_DISTANCE_THRESHOLD = 0.5f; // TODO: Change this to a reasonable value
+    protected const float REACHED_DISTANCE_THRESHOLD = 0.5f;
 
     public NavigationGoal(GameObject agent) {
         this.agent = agent;
@@ -116,7 +116,7 @@ public class HoopGoal : TrackElementGoal {
     protected Plane trackPointPlane;
 
 	public HoopGoal(GameObject agent, int index) : base(agent, index) {
-        this.trackPoint = RaceController.Instance.Level.track[this.index];
+        this.trackPoint = RaceController.Instance.Level.Track[this.index];
         this.trackPointPlane = new Plane(this.trackPoint.assignedHoop.transform.forward, this.trackPoint.position);
     }
 
@@ -144,7 +144,7 @@ public class HoopGoal : TrackElementGoal {
         if (this.index != this.raceState.trackPointToPassNext)
             return 0;
         // And in a reasonable position relative to the agent
-        if (Mathf.Abs(Vector3.SignedAngle(this.agent.transform.forward, RaceController.Instance.Level.track[index].position - this.agent.transform.position, Vector3.up)) < 70f)
+        if (Mathf.Abs(Vector3.SignedAngle(this.agent.transform.forward, RaceController.Instance.Level.Track[index].position - this.agent.transform.position, Vector3.up)) < 70f)
             return 1;
         else
             return 0;
@@ -355,7 +355,7 @@ public class FinishNavigationGoal : NavigationGoal {
     private Vector3 GetTargetPoint() {
         Vector3 target = this.finishObject.transform.position;
         // Find the direction from the last hoop to the finish - this is the ideal direction to take to the finish
-        Vector3 lastHoopPosition = RaceController.Instance.Level.track[RaceController.Instance.Level.track.Count - 1].position;
+        Vector3 lastHoopPosition = RaceController.Instance.Level.Track[RaceController.Instance.Level.Track.Count - 1].position;
         Vector3 targetDirection = (target - lastHoopPosition).WithY(0);
         // Find intersection between this direction from the agent and the finish's right vector
         if (Utils.TryGetLineIntersectionXZ(

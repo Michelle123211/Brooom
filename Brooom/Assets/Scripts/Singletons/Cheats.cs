@@ -704,7 +704,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					raceState.hoopsMissed = 0;
 					raceState.hoopsPassed = 0;
 					for (int i = 0; i < raceState.hoopsPassedArray.Length; i++) {
-						if (RaceController.Instance.Level.track[i].isCheckpoint || hoopsMissed <= 0) {
+						if (RaceController.Instance.Level.Track[i].isCheckpoint || hoopsMissed <= 0) {
 							raceState.hoopsPassedArray[i] = true;
 							raceState.hoopsPassed++;
 						} else {

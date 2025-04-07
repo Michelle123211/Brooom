@@ -23,21 +23,21 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		int randOffsetY1 = Random.Range(0, 1000); // for Y axis in the diagram
 		int randOffsetY2 = Random.Range(0, 1000);
 		// Select a diagram to use (the one supporting all allowed regions if possible)
-		SelectRegionDiagram(level.terrainRegionsToInclude);
+		SelectRegionDiagram(level.TerrainRegionsToInclude);
 		// Assign each point of the terrain its region
 		for (int x = 0; x < level.pointCount.x; x++) {
 			for (int y = 0; y < level.pointCount.y; y++) {
 				// Skip points with already assigned region
-				if (level.terrain[x, y].region != LevelRegionType.NONE) continue;
+				if (level.Terrain[x, y].region != LevelRegionType.NONE) continue;
 				// Get coordinates in the diagram
 				float diagramX = Mathf.PerlinNoise((randOffsetX1 + x) * noiseXFrequency, (randOffsetX2 + y) * noiseXFrequency);
 				float diagramY = Mathf.PerlinNoise((randOffsetY1 + x) * noiseYFrequency, (randOffsetY2 + y) * noiseYFrequency);
 				// Get corresponding region type
-				level.terrain[x, y].region = GetRegionTypeFromDiagram(diagramX, diagramY);
+				level.Terrain[x, y].region = GetRegionTypeFromDiagram(diagramX, diagramY);
 				// If the chosen region is available, use it as is, otherwise find the closest available region and use it instead
-				if (!IsRegionAllowed(level.terrainRegionsToInclude, level.terrain[x, y].region))
-					level.terrain[x, y].region = GetClosestAllowedRegion(diagramX, diagramY, level.terrainRegionsToInclude);
-				level.regionsInLevel.Add(level.terrain[x, y].region); // note down this region is used
+				if (!IsRegionAllowed(level.TerrainRegionsToInclude, level.Terrain[x, y].region))
+					level.Terrain[x, y].region = GetClosestAllowedRegion(diagramX, diagramY, level.TerrainRegionsToInclude);
+				level.RegionsInLevel.Add(level.Terrain[x, y].region); // note down this region is used
 			}
 		}
 	}

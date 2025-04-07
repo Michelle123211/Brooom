@@ -29,8 +29,8 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 		// Instantiate hoops/checkpoints in track points
 		TrackPoint point;
 		Vector3 previousPosition, nextPosition, direction = Vector3.forward;
-		for (int i = 0; i < level.track.Count; i++) {
-			point = level.track[i];
+		for (int i = 0; i < level.Track.Count; i++) {
+			point = level.Track[i];
 			Hoop prefab = hoopPrefab;
 			if (point.isCheckpoint)
 				prefab = checkpointPrefab;
@@ -38,12 +38,12 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 			previousPosition = point.position;
 			nextPosition = point.position;
 			if (i > 0)
-				previousPosition = level.track[i - 1].position;
-			if (i < level.track.Count - 1)
-				nextPosition = level.track[i + 1].position;
+				previousPosition = level.Track[i - 1].position;
+			if (i < level.Track.Count - 1)
+				nextPosition = level.Track[i + 1].position;
 			direction = (nextPosition - previousPosition).WithY(0); // Y = 0 to rotate only around the Y axis
 			// Create instance
-			point.assignedHoop = Instantiate<Hoop>(prefab, level.track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
+			point.assignedHoop = Instantiate<Hoop>(prefab, level.Track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
 			// Set scale of the hoops
 			if (!point.isCheckpoint)
 				point.assignedHoop.GetComponent<Scalable>()?.SetScale(Vector3.one * hoopScale);
@@ -55,7 +55,7 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 		Instantiate(startingZonePrefab, startingZonePosition, Quaternion.identity, startFinishParent);
 		// Instantiate finish line
 		// ... orientation is the same as for the last hoop
-		Vector3 finishLinePosition = (level.track[level.track.Count - 1].position + direction.normalized * finishLineOffset).WithY(0);
+		Vector3 finishLinePosition = (level.Track[level.Track.Count - 1].position + direction.normalized * finishLineOffset).WithY(0);
 		FinishLine finish = Instantiate<FinishLine>(finishLinePrefab, finishLinePosition, Quaternion.FromToRotation(Vector3.forward, direction), startFinishParent);
 		level.finish = finish;
 	}

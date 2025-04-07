@@ -17,9 +17,9 @@ public class MaximumAngleCorrection : LevelGeneratorModule {
 		int maxIndex = -1; // index of the point/spot with maximum height
 		bool startInHoop = true; // true means there is a hoop in the maximum height, false means there is a bonus spot
 		// Go through all the track points
-		for (int i = 0; i < level.track.Count; i++) {
-			if (level.track[i].position.y > maxHeight) {
-				maxHeight = level.track[i].position.y;
+		for (int i = 0; i < level.Track.Count; i++) {
+			if (level.Track[i].position.y > maxHeight) {
+				maxHeight = level.Track[i].position.y;
 				maxIndex = i;
 			}
 		}
@@ -38,7 +38,7 @@ public class MaximumAngleCorrection : LevelGeneratorModule {
 		CorrectOneSide(level, maxIndex, startInHoop, 1);
 
 		// Update height of starting position
-		level.playerStartPosition.y = Mathf.Max(level.playerStartPosition.y, level.track[0].position.y);
+		level.playerStartPosition.y = Mathf.Max(level.playerStartPosition.y, level.Track[0].position.y);
 	}
 
 	// index ... index of the track point or bonus spot where to start
@@ -47,7 +47,7 @@ public class MaximumAngleCorrection : LevelGeneratorModule {
 	private void CorrectOneSide(LevelRepresentation level, int startIndex, bool startInHoop, int direction) {
 		// Initialize last position
 		Vector3 lastPosition;
-		if (startInHoop) lastPosition = level.track[startIndex].position;
+		if (startInHoop) lastPosition = level.Track[startIndex].position;
 		else lastPosition = level.bonuses[startIndex].position;
 
 		// Starting point/spot is not changed
@@ -57,18 +57,18 @@ public class MaximumAngleCorrection : LevelGeneratorModule {
 		// Correct height of the hoop if necessary
 		if (startInHoop) {
 			CorrectHoopHeight(level, indices.x, lastPosition, direction);
-			lastPosition = level.track[indices.x].position;
+			lastPosition = level.Track[indices.x].position;
 			indices.x += direction;
 		}
 
 		// While there are other hoops in the direction
-		while (indices.x >= 0 && indices.x < level.track.Count) {
+		while (indices.x >= 0 && indices.x < level.Track.Count) {
 			// Corect heights of all the bonuses until the next hoop
 			indices.y = CorrectBonusHeightUntilNextHoop(level, indices.y, lastPosition, direction);
 			lastPosition = level.bonuses[indices.y - direction].position;
 			// Correct height of the next hoop
 			CorrectHoopHeight(level, indices.x, lastPosition, direction);
-			lastPosition = level.track[indices.x].position;
+			lastPosition = level.Track[indices.x].position;
 			indices.x += direction;
 		}
 	}
@@ -114,7 +114,7 @@ public class MaximumAngleCorrection : LevelGeneratorModule {
 	// referenceHeight ... height of the previous point
 	// direction ... -1 to go left, 1 to go right
 	private void CorrectHoopHeight(LevelRepresentation level, int hoopIndex, Vector3 lastPosition, int direction) {
-		level.track[hoopIndex].position.y = GetPointHeightWithLimitedAngle(level.track[hoopIndex].position, lastPosition);
+		level.Track[hoopIndex].position.y = GetPointHeightWithLimitedAngle(level.Track[hoopIndex].position, lastPosition);
 	}
 
 	// Returns index of the next bonus (which was not processed because it is after the hoop)

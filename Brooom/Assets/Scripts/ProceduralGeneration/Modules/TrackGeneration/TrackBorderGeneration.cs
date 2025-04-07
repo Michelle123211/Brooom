@@ -31,23 +31,23 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		// Start from points to the sides of the first hoop
 		Vector3 previousDirection = GetSegmentDirection(level, 0);
 		Vector3 orthogonalDirection = GetOrthogonalDirectionXZ(previousDirection);
-		Vector3 previousPoint1 = level.track[0].position + orthogonalDirection * (trackWidth / 2);
-		Vector3 previousPoint2 = level.track[0].position - orthogonalDirection * (trackWidth / 2);
+		Vector3 previousPoint1 = level.Track[0].position + orthogonalDirection * (trackWidth / 2);
+		Vector3 previousPoint2 = level.Track[0].position - orthogonalDirection * (trackWidth / 2);
 
 		Vector3 nextPoint1, nextPoint2, nextDirection;
 
 		// Generate border around start
 		CloseBorder(previousPoint1, previousPoint2, -previousDirection, startPadding);
 		// Generate borders for each segment between two hoops
-		for (int i = 0; i < level.track.Count - 1; i++) {
+		for (int i = 0; i < level.Track.Count - 1; i++) {
 			// Get direction of next segment
 			nextDirection = GetSegmentDirection(level, i + 1);
 			orthogonalDirection = GetOrthogonalDirectionXZ(nextDirection);
 			// Get points to the side of next hoop
-			Vector3 point1 = level.track[i + 1].position + orthogonalDirection * (trackWidth / 2);
-			Vector3 point2 = level.track[i + 1].position - orthogonalDirection * (trackWidth / 2);
+			Vector3 point1 = level.Track[i + 1].position + orthogonalDirection * (trackWidth / 2);
+			Vector3 point2 = level.Track[i + 1].position - orthogonalDirection * (trackWidth / 2);
 			// Get end points for border
-			if (i < level.track.Count - 2) { // if not the last segment, compute intersection with the last one
+			if (i < level.Track.Count - 2) { // if not the last segment, compute intersection with the last one
 				bool isIntersection1 = Utils.TryGetLineIntersectionXZ(
 					previousPoint1, previousPoint1 + previousDirection,
 					point1, point1 + nextDirection,
@@ -81,12 +81,12 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 	}
 
 	private Vector3 GetSegmentDirection(LevelRepresentation level, int startHoopIndex) {
-		if (level.track.Count < 2) // not enough points for a segment, return simply forward (implicit first direction when generating track)
+		if (level.Track.Count < 2) // not enough points for a segment, return simply forward (implicit first direction when generating track)
 			return Vector3.forward;
-		else if (startHoopIndex == level.track.Count - 1) // last point, there is no segment starting here so return direction of the previous one
-			return (level.track[level.track.Count - 1].position - level.track[level.track.Count - 2].position).WithY(0).normalized;
+		else if (startHoopIndex == level.Track.Count - 1) // last point, there is no segment starting here so return direction of the previous one
+			return (level.Track[level.Track.Count - 1].position - level.Track[level.Track.Count - 2].position).WithY(0).normalized;
 		else
-			return (level.track[startHoopIndex + 1].position - level.track[startHoopIndex].position).WithY(0).normalized;
+			return (level.Track[startHoopIndex + 1].position - level.Track[startHoopIndex].position).WithY(0).normalized;
 	}
 
 	private void CloseBorder(Vector3 point1, Vector3 point2, Vector3 direction, float padding) {

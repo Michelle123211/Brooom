@@ -318,13 +318,13 @@ public class StatsComputer : MonoBehaviour {
         Vector3 playerPosition = playerRaceState.transform.position;
         // Get positions of two track points between which the player is located
         Vector3 firstPoint = RaceController.Instance.Level.playerStartPosition;
-        Vector3 secondPoint = RaceController.Instance.Level.track[0].position;
-        if (playerRaceState.followingTrackPoint >= RaceController.Instance.Level.track.Count) { // the player is behind the last hoop
-            firstPoint = RaceController.Instance.Level.track[RaceController.Instance.Level.track.Count - 1].position;
+        Vector3 secondPoint = RaceController.Instance.Level.Track[0].position;
+        if (playerRaceState.followingTrackPoint >= RaceController.Instance.Level.Track.Count) { // the player is behind the last hoop
+            firstPoint = RaceController.Instance.Level.Track[RaceController.Instance.Level.Track.Count - 1].position;
             secondPoint = RaceController.Instance.Level.finish.transform.position.WithY(firstPoint.y); // finish line but at the same height as the last hoop
         } else if (playerRaceState.followingTrackPoint > 0) { // the player is somewhere in the middle of the track
-            firstPoint = RaceController.Instance.Level.track[playerRaceState.followingTrackPoint - 1].position;
-            secondPoint = RaceController.Instance.Level.track[playerRaceState.followingTrackPoint].position;
+            firstPoint = RaceController.Instance.Level.Track[playerRaceState.followingTrackPoint - 1].position;
+            secondPoint = RaceController.Instance.Level.Track[playerRaceState.followingTrackPoint].position;
         }
         // Project vector from the first point to the player onto the vector from the first point to the second point
         Vector3 projection = Vector3.Project(playerPosition - firstPoint, (secondPoint - firstPoint).normalized);

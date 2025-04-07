@@ -41,7 +41,6 @@ public class ColorPalette : ScriptableObject {
 	[SerializeField] Color notificationColor;
 	[SerializeField] Color tooltipBackground;
 	[SerializeField] Color tooltipText;
-	// TODO: sliders, scrollbars, ...
 
 	[Header("Leaderboard")]
 	[SerializeField] Color gold;

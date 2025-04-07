@@ -32,7 +32,7 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 		float distance = Random.Range(distanceRange.x, distanceRange.y);
 
 		// Repeat until all the points are generated
-		while (level.track.Count < numberOfPoints) {
+		while (level.Track.Count < numberOfPoints) {
 			// Move to the next point (given by the previous point, direction vector and distance)
 			position = position + direction * distance;
 			AddTrackPoint(level, position);
@@ -43,7 +43,7 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 
 	private void SelectParametersForNextStep(LevelRepresentation level, Vector3 position, ref Vector3 direction, ref float distance) {
 		// Set new values for direction (according to the new last segment) and distance
-		direction = level.track.Count < 2 ? Vector3.forward : (level.track[level.track.Count - 1].position - level.track[level.track.Count - 2].position);
+		direction = level.Track.Count < 2 ? Vector3.forward : (level.Track[level.Track.Count - 1].position - level.Track[level.Track.Count - 2].position);
 		direction = SelectDirection(level, position, direction);
 		distance = Random.Range(distanceRange.x, distanceRange.y);
 	}
@@ -131,7 +131,7 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 		// Go through all the points and draw a cube in each of them
 		if (levelDebug != null) {
 			Gizmos.color = Color.yellow;
-			foreach (var point in levelDebug.track) {
+			foreach (var point in levelDebug.Track) {
 				Gizmos.DrawCube(point.position, Vector3.one * 0.5f);
 			}
 		}

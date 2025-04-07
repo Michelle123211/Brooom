@@ -48,9 +48,9 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 				int centerY = startY + randIndex / sizeX;
 				centres[x, y] = new Vector2(centerX, centerY);
 				// Then select randomly the corresponding region (from the allowed terrain regions)
-				if (level.terrain[centerX, centerY].region == LevelRegionType.NONE) {
-					level.terrain[centerX, centerY].region = level.terrainRegionsToInclude[Random.Range(0, level.terrainRegionsToInclude.Count)];
-					level.regionsInLevel.Add(level.terrain[centerX, centerY].region); // note down this region is used
+				if (level.Terrain[centerX, centerY].region == LevelRegionType.NONE) {
+					level.Terrain[centerX, centerY].region = level.TerrainRegionsToInclude[Random.Range(0, level.TerrainRegionsToInclude.Count)];
+					level.RegionsInLevel.Add(level.Terrain[centerX, centerY].region); // note down this region is used
 				}
 			}
 		}
@@ -62,7 +62,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		for (int x = 0; x < level.pointCount.x; x++) {
 			for (int y = 0; y < level.pointCount.y; y++) {
 				// Skip points with already assigned region (e.g. centres)
-				if (level.terrain[x, y].region != LevelRegionType.NONE) continue;
+				if (level.Terrain[x, y].region != LevelRegionType.NONE) continue;
 				// Look to the tile and its neighbours and find centre with minimum distance
 				FindAndAssignCentreWithMinimumDistance(level, x, y);
 			}
@@ -83,7 +83,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 					float dist = Vector2.Distance(coords, centre);
 					if (dist < minDistance) { // closer centre was found
 						minDistance = dist;
-						level.terrain[x, y].region = level.terrain[(int)centre.x, (int)centre.y].region;
+						level.Terrain[x, y].region = level.Terrain[(int)centre.x, (int)centre.y].region;
 					}
 				}
 			}

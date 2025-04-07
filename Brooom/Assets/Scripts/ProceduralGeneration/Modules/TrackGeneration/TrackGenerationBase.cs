@@ -33,15 +33,15 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 		SnapPointsToGrid(level);
 
 		// Select player's start position in front of the first point
-		level.playerStartPosition = level.track[0].position + Vector3.back * playerStartDistance;
+		level.playerStartPosition = level.Track[0].position + Vector3.back * playerStartDistance;
 	}
 
 	// Adds track point with the given position to the level
 	protected void AddTrackPoint(LevelRepresentation level, Vector3 position) {
 		TrackPoint trackPoint = new TrackPoint();
 		trackPoint.position = position;
-		trackPoint.isCheckpoint = (level.track.Count) % (numberOfHoopsBetween + 1) == 0;
-		level.track.Add(trackPoint);
+		trackPoint.isCheckpoint = (level.Track.Count) % (numberOfHoopsBetween + 1) == 0;
+		level.Track.Add(trackPoint);
 	}
 
 	// Moves all the points so that the final track is centered around the world origin
@@ -49,7 +49,7 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 		// Compute min and max positions
 		minPosition = new Vector2(float.MaxValue, float.MaxValue);
 		maxPosition = new Vector2(float.MinValue, float.MinValue);
-		foreach (var trackPoint in level.track) {
+		foreach (var trackPoint in level.Track) {
 			if (trackPoint.position.x < minPosition.x) minPosition.x = trackPoint.position.x;
 			if (trackPoint.position.x > maxPosition.x) maxPosition.x = trackPoint.position.x;
 			if (trackPoint.position.z < minPosition.y) minPosition.y = trackPoint.position.z;
@@ -61,7 +61,7 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 		float offsetX = newMaxPositionX - maxPosition.x;
 		float offsetZ = newMaxPositionZ - maxPosition.y;
 		// Apply the offset to each point
-		foreach (var point in level.track) {
+		foreach (var point in level.Track) {
 			point.position.x += offsetX;
 			point.position.z += offsetZ;
 		}
@@ -74,13 +74,13 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 
 	private void SnapPointsToGrid(LevelRepresentation level) {
 		int i, j;
-		Vector3 topleft = level.terrain[0, 0].position; // position of the top-left grid point
+		Vector3 topleft = level.Terrain[0, 0].position; // position of the top-left grid point
 		float offset = level.pointOffset; // distance between adjacent grid points
-		foreach (var trackPoint in level.track) {
+		foreach (var trackPoint in level.Track) {
 			// Snap the points to the underlying terrain grid (to the closest grid point)
 			i = Mathf.RoundToInt(Mathf.Abs(trackPoint.position.x - topleft.x) / offset);
 			j = Mathf.RoundToInt(Mathf.Abs(trackPoint.position.z - topleft.z) / offset);
-			trackPoint.position = level.terrain[i, j].position.WithY(trackPoint.position.y);
+			trackPoint.position = level.Terrain[i, j].position.WithY(trackPoint.position.y);
 			// Set grid coordinates of the points
 			trackPoint.gridCoords = new Vector2Int(i, j);
 		}

@@ -15,7 +15,7 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
 	public override void Generate(LevelRepresentation level) {
         // Prepare Dictionary of border tolerances for each region type
         regionBorderTolerance = new Dictionary<LevelRegionType, int>();
-        foreach (var region in level.terrainRegions) {
+        foreach (var region in level.TerrainRegions) {
             regionBorderTolerance.Add(region.Key, defaultBorderTolerance);
         }
         // Override border tolerance for specific regions
@@ -28,7 +28,7 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
         // Go through all terrain points and determine, whether it lies in borders (based on distance to other regions)
         for (int x = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
-                level.terrain[x, y].isOnBorder = IsPointOnBorder(level, x, y);
+                level.Terrain[x, y].isOnBorder = IsPointOnBorder(level, x, y);
             }
         }
     }
@@ -37,7 +37,7 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
         // Determine whether the point is on the border based on distance to other regions
         int step = 1;
         int tolerance;
-        if (!regionBorderTolerance.TryGetValue(level.terrain[x, y].region, out tolerance))
+        if (!regionBorderTolerance.TryGetValue(level.Terrain[x, y].region, out tolerance))
             tolerance = defaultBorderTolerance;
         while (step <= tolerance) {
             // Go through 8 directions
@@ -49,7 +49,7 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
                     int otherY = y + step * j;
                     if (otherY < 0 || otherY >= level.pointCount.y) continue; // out of bounds check
                     // If there is a different region, it is border point
-                    if (level.terrain[otherX, otherY].region != level.terrain[x, y].region) {
+                    if (level.Terrain[otherX, otherY].region != level.Terrain[x, y].region) {
                         return true;
                     }
                 }

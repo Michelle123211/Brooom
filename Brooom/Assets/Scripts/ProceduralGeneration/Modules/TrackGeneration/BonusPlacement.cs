@@ -41,7 +41,7 @@ public class BonusPlacement : LevelGeneratorModule {
         int count = Random.Range(min, max);
         if (count == 0) return;
         // Compute position parameters
-        Vector3 forwardProjected = (level.track[spot.previousHoopIndex + 1].position - level.track[spot.previousHoopIndex].position).WithY(0); // forward vector projected to the XZ plane
+        Vector3 forwardProjected = (level.Track[spot.previousHoopIndex + 1].position - level.Track[spot.previousHoopIndex].position).WithY(0); // forward vector projected to the XZ plane
         Vector3 direction = Vector3.Cross(forwardProjected, Vector3.up).normalized; // right vector (in the direction of a row of bonuses)
         Vector3 leftPosition = spot.position - direction * spacing * ((count - 1) / 2f);
         // Create instances of the bonus

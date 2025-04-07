@@ -64,7 +64,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 
 	private void FillEnvironmentSpot(LevelRepresentation level, int spotX, int spotY) {
 		// Decide what will be there according to its region and instantiate it
-		LevelRegionType regionType = level.terrain[spotX, spotY].region;
+		LevelRegionType regionType = level.Terrain[spotX, spotY].region;
 		foreach (var region in regionElements) {
 			if (region.region == regionType) {
 				// Generate random number between 0 and 1
@@ -107,7 +107,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 			return;
 		}
 		// Compute parameters
-		Vector3 position = level.terrain[spotX, spotY].position;
+		Vector3 position = level.Terrain[spotX, spotY].position;
 		if (element.specificHeightRange) {
 			if (position.y >= element.heightRange.y) return; // not possible to place the object above terrain
 			else position.y = Random.Range(element.heightRange.x, element.heightRange.y);
@@ -115,7 +115,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		Quaternion rotation = element.randomRotation ? Quaternion.Euler(0, Random.Range(0, 360), 0) : Quaternion.identity;
 		float scale = Random.Range(element.scaleRange.x, element.scaleRange.y);
 		// Placement on region borders is even less probable (or even impossible for some elements)
-		if (level.terrain[spotX, spotY].isOnBorder) {
+		if (level.Terrain[spotX, spotY].isOnBorder) {
 			if (!element.canBeOnRegionBorder || Random.value > regionBorderProbability) return;
 		}
 		// Instantiate with parameters
@@ -132,7 +132,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	
 	// Checks whether the given grid point is within the rectangular region of start line
 	private bool IsCloseToStartLine(LevelRepresentation level, int spotX, int spotY) {
-		Vector3 difference = level.playerStartPosition - level.terrain[spotX, spotY].position;
+		Vector3 difference = level.playerStartPosition - level.Terrain[spotX, spotY].position;
 		return Mathf.Abs(difference.x) < (startLineSpanX / 2f) && Mathf.Abs(difference.z) < (startLineSpanZ / 2f);
 	}
 
@@ -140,7 +140,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	private bool CanBeSpawnedAtStartLine(LevelRepresentation level, GameObject elementVariant, int spotX, int spotY) {
 		MeshFilter meshFilter = elementVariant.GetComponentInChildren<MeshFilter>();
 		float elementHeight = meshFilter.sharedMesh.bounds.size.y;
-		float allowedHeight = (level.playerStartPosition.y - level.terrain[spotX, spotY].position.y) - minVerticalSpacing; // at least several units below the racers
+		float allowedHeight = (level.playerStartPosition.y - level.Terrain[spotX, spotY].position.y) - minVerticalSpacing; // at least several units below the racers
 		return elementHeight < allowedHeight;
 	}
 }

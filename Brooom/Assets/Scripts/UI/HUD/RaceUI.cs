@@ -151,10 +151,9 @@ public class RaceUI : MonoBehaviour {
     }
 
 	public void StartRace() {
-        // TODO: Hide all elements which are visible only during the training
-        // TODO: Initialize all elements
+        // Initialize all elements
         ResetRaceState();
-        // TODO: Show elements visible only during the race
+        // Show elements visible only during the race
         timeObject.SetActive(true);
         placeObject.SetActive(true);
         spellsUI.Initialize(playerRaceState.gameObject); // initialize and show

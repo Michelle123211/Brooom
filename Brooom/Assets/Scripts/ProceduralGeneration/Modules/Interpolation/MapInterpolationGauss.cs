@@ -74,7 +74,7 @@ public class MapInterpolationGauss : LevelGeneratorModule {
         for (int x = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
                 // If desired blur only the points on border
-                if (interpolateBordersOnly && !level.terrain[x, y].isOnBorder) continue;
+                if (interpolateBordersOnly && !level.Terrain[x, y].isOnBorder) continue;
                 // Apply kernel
                 int kernelHalf = kernel.GetLength(0) / 2;
                 for (int i = -kernelHalf; i <= kernelHalf; i++) {
@@ -83,7 +83,7 @@ public class MapInterpolationGauss : LevelGeneratorModule {
                     for (int j = -kernelHalf; j <= kernelHalf; j++) {
                         int otherY = y + j;
                         if (otherY < 0 || otherY >= level.pointCount.y) continue; // out of bounds check
-                        newHeights[x, y] += level.terrain[otherX, otherY].position.y * kernel[i + kernelHalf, j + kernelHalf];
+                        newHeights[x, y] += level.Terrain[otherX, otherY].position.y * kernel[i + kernelHalf, j + kernelHalf];
                     }
                 }
             }
@@ -95,7 +95,7 @@ public class MapInterpolationGauss : LevelGeneratorModule {
         for (int x = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
                 if (newHeights[x, y] != 0) {
-                    level.terrain[x, y].position.y = newHeights[x, y];
+                    level.Terrain[x, y].position.y = newHeights[x, y];
                     newHeights[x, y] = 0; // reset for the next iteration
                 }
             }

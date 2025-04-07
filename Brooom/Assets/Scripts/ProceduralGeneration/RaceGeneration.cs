@@ -82,7 +82,7 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
         trackGenerator.distanceRange = distanceRange;
         levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale = hoopScale;
         levelGenerator.GetComponent<MaximumAngleCorrection>().maxAngle = directionChange.x;
-        levelGenerator.GetComponent<OpponentsGeneration>().opponentsCount = 5; // TODO: Change this number if necessary, in the future
+        levelGenerator.GetComponent<OpponentsGeneration>().opponentsCount = 5;
     }
 
     private void UpdateRegionsAvailability() {

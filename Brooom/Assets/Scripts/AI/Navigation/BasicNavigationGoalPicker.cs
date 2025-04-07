@@ -100,7 +100,7 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 	private NavigationGoal CreateTrackGoalFromIndex(int index) {
 		if (index >= raceState.hoopsPassedArray.Length) {
 			return new FinishNavigationGoal(this.agent);
-		} else if (RaceController.Instance.Level.track[index].isCheckpoint) {
+		} else if (RaceController.Instance.Level.Track[index].isCheckpoint) {
 			return new CheckpointGoal(this.agent, index);
 		} else {
 			return new HoopGoal(this.agent, index);

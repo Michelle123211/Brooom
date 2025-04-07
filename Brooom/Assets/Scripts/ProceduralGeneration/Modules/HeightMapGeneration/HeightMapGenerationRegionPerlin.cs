@@ -26,11 +26,11 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 			for (int y = 0; y < level.pointCount.y; y++) {
 				// Look at the assigned region and get its noise function
 				OctavedPerlinNoise noise;
-				if (!regionPerlinNoise.TryGetValue(level.terrain[x, y].region, out noise))
+				if (!regionPerlinNoise.TryGetValue(level.Terrain[x, y].region, out noise))
 					noise = defaultPerlinNoise;
 				// Determine height with the given parameters
 				float height = noise.GetValue(x * level.pointOffset, y * level.pointOffset); // multiplied by pointOffset to make the overall shape of terrain not dependent on pointOffset
-				level.terrain[x, y].position.y = height;
+				level.Terrain[x, y].position.y = height;
 				// Update minimum and maximum heights
 				if (height < currMinHeight) currMinHeight = height;
 				if (height > currMaxHeight) currMaxHeight = height;
@@ -63,11 +63,11 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 			for (int y = 0; y < level.pointCount.y; y++) {
 				// Look at the assigned region and get its parameters
 				Vector2 heightRange;
-				if (!regionHeightRange.TryGetValue(level.terrain[x, y].region, out heightRange))
+				if (!regionHeightRange.TryGetValue(level.Terrain[x, y].region, out heightRange))
 					heightRange = defaultHeightRange;
-				float newHeight = level.terrain[x, y].position.y;
+				float newHeight = level.Terrain[x, y].position.y;
 				// Remap from (currMinHeight, currMaxHeight) to (regionParams.heightRange.x, regionParams.heightRange.y)
-				level.terrain[x, y].position.y = Utils.RemapRange(newHeight, currentMinHeight, currentMaxHeight, heightRange.x, heightRange.y);
+				level.Terrain[x, y].position.y = Utils.RemapRange(newHeight, currentMinHeight, currentMaxHeight, heightRange.x, heightRange.y);
 			}
 		}
 	}

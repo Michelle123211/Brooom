@@ -14,11 +14,11 @@ public class BonusSpotsGeneration : LevelGeneratorModule {
     private void GenerateBonusSpots(LevelRepresentation level) {
         // Generate spots for the bonuses
         level.bonuses = new List<BonusSpot>();
-        for (int i = 0; i < level.track.Count - 1; i++) {
+        for (int i = 0; i < level.Track.Count - 1; i++) {
             for (int j = 1; j <= countBetweenHoops; j++) {
                 // Uniformly divide the space between two track points
-                Vector3 pointA = level.track[i].position;
-                Vector3 pointB = level.track[i + 1].position;
+                Vector3 pointA = level.Track[i].position;
+                Vector3 pointB = level.Track[i + 1].position;
                 float fraction = (float)j / (countBetweenHoops + 1);
                 level.bonuses.Add(new BonusSpot(pointA + fraction * (pointB - pointA), i, fraction));
             }

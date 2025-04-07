@@ -15,28 +15,28 @@ public class TrackRegionGenerator : LevelGeneratorModule
         if (trackRegions == null) trackRegions = new List<TrackRegionParameters>();
         foreach (var region in trackRegions) {
             // Skip not available regions
-            if (!level.regionsAvailability.TryGetValue(region.trackRegion, out bool isAvailable) || !isAvailable)
+            if (!level.RegionsAvailability.TryGetValue(region.trackRegion, out bool isAvailable) || !isAvailable)
                 continue;
             // Add the given region with some probability - if the region is new, add it automatically
-            if (!level.regionsVisited.TryGetValue(region.trackRegion, out bool isVisited) || !isVisited || Random.Range(0f, 1f) < region.probability) {
+            if (!level.RegionsVisited.TryGetValue(region.trackRegion, out bool isVisited) || !isVisited || Random.Range(0f, 1f) < region.probability) {
                 int length = Random.Range(region.lengthRange.x, region.lengthRange.y); // random length
                 // Choose starting index
-                int startIndex = Random.Range(0, level.track.Count - length);
+                int startIndex = Random.Range(0, level.Track.Count - length);
                 // Adjust all selected track points
                 for (int i = startIndex; i < startIndex + length; i++) {
                     // Select height in the range
-                    if (level.track[i].position.y < region.heightRange.x || level.track[i].position.y > region.heightRange.y)
-                        level.track[i].position.y = Random.Range(region.heightRange.x, region.heightRange.y);
+                    if (level.Track[i].position.y < region.heightRange.x || level.Track[i].position.y > region.heightRange.y)
+                        level.Track[i].position.y = Random.Range(region.heightRange.x, region.heightRange.y);
                     // Mark the track region in the TrackPoint
-                    level.track[i].trackRegion = region.trackRegion;
+                    level.Track[i].trackRegion = region.trackRegion;
                 }
                 // Interpolate heights on edges
                 int endIndex = startIndex + length - 1;
                 InterpolateHeightsInRegion(level, startIndex, endIndex);
                 // Adjust start position if necessary
-                if (startIndex == 0) level.playerStartPosition.y = Mathf.Max(level.playerStartPosition.y, level.track[0].position.y);
+                if (startIndex == 0) level.playerStartPosition.y = Mathf.Max(level.playerStartPosition.y, level.Track[0].position.y);
                 // Note down this region is used
-                level.regionsInLevel.Add(region.trackRegion);
+                level.RegionsInLevel.Add(region.trackRegion);
             }
         }
 	}
@@ -46,19 +46,19 @@ public class TrackRegionGenerator : LevelGeneratorModule
         int startIndex = regionStartIndex - 2;
         if (startIndex < 0) startIndex = 0;
         int endIndex = regionEndIndex + 2;
-        if (endIndex >= level.track.Count) endIndex = level.track.Count - 1;
+        if (endIndex >= level.Track.Count) endIndex = level.Track.Count - 1;
         // Compute new heights as weighted averages
         float[] newHeights = new float[endIndex - startIndex + 1];
         for (int currentIndex = startIndex; currentIndex <= endIndex; currentIndex++) {
             for (int i = -2; i <= 2; i++) {
                 int neighbourIndex = currentIndex + i;
-                if (neighbourIndex < 0 || neighbourIndex >= level.track.Count) continue;
-                newHeights[currentIndex - startIndex] += level.track[neighbourIndex].position.y * kernel[i + 2];
+                if (neighbourIndex < 0 || neighbourIndex >= level.Track.Count) continue;
+                newHeights[currentIndex - startIndex] += level.Track[neighbourIndex].position.y * kernel[i + 2];
             }
         }
         // Update the heights
         for (int i = 0; i < newHeights.Length; i++) {
-            level.track[startIndex + i].position.y = newHeights[i];
+            level.Track[startIndex + i].position.y = newHeights[i];
         }
     }
 }

@@ -26,7 +26,7 @@ public class HeightMapGeneratorPerlin : LevelGeneratorModule {
             for (int y = 0; y < level.pointCount.y; y++) {
                 // Determine height using Perlin noise with octaves
                 float height = perlinNoise.GetValue(x * level.pointOffset, y * level.pointOffset); // multiplied by pointOffset to make the overall shape of terrain not dependent on pointOffset
-                level.terrain[x, y].position.y = height;
+                level.Terrain[x, y].position.y = height;
                 // Update minimum and maximum heights
                 if (height < currMinHeight) currMinHeight = height;
                 if (height > currMaxHeight) currMaxHeight = height;
@@ -35,7 +35,7 @@ public class HeightMapGeneratorPerlin : LevelGeneratorModule {
         // Remap the range from (currMinHeight, currMaxHeight) to (heightRange.x, heightRange.y)
         for (int x = 0; x < level.pointCount.x; x++) {
             for (int y = 0; y < level.pointCount.y; y++) {
-                level.terrain[x, y].position.y = Utils.RemapRange(level.terrain[x, y].position.y, currMinHeight, currMaxHeight, heightRange.x, heightRange.y);
+                level.Terrain[x, y].position.y = Utils.RemapRange(level.Terrain[x, y].position.y, currMinHeight, currMaxHeight, heightRange.x, heightRange.y);
             }
         }
     }

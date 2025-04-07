@@ -37,7 +37,6 @@ public class ShopSpellSlotUI : MonoBehaviour
         AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.Purchase);
         // Update the UI
         ChangeToUnlocked();
-        // TODO: If it is the first purchased spell, start a tutorial
     }
 
 	public void UpdateUI() {
