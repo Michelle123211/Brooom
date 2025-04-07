@@ -225,7 +225,7 @@ public class StatsComputer : MonoBehaviour {
 
     private int ComputeEnduranceValue() {
         // Change the current Endurance value based on place
-        float delta = enduranceDeltaBasedOnPlace.Evaluate(1 - ((playerPlace - 1) / (totalRacers - 1))) * maxEnduranceDelta;
+        float delta = enduranceDeltaBasedOnPlace.Evaluate(1 - ((playerPlace - 1f) / (totalRacers - 1f))) * maxEnduranceDelta;
         return Mathf.Min(Mathf.RoundToInt(currentEndurance + delta), 100); // must not exceed 100
     }
 
@@ -242,8 +242,8 @@ public class StatsComputer : MonoBehaviour {
 
     private int ComputePrecisionValue() {
         // Combination of passed/missed hoops, picked/missed bonuses, obstacle collisions and wrong directions
-        float hoopPart = (passedHoops / totalHoops) * 100;
-        float bonusPart = Mathf.Clamp(pickedUpBonusWeightSum / totalBonusWeightSum, 0, 1) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
+        float hoopPart = (passedHoops / (float)totalHoops) * 100;
+        float bonusPart = Mathf.Clamp(pickedUpBonusWeightSum / (float)totalBonusWeightSum, 0, 1) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
         float collisionPart = obstacleCollisionValue;
         float wrongDirectionPart = Mathf.Clamp(1 - (wrongDirectionCount * wrongDirectionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100;
         return Mathf.RoundToInt(hoopPart * 0.35f + bonusPart * 0.25f + collisionPart * 0.25f + wrongDirectionPart * 0.15f);
@@ -253,7 +253,7 @@ public class StatsComputer : MonoBehaviour {
         // Combination of picked up mana bonuses and diverse spell usage
         if (PlayerState.Instance.availableSpellCount == 0) // no purchased spells, just return 0
             return 0;
-        float manaPart = ((Mathf.Clamp(pickedUpMana / totalMana, 0, 1) * 2 + Mathf.Clamp(usedMana / totalMana, 0, 1)) / 3) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
+        float manaPart = ((Mathf.Clamp(pickedUpMana / (float)totalMana, 0, 1) * 2 + Mathf.Clamp(usedMana / (float)totalMana, 0, 1)) / 3) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
         return Mathf.RoundToInt(manaPart * equippedSpellUsageValue * spellUsageValue);
     }
 
