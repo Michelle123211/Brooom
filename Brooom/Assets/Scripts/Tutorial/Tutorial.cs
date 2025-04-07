@@ -125,10 +125,6 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 		LoadCurrentProgress();
 	}
 
-	private void OnDestroy() {
-		SaveCurrentProgress(); // just to make sure
-	}
-
 }
 
 public enum TutorialStage { 
