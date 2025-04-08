@@ -246,7 +246,7 @@ public class StatsComputer : MonoBehaviour {
         float bonusPart = Mathf.Clamp(pickedUpBonusWeightSum / (float)totalBonusWeightSum, 0, 1) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
         float collisionPart = obstacleCollisionValue;
         float wrongDirectionPart = Mathf.Clamp(1 - (wrongDirectionCount * wrongDirectionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100;
-        return Mathf.RoundToInt(hoopPart * 0.35f + bonusPart * 0.25f + collisionPart * 0.25f + wrongDirectionPart * 0.15f);
+        return Mathf.RoundToInt(hoopPart * 0.4f + bonusPart * 0.2f + collisionPart * 0.25f + wrongDirectionPart * 0.15f);
     }
 
     private int ComputeMagicValue() {
@@ -272,14 +272,14 @@ public class StatsComputer : MonoBehaviour {
         // Weighted average of the old and new stat value
         // Weight of current value depends on place
         // Old value has more weight so the stat does not immediately jump to very high values
-        return Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 2) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 2));
+        return Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 3) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 3));
     }
 
     private int CombinePrecisionValues(int oldValue, int newValue) {
         // Weighted average of the old and new stat value
         // Weight of current value depends on place
         // Old value has more weight so the stat does not immediately jump to very high values
-        return Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 2) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 2));
+        return Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 3) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 3));
     }
 
     private int CombineMagicValues(int oldValue, int newValue) {

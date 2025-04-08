@@ -8748,12 +8748,12 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0.3434471
-        outSlope: 0.3434471
+        inSlope: 0.9498821
+        outSlope: 0.9498821
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.3807688
+        outWeight: 0.24547009
       - serializedVersion: 3
         time: 0.18206999
         value: 0.3038095
@@ -8784,17 +8784,17 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.6203313
+        outSlope: 0.6203313
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.3054118
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    minOpponentAverage: 0.4
-    maxOpponentAverage: 97.2
+    minOpponentAverage: 7.3
+    maxOpponentAverage: 95
   leaderboardRowPrefab: {fileID: 7041650329088703490, guid: 57cea2bd83eb9c8469745875c6bf7813,
     type: 3}
   leaderboardGapPrefab: {fileID: 8145475391184354531, guid: aa5f9615ac8fcb647a2518d22a0f94c9,
