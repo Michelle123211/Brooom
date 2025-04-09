@@ -43,6 +43,9 @@ public class StatsComputer : MonoBehaviour {
     [Tooltip("This fraction of the current stats values will be kept after the player gives up the race.")]
     [SerializeField] float givingUpPenalization = 0.95f;
 
+    [Header("Debug")]
+    [SerializeField] bool debugLogs = false;
+
     private bool isComputing = false;
 
     // Variables used for stats computation
@@ -149,12 +152,19 @@ public class StatsComputer : MonoBehaviour {
             precision = ComputePrecisionValue(),
             magic = ComputeMagicValue()
         };
+        if (debugLogs) Debug.Log("-----------------------------------");
         // Finalize stats values with some tolerance for errors
+        if (debugLogs) Debug.Log($"SPEED: Before error tolerance {errorTolerance} is {newValues.speed}, after error tolerance is {Mathf.Min(Mathf.RoundToInt(newValues.speed + (100 - newValues.speed) * errorTolerance), 100)}.");
         newValues.speed = Mathf.Min(Mathf.RoundToInt(newValues.speed + (100 - newValues.speed) * errorTolerance), 100); // must not exceed 100
+        if (debugLogs) Debug.Log($"DEXTERITY: Before error tolerance {errorTolerance} is {newValues.dexterity}, after error tolerance is {Mathf.Min(Mathf.RoundToInt(newValues.dexterity + (100 - newValues.dexterity) * errorTolerance), 100)}.");
         newValues.dexterity = Mathf.Min(Mathf.RoundToInt(newValues.dexterity + (100 - newValues.dexterity) * errorTolerance), 100); // must not exceed 100
+        if (debugLogs) Debug.Log($"PRECISION: Before error tolerance {errorTolerance} is {newValues.precision}, after error tolerance is {Mathf.Min(Mathf.RoundToInt(newValues.precision + (100 - newValues.precision) * errorTolerance), 100)}.");
         newValues.precision = Mathf.Min(Mathf.RoundToInt(newValues.precision + (100 - newValues.precision) * errorTolerance), 100); // must not exceed 100
-        if (equippedSpellCount > 0) // don't increment the value if no spells are equipped
+        if (equippedSpellCount > 0) { // don't increment the value if no spells are equipped
+            if (debugLogs) Debug.Log($"MAGIC: Before error tolerance {errorTolerance} is {newValues.magic}, after error tolerance is {Mathf.Min(Mathf.RoundToInt(newValues.magic + (100 - newValues.magic) * errorTolerance), 100)}.");
             newValues.magic = Mathf.Min(Mathf.RoundToInt(newValues.magic + (100 - newValues.magic) * errorTolerance), 100); // must not exceed 100
+        }
+        if (debugLogs) Debug.Log("-----------------------------------");
         // Compute weighted average of the old and new stats
         // --- current value usually has more weight than the previous values
         // --- weight of current values depends on: place, stat category (for precision and dexterity, the old value has more weight)
@@ -166,6 +176,7 @@ public class StatsComputer : MonoBehaviour {
             precision = CombinePrecisionValues(oldValues.precision, newValues.precision),
             magic = CombineMagicValues(oldValues.magic, newValues.magic)
         };
+        if (debugLogs) Debug.Log("====================================");
         // Store new values in PlayerState
         PlayerState.Instance.CurrentStats = combinedValues;
     }
@@ -226,10 +237,12 @@ public class StatsComputer : MonoBehaviour {
     private int ComputeEnduranceValue() {
         // Change the current Endurance value based on place
         float delta = enduranceDeltaBasedOnPlace.Evaluate(1 - ((playerPlace - 1f) / (totalRacers - 1f))) * maxEnduranceDelta;
+        if (debugLogs) Debug.Log($"ENDURANCE: Player placed {playerPlace}/{totalRacers}, endurance delta is {delta}, new value is {Mathf.Min(Mathf.RoundToInt(currentEndurance + delta), 100)}");
         return Mathf.Min(Mathf.RoundToInt(currentEndurance + delta), 100); // must not exceed 100
     }
 
     private int ComputeSpeedValue() {
+        if (debugLogs) Debug.Log($"SPEED: Current speed sum is  {currentSpeedSum}, maximum speed sum is {maxSpeedSum}, new value is {Mathf.RoundToInt(Mathf.Clamp((float)(currentSpeedSum / maxSpeedSum), 0, 1) * 100)}");
         return Mathf.RoundToInt(Mathf.Clamp((float)(currentSpeedSum / maxSpeedSum), 0, 1) * 100); // Clamp in case the player has maximum speed broom upgrade and picks up speed bonuses
     }
 
@@ -237,6 +250,8 @@ public class StatsComputer : MonoBehaviour {
         // Combination of distance from the 'ideal' trajectory and number of collisions with obstacles
         float distancePart = (float)(1 - (currentDistancePenalizationSum / maxDistancePenalizationSum)) * 100;
         float collisionPart = obstacleCollisionValue;
+        if (debugLogs) Debug.Log($"DEXTERITY: Current distance penalization sum is {currentDistancePenalizationSum}, maximum is {maxDistancePenalizationSum}, so distance part is {distancePart}. Collision part is {obstacleCollisionValue} ({obstacleCollisionCount}).");
+        if (debugLogs) Debug.Log($"DEXTERITY: Distance part {distancePart} with weight 0.4f and collision part {collisionPart} with weight 0.6, final value is {Mathf.RoundToInt(distancePart * 0.4f + collisionPart * 0.6f)}.");
         return Mathf.RoundToInt(distancePart * 0.4f + collisionPart * 0.6f);
     }
 
@@ -246,25 +261,33 @@ public class StatsComputer : MonoBehaviour {
         float bonusPart = Mathf.Clamp(pickedUpBonusWeightSum / (float)totalBonusWeightSum, 0, 1) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
         float collisionPart = obstacleCollisionValue;
         float wrongDirectionPart = Mathf.Clamp(1 - (wrongDirectionCount * wrongDirectionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100;
+        if (debugLogs) Debug.Log($"PRECISION: Hoop part is {hoopPart} ({passedHoops}/{totalHoops}), bonus part is {bonusPart} ({pickedUpBonusWeightSum}/{totalBonusWeightSum}), collision part is {collisionPart} ({obstacleCollisionCount}), wrong direction part is {wrongDirectionPart} ({wrongDirectionCount}).");
+        if (debugLogs) Debug.Log($"PRECISION: Hoop part with weight 0.4, bonus part with weight 0.2, collision part with weight 0.25, wrong direction part with weight 0.15, final value is {Mathf.RoundToInt(hoopPart * 0.35f + bonusPart * 0.25f + collisionPart * 0.25f + wrongDirectionPart * 0.15f)}.");
         return Mathf.RoundToInt(hoopPart * 0.4f + bonusPart * 0.2f + collisionPart * 0.25f + wrongDirectionPart * 0.15f);
     }
 
     private int ComputeMagicValue() {
         // Combination of picked up mana bonuses and diverse spell usage
-        if (PlayerState.Instance.availableSpellCount == 0) // no purchased spells, just return 0
+        if (PlayerState.Instance.availableSpellCount == 0) { // no purchased spells, just return 0
+            if (debugLogs) Debug.Log($"MAGIC: No available spells, so final value is 0.");
             return 0;
+        }
         float manaPart = ((Mathf.Clamp(pickedUpMana / (float)totalMana, 0, 1) * 2 + Mathf.Clamp(usedMana / (float)totalMana, 0, 1)) / 3) * 100; // Clamp in case the player picks up more bonuses at the same bonus spot
+        if (debugLogs) Debug.Log($"MAGIC: Picked up mana {pickedUpMana}/{totalMana} with weight 2, used mana {usedMana}/{totalMana} with weight 1. Mana part is {manaPart}.");
+        if (debugLogs) Debug.Log($"MAGIC: Equipped spell usage is {equippedSpellUsageValue} ({spellUsedCount}/{equippedSpellCount}), spell usage is {spellUsageValue} ({totalSpellUsedCount}/{totalSpellCount}), final value is {Mathf.RoundToInt(manaPart * equippedSpellUsageValue * spellUsageValue)}.");
         return Mathf.RoundToInt(manaPart * equippedSpellUsageValue * spellUsageValue);
     }
 
     private int CombineEnduranceValues(int oldValue, int newValue) {
         // Only the new value may be taken in this case
+        if (debugLogs) Debug.Log($"COMBINING ENDURANCE: Old value {oldValue}, new value {newValue}, combined value {newValue}.");
         return newValue;
     }
 
     private int CombineSpeedValues(int oldValue, int newValue) {
         // Weighted average of the old and new stat value
         // Weight of current value depends on place
+        if (debugLogs) Debug.Log($"COMBINING SPEED: Old value {oldValue}, new value {newValue}, weights based on place are 1 and {statWeightBasedOnPlace}, combined value {Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1))}.");
         return Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1));
     }
 
@@ -272,6 +295,7 @@ public class StatsComputer : MonoBehaviour {
         // Weighted average of the old and new stat value
         // Weight of current value depends on place
         // Old value has more weight so the stat does not immediately jump to very high values
+        if (debugLogs) Debug.Log($"COMBINING DEXTERITY: Old value {oldValue}, new value {newValue}, weights based on place are {statWeightBasedOnPlace + 2} and {statWeightBasedOnPlace}, combined value {Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 2) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 2))}.");
         return Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 3) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 3));
     }
 
@@ -279,12 +303,14 @@ public class StatsComputer : MonoBehaviour {
         // Weighted average of the old and new stat value
         // Weight of current value depends on place
         // Old value has more weight so the stat does not immediately jump to very high values
+        if (debugLogs) Debug.Log($"COMBINING PRECISION: Old value {oldValue}, new value {newValue}, weights based on place are {statWeightBasedOnPlace + 2} and {statWeightBasedOnPlace}, combined value {Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 2) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 2))}.");
         return Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 3) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 3));
     }
 
     private int CombineMagicValues(int oldValue, int newValue) {
         // Weighted average of the old and new stat value
         // Weight of current values depends on place
+        if (debugLogs) Debug.Log($"COMBINING MAGIC: Old value {oldValue}, new value {newValue}, weights based on place are 1 and {statWeightBasedOnPlace}, combined value {Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1))}.");
         return Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1));
     }
 
