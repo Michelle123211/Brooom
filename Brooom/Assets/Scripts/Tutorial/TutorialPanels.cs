@@ -44,7 +44,7 @@ public class TutorialPanels : MonoBehaviour {
 
 	public void HideAllTutorialPanels() {
 		HideTutorialPanel();
-		escapePanel.HidePanel();
+		HideEscapePanel();
 	}
 
 	// The following methods may be used as coroutines to be able to wait until they finish
@@ -76,7 +76,8 @@ public class TutorialPanels : MonoBehaviour {
 			wasClick = true;
 		}
 		// Handle ESC for skipping tutorial
-		if (InputManager.Instance.GetBoolValue("Pause") && canBeSkipped) {
+		if (InputManager.Instance.GetBoolValue("Pause") && canBeSkipped && Tutorial.Instance.IsInProgress()) {
+			canBeSkipped = false;
 			Tutorial.Instance.SkipCurrentTutorialStage();
 		}
 	}

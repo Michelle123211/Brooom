@@ -21,6 +21,7 @@ public class FirstRaceTutorial : TutorialStageBase {
 	private CharacterMovementController player;
 
 	public override void Finish() {
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.Finish()");
 		// We should stay in the Race scene, so we need to reset everything
 		GamePause gamePause = UtilsMonoBehaviour.FindObject<GamePause>();
 		gamePause.SetupOptionsForRace();
@@ -44,10 +45,13 @@ public class FirstRaceTutorial : TutorialStageBase {
 
 	protected override bool CheckTriggerConditions() {
 		// Race scene
+		if (Tutorial.Instance.debugLogs && SceneLoader.Instance.CurrentScene == Scene.Race)
+			Debug.Log($"FirstRaceTutorial.CheckTriggerConditions(): Conditions satisfied, scene is {SceneLoader.Instance.CurrentScene}.");
 		return SceneLoader.Instance.CurrentScene == Scene.Race;
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.InitializeTutorialStage()");
 		// Prepare everything necessary
 		SettingsUI.skipTraining = false; // in tutorial, don't skip training regardless of the settings
 		player = UtilsMonoBehaviour.FindObjectOfTypeAndTag<CharacterMovementController>("Player");
@@ -62,39 +66,52 @@ public class FirstRaceTutorial : TutorialStageBase {
 		// Handle starting the tutorial scenario
 		if (currentStep == Step.NotStarted) {
 			currentStep = Step.Started;
+			if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.UpdateTutorialStage(): Starting GoThroughTutorialScenario() as a coroutine.");
 			Tutorial.Instance.StartCoroutine(GoThroughTutorialScenario());
 		}
 		return currentStep != Step.Finished;
 	}
 
 	private IEnumerator GoThroughTutorialScenario() {
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.GoThroughTutorialScenario(): Started.");
+		
 		// Training + reset
 		currentStep = Step.Training;
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
 		TutorialBasicManager.Instance.DisablePlayerActions();
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(
 			string.Format(GetLocalizedText(currentStep.ToString()),
 				InputManager.Instance.GetBindingTextForAction("Restart")));
+
 		// Showing starting zone
 		currentStep = Step.StartingZone;
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
 		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(UtilsMonoBehaviour.FindObject<StartingZone>().transform, new Vector3(0, -20, 50));
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
+		
 		// Fly freely and proceed whenever
 		currentStep = Step.FreeMovement;
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
 		TutorialBasicManager.Instance.EnablePlayerActions();
 		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
 		yield return WaitUntilStepIsFinished<StartingZoneProgress>();
+		
 		// Skip training option
 		currentStep = Step.SkipTraining;
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
 		PauseGame();
 		Utils.EnableCursor();
 		Tutorial.Instance.skipTrainingPanel.TweenAwareEnable();
 		yield return WaitUntilStepIsFinished<SkipTrainingPanelProgress>();
+		
 		// End
 		Tutorial.Instance.skipTrainingPanel.TweenAwareDisable();
 		ResumeGame();
 		Utils.DisableCursor();
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		currentStep = Step.Finished;
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		if (Tutorial.Instance.debugLogs) Debug.Log($"FirstRaceTutorial.GoThroughTutorialScenario(): Finished.");
 	}
 
 }
