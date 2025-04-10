@@ -27,12 +27,12 @@ public class BasicNavigationSteering : NavigationSteering {
 
 	[Header("Collisions")]
 	[Tooltip("If the agent is closer to the target position than this value, they will not try to avoid collisions at all.")]
-	[SerializeField] float collisionsMinDistance = 3;
+	[SerializeField] float collisionsMinDistance = 1;
 	[Tooltip("If the agent is farther to the target position than this value, they will give full weight to avoiding collisions.")]
 	[SerializeField] float collisionsMaxDistance = 30;
 	[Tooltip("Directions with weight lower than this (between 0 and 1) will not be considered possible (to significant collisions would occur).")]
 	[SerializeField] float directionWeightThreshold = 0.1f;
-	[SerializeField] bool debugLogs = false;
+	[SerializeField] protected bool debugLogs = false;
 
 
 	private RaycastCollisionDetection collisionDetection;
@@ -98,7 +98,7 @@ public class BasicNavigationSteering : NavigationSteering {
 		List<CollisionAvoidanceDirection> possibleDirections = new List<CollisionAvoidanceDirection>();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				if (i == 0 || j == 0) // only 5 directions
+				if ((i == 0 || j == 0) && (i != 0 || j != 0)) // only 4 directions (actually try to change direction instead of going forward (most likely into the obstacle right ahead))
 					possibleDirections.Add(new CollisionAvoidanceDirection(new Vector2(i, j)));
 			}
 		}
@@ -106,7 +106,7 @@ public class BasicNavigationSteering : NavigationSteering {
 		foreach (var collision in collisions) {
 			foreach (var direction in possibleDirections) {
 				if (direction.direction == collision.direction) {
-					direction.weight *= collision.distance;
+					direction.weight *= collision.normalizedDistance;
 				}
 			}
 		}
@@ -137,12 +137,17 @@ public class BasicNavigationSteering : NavigationSteering {
 
 	protected CharacterMovementValues CombineMovementWithCollisionAvoidance(CharacterMovementValues movement, CollisionAvoidanceDirection direction, float avoidanceWeight = 1f) {
 		// Combine direction to target with the direction to avoid collisions (weighted average)
+		if (debugLogs) Debug.Log($"Movement before collision avoidance: {movement.yawMotion} is {movement.yawValue}, {movement.pitchMotion} is {movement.pitchValue} and {movement.forwardMotion} is {movement.forwardValue}.");
 		float yaw = ((int)movement.yawMotion * movement.yawValue + direction.direction.x * direction.weight * avoidanceWeight) / (1f + avoidanceWeight);
 		float pitch = ((int)movement.pitchMotion * movement.pitchValue + direction.direction.y * direction.weight * avoidanceWeight) / (1f + avoidanceWeight);
-		movement.yawMotion = (YawMotion)Mathf.RoundToInt(yaw / Mathf.Abs(yaw));
+		if (debugLogs) Debug.Log($"---- yaw is {yaw}, pitch is {pitch}");
+		if (Mathf.Abs(yaw) < Mathf.Epsilon) movement.yawMotion = YawMotion.None;
+		else movement.yawMotion = (YawMotion)Mathf.RoundToInt(yaw / Mathf.Abs(yaw));
 		movement.yawValue = Mathf.Abs(yaw);
-		movement.pitchMotion = (PitchMotion)Mathf.RoundToInt(pitch / Mathf.Abs(pitch));
+		if (Mathf.Abs(pitch) < Mathf.Epsilon) movement.pitchMotion = PitchMotion.None;
+		else movement.pitchMotion = (PitchMotion)Mathf.RoundToInt(pitch / Mathf.Abs(pitch));
 		movement.pitchValue = Mathf.Abs(pitch);
+		if (debugLogs) Debug.Log($"Movement after collision avoidance: {movement.yawMotion} is {movement.yawValue}, {movement.pitchMotion} is {movement.pitchValue} and {movement.forwardMotion} is {movement.forwardValue}.");
 		// Return the new movement values
 		return movement;
 	}

@@ -33,6 +33,7 @@ public class RaycastCollisionDetection : MonoBehaviour {
                 collisions.Add(new CollisionInfo {
                     direction = ray.simplifiedDirection,
                     distance = hit.distance,
+                    normalizedDistance = hit.distance / maxDistance,
                     collisionObject = hit.transform.gameObject,
                     objectType = type
                 });
@@ -60,7 +61,8 @@ internal class RayParameters {
 
 public class CollisionInfo {
     public Vector2 direction; // omiting forward direction (just left/right, up/down)
-    public float distance; // normalized between 0 and 1
+    public float distance;
+    public float normalizedDistance;
     public GameObject collisionObject;
     public CollisionObjectType objectType;
 }

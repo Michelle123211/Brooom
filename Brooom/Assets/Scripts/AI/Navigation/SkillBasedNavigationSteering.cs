@@ -27,6 +27,8 @@ public class SkillBasedNavigationSteering : BasicNavigationSteering {
 		// Get collision avoidance weight based on mistake probabilities
 		float mistakeProbability = (agentSkillLevel.GetDexterityMistakeProbability() + agentSkillLevel.GetPrecisionMistakeProbability()) / 2f;
 		float avoidanceWeight = agentSkillLevel.mistakesParameters.CollisionAvoidanceWeightCurve.Evaluate(mistakeProbability);
+		if (debugLogs) Debug.Log($"Collision avoidance weight based on skill level is: {avoidanceWeight} (because probability of mistake is ({agentSkillLevel.GetDexterityMistakeProbability()} + {agentSkillLevel.GetPrecisionMistakeProbability()}) / 2 = {mistakeProbability}).");
+		if (debugLogs) Debug.Log($"Collision avoidance direction is {direction.direction} with weight {direction.weight}.");
 		// Combine direction to target with the direction to avoid collisions (weighted average)
 		return CombineMovementWithCollisionAvoidance(movement, direction, avoidanceWeight);
 	}
