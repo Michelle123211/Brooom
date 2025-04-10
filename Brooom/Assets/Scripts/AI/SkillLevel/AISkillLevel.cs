@@ -29,6 +29,8 @@ public class AISkillLevel : MonoBehaviour {
 	public void Initialize(SkillType skillLevelRelativeToPlayer) {
 		skillLevelImplementation.Initialize(transform.parent.GetComponent<CharacterRaceState>(), transform.parent.GetComponent<CharacterMovementController>());
 		currentStatsValues = skillLevelImplementation.GetInitialStats(skillLevelRelativeToPlayer);
+		if (debugLogs)
+			Debug.Log($"AISkillLevel.Initialize(): Stats are initialized to {currentStatsValues}");
 	}
 
 	// Returns probability that the agent makes a mistake relevant for the Speed stat (e.g. slow down, skip speed bonus)
@@ -60,7 +62,7 @@ public class AISkillLevel : MonoBehaviour {
 		// ... difficulty-based (skill-based)
 		currentStatsValues = skillLevelImplementation.GetCurrentStats();
 		if (debugLogs)
-			Debug.Log($"Current values: {currentStatsValues}");
+			Debug.Log($"AISkillLevel.Update(): Current stats are {currentStatsValues}");
 		// ... power-based
 		skillLevelImplementation.AdjustCurrentMaximumSpeed();
 	}
