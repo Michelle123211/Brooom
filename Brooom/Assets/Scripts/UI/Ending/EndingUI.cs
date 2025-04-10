@@ -10,10 +10,12 @@ public class EndingUI : MonoBehaviour {
     float timeToNextStar = 1.0f;
 
     public void ContinueRacing() {
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Game continued after completion.");
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
     public void ReturnToMenu() {
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Returning to menu after completion.");
         SceneLoader.Instance.LoadScene(Scene.MainMenu);
     }
 
@@ -41,6 +43,7 @@ public class EndingUI : MonoBehaviour {
 	}
 
 	private void Start() {
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Game completed.");
         PlayerState.Instance.GameComplete = true;
 
         // Get all stars

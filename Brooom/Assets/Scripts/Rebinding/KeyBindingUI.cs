@@ -169,6 +169,7 @@ public class KeyBindingUI : MonoBehaviour {
                 // Update UI - part 2
                 UpdateBindingText();
                 keyRebindingUI.UpdateAllDuplicateWarnings();
+                Analytics.Instance.LogEvent(AnalyticsCategory.Game, $"Key binding changed for action {(LocalizationManager.Instance.TryGetLocalizedString($"Action{action.name}", out string readableName) ? readableName : action.name)} to {GetBindingText(this.bindingIndex)}.");
                 CleanUp();
                 // If there are more composite parts, initiate a rebind for the next part
                 if (allCompositeParts) {
@@ -203,6 +204,7 @@ public class KeyBindingUI : MonoBehaviour {
 		UpdateBindingText();
         UpdateResetButtonInteractibility();
         keyRebindingUI.UpdateAllDuplicateWarnings();
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, $"Key binding reset for action {(LocalizationManager.Instance.TryGetLocalizedString($"Action{action.name}", out string readableName) ? readableName : action.name)} to {GetBindingText(this.bindingIndex)}.");
     }
 
     private bool CheckForDuplicateBindingsWhileRebinding(int bindingIndex) {

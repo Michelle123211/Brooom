@@ -38,6 +38,7 @@ public class CharacterCreatorUI : MonoBehaviour
         // Set flag that the game was started
         PlayerPrefs.SetString("GameStarted", "true");
         Messaging.SendMessage("GameStarted");
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, "New game started after character creation.");
         // Change scene
         if (SettingsUI.enableTutorial) SceneLoader.Instance.LoadScene(Scene.Tutorial);
         else SceneLoader.Instance.LoadScene(Scene.Race); // if tutorial is disabled, go directly to race

@@ -60,9 +60,11 @@ public class SettingsUI : MonoBehaviour {
 		mouseSensitivitySlider.value = SettingsUI.mouseSensitivity;
 		tutorialToggle.isOn = SettingsUI.enableTutorial;
 		trainingToggle.isOn = SettingsUI.skipTraining;
+		Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Settings opened.");
 	}
 
 	private void OnDisable() {
 		SaveSettingsValues();
+		Analytics.Instance.LogEvent(AnalyticsCategory.Game, $"Settings closed with the following values: mouse sensitivity {mouseSensitivity}, enable tutorial {enableTutorial}, skip training {skipTraining}, master volume {masterVolumeSlider.GetValue()}, music volume {musicVolumeSlider.GetValue()}, ambience volume {ambienceVolumeSlider.GetValue()}, SFX volume {soundEffectsVolumeSlider.GetValue()}.");
 	}
 }

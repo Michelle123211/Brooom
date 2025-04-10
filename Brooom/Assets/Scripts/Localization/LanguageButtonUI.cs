@@ -18,6 +18,7 @@ public class LanguageButtonUI : MonoBehaviour
     public void OnSelectedChanged(bool isSelected) {
         if (isSelected) { // the assigned language is now selected
             // Change language globally
+            Analytics.Instance.LogEvent(AnalyticsCategory.Game, $"Current localization changed to {assignedLanguage}.");
             LocalizationManager.Instance.ChangeCurrentLanguage(assignedLanguage);
         }
         // Ignore deselecting a language (is always accompanied by selecting a different one, which is handled)

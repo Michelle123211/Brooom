@@ -21,6 +21,7 @@ public class MainMenuUI : MonoBehaviour
         // If there is any previously saved state, load it here
         if (saveExists) {
             PlayerState.Instance.LoadSavedState();
+            Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Game continued.");
             Messaging.SendMessage("GameStarted");
             // If tutorial is enabled and first two stages haven't been finished yet, load appropriate scene
             if (SettingsUI.enableTutorial && Tutorial.Instance.CurrentStage == TutorialStage.Introduction)
@@ -31,6 +32,7 @@ public class MainMenuUI : MonoBehaviour
             else SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
         } else {
             // Load the CharacterCreation scene
+            Analytics.Instance.LogEvent(AnalyticsCategory.Game, "New game started from menu.");
             SceneLoader.Instance.LoadScene(Scene.CharacterCreation);
         }
     }
@@ -39,6 +41,7 @@ public class MainMenuUI : MonoBehaviour
         // The saved state and current state will be reset after the new character is created
         //      This gives the player an option to go back without losing the data
         // Load the CharacterCreation scene
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, "New game started from menu.");
         SceneLoader.Instance.LoadScene(Scene.CharacterCreation);
     }
 
@@ -47,7 +50,12 @@ public class MainMenuUI : MonoBehaviour
         PlayerState.Instance.SaveCurrentState();
         // Load the Exit scene (so that all the GameObjects are unloaded except for these in DontDestroyOnLoad)
         // This way the singletons will be destroyed last
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Game exited.");
         SceneLoader.Instance.LoadScene(Scene.Exit, true, false);
+    }
+
+    public void LogAboutGameOpenedOrClosed(bool opened = true) {
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, $"About Game {(opened ? "opened" : "closed")}.");
     }
 
 	private void Start() {
