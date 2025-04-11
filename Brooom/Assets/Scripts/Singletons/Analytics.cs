@@ -63,14 +63,10 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		Messaging.RegisterForMessage("BonusPickedUp", OnBonusPickedUp);
 		Messaging.RegisterForMessage("NewRegionAvailable", OnNewRegionAvailable);
 		Messaging.RegisterForMessage("NewRegionVisited", OnNewRegionVisited);
+		Messaging.RegisterForMessage("ObstacleCollision", OnCollision);
 		Messaging.RegisterForMessage("StatsChanged", OnStatsChanged);
 		Messaging.RegisterForMessage("RankChanged", OnRankChanged);
-
-		// TODO: Message "SpellPurchased"
-		// TODO: Message "AllSpellsPurchased"
-		// TODO: Message "ObstacleCollision"
-		// TODO: Message "CoinsChanged"
-		// TODO: Message "AllBroomUpgrades"
+		Messaging.RegisterForMessage("CoinsChanged", OnCoinsAmountChanged);
 	}
 
 	private void UnregisterFromMessages() {
@@ -82,23 +78,21 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		Messaging.UnregisterFromMessage("BonusPickedUp", OnBonusPickedUp);
 		Messaging.UnregisterFromMessage("NewRegionAvailable", OnNewRegionAvailable);
 		Messaging.UnregisterFromMessage("NewRegionVisited", OnNewRegionVisited);
+		Messaging.UnregisterFromMessage("ObstacleCollision", OnCollision);
 		Messaging.UnregisterFromMessage("StatsChanged", OnStatsChanged);
 		Messaging.UnregisterFromMessage("RankChanged", OnRankChanged);
+		Messaging.UnregisterFromMessage("CoinsChanged", OnCoinsAmountChanged);
 	}
 
 	private void RegisterGlobalCallbacks() {
-		// TODO: Register all global callbacks
 		SceneLoader.Instance.onSceneStartedLoading += OnSceneStartedLoading;
 		SceneLoader.Instance.onSceneLoaded += OnSceneLoaded;
-		// TODO: PlayerState - onCoinsAmountChanged
 		PlayerState.Instance.onEquippedSpellChanged += OnEquippedSpellChanged;
 	}
 
 	private void UnregisterGlobalCallbacks() {
-		// TODO: Unregister all global callbacks
 		SceneLoader.Instance.onSceneStartedLoading -= OnSceneStartedLoading;
 		SceneLoader.Instance.onSceneLoaded -= OnSceneLoaded;
-		// TODO: PlayerState - onCoinsAmountChanged
 		PlayerState.Instance.onEquippedSpellChanged -= OnEquippedSpellChanged;
 	}
 	#endregion
@@ -125,8 +119,6 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		RaceController.Instance.playerRacer.state.onHoopMissed += OnHoopMissed;
 		RaceController.Instance.playerRacer.state.onCheckpointMissed += OnCheckpointMissed;
 		RaceController.Instance.playerRacer.state.onWrongDirectionChanged += OnWrongDirectionChanged;
-		// TODO: EffectibleCharacter - onNewEffectAdded
-		// TODO: CharacterEffect - onEffectStart, onEffectEnd
 	}
 
 	private void UnregisterCallbacksInRaceScene() {
@@ -313,6 +305,10 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	private void OnNewRegionVisited(int regionNumber) {
 		LogEvent(AnalyticsCategory.Race, $"New region visited: {(LevelRegionType)regionNumber}.");
 	}
+
+	private void OnCollision() {
+		LogEvent(AnalyticsCategory.Race, "Collision.");
+	}
 	#endregion
 
 	#region Stats callbacks
@@ -322,6 +318,12 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	private void OnRankChanged(int place) {
 		LogEvent(AnalyticsCategory.Stats, $"Rank changed to {place} with current stats {PlayerState.Instance.CurrentStats} (avg {PlayerState.Instance.CurrentStats.GetWeightedAverage()}).");
+	}
+	#endregion
+
+	#region Shop callbacks
+	private void OnCoinsAmountChanged(int delta) {
+		LogEvent(AnalyticsCategory.Shop, $"Coins amount changed by {delta}, new amount is {PlayerState.Instance.Coins}.");
 	}
 	#endregion
 

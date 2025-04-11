@@ -36,11 +36,13 @@ public class ShopUI : MonoBehaviour
 		InitializeSpells();
 		InitializeBroomUpgrades();
 		UpdateUI(0, PlayerState.Instance.Coins);
+		Analytics.Instance.LogEvent(AnalyticsCategory.Shop, "Shop opened.");
 	}
 
 	private void OnDisable() {
 		// Unregister callbacks
 		PlayerState.Instance.onCoinsAmountChanged -= UpdateUI;
+		Analytics.Instance.LogEvent(AnalyticsCategory.Shop, "Shop closed.");
 	}
 
 	private void InitializeSpells() {

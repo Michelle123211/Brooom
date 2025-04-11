@@ -35,6 +35,7 @@ public class ShopSpellSlotUI : MonoBehaviour
         }
         PlayerState.Instance.UnlockSpell(assignedSpell.Identifier);
         AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.Purchase);
+        Analytics.Instance.LogEvent(AnalyticsCategory.Shop, $"Spell {assignedSpell.SpellName} purchased.");
         // Update the UI
         ChangeToUnlocked();
     }

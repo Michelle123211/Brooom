@@ -51,6 +51,7 @@ public class BroomUpgradeRowUI : MonoBehaviour
 		assignedUpgrade.LevelUp();
         PlayerState.Instance.SetBroomUpgradeLevel(assignedUpgrade.UpgradeName, assignedUpgrade.CurrentLevel, assignedUpgrade.MaxLevel);
         AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.Purchase);
+        Analytics.Instance.LogEvent(AnalyticsCategory.Shop, $"Broom upgrade {assignedUpgrade.UpgradeName} leveled up to {assignedUpgrade.CurrentLevel}/{assignedUpgrade.MaxLevel}.");
         // Update the UI
         UpdateCurrentLevel();
     }
