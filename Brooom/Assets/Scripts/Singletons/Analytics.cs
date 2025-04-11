@@ -400,5 +400,6 @@ public enum AnalyticsCategory {
 	Shop,
 	TestingTrack,
 	Tutorial,
+	Achievement,
 	Other
 }

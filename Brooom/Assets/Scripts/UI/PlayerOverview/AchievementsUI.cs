@@ -18,7 +18,10 @@ public class AchievementsUI : MonoBehaviour
         // This will ensure we highlight new achievements correctly, no matter where they were obtained (Race, Shop, Testing Track)
         // However this will highlight achievements which we have already seen highlighted, but only during the same scene session (e.g. after going to Shop and back)
         foreach (var achievement in achievements) {
-            if (achievement.isNew) newAchievements.Add(achievement.achievement.name);
+            if (achievement.isNew && !newAchievements.Contains(achievement.achievement.name)) {
+                newAchievements.Add(achievement.achievement.name);
+                Analytics.Instance.LogEvent(AnalyticsCategory.Achievement, $"New achivement {achievement.achievement.name} gained ({achievement.currentLevel}/{achievement.maximumLevel}).");
+            }
         }
         // Remove all existing slots
         UtilsMonoBehaviour.RemoveAllChildren(achievementParent);
