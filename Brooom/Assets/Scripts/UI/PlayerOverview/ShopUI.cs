@@ -26,6 +26,7 @@ public class ShopUI : MonoBehaviour
 	private List<BroomUpgradeRowUI> broomUpgrades = new List<BroomUpgradeRowUI>();
 
 	public void StartTestingTrack() {
+		Analytics.Instance.LogEvent(AnalyticsCategory.TestingTrack, "Testing track entered.");
         SceneLoader.Instance.LoadScene(Scene.TestingTrack);
     }
 

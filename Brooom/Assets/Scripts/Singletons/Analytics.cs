@@ -14,7 +14,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	[Tooltip("Name of the file (without extension) the analytics will be saved into.")]
 	[SerializeField] string analyticsFileName = "Events";
 
-	private static readonly long maxFileSize = 1048576; // 1 MB
+	private static readonly long maxFileSize = 10485760; // 10 MB
 	
 
 	private CultureInfo culture = new CultureInfo("cs-CZ");
@@ -42,6 +42,9 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 			case Scene.Race:
 				RegisterCallbacksInRaceScene();
 				break;
+			case Scene.TestingTrack:
+				RegisterCallbacksInTestingTrackScene();
+				break;
 		}
 	}
 
@@ -49,6 +52,9 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		switch (scene) {
 			case Scene.Race:
 				UnregisterCallbacksInRaceScene();
+				break;
+			case Scene.TestingTrack:
+				UnregisterCallbacksInTestingTrackScene();
 				break;
 		}
 	}
@@ -142,6 +148,22 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		this.playerSpellController = null;
 		this.playerIncomingSpellTracker = null;
 		this.levelGenerator = null;
+	}
+
+	private void RegisterCallbacksInTestingTrackScene() {
+		// Initialize data fields
+		this.playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+		// Register callbacks
+		this.playerSpellController.onSpellCast += OnSpellCast;
+		this.playerSpellController.onSelectedSpellChanged += OnSelectedSpellChanged;
+	}
+
+	private void UnregisterCallbacksInTestingTrackScene() {
+		// Unregister callbacks
+		this.playerSpellController.onSpellCast -= OnSpellCast;
+		this.playerSpellController.onSelectedSpellChanged -= OnSelectedSpellChanged;
+		// Reset data fields
+		this.playerSpellController = null;
 	}
 	#endregion
 

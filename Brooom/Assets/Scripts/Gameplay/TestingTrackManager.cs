@@ -24,6 +24,7 @@ public class TestingTrackManager : MonoBehaviour {
 	}
 
 	private void ReturnBack() {
+		Analytics.Instance.LogEvent(AnalyticsCategory.TestingTrack, "Testing track left.");
 		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
 		SceneLoader.Instance.SetBoolParameterForNextScene("OpenShop", true); // go straight to the Shop
 		SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
