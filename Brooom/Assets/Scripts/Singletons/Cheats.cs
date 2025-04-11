@@ -449,7 +449,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	private void InitializeSpellCommand() {
 		// spell - unlock all spells or only the given one
 		// Get list of available spells
-		StringBuilder helpMessage = new StringBuilder($"Unlocks/locks all spells or only the given one. Usage: 'spell all' or 'spell <spellIdentifier>' or 'spell reset all' or 'spell reset <spellIdentifier>', e.g. 'spell {SpellManager.Instance.AllSpells[0].Identifier}'.\nAvailable spells: ");
+		StringBuilder helpMessage = new StringBuilder($"Unlocks/locks all spells or only the given one. Usage: 'spell all' or 'spell <spellIdentifier>' or 'spell reset all' or 'spell reset <spellIdentifier>', e.g. 'spell {(SpellManager.Instance.AllSpells.Count > 0 ? SpellManager.Instance.AllSpells[0].Identifier : "Velox")}'.\nAvailable spells: ");
 		for (int i = 0; i < SpellManager.Instance.AllSpells.Count; i++) {
 			helpMessage.Append(SpellManager.Instance.AllSpells[i].Identifier);
 			if (i < SpellManager.Instance.AllSpells.Count - 1)
