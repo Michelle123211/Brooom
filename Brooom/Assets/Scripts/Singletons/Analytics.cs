@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
@@ -21,6 +22,9 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	private Scene currentScene = Scene.Start;
 
+	private SpellController playerSpellController;
+	private PlayerIncomingSpellTracker playerIncomingSpellTracker;
+
 
 	public void LogEvent(AnalyticsCategory category, string eventDescription) {
 		if (!analyticsEnabled) return;
@@ -31,38 +35,23 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		Options = SingletonOptions.RemoveRedundantInstances | SingletonOptions.CreateNewGameObject | SingletonOptions.PersistentBetweenScenes;
 	}
 
-	private void OnSceneStartedLoading(Scene newScene) {
-		// Unregister scene-specific callbacks from the old scene (stored in currentScene)
-		UnregisterSceneSpecificCallbacks(currentScene);
-	}
-
-	private void OnSceneLoaded(Scene newScene) {
-		LogEvent(AnalyticsCategory.Game, $"Scene changed from {currentScene} to {newScene}.");
-		// Register scene-specific callbacks in the new scene
-		RegisterSceneSpecificCallbacks(newScene);
-
-		currentScene = newScene;
-	}
-
 	private void RegisterSceneSpecificCallbacks(Scene scene) {
 		switch (scene) {
 			case Scene.Race:
-				// TODO: CharacterRaceState - onPlaceChanged, onHoopAdvance, onCheckpointMissed, onHoopMissed, onWrongDirectionChanged
-				// TODO: EffectibleCharacter - onNewEffectAdded
-				// TODO: CharacterEffect - onEffectStart, onEffectEnd
-				// TODO: SpellInRace - onBecomesAvailable, onBecomesUnavailable
-				// TODO: SpellController - onManaAmountChanged, onSelectedSpellChanged, onSpellCast
-				// TODO: LevelGenerationPipeline - onLevelGenerated
+				RegisterCallbacksInRaceScene();
 				break;
 		}
 	}
 
 	private void UnregisterSceneSpecificCallbacks(Scene scene) {
 		switch (scene) {
-
+			case Scene.Race:
+				UnregisterCallbacksInRaceScene();
+				break;
 		}
 	}
 
+	#region Global callbacks and messages
 	private void RegisterForMessages() {
 		// TODO: Message "RankChanged"
 		// TODO: Message "StatsChanged"
@@ -91,6 +80,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		SceneLoader.Instance.onSceneStartedLoading += OnSceneStartedLoading;
 		SceneLoader.Instance.onSceneLoaded += OnSceneLoaded;
 		// TODO: PlayerState - onCoinsAmountChanged
+		PlayerState.Instance.onEquippedSpellChanged += OnEquippedSpellChanged;
 	}
 
 	private void UnregisterGlobalCallbacks() {
@@ -98,7 +88,121 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		SceneLoader.Instance.onSceneStartedLoading -= OnSceneStartedLoading;
 		SceneLoader.Instance.onSceneLoaded -= OnSceneLoaded;
 		// TODO: PlayerState - onCoinsAmountChanged
+		PlayerState.Instance.onEquippedSpellChanged -= OnEquippedSpellChanged;
 	}
+	#endregion
+
+	#region Scene-based callbacks
+	private void RegisterCallbacksInRaceScene() {
+		// Initialize data fields
+		this.playerSpellController = RaceController.Instance.playerRacer.characterController.GetComponentInChildren<SpellController>();
+		this.playerIncomingSpellTracker = RaceController.Instance.playerRacer.characterController.GetComponentInChildren<PlayerIncomingSpellTracker>();
+		// Register callbacks
+		this.playerSpellController.onSpellCast += OnSpellCast;
+		this.playerSpellController.onManaAmountChanged += OnManaAmountChanged;
+		this.playerSpellController.onSelectedSpellChanged += OnSelectedSpellChanged;
+		foreach (var spell in this.playerSpellController.spellSlots) {
+			if (spell != null && !spell.IsEmpty()) {
+				spell.onBecomesAvailable += OnSpellBecameAvailable;
+				spell.onBecomesUnavailable += OnSpellBecameUnavailable;
+			}
+		}
+		this.playerIncomingSpellTracker.onIncomingSpellAdded += OnSpellCastAtPlayer;
+		// TODO: CharacterRaceState - onPlaceChanged, onHoopAdvance, onCheckpointMissed, onHoopMissed, onWrongDirectionChanged
+		// TODO: EffectibleCharacter - onNewEffectAdded
+		// TODO: CharacterEffect - onEffectStart, onEffectEnd
+		// TODO: LevelGenerationPipeline - onLevelGenerated
+	}
+
+	private void UnregisterCallbacksInRaceScene() {
+		// Unregister callbacks
+		this.playerSpellController.onSpellCast -= OnSpellCast;
+		this.playerSpellController.onManaAmountChanged -= OnManaAmountChanged;
+		fullManaLogged = false;
+		this.playerSpellController.onSelectedSpellChanged -= OnSelectedSpellChanged;
+		foreach (var spell in this.playerSpellController.spellSlots) {
+			if (spell != null && !spell.IsEmpty()) {
+				spell.onBecomesAvailable -= OnSpellBecameAvailable;
+				spell.onBecomesUnavailable -= OnSpellBecameUnavailable;
+			}
+		}
+		this.playerIncomingSpellTracker.onIncomingSpellAdded -= OnSpellCastAtPlayer;
+		// Reset data fields
+		this.playerSpellController = null;
+		this.playerIncomingSpellTracker = null;
+	}
+	#endregion
+
+	private void OnSceneStartedLoading(Scene newScene) {
+		// Unregister scene-specific callbacks from the old scene (stored in currentScene)
+		UnregisterSceneSpecificCallbacks(currentScene);
+	}
+
+	private void OnSceneLoaded(Scene newScene) {
+		LogEvent(AnalyticsCategory.Game, $"Scene changed from {currentScene} to {newScene}.");
+		// Register scene-specific callbacks in the new scene
+		RegisterSceneSpecificCallbacks(newScene);
+
+		currentScene = newScene;
+	}
+
+	#region Spells callbacks
+	private void OnSpellCast(int spellIndex) {
+		LogEvent(AnalyticsCategory.Spells, $"Spell {PlayerState.Instance.equippedSpells[spellIndex].SpellName} cast.");
+	}
+
+	private void OnSelectedSpellChanged(int spellIndex) {
+		LogEvent(AnalyticsCategory.Spells, $"Selected spell changed to {PlayerState.Instance.equippedSpells[spellIndex].SpellName}.");
+	}
+
+	private bool fullManaLogged = false;
+	private void OnManaAmountChanged(int manaAmount) {
+		if (manaAmount == playerSpellController.MaxMana) {
+			if (!fullManaLogged) { // log it only once
+				LogEvent(AnalyticsCategory.Spells, $"Mana amount changed to {manaAmount}.");
+				LogEvent(AnalyticsCategory.Spells, $"Mana is completely full.");
+			}
+			fullManaLogged = true;
+		} else {
+			LogEvent(AnalyticsCategory.Spells, $"Mana amount changed to {manaAmount}.");
+			fullManaLogged = false;
+		}
+	}
+
+	private void OnSpellBecameAvailable(Spell spell) {
+		LogEvent(AnalyticsCategory.Spells, $"Spell {spell.SpellName} became available.");
+	}
+
+	private void OnSpellBecameUnavailable(Spell spell) {
+		LogEvent(AnalyticsCategory.Spells, $"Spell {spell.SpellName} became unavailable.");
+	}
+
+	private void OnEquippedSpellChanged(Spell spell, int slotIndex) {
+		// Get all slots' content
+		StringBuilder slotsContent = new StringBuilder("Current content is: ");
+		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
+			Spell equippedSpell = PlayerState.Instance.equippedSpells[i];
+			if (equippedSpell == null || string.IsNullOrEmpty(equippedSpell.Identifier))
+				slotsContent.Append("Empty");
+			else slotsContent.Append(equippedSpell.SpellName);
+			if (i < PlayerState.Instance.equippedSpells.Length - 1)
+				slotsContent.Append(" - ");
+		}
+		slotsContent.Append(".");
+		// Log
+		if (spell == null)
+			LogEvent(AnalyticsCategory.Spells, $"Slot {slotIndex} has been emptied. {slotsContent}");
+		else
+			LogEvent(AnalyticsCategory.Spells, $"Spell {spell.SpellName} has been assigned to slot {slotIndex}. {slotsContent}");
+	}
+
+	private void OnSpellCastAtPlayer(IncomingSpellInfo spellInfo) {
+		spellInfo.SpellObject.onSpellHit += OnSpellHitPlayer;
+	}
+	private void OnSpellHitPlayer(SpellEffectController spellEffectController) {
+		LogEvent(AnalyticsCategory.Spells, $"Player was hit by spell {spellEffectController.Spell.SpellName}.");
+	}
+	#endregion
 
 	#region Initialization + singleton stuff
 

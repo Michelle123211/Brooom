@@ -66,7 +66,7 @@ public class RaceSpellSlotUI : MonoBehaviour {
 		contentCanvasGroup.alpha = unavailableAlpha;
 		// Change to available if necessary
 		if (!isEmpty && assignedSpell.IsAvailable)
-			ChangeToAvailable();
+			ChangeToAvailable(assignedSpell.Spell); // the parameter is there just so it is compatible with callback in SpellInRace
 
 		isInitialized = true;
 	}
@@ -81,7 +81,7 @@ public class RaceSpellSlotUI : MonoBehaviour {
 	public void Deselect() {
 	}
 
-	private void ChangeToAvailable() {
+	private void ChangeToAvailable(Spell _) { // the parameter is there just so it is compatible with callback in SpellInRace
 		// If the spell becomes available (is charged and enough mana), tween its scale and alpha of the unavailable overlay
 		transform.DOKill();
 		transform.DOScale(1f, 0.3f)
@@ -90,7 +90,7 @@ public class RaceSpellSlotUI : MonoBehaviour {
 		contentCanvasGroup.DOFade(1f, 0.3f);
 	}
 
-	private void ChangeToUnavailable() {
+	private void ChangeToUnavailable(Spell _) { // the parameter is there just so it is compatible with callback in SpellInRace
 		// If the spell becomes unavailable (not enough mana, not charged) tween its scale and alpha of the unavailable overlay
 		transform.DOKill();
 		transform.DOScale(unavailableScale, 0.3f);

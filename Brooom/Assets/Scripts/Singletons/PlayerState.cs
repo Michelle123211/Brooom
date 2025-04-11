@@ -84,12 +84,14 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     #region Spells
     [HideInInspector] public Spell[] equippedSpells; // spells assigned to slots
+    public event Action<Spell, int> onEquippedSpellChanged;
     [HideInInspector] public Dictionary<string, bool> spellAvailability; // whether the spell is unlocked (purchased) or not
     [HideInInspector] public Dictionary<string, bool> spellCast; // whether the spell has been used already or never
     [HideInInspector] public int availableSpellCount = 0; // number of purchased spells
 
     public void EquipSpell(Spell spell, int slotIndex) {
         equippedSpells[slotIndex] = spell;
+        onEquippedSpellChanged?.Invoke(spell, slotIndex);
         // Save value into a file
         SaveSystem.SaveEquippedSpells(this.equippedSpells);
     }

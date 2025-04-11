@@ -117,8 +117,8 @@ public class SpellInRace {
     public bool HasEnoughMana { get; private set; } = false; // there is enough mana
 
     // Callbacks on changes
-    public event Action onBecomesAvailable;
-    public event Action onBecomesUnavailable;
+    public event Action<Spell> onBecomesAvailable;
+    public event Action<Spell> onBecomesUnavailable;
 
     public SpellInRace(Spell spell, float charge = 1) {
         this.Spell = spell;
@@ -161,8 +161,8 @@ public class SpellInRace {
             IsAvailable = newAvailability;
         }
         // Invoke callbacks
-        if (becomesAvailable) onBecomesAvailable?.Invoke();
-        if (becomesUnavailable) onBecomesUnavailable?.Invoke();
+        if (becomesAvailable) onBecomesAvailable?.Invoke(Spell);
+        if (becomesUnavailable) onBecomesUnavailable?.Invoke(Spell);
     }
 
     public void Reset() {

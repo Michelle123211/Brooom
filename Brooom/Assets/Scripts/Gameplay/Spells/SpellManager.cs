@@ -8,6 +8,7 @@ public class SpellManager : MonoBehaviourSingleton<SpellManager>, ISingleton {
 		get {
 			if (allSpells == null) {
 				LoadAllSpells();
+				Analytics.Instance.LogEvent(AnalyticsCategory.Spells, $"There are {AllSpells.Count} spells in this build.");
 			}
 			return allSpells;
 		}

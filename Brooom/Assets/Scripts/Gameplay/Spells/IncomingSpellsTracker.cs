@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,14 @@ using UnityEngine;
 public abstract class IncomingSpellsTracker : MonoBehaviour {
 
 	public List<IncomingSpellInfo> IncomingSpells { get; protected set; } = new List<IncomingSpellInfo>();
+	public event Action<IncomingSpellInfo> onIncomingSpellAdded;
 
 	public void AddIncomingSpell(SpellEffectController spell) {
 		IncomingSpellInfo spellInfo = new IncomingSpellInfo(spell, transform);
 		IncomingSpells.Add(spellInfo);
 		spell.onSpellCastFinished += RemoveIncomingSpell;
 		OnIncomingSpellAdded(spellInfo);
-			
+		onIncomingSpellAdded?.Invoke(spellInfo);
 	}
 
 	public void RemoveIncomingSpell(SpellEffectController spell) {
