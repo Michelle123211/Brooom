@@ -248,8 +248,8 @@ internal class BasicMovementProgress : TutorialStepProgressTracker {
 	private float previousForwardValue, previousTurnValue;
 
 	protected override bool CheckIfPossibleToMoveToNextStep() {
-		// Enough time has passed (10 s) and each direction was used enough times (3x) to progress further
-		return elapsedTime > 10 && forwardCount >= 3 && brakeCount >= 3 && leftCount >= 3 && rightCount >= 3;
+		// Enough time has passed (10 s) and each direction was used enough times (2-3x) to progress further
+		return elapsedTime > 10 && forwardCount >= 2 && brakeCount >= 2 && leftCount >= 3 && rightCount >= 3;
 	}
 
 	protected override void FinishStepProgress() {
