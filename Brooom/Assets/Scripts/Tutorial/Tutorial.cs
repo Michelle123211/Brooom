@@ -227,7 +227,9 @@ public abstract class TutorialStageBase {
 		currentStepProgress = new T();
 		currentStepProgress.StartTrackingProgress();
 		yield return new WaitUntil(() => currentStepProgress.IsFinished);
-		currentStepProgress.StopTrackingProgress();		currentStepProgress = null;	}
+		currentStepProgress.StopTrackingProgress();
+		currentStepProgress = null;
+	}
 
 	// Methods for pausing and resuming game
 	// - Game cannot be paused/resumed from a coroutine because of synchronization issues, but more tutorial stages may need this functionality,
