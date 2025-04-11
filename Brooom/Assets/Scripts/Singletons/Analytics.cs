@@ -63,10 +63,9 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		Messaging.RegisterForMessage("BonusPickedUp", OnBonusPickedUp);
 		Messaging.RegisterForMessage("NewRegionAvailable", OnNewRegionAvailable);
 		Messaging.RegisterForMessage("NewRegionVisited", OnNewRegionVisited);
+		Messaging.RegisterForMessage("StatsChanged", OnStatsChanged);
+		Messaging.RegisterForMessage("RankChanged", OnRankChanged);
 
-		// TODO: Message "RankChanged"
-		// TODO: Message "StatsChanged"
-		// TODO: Message "SpellCasted"
 		// TODO: Message "SpellPurchased"
 		// TODO: Message "AllSpellsPurchased"
 		// TODO: Message "ObstacleCollision"
@@ -83,6 +82,8 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		Messaging.UnregisterFromMessage("BonusPickedUp", OnBonusPickedUp);
 		Messaging.UnregisterFromMessage("NewRegionAvailable", OnNewRegionAvailable);
 		Messaging.UnregisterFromMessage("NewRegionVisited", OnNewRegionVisited);
+		Messaging.UnregisterFromMessage("StatsChanged", OnStatsChanged);
+		Messaging.UnregisterFromMessage("RankChanged", OnRankChanged);
 	}
 
 	private void RegisterGlobalCallbacks() {
@@ -311,6 +312,16 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	private void OnNewRegionVisited(int regionNumber) {
 		LogEvent(AnalyticsCategory.Race, $"New region visited: {(LevelRegionType)regionNumber}.");
+	}
+	#endregion
+
+	#region Stats callbacks
+	private void OnStatsChanged() {
+		LogEvent(AnalyticsCategory.Stats, $"Stats changed from {PlayerState.Instance.PreviousStats} (avg {PlayerState.Instance.PreviousStats.GetWeightedAverage()}) to {PlayerState.Instance.CurrentStats} (avg {PlayerState.Instance.CurrentStats.GetWeightedAverage()}).");
+	}
+
+	private void OnRankChanged(int place) {
+		LogEvent(AnalyticsCategory.Stats, $"Rank changed to {place} with current stats {PlayerState.Instance.CurrentStats} (avg {PlayerState.Instance.CurrentStats.GetWeightedAverage()}).");
 	}
 	#endregion
 
