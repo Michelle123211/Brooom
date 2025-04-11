@@ -18,8 +18,6 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 	[Tooltip("A prefab of panel asking the player if they want to enable or disable training before race.")]
 	public GameObject skipTrainingPanel;
 
-	public bool debugLogs = false;
-
 	private TutorialStageBase currentStageRepresentation;
 
 	// Called whenever progress in tutorial changes
@@ -56,7 +54,7 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 	}
 
 	public void SkipCurrentTutorialStage() {
-		if (debugLogs) Debug.Log($"Tutorial.SkipCurrentTutorialStage(): Skipping current tutorial stage {CurrentStage}");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {CurrentStage} skipped.");
 		LeaveCurrentTutorialStage(); // to reset all panels, highlights, fadeouts
 		if (currentStageRepresentation != null) {
 			currentStageRepresentation.Finish();
@@ -65,7 +63,7 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 	}
 
 	public void LeaveCurrentTutorialStage() {
-		if (debugLogs) Debug.Log($"Tutorial..LeaveCurrentTutorialStage(): Leaving current tutorial stage {CurrentStage}");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {CurrentStage} left.");
 		StopAllCoroutines();
 		SaveCurrentProgress();
 		FadeIn();
@@ -104,15 +102,14 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 	// Moves to the next stage (if possible)
 	private void MoveToNextStage() {
 		if (CurrentStage == TutorialStage.Finished) return;
-		if (debugLogs) Debug.Log($"Tutorial.MoveToNextStage: Moving onto the next tutorial stage from {CurrentStage}");
 		// Find the next stage - the least number greater than the current stage (there could be gaps)
 		int nextStage = (int)TutorialStage.Finished;
 		foreach (int i in Enum.GetValues(typeof(TutorialStage)))
 			if (i > (int)CurrentStage && i < nextStage) nextStage = i;
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Moving tutorial stage from {CurrentStage} to {(TutorialStage)nextStage}.");
 		// Set next stage
 		CurrentStage = (TutorialStage)nextStage;
 		currentStageRepresentation = GetTutorialStageRepresentation(CurrentStage);
-		if (debugLogs) Debug.Log($"---- Moved to {CurrentStage}");
 		SaveCurrentProgress();
 	}
 
@@ -122,7 +119,6 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 		if (CurrentStage == TutorialStage.Finished) return;
 		if (currentStageRepresentation == null) return;
 		if (!currentStageRepresentation.Update()) {
-			if (debugLogs) Debug.Log("TutorialStageBase.Update() returned false, so moving onto the next stage.");
 			MoveToNextStage();
 		}
 	}
@@ -173,12 +169,11 @@ public abstract class TutorialStageBase {
 		// Check if it is possible to trigger this tutorial stage
 		if (StageState == TutorialStageState.NotTriggered) {
 			if (CheckTriggerConditions()) {
-				if (Tutorial.Instance.debugLogs) Debug.Log($"TutorialStageBase.Update(): Trigger conditions were satisfied for {LocalizationKeyPrefix}.");
+				Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Trigger conditions satisfied for {LocalizationKeyPrefix} while tutorial is {(SettingsUI.enableTutorial ? "enabled" : "disabled")}.");
 				// If tutorial is disabled in the settings, simply stop immediately (and move on to the next stage)
 				if (!SettingsUI.enableTutorial) return false;
 				// Otherwise invoke the initialization
 				StageState = TutorialStageState.Initializing;
-				if (Tutorial.Instance.debugLogs) Debug.Log($"TutorialStageBase.Update(): Starting Initialize() for {LocalizationKeyPrefix} as a coroutine.");
 				Tutorial.Instance.StartCoroutine(Initialize());
 			}
 		}
@@ -187,7 +182,6 @@ public abstract class TutorialStageBase {
 			HandlePauseIfNecessary();
 			if (currentStepProgress != null) currentStepProgress.UpdateProgress();
 			if (!UpdateTutorialStage()) {
-				if (Tutorial.Instance.debugLogs) Debug.Log($"TutorialStageBase.Update(): UpdateTutorialStage() returned false, so calling Finish() for {LocalizationKeyPrefix}.");
 				StageState = TutorialStageState.Finished;
 				Finish();
 			}
@@ -206,7 +200,7 @@ public abstract class TutorialStageBase {
 
 	// Initializes the tutorial stage (started as a coroutine so it is possible to wait until it is done)
 	protected IEnumerator Initialize() {
-		if (Tutorial.Instance.debugLogs) Debug.Log($"TutorialStageBase.Initialize(): Calling InitializeTutorialStage() for {LocalizationKeyPrefix}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Initializing tutorial stage {LocalizationKeyPrefix}.");
 		yield return InitializeTutorialStage();
 		StageState = TutorialStageState.Running;
 	}

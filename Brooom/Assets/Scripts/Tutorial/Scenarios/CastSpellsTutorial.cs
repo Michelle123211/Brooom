@@ -27,7 +27,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 	protected override string LocalizationKeyPrefix => "CastSpells";
 
 	public override void Finish() {
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.Finish()");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} finished.");
 		Tutorial.Instance.FadeIn();
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		Tutorial.Instance.highlighter.StopHighlighting();
@@ -50,7 +50,6 @@ public class CastSpellsTutorial : TutorialStageBase {
 		if (SceneLoader.Instance.CurrentScene != Scene.PlayerOverview) return false;
 		foreach (var equippedSpell in PlayerState.Instance.equippedSpells) {
 			if (equippedSpell != null && !string.IsNullOrEmpty(equippedSpell.Identifier)) { // there is an equipped spell
-				if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.CheckTriggerConditions(): Conditions satisfied, scene is {SceneLoader.Instance.CurrentScene} and spell {equippedSpell.Identifier} is equipped.");
 				return true;
 			}
 		}
@@ -58,7 +57,6 @@ public class CastSpellsTutorial : TutorialStageBase {
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.InitializeTutorialStage()");
 		Tutorial.Instance.panel.ShowEscapePanel(false);
 		Tutorial.Instance.highlighter.Highlight(null, true); // block raycasts
 		yield break;
@@ -68,17 +66,17 @@ public class CastSpellsTutorial : TutorialStageBase {
 		// Handle starting the tutorial scenario
 		if (currentStep == Step.NotStarted) {
 			currentStep = Step.Started;
-			if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.UpdateTutorialStage(): Starting GoThroughTutorialScenario() as a coroutine.");
 			Tutorial.Instance.StartCoroutine(GoThroughTutorialScenario());
 		}
 		return currentStep != Step.Finished;
 	}
 
 	private IEnumerator GoThroughTutorialScenario() {
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Started.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} started.");
+
 		// Introduction + load scene
 		currentStep = Step.LetsGo;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		if (TutorialPlayerOverviewReferences.Instance.shopUI.activeInHierarchy)
 			Tutorial.Instance.highlighter.Highlight(TutorialPlayerOverviewReferences.Instance.equippedSpellsShop, true, padding: 10);
 		else
@@ -90,7 +88,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 		// Spells in HUD
 		currentStep = Step.AvailableSpells;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		Tutorial.Instance.panel.ShowEscapePanel();
 		TutorialBasicManager.Instance.DisablePlayerActions();
 		Tutorial.Instance.highlighter.Highlight(TutorialSceneManager.Instance.availableSpellsRect, padding: 5);
@@ -98,13 +96,13 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 		// Mana bar in HUD
 		currentStep = Step.Mana;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		Tutorial.Instance.highlighter.Highlight(TutorialSceneManager.Instance.manaBarRect, padding: 5);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 
 		// Mana bonus
 		currentStep = Step.ManaBonus;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		Tutorial.Instance.highlighter.StopHighlighting();
 		UtilsMonoBehaviour.SetActiveForAll(TutorialSceneManager.Instance.manaBonuses, true);
 		TutorialBasicManager.Instance.cutsceneCamera.MoveCameraToLookAt(TutorialSceneManager.Instance.manaBonuses[0].transform, 4, Vector3.forward);
@@ -112,7 +110,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 		// Collect mana
 		currentStep = Step.FillMana;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		TutorialBasicManager.Instance.RotatePlayerTowards(TutorialSceneManager.Instance.manaBonuses[0].transform);
 		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
 		Tutorial.Instance.panel.ShowTutorialPanel(GetLocalizedText(currentStep.ToString()));
@@ -121,7 +119,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 		// Mana bar full
 		currentStep = Step.ManaFull;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		TutorialBasicManager.Instance.DisablePlayerActions();
 		yield return new WaitForSecondsRealtime(0.75f); // to let mana tween finish
 		PauseGame();
@@ -130,19 +128,19 @@ public class CastSpellsTutorial : TutorialStageBase {
 		
 		// Spell targets
 		currentStep = Step.Targets;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 
 		// Current target
 		currentStep = Step.SpellTarget;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(
 			string.Format(GetLocalizedText(currentStep.ToString()),
 			GetCurrentSpellTarget()));
 
 		// Find target + cast spell
 		currentStep = Step.CastSpell;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		TutorialSceneManager.Instance.ShowAllPossibleSpellTargets();
 		Tutorial.Instance.highlighter.StopHighlighting();
 		Tutorial.Instance.panel.ShowTutorialPanel(GetLocalizedText(currentStep.ToString()));
@@ -153,14 +151,14 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 		// Cooldown
 		currentStep = Step.Cooldown;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		TutorialBasicManager.Instance.DisablePlayerActions();
 		Tutorial.Instance.highlighter.Highlight(TutorialSceneManager.Instance.spellsAndManaBarRect);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 
 		// Recharge bonus
 		currentStep = Step.RechargeBonus;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		Tutorial.Instance.highlighter.StopHighlighting();
 		GameObject rechargeBonus = GetSuitableRechargeBonus();
 		rechargeBonus.SetActive(true);
@@ -169,7 +167,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 		// Recharge and cast spell
 		currentStep = Step.CastSpell2;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		TutorialBasicManager.Instance.RotatePlayerTowards(rechargeBonus.transform);
 		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
 		Tutorial.Instance.panel.ShowTutorialPanel(GetLocalizedText(currentStep.ToString()));
@@ -179,7 +177,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 		// Switch spell
 		currentStep = Step.SwitchSpell;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		PauseGame();
 		TutorialBasicManager.Instance.DisablePlayerActions();
 		Tutorial.Instance.FadeOut();
@@ -187,9 +185,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 		// End
 		currentStep = Step.Finished;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
 		Tutorial.Instance.panel.HideTutorialPanel();
-		if (Tutorial.Instance.debugLogs) Debug.Log($"CastSpellsTutorial.GoThroughTutorialScenario(): Finished.");
 	}
 
 	private string GetCurrentSpellTarget() {

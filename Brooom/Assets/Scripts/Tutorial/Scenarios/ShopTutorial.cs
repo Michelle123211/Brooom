@@ -19,7 +19,7 @@ public class ShopTutorial : TutorialStageBase {
 	private int cheapestItemPrice = int.MaxValue; // store price of the cheapest item (to be able to determine if the player has enough coins to buy something)
 
 	public override void Finish() {
-		if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.Finish()");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} finished.");
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		Tutorial.Instance.highlighter.StopHighlighting();
 	}
@@ -35,13 +35,10 @@ public class ShopTutorial : TutorialStageBase {
 
 	protected override bool CheckTriggerConditions() {
 		// Player Overview scene + enough coins to buy first item in a shop
-		if (Tutorial.Instance.debugLogs && SceneLoader.Instance.CurrentScene == Scene.PlayerOverview && HasEnoughCoinsToBuySomething())
-			Debug.Log($"ShopTutorial.CheckTriggerConditions(): Conditions satisfied, scene is {SceneLoader.Instance.CurrentScene}, cheapest item is {cheapestItemPrice} and player has {PlayerState.Instance.Coins} coins.");
 		return SceneLoader.Instance.CurrentScene == Scene.PlayerOverview && HasEnoughCoinsToBuySomething();
 	}
 
 	protected override IEnumerator InitializeTutorialStage() {
-		if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.InitializeTutorialStage()");
 		Tutorial.Instance.panel.ShowEscapePanel(false);
 		yield break;
 	}
@@ -50,18 +47,17 @@ public class ShopTutorial : TutorialStageBase {
 		// Handle starting the tutorial scenario
 		if (currentStep == Step.NotStarted) {
 			currentStep = Step.Started;
-			if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.UpdateTutorialStage(): Starting GoThroughTutorialScenario() as a coroutine.");
 			Tutorial.Instance.StartCoroutine(GoThroughTutorialScenario());
 		}
 		return currentStep != Step.Finished;
 	}
 
 	private IEnumerator GoThroughTutorialScenario() {
-		if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.GoThroughTutorialScenario(): Started.");
-		
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} started.");
+
 		// Shop button
 		currentStep = Step.Shop;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		Tutorial.Instance.highlighter.Highlight(
 			TutorialPlayerOverviewReferences.Instance.shopButton, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitUntilVisible(GetLocalizedText(currentStep.ToString()));
@@ -69,7 +65,7 @@ public class ShopTutorial : TutorialStageBase {
 		
 		// Spells
 		currentStep = Step.Spells;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		Tutorial.Instance.highlighter.Highlight(
 			TutorialPlayerOverviewReferences.Instance.spells, true, padding: 10);
 		yield return Tutorial.Instance.panel.HideTutorialPanelAndWaitUntilInvisible();
@@ -77,15 +73,13 @@ public class ShopTutorial : TutorialStageBase {
 		
 		// Broom upgrades
 		currentStep = Step.BroomUpgrades;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
+		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} moved to step {currentStep}.");
 		Tutorial.Instance.highlighter.Highlight(
 			TutorialPlayerOverviewReferences.Instance.broomUpgrades, true, padding: 10);
 		yield return Tutorial.Instance.panel.ShowTutorialPanelAndWaitForClick(GetLocalizedText(currentStep.ToString()));
 		
 		// End
 		currentStep = Step.Finished;
-		if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.GoThroughTutorialScenario(): Current step {currentStep}.");
-		if (Tutorial.Instance.debugLogs) Debug.Log($"ShopTutorial.GoThroughTutorialScenario(): Finished.");
 	}
 
 	private bool HasEnoughCoinsToBuySomething() {
