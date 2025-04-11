@@ -22,8 +22,10 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	private Scene currentScene = Scene.Start;
 
-	private SpellController playerSpellController;
-	private PlayerIncomingSpellTracker playerIncomingSpellTracker;
+	// Objects where callbacks are registered
+	private SpellController playerSpellController; // onSpellCast, onManaAmountChanged, onSelectedSpellChanged
+	private PlayerIncomingSpellTracker playerIncomingSpellTracker; // onIncomingSpellAdded
+	private LevelGenerationPipeline levelGenerator; // onLevelGenerated
 
 
 	public void LogEvent(AnalyticsCategory category, string eventDescription) {
@@ -53,26 +55,34 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	#region Global callbacks and messages
 	private void RegisterForMessages() {
+		Messaging.RegisterForMessage("TrainingEnded", OnTrainingEnded);
+		Messaging.RegisterForMessage("RaceStarted", OnRaceStarted);
+		Messaging.RegisterForMessage("RaceGivenUp", OnRaceGivenUp);
+		Messaging.RegisterForMessage("RaceFinished", OnRaceFinished);
+		Messaging.RegisterForMessage("HoopAdvance", (Action<bool>)OnHoopAdvance);
+		Messaging.RegisterForMessage("BonusPickedUp", OnBonusPickedUp);
+		Messaging.RegisterForMessage("NewRegionAvailable", OnNewRegionAvailable);
+		Messaging.RegisterForMessage("NewRegionVisited", OnNewRegionVisited);
+
 		// TODO: Message "RankChanged"
 		// TODO: Message "StatsChanged"
 		// TODO: Message "SpellCasted"
 		// TODO: Message "SpellPurchased"
 		// TODO: Message "AllSpellsPurchased"
-		// TODO: Message "RaceStarted"
-		// TODO: Message "RaceGivenUp"
-		// TODO: Message "RaceFinished"
-		// TODO: Message "TrainingEnded"
 		// TODO: Message "ObstacleCollision"
-		// TODO: Message "BonusPickedUp"
-		// TODO: Message "HoopAdvance"
-		// TODO: Message "NewRegionAvailable"
-		// TODO: Message "NewRegionVisited"
 		// TODO: Message "CoinsChanged"
 		// TODO: Message "AllBroomUpgrades"
 	}
 
-	private void UnregisterFromMessages() { 
-		
+	private void UnregisterFromMessages() {
+		Messaging.UnregisterFromMessage("TrainingEnded", OnTrainingEnded);
+		Messaging.UnregisterFromMessage("RaceStarted", OnRaceStarted);
+		Messaging.UnregisterFromMessage("RaceGivenUp", OnRaceGivenUp);
+		Messaging.UnregisterFromMessage("RaceFinished", OnRaceFinished);
+		Messaging.UnregisterFromMessage("HoopAdvance", (Action<bool>)OnHoopAdvance);
+		Messaging.UnregisterFromMessage("BonusPickedUp", OnBonusPickedUp);
+		Messaging.UnregisterFromMessage("NewRegionAvailable", OnNewRegionAvailable);
+		Messaging.UnregisterFromMessage("NewRegionVisited", OnNewRegionVisited);
 	}
 
 	private void RegisterGlobalCallbacks() {
@@ -97,6 +107,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		// Initialize data fields
 		this.playerSpellController = RaceController.Instance.playerRacer.characterController.GetComponentInChildren<SpellController>();
 		this.playerIncomingSpellTracker = RaceController.Instance.playerRacer.characterController.GetComponentInChildren<PlayerIncomingSpellTracker>();
+		this.levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
 		// Register callbacks
 		this.playerSpellController.onSpellCast += OnSpellCast;
 		this.playerSpellController.onManaAmountChanged += OnManaAmountChanged;
@@ -108,10 +119,13 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 			}
 		}
 		this.playerIncomingSpellTracker.onIncomingSpellAdded += OnSpellCastAtPlayer;
-		// TODO: CharacterRaceState - onPlaceChanged, onHoopAdvance, onCheckpointMissed, onHoopMissed, onWrongDirectionChanged
+		OnLevelGenerated(RaceController.Instance.Level); // level should be already generated when the scene is loaded, so there is no need to register callback
+		RaceController.Instance.playerRacer.state.onPlaceChanged += OnPlaceInRaceChanged;
+		RaceController.Instance.playerRacer.state.onHoopMissed += OnHoopMissed;
+		RaceController.Instance.playerRacer.state.onCheckpointMissed += OnCheckpointMissed;
+		RaceController.Instance.playerRacer.state.onWrongDirectionChanged += OnWrongDirectionChanged;
 		// TODO: EffectibleCharacter - onNewEffectAdded
 		// TODO: CharacterEffect - onEffectStart, onEffectEnd
-		// TODO: LevelGenerationPipeline - onLevelGenerated
 	}
 
 	private void UnregisterCallbacksInRaceScene() {
@@ -127,9 +141,14 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 			}
 		}
 		this.playerIncomingSpellTracker.onIncomingSpellAdded -= OnSpellCastAtPlayer;
+		RaceController.Instance.playerRacer.state.onPlaceChanged -= OnPlaceInRaceChanged;
+		RaceController.Instance.playerRacer.state.onHoopMissed -= OnHoopMissed;
+		RaceController.Instance.playerRacer.state.onCheckpointMissed -= OnCheckpointMissed;
+		RaceController.Instance.playerRacer.state.onWrongDirectionChanged -= OnWrongDirectionChanged;
 		// Reset data fields
 		this.playerSpellController = null;
 		this.playerIncomingSpellTracker = null;
+		this.levelGenerator = null;
 	}
 	#endregion
 
@@ -178,29 +197,120 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	}
 
 	private void OnEquippedSpellChanged(Spell spell, int slotIndex) {
-		// Get all slots' content
-		StringBuilder slotsContent = new StringBuilder("Current content is: ");
+		string slotsContent = GetCurrentSpellSlotsContent(out _);
+		if (spell == null)
+			LogEvent(AnalyticsCategory.Spells, $"Slot {slotIndex} has been emptied. Current content is: {slotsContent}.");
+		else
+			LogEvent(AnalyticsCategory.Spells, $"Spell {spell.SpellName} has been assigned to slot {slotIndex}. Current content is: {slotsContent}.");
+	}
+
+	private string GetCurrentSpellSlotsContent(out int spellCount) {
+		spellCount = 0;
+		StringBuilder slotsContent = new StringBuilder();
 		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
 			Spell equippedSpell = PlayerState.Instance.equippedSpells[i];
-			if (equippedSpell == null || string.IsNullOrEmpty(equippedSpell.Identifier))
-				slotsContent.Append("Empty");
-			else slotsContent.Append(equippedSpell.SpellName);
+			if (equippedSpell != null && !string.IsNullOrEmpty(equippedSpell.Identifier)) {
+				slotsContent.Append(equippedSpell.SpellName);
+				spellCount++;
+			} else slotsContent.Append("Empty");
 			if (i < PlayerState.Instance.equippedSpells.Length - 1)
 				slotsContent.Append(" - ");
 		}
-		slotsContent.Append(".");
-		// Log
-		if (spell == null)
-			LogEvent(AnalyticsCategory.Spells, $"Slot {slotIndex} has been emptied. {slotsContent}");
-		else
-			LogEvent(AnalyticsCategory.Spells, $"Spell {spell.SpellName} has been assigned to slot {slotIndex}. {slotsContent}");
+		return slotsContent.ToString();
 	}
 
 	private void OnSpellCastAtPlayer(IncomingSpellInfo spellInfo) {
 		spellInfo.SpellObject.onSpellHit += OnSpellHitPlayer;
 	}
 	private void OnSpellHitPlayer(SpellEffectController spellEffectController) {
-		LogEvent(AnalyticsCategory.Spells, $"Player was hit by spell {spellEffectController.Spell.SpellName}.");
+		LogEvent(AnalyticsCategory.Spells, $"Player was hit by a spell {spellEffectController.Spell.SpellName}.");
+	}
+	#endregion
+
+	#region Race callbacks
+	private void OnLevelGenerated(LevelRepresentation level) {
+		// Get basic parameters
+		TrackPointsGenerationRandomWalk trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
+		int checkpointsCount = trackGenerator.numberOfCheckpoints;
+		int hoopsCount = trackGenerator.numberOfHoopsBetween;
+		int hoopTotal = level.Track.Count;
+		Vector2 maxAngle = trackGenerator.maxDirectionChangeAngle;
+		Vector2 distance = trackGenerator.distanceRange;
+		float hoopScale = levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale;
+		// Prepare a list of regions
+		StringBuilder regions = new StringBuilder();
+		int i = 0;
+		foreach (var region in level.RegionsInLevel) {
+			regions.Append(region);
+			if (i < level.RegionsInLevel.Count - 1) regions.Append(", ");
+			i++;
+		}
+		// Log
+		LogEvent(AnalyticsCategory.Race, $"Track generated with the following parameters: {checkpointsCount} checkpoints with {hoopsCount} hoops inbetween (so {hoopTotal} hoops in total), distance between hoops between {distance.x} and {distance.y}, hoop scale {hoopScale}, maximum angle {maxAngle.x} and {maxAngle.y}, and regions {regions}.");
+	}
+
+	private void OnTrainingEnded(int numTrials) {
+		LogEvent(AnalyticsCategory.Race, "Training ended.");
+	}
+
+	private void OnRaceStarted(int numRacers) {
+		string spellSlotContent = GetCurrentSpellSlotsContent(out int spellCount);
+		LogEvent(AnalyticsCategory.Race, $"Race started with {numRacers} racers. The player has {spellCount} spells equipped: {spellSlotContent}.");
+	}
+
+	private void OnRaceGivenUp() {
+		LogEvent(AnalyticsCategory.Race, "Race given up.");
+	}
+
+	private void OnRaceFinished(int place) {
+		// Time and penalization
+		float time = RaceController.Instance.playerRacer.state.finishTime;
+		float timePenalization = RaceController.Instance.playerRacer.state.timePenalization;
+		string timeText = "DNF";
+		if (time > 0) timeText = Utils.FormatTime(time + timePenalization);
+		// Missed hoops
+		int hoopsMissed = RaceController.Instance.playerRacer.state.hoopsMissed;
+
+		LogEvent(AnalyticsCategory.Race, $"Race finished with the following results: place {place}, time {timeText} (+{Mathf.RoundToInt(timePenalization)} s), {hoopsMissed} missed hoops.");
+	}
+
+	private void OnPlaceInRaceChanged(int place) {
+		LogEvent(AnalyticsCategory.Race, $"Player's place changed to {place}.");
+	}
+
+	private void OnHoopAdvance(bool hoopPassed) {
+		// Log only if passed (missed are handled separately)
+		if (hoopPassed) LogEvent(AnalyticsCategory.Race, "Hoop/checkpoint passed.");
+	}
+
+	private void OnHoopMissed() {
+		LogEvent(AnalyticsCategory.Race, "Hoop missed.");
+	}
+
+	private void OnCheckpointMissed() {
+		LogEvent(AnalyticsCategory.Race, "Checkpoint missed.");
+	}
+
+	private void OnWrongDirectionChanged(bool isWrongDirection) { 
+		if (isWrongDirection) LogEvent(AnalyticsCategory.Race, "Flying in wrong direction.");
+		else LogEvent(AnalyticsCategory.Race, "No longer flying in wrong direction.");
+	}
+
+	private void OnBonusPickedUp(GameObject bonus) {
+		string bonusType = "";
+		if (bonus.TryGetComponent<SpeedBonusEffect>(out _)) bonusType = "Speed";
+		else if (bonus.TryGetComponent<NavigationBonusEffect>(out _)) bonusType = "Navigation";
+		else if (bonus.TryGetComponent<ManaBonusEffect>(out _)) bonusType = "Mana";
+		else if (bonus.TryGetComponent<RechargeSpellsBonusEffect>(out _)) bonusType = "Recharge";
+		LogEvent(AnalyticsCategory.Race, $"{bonusType} bonus picked up.");
+	}
+
+	private void OnNewRegionAvailable(int regionNumber) {
+		LogEvent(AnalyticsCategory.Race, $"New region available: {(LevelRegionType)regionNumber}.");
+	}
+
+	private void OnNewRegionVisited(int regionNumber) {
+		LogEvent(AnalyticsCategory.Race, $"New region visited: {(LevelRegionType)regionNumber}.");
 	}
 	#endregion
 

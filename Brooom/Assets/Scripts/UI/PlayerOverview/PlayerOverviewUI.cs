@@ -18,6 +18,7 @@ public class PlayerOverviewUI : MonoBehaviour
     }
 
     public void StartNextRace() {
+        Analytics.Instance.LogEvent(AnalyticsCategory.Race, "New race entered from Player Overview.");
         SceneLoader.Instance.LoadScene(Scene.Race);
     }
 

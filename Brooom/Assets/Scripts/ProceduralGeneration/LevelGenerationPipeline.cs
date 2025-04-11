@@ -49,7 +49,7 @@ public class LevelGenerationPipeline : MonoBehaviour {
 
 #if UNITY_EDITOR
 	[ContextMenu("Regenerate level")]
-	private void RegenerateLevel() { // Regenerates the level with previous parameters
+	private void RegenerateLevel() { // Regenerates the level with previous parameters + parameters specified below
 		if (Level == null) {
 			if (terrainRegionsToInclude == null || terrainRegionsToInclude.Count == 0) {
 				terrainRegionsToInclude = new List<LevelRegionType>() { LevelRegionType.AboveWater, LevelRegionType.EnchantedForest }; // TODO: Change if necessary

@@ -196,7 +196,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         if (!regionsVisited.ContainsKey(region) || !regionsVisited[region]) {
 			regionsVisited[region] = true;
 			// Notify anyone interested that a new region has been visited
-			Messaging.SendMessage("NewRegionVisited");
+			Messaging.SendMessage("NewRegionVisited", (int)region);
 		}
 		SaveSystem.SaveVisitedRegions(regionsVisited);
 	}
@@ -213,7 +213,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         if (availability && (!regionsAvailability.ContainsKey(region) || (regionsAvailability.ContainsKey(region) && !regionsAvailability[region]))) { // a new region became available
 			regionsAvailability[region] = availability;
 			// Notify anyone interested that a new region has been unlocked
-			Messaging.SendMessage("NewRegionAvailable");
+			Messaging.SendMessage("NewRegionAvailable", (int)region);
         }
         regionsAvailability[region] = availability;
     }

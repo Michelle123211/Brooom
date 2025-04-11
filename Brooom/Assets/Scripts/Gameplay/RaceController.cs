@@ -18,7 +18,7 @@ public class RaceController : MonoBehaviourLongInitialization {
     [Tooltip("Curve describing first place reward depending on the track difficulty.")]
     public AnimationCurve firstPlaceReward;
     [Tooltip("Minimum and maximum reward for the first place.")]
-    public Vector2Int firstPlaceRewardRange = new Vector2Int(100, 5000);
+    public Vector2Int firstPlaceRewardRange = new Vector2Int(100, 4000);
 
     // Level - to get access to track points and record racers' position within the track
     public LevelRepresentation Level { get; private set; } = null;
@@ -202,7 +202,10 @@ public class RaceController : MonoBehaviourLongInitialization {
         statsComputer.UpdateStats();
         // Update player's coins account - TODO: consider coins penalization (e.g. for exposing magic)
         int playerReward = coinRewards[playerRacer.state.place - 1];
-        if (playerReward > 0) PlayerState.Instance.ChangeCoinsAmount(playerReward);
+        if (playerReward > 0) {
+            Analytics.Instance.LogEvent(AnalyticsCategory.Race, $"Reward for {playerRacer.state.place} place is {playerReward} coins.");
+            PlayerState.Instance.ChangeCoinsAmount(playerReward);
+        }
         // Send message
         Messaging.SendMessage("RaceFinished", playerRacer.state.place);
 		// Show the race results
@@ -316,7 +319,7 @@ public class RaceController : MonoBehaviourLongInitialization {
             3 * (PlayerState.Instance.CurrentStats.dexterity) +
             2 * (PlayerState.Instance.CurrentStats.precision) +
             1 * (PlayerState.Instance.CurrentStats.endurance + PlayerState.Instance.CurrentStats.speed))
-            / 10f;
+            / 7f;
         // Mapped from (0, 100) to (0, 1)
         return weightedAverage / 100;
     }
@@ -360,6 +363,7 @@ public class RaceController : MonoBehaviourLongInitialization {
         this.Level = level;
         levelGenerator.onLevelGenerated -= OnLevelGenerated;
         levelDifficulty = ComputeLevelDifficulty();
+        Analytics.Instance.LogEvent(AnalyticsCategory.Race, $"Track's difficulty is {levelDifficulty}.");
     }
 
 	protected override void PrepareForInitialization_ReplacingAwake() {
@@ -401,6 +405,7 @@ public class RaceController : MonoBehaviourLongInitialization {
 				}
                 // Handle restart
                 if (GamePause.PauseState == GamePauseState.Running && InputManager.Instance.GetBoolValue("Restart")) {
+                    Analytics.Instance.LogEvent(AnalyticsCategory.Race, "Position reset during training.");
                     playerRacer.characterController.ResetPosition(Level.playerStartPosition);
                     restartCountInTraining++;
                 }

@@ -10270,27 +10270,18 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.88639784
-      value: 0.7280321
-      inSlope: 2.156572
-      outSlope: 2.156572
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.236996
-    - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 2.756523
+      outSlope: 2.756523
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.03165734
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  firstPlaceRewardRange: {x: 100, y: 5000}
+  firstPlaceRewardRange: {x: 100, y: 4000}
   raceTime: 0
   isInTutorial: 0
 --- !u!4 &1820478787
@@ -10482,6 +10473,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   errorTolerance: 0.1
   givingUpPenalization: 0.95
+  debugLogs: 0
 --- !u!114 &1820478789
 MonoBehaviour:
   m_ObjectHideFlags: 0

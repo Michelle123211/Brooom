@@ -29,11 +29,11 @@ public class CharacterRaceState : MonoBehaviour {
     [HideInInspector] public float lastHoopTime = -1;
 
     // Callbacks on state change (used e.g. for HUD update)
-    public event Action <int> onPlaceChanged; // parameter: new place
-    public event Action <int> onPassedCheckpointsChanged; // parameter: number of passed checkpoints
-    public event Action <int> onPassedHoopsChanged; // parameter: number of passed hoops
+    public event Action<int> onPlaceChanged; // parameter: new place
+    public event Action<int> onPassedCheckpointsChanged; // parameter: number of passed checkpoints
+    public event Action<int> onPassedHoopsChanged; // parameter: number of passed hoops
     public event Action<int> onMissedHoopsChanged; // parameter: number of missed hoops
-    public event Action <int> onTimePenalizationChanged; // parameter: new penalization value
+    public event Action<int> onTimePenalizationChanged; // parameter: new penalization value
 
     // Callbacks on progress within the track (used e.g. for visual feedback)
     public event Action onHoopAdvance; // used e.g. to highlight the next one

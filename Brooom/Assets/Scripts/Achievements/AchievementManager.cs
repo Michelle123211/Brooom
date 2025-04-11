@@ -517,7 +517,7 @@ class LevelData : AchievementData {
 		SaveData();
 	}
 
-	private void OnNewRegionAvailable() {
+	private void OnNewRegionAvailable(int regionNumber) {
 		if (allRegionsAvailable) return; // no need to check again
 		bool allAvailable = true;
 		// Enumerate all possible regions and make sure they are all available
@@ -533,7 +533,7 @@ class LevelData : AchievementData {
 		SaveData();
 	}
 
-	private void OnNewRegionVisited() {
+	private void OnNewRegionVisited(int regionNumber) {
 		if (allRegionsVisited) return; // no need to check again
 		bool allVisited = true;
 		// Enumerate all possible regions and make sure they have been visited

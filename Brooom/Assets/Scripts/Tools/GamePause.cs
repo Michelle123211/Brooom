@@ -47,6 +47,7 @@ public class GamePause : MonoBehaviour {
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelOpen);
             wasCursorLocked = Utils.IsCursorLocked();
             Utils.EnableCursor();
+            Analytics.Instance.LogEvent(AnalyticsCategory.Race, "Game paused.");
         }
         DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.25f).SetUpdate(true);
     }
@@ -60,6 +61,7 @@ public class GamePause : MonoBehaviour {
             animator.SetBool("ShowMenu", false); // timeScale changed in animation
             AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
             if (wasCursorLocked) Utils.DisableCursor();
+            Analytics.Instance.LogEvent(AnalyticsCategory.Race, "Game resumed.");
         }
         // Resume - only if there is no more nested pause
         pauseCount = Math.Max(0, pauseCount - 1); // don't go below zero (allows for game being resumed speculatively, e.g. when skipping tutorial)
