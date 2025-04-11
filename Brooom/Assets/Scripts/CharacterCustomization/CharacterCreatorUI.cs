@@ -38,6 +38,7 @@ public class CharacterCreatorUI : MonoBehaviour
         // Set flag that the game was started
         PlayerPrefs.SetString("GameStarted", "true");
         Messaging.SendMessage("GameStarted");
+        Analytics.Instance.LogEvent(AnalyticsCategory.Other, $"Character created with name {currentCustomization.characterName}, skin color {currentCustomization.skinColor.assignedColor}, hairstyle {currentCustomization.hairStyle.variantName}, hair color {currentCustomization.hairColor.assignedColor}, outfit {currentCustomization.outfit.variantName} and shoes {currentCustomization.shoes.variantName}.");
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, "New game started after character creation.");
         // Change scene
         if (SettingsUI.enableTutorial) SceneLoader.Instance.LoadScene(Scene.Tutorial);

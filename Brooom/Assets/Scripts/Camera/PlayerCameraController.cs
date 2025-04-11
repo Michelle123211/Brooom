@@ -123,8 +123,13 @@ public class PlayerCameraController : MonoBehaviour {
         }
         // Handle switching to the back view
         if (InputManager.Instance.GetBoolValue("BackView")) {
-            if (isBackViewOn) SwitchToFrontCamera();
-            else SwitchToBackCamera();
+            if (isBackViewOn) {
+                Analytics.Instance.LogEvent(AnalyticsCategory.Other, "Back view disabled.");
+                SwitchToFrontCamera();
+            } else {
+                Analytics.Instance.LogEvent(AnalyticsCategory.Other, "Back view enabled.");
+                SwitchToBackCamera();
+            }
         }
     }
 
@@ -148,6 +153,8 @@ public class PlayerCameraController : MonoBehaviour {
     private void ResetCameraWithTweenIfNecessary() {
         if (isResetting || !InputManager.Instance.GetBoolValue("ResetView"))
             return;
+        Analytics.Instance.LogEvent(AnalyticsCategory.Other, "View reset.");
+        if (isBackViewOn) Analytics.Instance.LogEvent(AnalyticsCategory.Other, "Back view disabled.");
         TweenToResetView();
     }
 
