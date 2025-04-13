@@ -84,7 +84,7 @@ public class ConnectingPairs : ExperimentPart {
 				}
 				// Go to next scene
 				DataLogger.Instance.Log("----------------------------------------", false);
-				experimentContent.DOFade(0f, 0.3f).OnComplete(() => SceneManager.LoadScene(Categories.sceneName));
+				experimentContent.DOFade(0f, 0.3f).OnComplete(() => SceneManager.LoadScene(End.sceneName));
 				break;
 		}
 	}
