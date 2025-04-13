@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e84e8cbf37c84ed4ca1184a42690d2d0, type: 3}
+  m_Name: Velox
+  m_EditorClassIdentifier: 
+  spellName: Velox
+  spellIcon: {fileID: 21300000, guid: 75d4d2b7ac2b6364eae86b459fc0c32c, type: 3}
+  spellIconBackgroundColor: {r: 0.24705882, g: 0.28235295, b: 0.54901963, a: 1}
+  spellDescriptionEnglish: The spell temporarily increases the player's speed, similarly
+    to speed bonus.
+  spellDescriptionCzech: "Kouzlo hr\xE1\u010De do\u010Dasn\u011B zrychl\xED, podobn\u011B
+    jako po sebr\xE1n\xED zrychluj\xEDc\xEDho bonusu."
