@@ -47,6 +47,7 @@ public class Introduction : ExperimentPart {
 				break;
 			case IntroductionStep.Finished:
 				// Go to next scene
+				DataLogger.Instance.Log("----------------------------------------", false);
 				experimentContent.DOFade(0f, 0.3f).OnComplete(() => SceneManager.LoadScene(IconsToDescription.sceneName));
 				break;
 		}

@@ -13,9 +13,12 @@ public class DataLogger : MonoBehaviour {
 	private CultureInfo culture = new CultureInfo("cs-CZ");
 	private StreamWriter file;
 
-	public void Log(string message) {
+	public void Log(string message, bool includeDateTime = true) {
 		// Write the message into a file - prefix it with current date and time
-		file.WriteLine($"{DateTime.Now.ToString(culture)} | {message}");
+		if (includeDateTime)
+			file.WriteLine($"{DateTime.Now.ToString(culture)} | {message}");
+		else
+			file.WriteLine(message);
 	}
 
 	private void Awake() {
@@ -33,7 +36,7 @@ public class DataLogger : MonoBehaviour {
 	private void OnDestroy() {
 		// Close file
 		Log("Spell icons experiment ended.");
-		file.WriteLine("===========================================");
+		Log("========================================", false);
 		file.Close();
 	}
 

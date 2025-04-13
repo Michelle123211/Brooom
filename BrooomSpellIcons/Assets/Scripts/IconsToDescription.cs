@@ -39,7 +39,7 @@ public class IconsToDescription : ExperimentPart {
         // Move to next step
         if (currentStep == IconsToDescriptionStep.Icon) {
             // Save current data and remove the last spell
-            DataLogger.Instance.Log($"Part 1 | {spells[spellIndex].name} | {formInputField.text} | {functionInputField.text}");
+            DataLogger.Instance.Log($"Part 1 | {spells[spellIndex].spellName} | {formInputField.text} | {functionInputField.text}");
             spells.RemoveAt(spellIndex);
             // If there are no more icons, finish
             if (spells.Count <= 0) currentStep = IconsToDescriptionStep.Finished;
@@ -48,6 +48,10 @@ public class IconsToDescription : ExperimentPart {
         }
         // Do something based on current step
         InitializeStep();
+    }
+
+    public void OnInputFieldValueChanged() {
+        nextButton.interactable = (!string.IsNullOrEmpty(formInputField.text) && !string.IsNullOrEmpty(functionInputField.text));
     }
 
     private void InitializeStep() {
@@ -73,10 +77,12 @@ public class IconsToDescription : ExperimentPart {
                     introductoryContent.DOFade(0f, 0.3f).OnComplete(() => experimentContent.DOFade(1f, 0.3f));
                 }
                 // Show next spell icon and clear input fields
+                nextButton.interactable = false;
                 InitializeNewSpell();
                 break;
             case IconsToDescriptionStep.Finished:
                 // Go to next scene
+                DataLogger.Instance.Log("----------------------------------------", false);
                 experimentContent.DOFade(0f, 0.3f).OnComplete(() => SceneManager.LoadScene(DescriptionToIcons.sceneName));
                 break;
         }
