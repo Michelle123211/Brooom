@@ -14,6 +14,12 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	[Tooltip("Name of the file (without extension) the analytics will be saved into.")]
 	[SerializeField] string analyticsFileName = "Events";
 
+	[Tooltip("Whether the analytics file should be copied over to Desktop when the game is closed.")]
+	[SerializeField] bool copyToDesktop = false;
+
+	[Tooltip("Name of the file (without extension) which should be created on Desktop when the analytics file is copied there.")]
+	[SerializeField] string desktopFileName = "Events";
+
 	private static readonly long maxFileSize = 10485760; // 10 MB
 	
 
@@ -353,11 +359,11 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	public void AwakeSingleton() {
 		// Make sure the analytics output file exists
-		string eventsFolder = Application.persistentDataPath + "/Events/";
+		string eventsFolder = Path.Combine(Application.persistentDataPath, "Events");
 		if (!Directory.Exists(eventsFolder))
 			Directory.CreateDirectory(eventsFolder);
 		// If the file is too large already, just empty it completely
-		string filePath = eventsFolder + analyticsFileName + ".log";
+		string filePath = Path.Combine(eventsFolder, analyticsFileName + ".data");
 		FileInfo fileInfo = new FileInfo(filePath);
 		if (fileInfo.Exists && fileInfo.Length > maxFileSize) {
 			using (FileStream fileStream = File.Open(filePath, FileMode.Open)) {
@@ -387,6 +393,19 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		LogEvent(AnalyticsCategory.Analytics, "Analytics shut down.");
 		file.WriteLine("===========================================");
 		file.Close();
+
+		// If enabled, copy the file to Desktop
+		if (copyToDesktop) {
+			// Make sure the folder exists
+			string desktopFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Brooom");
+			if (!Directory.Exists(desktopFolder))
+				Directory.CreateDirectory(desktopFolder);
+			// Then copy the analytics file there
+			string originalFilePath = Path.Combine(Application.persistentDataPath, "Events", analyticsFileName + ".data");
+			string newFilePath = Path.Combine(desktopFolder, desktopFileName + ".data");
+			if (File.Exists(originalFilePath))
+				File.Copy(originalFilePath, newFilePath, true); // will overwrite an existing file
+		}
 	}
 	#endregion
 }
