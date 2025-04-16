@@ -99,3 +99,13 @@
 - More cheats
 - Several major and minor bugfixes
 - Several other improvements
+
+**Milestone 12** - Optimizations and bugfixes (16th April 2025, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone12.zip)):
+
+- Tutorial
+- Option to skip training before race
+- Improved UI adjustment to different screen sizes
+- Analytics (important game events simply logged into a file)
+- Game logo in Main Menu
+- Testing + debugging
+- Experiment preparation and distribution (testing spell icons' comprehensibility, general playtesting, measuring game satisfaction)
