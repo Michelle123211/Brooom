@@ -9,7 +9,7 @@ using UnityEngine;
 public class RegionGeneratorVoronoi : LevelGeneratorModule {
 
 	[Tooltip("The map is divided into a grid of squares. This number determines each square's width.")]
-	public int regionSize = 150;
+	public int regionSize = 200;
 
 	private int regionCountX, regionCountY; // number of regions in each axis
 	private int regionSizeX, regionSizeY; // size of each grid tile in the number of terrain points

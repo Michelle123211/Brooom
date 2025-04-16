@@ -7,9 +7,9 @@ using UnityEngine;
 public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	[Tooltip("Each hoop's Y coordinate is adjusted according to the maximum terrain height in a close neighbourhood of the given radius.")]
-	public int hoopHeightAreaRadius = 3;
+	public int hoopHeightAreaRadius = 4;
 	[Tooltip("Hoops and checkpoints should be placed in this minimum height above ground.")]
-	public float defaultMinimumOffsetAboveGround = 1;
+	public float defaultMinimumOffsetAboveGround = 4;
 	[Tooltip("Some regions may prefer different minimum height above ground than the default one (e.g. larger for forest).")]
 	public List<TrackInRegionHeight> minHeightOffsetOverrides;
 
