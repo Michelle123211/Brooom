@@ -76,7 +76,7 @@ public class MainMenuUI : MonoBehaviour
         // Activate the button corresponding to the current language
         defaultLangToggle.isOn = true;
         // Show correctly buttons to Start, Continue and/or Start again
-        if (PlayerPrefs.HasKey("GameStarted") && PlayerPrefs.GetString("GameStarted") == "true") { // there is previously saved game
+        if (SaveSystem.SaveExists()) {  // there is previously saved game
             saveExists = true;
             startButtonText.SetActive(false);
             continueButtonText.SetActive(true);

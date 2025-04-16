@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using UnityEngine;
+using System.Linq;
 
 public class SaveSystem
 {
@@ -37,6 +38,12 @@ public class SaveSystem
         // Make sure the save folder exists
         if (!Directory.Exists(saveFolder))
             Directory.CreateDirectory(saveFolder);
+    }
+
+    public static bool SaveExists() {
+        // Saves folder exists and there is file for PlayerState
+        if (!Directory.Exists(saveFolder)) return false;
+        return File.Exists(playerStatePath);
     }
 
 	#region Character customization
