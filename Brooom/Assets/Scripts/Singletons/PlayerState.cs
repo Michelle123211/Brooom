@@ -313,6 +313,13 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
                 }
             }
             if (spells.SpellsUsage != null) this.spellCast = spells.SpellsUsage;
+            // Make sure any spells added later are also considered
+            foreach (var spell in SpellManager.Instance.AllSpells) { // Initialize all spells to false
+                if (!spellAvailability.ContainsKey(spell.Identifier))
+                    spellAvailability[spell.Identifier] = false;
+                if (!spellCast.ContainsKey(spell.Identifier))
+                    spellCast[spell.Identifier] = false;
+            }
         }
     }
 
