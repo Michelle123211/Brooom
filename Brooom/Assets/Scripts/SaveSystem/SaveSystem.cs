@@ -41,9 +41,9 @@ public class SaveSystem
     }
 
     public static bool SaveExists() {
-        // Saves folder exists and there is file for PlayerState
+        // Saves folder exists and there is file for character customization (implying a game has been started previously)
         if (!Directory.Exists(saveFolder)) return false;
-        return File.Exists(playerStatePath);
+        return File.Exists(characterPath);
     }
 
 	#region Character customization
