@@ -58,7 +58,7 @@ public class SaveSystem
     }
 
     /// <summary>
-    /// Copies all files from 'Saves\' folder to 'Saves\Backup\' subfolder, except for 'settings.json' and 'key_bindings.json'.
+    /// Copies all files from 'Saves\' folder to 'Saves\Backup\' subfolder, except for 'settings.json' and 'key_bindings.json (they are global and can be not only in-game)'.
     /// Also deletes any backup from before.
     /// </summary>
     public static void CreateBackup() {
