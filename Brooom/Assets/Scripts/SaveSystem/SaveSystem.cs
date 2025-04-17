@@ -67,8 +67,8 @@ public class SaveSystem
         // Copy all files to a subfolder (except settings and key rebinding, because that is not specific for a game and can be changed outside of it)
         Directory.CreateDirectory(backupFolder);
         foreach (var file in Directory.EnumerateFiles(saveFolder)) {
-            string fileName = file.Substring(saveFolder.Length + 1);
-            if (fileName.Contains(settingsFileName) || fileName.Contains(rebindingFileName)) break;
+            string fileName = file.Substring(saveFolder.Length);
+            if (fileName.Contains(settingsFileName) || fileName.Contains(rebindingFileName)) continue;
             File.Copy(file, backupFolder + fileName, true);
         }
     }
@@ -81,7 +81,7 @@ public class SaveSystem
         // Copy all files from backup subfolder to the Saves folder (with overwrite enabled) and then delete the subfolder
         if (!Directory.Exists(backupFolder)) return;
         foreach (var file in Directory.EnumerateFiles(backupFolder)) { 
-            string fileName = file.Substring(backupFolder.Length + 1);
+            string fileName = file.Substring(backupFolder.Length);
             File.Copy(file, saveFolder + fileName, true);
         }
         DeleteBackup();

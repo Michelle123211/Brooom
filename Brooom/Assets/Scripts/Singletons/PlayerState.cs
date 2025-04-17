@@ -106,6 +106,13 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         SaveSystem.SaveEquippedSpells(this.equippedSpells);
     }
 
+    public bool HasEquippedSpells() {
+        foreach (var equippedSpell in equippedSpells) {
+            if (equippedSpell != null && !string.IsNullOrEmpty(equippedSpell.Identifier)) return true;
+        }
+        return false;
+    }
+
     public bool IsSpellPurchased(string spellIdentifier) {
         return (spellAvailability.TryGetValue(spellIdentifier, out bool isPurchased) && isPurchased);
     }
