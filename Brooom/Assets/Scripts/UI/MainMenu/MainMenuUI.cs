@@ -20,6 +20,8 @@ public class MainMenuUI : MonoBehaviour
     public void StartOrContinueGame() { 
         // If there is any previously saved state, load it here
         if (saveExists) {
+            // If there is a backup available (e.g. because quick race was run previously), first restore it
+            if (SaveSystem.BackupExists()) SaveSystem.RestoreFromBackup();
             PlayerState.Instance.LoadSavedState();
             Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Game continued.");
             Messaging.SendMessage("GameStarted");

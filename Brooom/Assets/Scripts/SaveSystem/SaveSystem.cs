@@ -21,6 +21,7 @@ public class SaveSystem
     // Other parts of the path
     private static readonly string fileExtension = ".json";
     private static readonly string saveFolder = Application.persistentDataPath + "/Saves/";
+    private static readonly string backupFolder = saveFolder + "Backup/";
 
     // Full paths
     private static readonly string characterPath = saveFolder + characterFileName + fileExtension;
@@ -44,6 +45,54 @@ public class SaveSystem
         // Saves folder exists and there is file for character customization (implying a game has been started previously)
         if (!Directory.Exists(saveFolder)) return false;
         return File.Exists(characterPath);
+    }
+
+    /// <summary>
+    /// Check whether a backup of current game state exists, which is indicated by existence of 'Saves\Backup\' folder.
+    /// </summary>
+    /// <returns>True if 'Saves\Backup\' folder exists, false otherwise.</returns>
+    public static bool BackupExists() {
+        // Saves folder exists and there is a Backup subfolder
+        if (!Directory.Exists(saveFolder)) return false;
+        return Directory.Exists(backupFolder);
+    }
+
+    /// <summary>
+    /// Copies all files from 'Saves\' folder to 'Saves\Backup\' subfolder, except for 'settings.json' and 'key_bindings.json'.
+    /// Also deletes any backup from before.
+    /// </summary>
+    public static void CreateBackup() {
+        // If there is backup already, delete it
+        DeleteBackup();
+        // Copy all files to a subfolder (except settings and key rebinding, because that is not specific for a game and can be changed outside of it)
+        Directory.CreateDirectory(backupFolder);
+        foreach (var file in Directory.EnumerateFiles(saveFolder)) {
+            string fileName = file.Substring(saveFolder.Length + 1);
+            if (fileName.Contains(settingsFileName) || fileName.Contains(rebindingFileName)) break;
+            File.Copy(file, backupFolder + fileName, true);
+        }
+    }
+
+    /// <summary>
+    /// Copies all files from 'Saves\Backup\' subfolder to 'Saves\' folder while overwriting any already existing files of the same name.
+    /// Then deletes the 'Saves\Backup\' subfolder completely.
+    /// </summary>
+    public static void RestoreFromBackup() {
+        // Copy all files from backup subfolder to the Saves folder (with overwrite enabled) and then delete the subfolder
+        if (!Directory.Exists(backupFolder)) return;
+        foreach (var file in Directory.EnumerateFiles(backupFolder)) { 
+            string fileName = file.Substring(backupFolder.Length + 1);
+            File.Copy(file, saveFolder + fileName, true);
+        }
+        DeleteBackup();
+    }
+
+    /// <summary>
+    /// Completely deletes 'Saves\Backup\' subfolder.
+    /// </summary>
+    public static void DeleteBackup() { 
+        if (Directory.Exists(backupFolder))
+            Directory.Delete(backupFolder, true);
     }
 
 	#region Character customization

@@ -252,6 +252,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     public void LoadSavedState() {
         // Use SaveSystem to load all the player's state
         // ...character customization is loaded automatically in its getter
+        characterCustomization = null;
         // ...player state
         PlayerStateSaveData playerState = SaveSystem.LoadPlayerState();
         LoadFromSavedPlayerState(playerState);

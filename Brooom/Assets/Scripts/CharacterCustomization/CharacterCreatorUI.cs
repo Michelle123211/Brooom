@@ -30,6 +30,7 @@ public class CharacterCreatorUI : MonoBehaviour
 
     public void StartGame() {
         // Reset the game state
+        SaveSystem.DeleteBackup();
         PlayerState.Instance.ResetState();
         // Save all the choices (including the name)
         CharacterCustomizationData currentCustomization = character.GetCustomizationData();
