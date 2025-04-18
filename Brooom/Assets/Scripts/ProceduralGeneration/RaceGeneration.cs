@@ -59,6 +59,48 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
         yield return levelGenerator.GenerateLevel();
     }
 
+    /// <summary>
+    /// Prepares a list of terrain regions which are currently available and should be used in the generated level.
+    /// Also ensures there is at most one unvisited region.
+    /// </summary>
+    /// <returns>List of terrain regions to be used in the generated level.</returns>
+    protected virtual List<LevelRegionType> ChooseTerrainRegionsForLevel() {
+        List<LevelRegionType> chosenRegions = new List<LevelRegionType>();
+        List<LevelRegionType> unvisitedTerrainRegions = new List<LevelRegionType>();
+        List<LevelRegionType> otherAvailableTerrainRegions = new List<LevelRegionType>();
+        bool unvisitedAvailableTrackRegionExists = false;
+        // Prepare lists of available terrain regions
+        foreach (var terrainRegion in levelGenerator.terrainRegions) {
+            // Default regions are chosen automatically
+            if (defaultRegions.Contains(terrainRegion.regionType)) chosenRegions.Add(terrainRegion.regionType);
+            // Then consider only available regions
+            else if (PlayerState.Instance.regionsAvailability[terrainRegion.regionType]) {
+                if (PlayerState.Instance.regionsVisited.TryGetValue(terrainRegion.regionType, out bool isVisited) && isVisited) // region has been visited
+                    otherAvailableTerrainRegions.Add(terrainRegion.regionType);
+                else unvisitedTerrainRegions.Add(terrainRegion.regionType);
+            }
+        }
+        // Check if there is any track region which is available and hasn't been visited yet
+        foreach (var trackRegion in levelGenerator.trackRegions) {
+            if (PlayerState.Instance.regionsAvailability[trackRegion.regionType] // available
+                && (!PlayerState.Instance.regionsVisited.TryGetValue(trackRegion.regionType, out bool isVisited) || !isVisited)) { // and not visited
+                unvisitedAvailableTrackRegionExists = true;
+                break;
+            }
+        }
+        // Add one random unvisited terrain region (but only if there is no new track region, to make sure there is at most one new region)
+        if (!unvisitedAvailableTrackRegionExists && unvisitedTerrainRegions.Count > 0) {
+            chosenRegions.Add(unvisitedTerrainRegions[Random.Range(0, unvisitedTerrainRegions.Count)]);
+        }
+        // Add some other regions randomly, so that a desirable number of regions is chosen at maximum
+        while (chosenRegions.Count < regionCountInLevel && otherAvailableTerrainRegions.Count > 0) {
+            int randomIndex = Random.Range(0, otherAvailableTerrainRegions.Count);
+            chosenRegions.Add(otherAvailableTerrainRegions[randomIndex]);
+            otherAvailableTerrainRegions.RemoveAt(randomIndex);
+        }
+        return chosenRegions;
+    }
+
     private void SetLevelGeneratorParameters() {
         // Compute parameters based on player's stats
         // ... number of checkpoints from Endurance
@@ -98,43 +140,6 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
         // ... available regions from max altitude
         foreach (var regionWithValue in regionsUnlockedByAltitude)
             PlayerState.Instance.SetRegionAvailability(regionWithValue.region, PlayerState.Instance.maxAltitude >= regionWithValue.minValue);
-    }
-
-    private List<LevelRegionType> ChooseTerrainRegionsForLevel() {
-        List<LevelRegionType> chosenRegions = new List<LevelRegionType>();
-        List<LevelRegionType> unvisitedTerrainRegions = new List<LevelRegionType>();
-        List<LevelRegionType> otherAvailableTerrainRegions = new List<LevelRegionType>();
-        bool unvisitedAvailableTrackRegionExists = false;
-        // Prepare lists of available terrain regions
-        foreach (var terrainRegion in levelGenerator.terrainRegions) {
-            // Default regions are chosen automatically
-            if (defaultRegions.Contains(terrainRegion.regionType)) chosenRegions.Add(terrainRegion.regionType);
-            // Then consider only available regions
-            else if (PlayerState.Instance.regionsAvailability[terrainRegion.regionType]) {
-                if (PlayerState.Instance.regionsVisited.TryGetValue(terrainRegion.regionType, out bool isVisited) && isVisited) // region has been visited
-                    otherAvailableTerrainRegions.Add(terrainRegion.regionType);
-                else unvisitedTerrainRegions.Add(terrainRegion.regionType);
-            }
-        }
-        // Check if there is any track region which is available and hasn't been visited yet
-        foreach (var trackRegion in levelGenerator.trackRegions) {
-            if (PlayerState.Instance.regionsAvailability[trackRegion.regionType] // available
-                && (!PlayerState.Instance.regionsVisited.TryGetValue(trackRegion.regionType, out bool isVisited) || !isVisited)) { // and not visited
-                unvisitedAvailableTrackRegionExists = true;
-                break;
-            }
-        }
-        // Add one random unvisited terrain region (but only if there is no new track region, to make sure there is at most one new region)
-        if (!unvisitedAvailableTrackRegionExists && unvisitedTerrainRegions.Count > 0) {
-            chosenRegions.Add(unvisitedTerrainRegions[Random.Range(0, unvisitedTerrainRegions.Count)]);
-        }
-        // Add some other regions randomly, so that a desirable number of regions is chosen at maximum
-        while (chosenRegions.Count < regionCountInLevel && otherAvailableTerrainRegions.Count > 0) {
-            int randomIndex = Random.Range(0, otherAvailableTerrainRegions.Count);
-            chosenRegions.Add(otherAvailableTerrainRegions[randomIndex]);
-            otherAvailableTerrainRegions.RemoveAt(randomIndex);
-        }
-        return chosenRegions;
     }
 
 }

@@ -161,9 +161,10 @@ public enum Scene {
 	Tutorial = 3,
 	PlayerOverview = 4,
 	Race = 5,
-	TestingTrack = 6,
-	Ending = 7,
-	Exit = 8,
+	QuickRace = 6,
+	TestingTrack = 7,
+	Ending = 8,
+	Exit = 9,
 
 	None = 8888,
 	ProceduralTerrain = 9999 // TODO: Remove when not necessary (it is there for debugging purposes only)

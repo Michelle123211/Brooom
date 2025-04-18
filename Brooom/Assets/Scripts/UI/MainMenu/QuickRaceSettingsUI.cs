@@ -57,6 +57,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		SetStateFromCurrentlySelectedtValues();
 		SaveQuickRaceSettings();
 		// Load QuickRace scene
+		SceneLoader.Instance.LoadScene(Scene.QuickRace);
 	}
 
 	private void InitializeStateFromLoadedData(QuickRaceSaveData data) {
@@ -74,7 +75,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 			magic = data.stats.magic < 0 ? PlayerState.Instance.CurrentStats.magic : data.stats.magic // if <0, it wasn't saved
 		};
 		// Equipped spells
-		if (data.spells != null && data.spells.EquippedSpells != null) { // spells were saved
+		if (data.spells != null && data.spells.EquippedSpells != null && data.spells.EquippedSpells.Length > 0) { // spells were saved
 			PlayerState.Instance.equippedSpells = data.spells.EquippedSpells;
 		}
 	}
