@@ -53,13 +53,86 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 	}
 
 	public void OnRaceStarted() {
-		// Get values from UI elements and store them into current state
-		// - Stats based on chosen difficulty level, or based on sliders (if Custom)
-		// - Broom upgrades based on chosen difficulty level, or based on sliders (if Custom)
-		// - Spells
-		//		- if spells are not enabled, unequip everything and lock all spells (so opponents cannot use them either)
-		//		- if spells are enabled, do nothing (correct spells should be already equipped and all spells should be unlocked)
+		// Get values from UI elements, store them into current state and save settings persistently
+		SetStateFromCurrentlySelectedtValues();
+		SaveQuickRaceSettings();
 		// Load QuickRace scene
+	}
+
+	private void InitializeStateFromLoadedData(QuickRaceSaveData data) {
+		// Broom upgrades
+		if (data.broomUpgrades != null) { // broom upgrades were saved
+			foreach (var upgrade in data.broomUpgrades.UpgradeLevels)
+				PlayerState.Instance.SetBroomUpgradeLevel(upgrade.Key, upgrade.Value.currentLevel, upgrade.Value.maxLevel);
+		}
+		// Stats
+		PlayerState.Instance.CurrentStats = new PlayerStats() {
+			endurance = data.stats.endurance < 0 ? PlayerState.Instance.CurrentStats.endurance : data.stats.endurance, // if <0, it wasn't saved
+			speed = data.stats.speed < 0 ? PlayerState.Instance.CurrentStats.speed : data.stats.speed, // if <0, it wasn't saved
+			dexterity = data.stats.dexterity < 0 ? PlayerState.Instance.CurrentStats.dexterity : data.stats.dexterity, // if <0, it wasn't saved
+			precision = data.stats.precision < 0 ? PlayerState.Instance.CurrentStats.precision : data.stats.precision, // if <0, it wasn't saved
+			magic = data.stats.magic < 0 ? PlayerState.Instance.CurrentStats.magic : data.stats.magic // if <0, it wasn't saved
+		};
+		// Equipped spells
+		if (data.spells != null && data.spells.EquippedSpells != null) { // spells were saved
+			PlayerState.Instance.equippedSpells = data.spells.EquippedSpells;
+		}
+	}
+
+	private void SetStateFromCurrentlySelectedtValues() {
+		int difficultyLevel = difficultyDropdown.value;
+		// Stats and broom upgrades
+		if (difficultyLevel < difficultyOptions.Count) { // Preset level selected
+			float multiplier = difficultyOptions[difficultyLevel].difficultyValue;
+			// Compute stats based on difficulty
+			int statValue = Mathf.RoundToInt(multiplier * 100);
+			PlayerState.Instance.CurrentStats = new PlayerStats { endurance = statValue, speed = statValue, dexterity = statValue, precision = statValue, magic = statValue };
+			// Compute broom upgrades based on difficulty
+			foreach (var upgrade in broomUpgradesUI) {
+				PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, Mathf.RoundToInt(multiplier * upgrade.MaxLevel), upgrade.MaxLevel);
+			}
+		} else { // Custom level selected
+			// Use values directly from UI elements
+			List<int> statsValues = new List<int>();
+			foreach (var stat in statsUI) statsValues.Add(stat.CurrentValue);
+			PlayerState.Instance.CurrentStats = PlayerStats.FromListOfValues(statsValues);
+			foreach (var upgrade in broomUpgradesUI)
+				PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, upgrade.CurrentLevel, upgrade.MaxLevel);
+		}
+		// Spells
+		if (!enableSpellsToggle.isOn) { // Spells disabled
+			// Unequip everything and lock all spells (so opponents cannot use them either)
+			foreach (var spell in PlayerState.Instance.equippedSpells) { 
+				if (spell != null && !string.IsNullOrEmpty(spell.Identifier))
+					PlayerState.Instance.UnequipSpell(spell.Identifier);
+			}
+			foreach (var spell in SpellManager.Instance.AllSpells)
+				PlayerState.Instance.LockSpell(spell.Identifier);
+		} else { 
+			// Correct spells should be already equipped and all spells unlocked
+		}
+	}
+
+	private void SaveQuickRaceSettings() {
+		// Save current settings persistently
+		QuickRaceSaveData data = new QuickRaceSaveData();
+		// Basic settings are always saved
+		data.difficultyLevel = difficultyDropdown.value;
+		data.enableSpells = enableSpellsToggle.isOn ? 1 : 0;
+		// Advanced settings (broom upgrades, stats, equipped spells) only if applicable
+		if (data.difficultyLevel == difficultyOptions.Count) { // Custom level selected, save stats and broom upgrades
+			data.stats = PlayerState.Instance.CurrentStats;
+			data.broomUpgrades = new BroomUpgradesSaveData() { UpgradeLevels = PlayerState.Instance.BroomUpgradeLevels };
+		}
+		if (data.enableSpells == 1) { // Spells enabled, save equippedSpells
+			data.spells = new SpellsSaveData {
+				EquippedSpells = PlayerState.Instance.equippedSpells,
+				SpellsAvailability = PlayerState.Instance.spellAvailability,
+				SpellsUsage = PlayerState.Instance.spellCast
+			};
+		}
+
+		SaveSystem.SaveQuickRaceData(data);
 	}
 
 	private void InitializeDifficultyDropdownOptions() {
@@ -87,7 +160,8 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		difficultyDropdown.value = value;
 		OnDifficultyChanged(value);
 		// Sometimes the label is not initialized correctly (it is empty), so set it manually
-		difficultyDropdown.GetComponentInChildren<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedString(difficultyOptions[value].difficultyNameLocalizationKey);
+		string valueLocalizationKey = value < difficultyOptions.Count ? difficultyOptions[value].difficultyNameLocalizationKey : "QuickRaceDifficultyCustom";
+		difficultyDropdown.GetComponentInChildren<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedString(valueLocalizationKey);
 	}
 
 	private void InitializeBroomUpgrades() {
@@ -111,6 +185,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		for (int i = 0; i < statsValues.Count; i++) {
 			StatSettingsUI statSettings = Instantiate<StatSettingsUI>(statPrefab, statsParent);
 			statSettings.Initialize(statsNames[i], (int)statsValues[i]);
+			statsUI.Add(statSettings);
 		}
 	}
 
@@ -121,9 +196,16 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		}
 	}
 
-	private void InitializeEnableSpellsToggleValue() {
-		// Based on equipped spells - enabled if there is a spell equipped, disabled otherwise
-		enableSpellsToggle.isOn = PlayerState.Instance.HasEquippedSpells();
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="enableSpells">Could have 3 possible values: -1 if not initialized (spells are then enabled, if a spell is equipped), 0 if disabled, 1 if enabled.</param>
+	private void InitializeEnableSpellsToggleValue(int enableSpells) {
+		// If the value was not loaded from persistently stored state, then choose it based on equipped spells
+		if (enableSpells < 0 || enableSpells > 1) { 
+			enableSpells = PlayerState.Instance.HasEquippedSpells() ? 1 : 0;
+		}
+		enableSpellsToggle.isOn = (enableSpells == 1);
 		OnSpellsEnabledChanged(enableSpellsToggle.isOn);
 		// Equipped spells are initialized automatically in corresponding component
 	}
@@ -134,9 +216,16 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 
 		// Create default value for difficulty level
 		int difficultyLevel = -1;
+		int enableSpells = -1;
 		// If there exists persistently saved settings from previous race, load it
-		// --- Store it directly into player state
-		// --- Or overwrite difficultyLevel
+		QuickRaceSaveData loadedData = SaveSystem.LoadQuickRaceData();
+		if (loadedData != null) {
+			difficultyLevel = loadedData.difficultyLevel;
+			enableSpells = loadedData.enableSpells;
+			InitializeStateFromLoadedData(loadedData); // store it directly into game state
+		} else { // Otherwise, load state from the main game so that initial values can be based on that
+			PlayerState.Instance.LoadSavedState();
+		}
 
 		InitializeDifficultyDropdownOptions();
 		InitializeBroomUpgrades();
@@ -144,7 +233,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		InitializeSpells();
 
 		InitializeDifficultyDropdownValue(difficultyLevel);
-		InitializeEnableSpellsToggleValue(); // based on whether there is a spell equipped, or not
+		InitializeEnableSpellsToggleValue(enableSpells); // based on whether there is a spell equipped, or not
 	}
 
 }

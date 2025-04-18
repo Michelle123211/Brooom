@@ -49,7 +49,8 @@ public class MainMenuUI : MonoBehaviour
 
     public void ExitGame() {
         // Save the game state
-        PlayerState.Instance.SaveCurrentState();
+        if (SaveSystem.BackupExists()) SaveSystem.RestoreFromBackup(); // quick race settings were opened, so the correct state is in backup
+        else PlayerState.Instance.SaveCurrentState();
         // Load the Exit scene (so that all the GameObjects are unloaded except for these in DontDestroyOnLoad)
         // This way the singletons will be destroyed last
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Game exited.");

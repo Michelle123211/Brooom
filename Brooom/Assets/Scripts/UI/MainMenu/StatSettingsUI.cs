@@ -6,6 +6,8 @@ using TMPro;
 
 public class StatSettingsUI : MonoBehaviour {
 
+	public int CurrentValue => (int)slider.value;
+
 	[Tooltip("A label displaying the stat's name.")]
 	[SerializeField] TextMeshProUGUI nameText;
 	[Tooltip("A slider used for selecting current stat value.")]
@@ -16,6 +18,7 @@ public class StatSettingsUI : MonoBehaviour {
 	public void Initialize(string statName, int value) {
 		nameText.text = LocalizationManager.Instance.GetLocalizedString($"PlayerStat{statName}");
 		slider.value = value;
+		GetComponentInChildren<SettingsSliderUI>().UpdateValueLabel(value);
 		tooltip.text = $"PlayerStatTooltip{statName}";
 	}
 

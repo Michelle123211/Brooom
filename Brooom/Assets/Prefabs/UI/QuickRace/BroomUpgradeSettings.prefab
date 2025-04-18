@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5920671414968716199}
   - component: {fileID: 3022049941198314337}
+  - component: {fileID: 4212287869802199164}
   m_Layer: 5
   m_Name: BroomUpgradeSettings
   m_TagString: Untagged
@@ -53,6 +54,26 @@ MonoBehaviour:
   nameText: {fileID: 5160655829646553082}
   slider: {fileID: 6795448882975079897}
   tooltip: {fileID: 5146083687819845969}
+--- !u!114 &4212287869802199164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5920671414968716198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 710
+  m_PreferredHeight: 40
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1001 &5920671414736168564
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,7 +104,32 @@ PrefabInstance:
     - target: {fileID: 892904085926534061, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
         type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 892904085926534061, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 892904085926534061, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 210611659404395676}
+    - target: {fileID: 892904085926534061, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateValueLabel
+      objectReference: {fileID: 0}
+    - target: {fileID: 892904085926534061, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsSliderUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 892904085926534061, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 892904085926534063, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
         type: 3}
@@ -323,6 +369,18 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5069724564810044744, guid: 20ca8d7a7fece104dae5d17d828e5b0a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 20ca8d7a7fece104dae5d17d828e5b0a, type: 3}
+--- !u!114 &210611659404395676 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5820424747882799848, guid: 20ca8d7a7fece104dae5d17d828e5b0a,
+    type: 3}
+  m_PrefabInstance: {fileID: 5920671414736168564}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5831a9e8ea2e7f84bade1dbb38d0b40e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5160655829646553082 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1563917207934142862, guid: 20ca8d7a7fece104dae5d17d828e5b0a,

@@ -156,7 +156,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     #region Broom Upgrades
     [HideInInspector] public float maxAltitude = 15f; // Maximum Y coordinate the player can fly up to
-    private Dictionary<string, Tuple<int, int>> broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>(); // current and maximum level for each upgrade
+    [HideInInspector] public Dictionary<string, (int currentLevel, int maxLevel)> BroomUpgradeLevels { get; private set; } = new Dictionary<string, (int currentLevel, int maxLevel)>(); // current and maximum level for each upgrade
     private bool broomUpgradesLoaded = false; // if the data is loaded from a saved state
 
     // Returns the highest purchased level of the given broom upgrade
@@ -167,8 +167,8 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             BroomUpgradesSaveData broomUpgrades = SaveSystem.LoadBroomUpgrades();
             LoadFromSavedBroomUpgrades(broomUpgrades);
         }
-        if (broomUpgradeLevels.ContainsKey(upgradeName))
-            return broomUpgradeLevels[upgradeName].Item1;
+        if (BroomUpgradeLevels.ContainsKey(upgradeName))
+            return BroomUpgradeLevels[upgradeName].Item1;
         else {
             return -1;
         }
@@ -176,17 +176,17 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     // Saves the given level as the highest purchased one for the given broom upgrade
     public void SetBroomUpgradeLevel(string upgradeName, int level, int maxLevel) {
-        broomUpgradeLevels[upgradeName] = new Tuple<int, int>(level, maxLevel);
+        BroomUpgradeLevels[upgradeName] = (level, maxLevel);
         // Check if all upgrades are purchased
         bool allMax = true;
-        foreach (var upgrade in broomUpgradeLevels) {
-            if (upgrade.Value.Item1 != upgrade.Value.Item2) { // current level is not max level
+        foreach (var upgrade in BroomUpgradeLevels) {
+            if (upgrade.Value.currentLevel != upgrade.Value.maxLevel) { // current level is not max level
                 allMax = false;
                 break;
             }
         }
         // Save the value into a file
-        SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.broomUpgradeLevels });
+        SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.BroomUpgradeLevels });
         // Notify anyone interested that the broom has been upgraded maximally
         if (allMax) Messaging.SendMessage("AllBroomUpgrades");
     }
@@ -241,7 +241,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             KnownOpponents = this.knownOpponents
         });
         // ...broom upgrades
-        SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.broomUpgradeLevels });
+        SaveSystem.SaveBroomUpgrades(new BroomUpgradesSaveData { UpgradeLevels = this.BroomUpgradeLevels });
         // ...purchased, equipped and used spells
         SaveSystem.SaveSpells(new SpellsSaveData { 
             EquippedSpells = this.equippedSpells,
@@ -305,7 +305,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     private void LoadFromSavedBroomUpgrades(BroomUpgradesSaveData broomUpgrades) {
         if (broomUpgrades != null && broomUpgrades.UpgradeLevels != null) {
-            this.broomUpgradeLevels = broomUpgrades.UpgradeLevels;
+            this.BroomUpgradeLevels = broomUpgrades.UpgradeLevels;
             broomUpgradesLoaded = true;
         }
     }
@@ -367,7 +367,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
         availableSpellCount = 0;
         // ...broom upgrades
         maxAltitude = 15f;
-        broomUpgradeLevels = new Dictionary<string, Tuple<int, int>>();
+        BroomUpgradeLevels = new Dictionary<string, (int currentLevel, int maxLevel)>();
         broomUpgradesLoaded = false;
         // ...opponents
         knownOpponents = new Dictionary<int, string>();
@@ -434,8 +434,19 @@ public struct PlayerStats {
         return new List<string> { "Endurance", "Speed", "Dexterity", "Precision", "Magic" };
     }
 
-	#region Operator overloads
-	public static PlayerStats operator +(PlayerStats a, PlayerStats b) {
+    public static PlayerStats FromListOfValues(List<int> values) {
+        if (values.Count < 5) throw new ArgumentException("Invalid number of values provided for PlayerStats, should be 5.");
+        PlayerStats stats = new PlayerStats();
+        stats.endurance = values[0];
+        stats.speed = values[1];
+        stats.dexterity = values[2];
+        stats.precision = values[3];
+        stats.magic = values[4];
+        return stats;
+    }
+
+    #region Operator overloads
+    public static PlayerStats operator +(PlayerStats a, PlayerStats b) {
         return new PlayerStats {
             endurance = a.endurance + b.endurance,
             speed = a.speed + b.speed,

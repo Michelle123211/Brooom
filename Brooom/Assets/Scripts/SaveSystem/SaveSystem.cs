@@ -17,6 +17,7 @@ public class SaveSystem
     private static readonly string regionsFileName = "regions";
     private static readonly string achievementsFileName = "achievements";
     private static readonly string tutorialFileName = "tutorial";
+    private static readonly string quickRaceFileName = "quick_race";
 
     // Other parts of the path
     private static readonly string fileExtension = ".json";
@@ -33,6 +34,7 @@ public class SaveSystem
     private static readonly string regionsPath = saveFolder + regionsFileName + fileExtension;
     private static readonly string achievementsPartialPath = saveFolder + achievementsFileName;
     private static readonly string tutorialPath = saveFolder + tutorialFileName + fileExtension;
+    private static readonly string quickRacePath = saveFolder + quickRaceFileName + fileExtension;
 
 
     static SaveSystem() {
@@ -58,7 +60,7 @@ public class SaveSystem
     }
 
     /// <summary>
-    /// Copies all files from 'Saves\' folder to 'Saves\Backup\' subfolder, except for 'settings.json' and 'key_bindings.json (they are global and can be not only in-game)'.
+    /// Copies all files from 'Saves\' folder to 'Saves\Backup\' subfolder, except for 'settings.json', 'key_bindings.json' and 'quick_race.json' (they are global and can be not only in-game).
     /// Also deletes any backup from before.
     /// </summary>
     public static void CreateBackup() {
@@ -68,7 +70,7 @@ public class SaveSystem
         Directory.CreateDirectory(backupFolder);
         foreach (var file in Directory.EnumerateFiles(saveFolder)) {
             string fileName = file.Substring(saveFolder.Length);
-            if (fileName.Contains(settingsFileName) || fileName.Contains(rebindingFileName)) continue;
+            if (fileName.Contains(settingsFileName) || fileName.Contains(rebindingFileName) || fileName.Contains(quickRaceFileName)) continue;
             File.Copy(file, backupFolder + fileName, true);
         }
     }
@@ -97,18 +99,11 @@ public class SaveSystem
 
 	#region Character customization
 	public static void SaveCharacterCustomization(CharacterCustomizationSaveData characterData) {
-        string json = JsonUtility.ToJson(characterData);
-        File.WriteAllText(characterPath, json);
+        SaveData<CharacterCustomizationSaveData>(characterData, characterPath);
     }
 
     public static CharacterCustomizationSaveData LoadCharacterCustomization() {
-        if (File.Exists(characterPath)) { // If there is a save file, load the data from there
-            string json = File.ReadAllText(characterPath);
-            CharacterCustomizationSaveData characterData = JsonUtility.FromJson<CharacterCustomizationSaveData>(json);
-            return characterData;
-        } else { // Otherwise return null
-            return null;
-        }
+        return LoadData<CharacterCustomizationSaveData>(characterPath);
     }
 	#endregion
 
@@ -123,8 +118,7 @@ public class SaveSystem
         }
         // Override only the language field and save it
         settingsData.currentLanguage = language;
-        string json = JsonUtility.ToJson(settingsData);
-        File.WriteAllText(settingsPath, json);
+        SaveData<SettingsSaveData>(settingsData, settingsPath);
     }
 
     public static string LoadCurrentLanguage() {
@@ -139,25 +133,19 @@ public class SaveSystem
 
     public static void SaveSettings(SettingsSaveData settings) {
         // Load currently saved settings
-        SettingsSaveData settingsData;
         if (File.Exists(settingsPath)) {// If there are any, copy the current language
             string jsonData = File.ReadAllText(settingsPath);
-            settingsData = JsonUtility.FromJson<SettingsSaveData>(jsonData);
-            settings.currentLanguage = settingsData.currentLanguage;
+            SettingsSaveData oldSettingsData = JsonUtility.FromJson<SettingsSaveData>(jsonData);
+            settings.currentLanguage = oldSettingsData.currentLanguage;
         }
         // Save the settings into a file
+        SaveData<SettingsSaveData>(settings, settingsPath);
         string json = JsonUtility.ToJson(settings);
         File.WriteAllText(settingsPath, json);
     }
 
     public static SettingsSaveData LoadSettings() {
-        if (File.Exists(settingsPath)) { // If there is a save file, load the data from there
-            string json = File.ReadAllText(settingsPath);
-            SettingsSaveData settingsData = JsonUtility.FromJson<SettingsSaveData>(json);
-            return settingsData;
-        } else { // Otherwise return null
-            return null;
-        }
+        return LoadData<SettingsSaveData>(settingsPath);
     }
 
 	public static void SaveKeyBindings(string bindingsAsJson) {
@@ -175,20 +163,11 @@ public class SaveSystem
 
     #region Player state
     public static void SavePlayerState(PlayerStateSaveData playerState) {
-        // Save the whole state
-        string json = JsonUtility.ToJson(playerState);
-        File.WriteAllText(playerStatePath, json);
+        SaveData<PlayerStateSaveData>(playerState, playerStatePath);
     }
 
     public static PlayerStateSaveData LoadPlayerState() {
-        // Load the whole state
-        if (File.Exists(playerStatePath)) { // If there is a save file, load the data from there
-            string json = File.ReadAllText(playerStatePath);
-            PlayerStateSaveData playerState = JsonUtility.FromJson<PlayerStateSaveData>(json);
-            return playerState;
-        } else { // Otherwise return null
-            return null;
-        }
+        return LoadData<PlayerStateSaveData>(playerStatePath);
     }
 
 	public static void SavePlayerStatistics(PlayerStats previousStats, PlayerStats currentStats) {
@@ -271,38 +250,21 @@ public class SaveSystem
 
     #region Broom upgrades
     public static void SaveBroomUpgrades(BroomUpgradesSaveData broomUpgrades) {
-        string json = JsonUtility.ToJson(broomUpgrades);
-        File.WriteAllText(broomUpgradesPath, json);
+        SaveData<BroomUpgradesSaveData>(broomUpgrades, broomUpgradesPath);
     }
 
     public static BroomUpgradesSaveData LoadBroomUpgrades() {
-        if (File.Exists(broomUpgradesPath)) { // If there is a save file, load the data from there
-            // Load broom upgrades from file
-            string json = File.ReadAllText(broomUpgradesPath);
-            BroomUpgradesSaveData upgrades = JsonUtility.FromJson<BroomUpgradesSaveData>(json);
-            return upgrades;
-        } else { // Otherwise return null
-            return null;
-        }
+        return LoadData<BroomUpgradesSaveData>(broomUpgradesPath);
     }
     #endregion
 
     #region Spells
     public static void SaveSpells(SpellsSaveData spellsData) {
-        // Save everything
-        string json = JsonUtility.ToJson(spellsData);
-        File.WriteAllText(spellsPath, json);
+        SaveData<SpellsSaveData>(spellsData, spellsPath);
     }
 
     public static SpellsSaveData LoadSpells() {
-        // Load everything
-        if (File.Exists(spellsPath)) { // If there is a save file, load the data from there
-            string json = File.ReadAllText(spellsPath);
-            SpellsSaveData spellsData = JsonUtility.FromJson<SpellsSaveData>(json);
-            return spellsData;
-        } else { // Otherwise return null
-            return null;
-        }
+        return LoadData<SpellsSaveData>(spellsPath);
     }
 
     public static void SavePurchasedSpells(Dictionary<string, bool> spellsAvailability) {
@@ -365,27 +327,18 @@ public class SaveSystem
 
 	#region Visited regions
 	public static void SaveRegions(RegionsSaveData regionsData) {
-		// Save everything
-		string json = JsonUtility.ToJson(regionsData);
-		File.WriteAllText(regionsPath, json);
+        SaveData<RegionsSaveData>(regionsData, regionsPath);
 	}
 
 	public static RegionsSaveData LoadRegions() {
-		// Load everything
-		if (File.Exists(regionsPath)) { // If there is a save file, load the data from there
-			string json = File.ReadAllText(regionsPath);
-			RegionsSaveData regionsData = JsonUtility.FromJson<RegionsSaveData>(json);
-			return regionsData;
-		} else { // Otherwise return null
-			return null;
-		}
+        return LoadData<RegionsSaveData>(regionsPath);
 	}
 
 	public static void SaveVisitedRegions(Dictionary<LevelRegionType, bool> visitedRegions) {
 		// Load everything
 		RegionsSaveData regionsData = LoadRegions();
 		if (regionsData == null) regionsData = new RegionsSaveData(); // if there is no save file, use default values
-																	  // Override only the visited regions
+		 // Override only the visited regions
 		regionsData.RegionsVisited = visitedRegions;
 		// Save it back
 		SaveRegions(regionsData);
@@ -403,38 +356,49 @@ public class SaveSystem
 
 	#region Achievements
 	public static void SaveAchievementData<T>(T data, string dataIdentifier) {
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText($"{achievementsPartialPath}_{dataIdentifier}{fileExtension}", json);
+        string path = $"{achievementsPartialPath}_{dataIdentifier}{fileExtension}";
+        SaveData<T>(data, path);
     }
 
     public static T LoadAchievementData<T>(string dataIdentifier) {
         string path = $"{achievementsPartialPath}_{dataIdentifier}{fileExtension}";
-        if (File.Exists(path)) {  // If there is a save file, load the data from there
-            // Load values from a file
-            string json = File.ReadAllText(path);
-            T result = JsonUtility.FromJson<T>(json);
-            return result;
-        } else {  // Otherwise return default
-            return default;
-        }
+        return LoadData<T>(path);
     }
     #endregion
 
     #region Tutorial
     public static void SaveTutorialData(TutorialSaveData data) {
-        // Save the whole data
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(tutorialPath, json);
+        SaveData<TutorialSaveData>(data, tutorialPath);
     }
     public static TutorialSaveData LoadTutorialData() {
+        return LoadData<TutorialSaveData>(tutorialPath);
+    }
+    #endregion
+
+    #region Quick Race
+    public static void SaveQuickRaceData(QuickRaceSaveData data) {
+        SaveData<QuickRaceSaveData>(data, quickRacePath);
+    }
+    public static QuickRaceSaveData LoadQuickRaceData() {
+        return LoadData<QuickRaceSaveData>(quickRacePath);
+    }
+    #endregion
+
+    private static void SaveData<T>(T data, string dataPath) {
+        // Save the whole data
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(dataPath, json);
+    }
+
+    private static T LoadData<T>(string dataPath) {
         // Load the whole data
-        if (File.Exists(tutorialPath)) { // If there is a save file, load the data from there
-            string json = File.ReadAllText(tutorialPath);
-            TutorialSaveData tutorialState = JsonUtility.FromJson<TutorialSaveData>(json);
-            return tutorialState;
-        } else { // Otherwise return null
-            return null;
+        if (File.Exists(dataPath)) {  // If there is a save file, load the data from there
+            string json = File.ReadAllText(dataPath);
+            T dataObject = JsonUtility.FromJson<T>(json);
+            return dataObject;
+        } else { // Otherwise return default value
+            return default;
         }
     }
-	#endregion
+    
 }
