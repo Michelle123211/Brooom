@@ -112,8 +112,8 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	#region Scene-based callbacks
 	private void RegisterCallbacksInRaceScene() {
 		// Initialize data fields
-		this.playerSpellController = RaceController.Instance.playerRacer.characterController.GetComponentInChildren<SpellController>();
-		this.playerIncomingSpellTracker = RaceController.Instance.playerRacer.characterController.GetComponentInChildren<PlayerIncomingSpellTracker>();
+		this.playerSpellController = RaceControllerBase.Instance.playerRacer.characterController.GetComponentInChildren<SpellController>();
+		this.playerIncomingSpellTracker = RaceControllerBase.Instance.playerRacer.characterController.GetComponentInChildren<PlayerIncomingSpellTracker>();
 		this.levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
 		// Register callbacks
 		this.playerSpellController.onSpellCast += OnSpellCast;
@@ -126,11 +126,11 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 			}
 		}
 		this.playerIncomingSpellTracker.onIncomingSpellAdded += OnSpellCastAtPlayer;
-		OnLevelGenerated(RaceController.Instance.Level); // level should be already generated when the scene is loaded, so there is no need to register callback
-		RaceController.Instance.playerRacer.state.onPlaceChanged += OnPlaceInRaceChanged;
-		RaceController.Instance.playerRacer.state.onHoopMissed += OnHoopMissed;
-		RaceController.Instance.playerRacer.state.onCheckpointMissed += OnCheckpointMissed;
-		RaceController.Instance.playerRacer.state.onWrongDirectionChanged += OnWrongDirectionChanged;
+		OnLevelGenerated(RaceControllerBase.Instance.Level); // level should be already generated when the scene is loaded, so there is no need to register callback
+		RaceControllerBase.Instance.playerRacer.state.onPlaceChanged += OnPlaceInRaceChanged;
+		RaceControllerBase.Instance.playerRacer.state.onHoopMissed += OnHoopMissed;
+		RaceControllerBase.Instance.playerRacer.state.onCheckpointMissed += OnCheckpointMissed;
+		RaceControllerBase.Instance.playerRacer.state.onWrongDirectionChanged += OnWrongDirectionChanged;
 	}
 
 	private void UnregisterCallbacksInRaceScene() {
@@ -146,10 +146,10 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 			}
 		}
 		this.playerIncomingSpellTracker.onIncomingSpellAdded -= OnSpellCastAtPlayer;
-		RaceController.Instance.playerRacer.state.onPlaceChanged -= OnPlaceInRaceChanged;
-		RaceController.Instance.playerRacer.state.onHoopMissed -= OnHoopMissed;
-		RaceController.Instance.playerRacer.state.onCheckpointMissed -= OnCheckpointMissed;
-		RaceController.Instance.playerRacer.state.onWrongDirectionChanged -= OnWrongDirectionChanged;
+		RaceControllerBase.Instance.playerRacer.state.onPlaceChanged -= OnPlaceInRaceChanged;
+		RaceControllerBase.Instance.playerRacer.state.onHoopMissed -= OnHoopMissed;
+		RaceControllerBase.Instance.playerRacer.state.onCheckpointMissed -= OnCheckpointMissed;
+		RaceControllerBase.Instance.playerRacer.state.onWrongDirectionChanged -= OnWrongDirectionChanged;
 		// Reset data fields
 		this.playerSpellController = null;
 		this.playerIncomingSpellTracker = null;
@@ -285,12 +285,12 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	private void OnRaceFinished(int place) {
 		// Time and penalization
-		float time = RaceController.Instance.playerRacer.state.finishTime;
-		float timePenalization = RaceController.Instance.playerRacer.state.timePenalization;
+		float time = RaceControllerBase.Instance.playerRacer.state.finishTime;
+		float timePenalization = RaceControllerBase.Instance.playerRacer.state.timePenalization;
 		string timeText = "DNF";
 		if (time > 0) timeText = Utils.FormatTime(time + timePenalization);
 		// Missed hoops
-		int hoopsMissed = RaceController.Instance.playerRacer.state.hoopsMissed;
+		int hoopsMissed = RaceControllerBase.Instance.playerRacer.state.hoopsMissed;
 
 		LogEvent(AnalyticsCategory.Race, $"Race finished with the following results: place {place}, time {timeText} (+{Mathf.RoundToInt(timePenalization)} s), {hoopsMissed} missed hoops.");
 	}

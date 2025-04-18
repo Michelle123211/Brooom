@@ -55,9 +55,9 @@ public class CharacterRaceState : MonoBehaviour {
     public void OnHoopPassed(int hoopIndex) {
         // Make sure only the next (highlighted) hoop is considered
         if (hoopIndex == trackPointToPassNext) {
-            lastHoopTime = RaceController.Instance.raceTime;
+            lastHoopTime = RaceControllerBase.Instance.raceTime;
             hoopsPassedArray[hoopIndex] = true;
-            if (RaceController.Instance.Level.Track[hoopIndex].isCheckpoint) {
+            if (RaceControllerBase.Instance.Level.Track[hoopIndex].isCheckpoint) {
                 if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.CheckpointPassed);
                 checkpointsPassed++;
                 onPassedCheckpointsChanged?.Invoke(checkpointsPassed);
@@ -73,10 +73,10 @@ public class CharacterRaceState : MonoBehaviour {
     public void OnFinishPassed() {
         // Get the current time from the RaceController and store it
         if (!HasFinished && trackPointToPassNext >= hoopsPassedArray.Length) { // only the first time and only when the player did not miss any checkpoint
-            finishTime = RaceController.Instance.raceTime;
+            finishTime = RaceControllerBase.Instance.raceTime;
             // Player ends the race
-            if (isPlayer) RaceController.Instance.EndRace();
-            else RaceController.Instance.OnRacerFinished(this);
+            if (isPlayer) RaceControllerBase.Instance.EndRace();
+            else RaceControllerBase.Instance.OnRacerFinished(this);
         }
     }
 
@@ -91,12 +91,12 @@ public class CharacterRaceState : MonoBehaviour {
     }
 
     public void OnHoopMissed(int hoopIndex) {
-        lastHoopTime = RaceController.Instance.raceTime;
+        lastHoopTime = RaceControllerBase.Instance.raceTime;
         hoopsMissed++;
         if (isPlayer) AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.Game.HoopMissed);
         onMissedHoopsChanged?.Invoke(hoopsMissed);
         onHoopMissed?.Invoke();
-        AddTimePenalization(RaceController.Instance.missedHoopPenalization);
+        AddTimePenalization(RaceControllerBase.Instance.missedHoopPenalization);
         // Hoops can be missed, the player still makes a progress
         AdvanceToNextHoop(false);
     }
@@ -122,7 +122,7 @@ public class CharacterRaceState : MonoBehaviour {
 
     // Updates passed checkpoints and hoops
     private void UpdateHoops() {
-        List<TrackPoint> trackPoints = RaceController.Instance.Level.Track;
+        List<TrackPoint> trackPoints = RaceControllerBase.Instance.Level.Track;
         if (trackPointToPassNext < trackPoints.Count) {
             // Detect missing a checkpoint/hoop
             HoopRelativePosition relativePosition = GetHoopRelativePosition(trackPoints[trackPointToPassNext]);
@@ -152,7 +152,7 @@ public class CharacterRaceState : MonoBehaviour {
 
     // Updates player's position relatively to the hoops
     private void UpdatePositionWithinRace() {
-        List<TrackPoint> trackPoints = RaceController.Instance.Level.Track;
+        List<TrackPoint> trackPoints = RaceControllerBase.Instance.Level.Track;
         // Find between which hoops the player is located
         // ... whether he is after the following hoop
         if (followingTrackPoint < trackPoints.Count &&
@@ -168,7 +168,7 @@ public class CharacterRaceState : MonoBehaviour {
 
     // Detects if player is flying in the opposite direction than they should
     private void UpdateDirection() {
-        List<TrackPoint> trackPoints = RaceController.Instance.Level.Track;
+        List<TrackPoint> trackPoints = RaceControllerBase.Instance.Level.Track;
 
         // If the player has completed the track there is nothing more to be done
         if (trackPointToPassNext >= trackPoints.Count)

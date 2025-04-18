@@ -39,7 +39,7 @@ public class GoalOrientedNavigation : CharacterInput {
 	}
 
 	private void Update() {
-		if (RaceController.Instance.State != RaceState.RaceInProgress) return;
+		if (RaceControllerBase.Instance.State != RaceState.RaceInProgress) return;
 
 		deliberationCountdown -= Time.deltaTime;
 		// Wait until one of the conditions is true:

@@ -78,7 +78,7 @@ public class GamePause : MonoBehaviour {
 
     public void GiveUpRace() {
         Exit();
-        RaceController.Instance.GiveUpRace();
+        RaceControllerBase.Instance.GiveUpRace();
     }
 
     public void SkipTutorial() {

@@ -17,7 +17,7 @@ public class AISpellTargetSelection : SpellTargetSelection {
 		} else {
 			// Otherwise, cast it either a bit to the side or to the back - choose randomly with probability distribution according to place in race
 			int place = transform.parent.GetComponentInChildren<CharacterRaceState>().place;
-			float probabilityOfCastingForward = 0.4f + 0.6f * ((float)(place - 1) / (float)(RaceController.Instance.racers.Count - 1)); // e.g. 1st --> 40 %, last --> 100 %
+			float probabilityOfCastingForward = 0.4f + 0.6f * ((float)(place - 1) / (float)(RaceControllerBase.Instance.racers.Count - 1)); // e.g. 1st --> 40 %, last --> 100 %
 			if (Random.value < probabilityOfCastingForward) return ChooseForwardDirectionWithOffset(); // forward with an offset
 			else return -transform.forward; // back
 		}

@@ -39,32 +39,8 @@ public class AITestRaceController : RaceController {
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
-    protected override void ShowRaceResults(int[] coinRewards) {
-        // Collect results from individual racers
-        RaceResultData[] results = new RaceResultData[racers.Count];
-        foreach (var racer in racers) {
-            float time = racer.state.finishTime + racer.state.timePenalization;
-            // If the total time is too big, make them DNF instead
-            results[racer.state.place - 1] = new RaceResultData {
-                name = racer.characterName,
-                color = racer.state.assignedColor,
-                time = time,
-                timePenalization = racer.state.timePenalization,
-                coinsReward = time > 0 ? coinRewards[racer.state.place - 1] : 0
-            };
-        }
-        raceResults.SetResultsTable(results, playerRacer.state.place);
-        // Display everything
-        raceResults.gameObject.TweenAwareEnable();
-    }
-
-	private void Update() {
-        if (State == RaceState.RaceInProgress)
-            raceTime += Time.deltaTime;
-	}
-
 	private void Start() {
-        InitializeRelatedObjects();
+        //InitializeRelatedObjects();
         //// TODO: Remove after DEBUG
         //PlayerState.Instance.CurrentStats = new PlayerStats {
         //    speed = 50,
@@ -82,12 +58,4 @@ public class AITestRaceController : RaceController {
         // Hide HUD
         raceHUD.gameObject.SetActive(false);
     }
-
-	private void Awake() {
-        Instance = this;
-	}
-
-	private void OnDestroy() {
-        Instance = null;
-	}
 }

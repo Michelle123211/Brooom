@@ -88,11 +88,11 @@ public class StatsComputer : MonoBehaviour {
         isComputing = true;
 
         // Initialize everything necessary
-        playerRepresentation = RaceController.Instance.playerRacer;
+        playerRepresentation = RaceControllerBase.Instance.playerRacer;
         playerRaceState = playerRepresentation.state;
         playerSpellController = playerRaceState.GetComponent<SpellController>();
 
-        totalRacers = RaceController.Instance.racers.Count;
+        totalRacers = RaceControllerBase.Instance.racers.Count;
 
         speedLowerBound = Mathf.Max((playerRepresentation.characterController.initialMaxSpeed - 0.15f) * CharacterMovementController.MAX_SPEED, 0f);
         currentSpeedSum = 0; maxSpeedSum = 0;
@@ -201,7 +201,7 @@ public class StatsComputer : MonoBehaviour {
             if (isHoopPassed) passedHoops++;
         // Sum of weights of all the bonuses - from RaceController.Instance.level
         totalBonusWeightSum = 0;
-        foreach (var bonusSpot in RaceController.Instance.Level.bonuses) {
+        foreach (var bonusSpot in RaceControllerBase.Instance.Level.bonuses) {
             if (bonusSpot.isEmpty) continue;
             totalBonusWeightSum += bonusSpot.bonusInstances[0].bonusWeight;
         }
@@ -209,7 +209,7 @@ public class StatsComputer : MonoBehaviour {
         obstacleCollisionValue = Mathf.Clamp(1 - (obstacleCollisionCount * collisionPenalizationBasedOnTrackLength.Evaluate(trackLength)), 0, 1) * 100;
         // Total amount of mana which can be picked up (assuming the player picks up only one instance in each bonus spot)
         totalMana = 0;
-        foreach (var bonusSpot in RaceController.Instance.Level.bonuses) {
+        foreach (var bonusSpot in RaceControllerBase.Instance.Level.bonuses) {
             if (bonusSpot.isEmpty) continue;
             if (bonusSpot.bonusInstances[0].TryGetComponent<ManaBonusEffect>(out ManaBonusEffect manaBonus))
                 totalMana += manaBonus.manaAmount;
@@ -343,14 +343,14 @@ public class StatsComputer : MonoBehaviour {
         // Compute distance between the player and the trajectory
         Vector3 playerPosition = playerRaceState.transform.position;
         // Get positions of two track points between which the player is located
-        Vector3 firstPoint = RaceController.Instance.Level.playerStartPosition;
-        Vector3 secondPoint = RaceController.Instance.Level.Track[0].position;
-        if (playerRaceState.followingTrackPoint >= RaceController.Instance.Level.Track.Count) { // the player is behind the last hoop
-            firstPoint = RaceController.Instance.Level.Track[RaceController.Instance.Level.Track.Count - 1].position;
-            secondPoint = RaceController.Instance.Level.finish.transform.position.WithY(firstPoint.y); // finish line but at the same height as the last hoop
+        Vector3 firstPoint = RaceControllerBase.Instance.Level.playerStartPosition;
+        Vector3 secondPoint = RaceControllerBase.Instance.Level.Track[0].position;
+        if (playerRaceState.followingTrackPoint >= RaceControllerBase.Instance.Level.Track.Count) { // the player is behind the last hoop
+            firstPoint = RaceControllerBase.Instance.Level.Track[RaceControllerBase.Instance.Level.Track.Count - 1].position;
+            secondPoint = RaceControllerBase.Instance.Level.finish.transform.position.WithY(firstPoint.y); // finish line but at the same height as the last hoop
         } else if (playerRaceState.followingTrackPoint > 0) { // the player is somewhere in the middle of the track
-            firstPoint = RaceController.Instance.Level.Track[playerRaceState.followingTrackPoint - 1].position;
-            secondPoint = RaceController.Instance.Level.Track[playerRaceState.followingTrackPoint].position;
+            firstPoint = RaceControllerBase.Instance.Level.Track[playerRaceState.followingTrackPoint - 1].position;
+            secondPoint = RaceControllerBase.Instance.Level.Track[playerRaceState.followingTrackPoint].position;
         }
         // Project vector from the first point to the player onto the vector from the first point to the second point
         Vector3 projection = Vector3.Project(playerPosition - firstPoint, (secondPoint - firstPoint).normalized);

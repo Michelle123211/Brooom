@@ -16,15 +16,15 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 	protected float[] TrackPointDistanceSum { // sum of distances between track points up to the given index
 		get {
 			if (trackPointDistanceSum == null) { // precompute sums of track point distances
-				trackPointDistanceSum = new float[RaceController.Instance.Level.Track.Count + 1];
+				trackPointDistanceSum = new float[RaceControllerBase.Instance.Level.Track.Count + 1];
 				for (int i = 0; i < trackPointDistanceSum.Length; i++) {
 					if (i == 0) // from start to the first hoop
-						trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.Level.playerStartPosition, RaceController.Instance.Level.Track[i].position);
+						trackPointDistanceSum[i] = Vector3.Distance(RaceControllerBase.Instance.Level.playerStartPosition, RaceControllerBase.Instance.Level.Track[i].position);
 					else {
-						if (i == RaceController.Instance.Level.Track.Count) // from the last hoop to finish
-							trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.Level.finish.transform.position, RaceController.Instance.Level.Track[i - 1].position);
+						if (i == RaceControllerBase.Instance.Level.Track.Count) // from the last hoop to finish
+							trackPointDistanceSum[i] = Vector3.Distance(RaceControllerBase.Instance.Level.finish.transform.position, RaceControllerBase.Instance.Level.Track[i - 1].position);
 						else // from a hoop to another hoop
-							trackPointDistanceSum[i] = Vector3.Distance(RaceController.Instance.Level.Track[i - 1].position, RaceController.Instance.Level.Track[i].position);
+							trackPointDistanceSum[i] = Vector3.Distance(RaceControllerBase.Instance.Level.Track[i - 1].position, RaceControllerBase.Instance.Level.Track[i].position);
 						trackPointDistanceSum[i] += trackPointDistanceSum[i - 1];
 					}
 				}
@@ -53,22 +53,22 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 
 	// For the given racer, returns approximate reached distance in the track
 	protected float GetDistanceRaced(CharacterRaceState raceState) {
-		if (!RaceController.Instance.IsInitialized) return 0;
+		if (!RaceControllerBase.Instance.IsInitialized) return 0;
 		float distanceRaced;
 		// Sum up distances between all track points reached (+ the following one)
 		distanceRaced = TrackPointDistanceSum[raceState.followingTrackPoint];
 		// Subtract distance between the agent and the following track point
-		if (raceState.followingTrackPoint == RaceController.Instance.Level.Track.Count) {
-			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceController.Instance.Level.finish.transform.position);
+		if (raceState.followingTrackPoint == RaceControllerBase.Instance.Level.Track.Count) {
+			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceControllerBase.Instance.Level.finish.transform.position);
 		} else {
-			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceController.Instance.Level.Track[raceState.followingTrackPoint].position);
+			distanceRaced -= Vector3.Distance(raceState.transform.position, RaceControllerBase.Instance.Level.Track[raceState.followingTrackPoint].position);
 		}
 		return distanceRaced;
 	}
 
 	// For the given racer, returns fraction of the track reached so far (normalized between 0 and 1)
 	protected float GetNormalizedDistanceRaced(CharacterRaceState raceState) {
-		if (!RaceController.Instance.IsInitialized) return 0;
+		if (!RaceControllerBase.Instance.IsInitialized) return 0;
 		// Get distance reached so far
 		float distanceRaced = GetDistanceRaced(raceState);
 		// Get total length of the track
@@ -80,9 +80,9 @@ public abstract class SkillLevelImplementation : MonoBehaviour {
 	}
 
 	protected float GetDistanceBetweenAgentAndPlayer() {
-		if (!RaceController.Instance.IsInitialized) return 0;
+		if (!RaceControllerBase.Instance.IsInitialized) return 0;
 		// Compute difference between agent's and player's distance raced
-		float distanceDifference = GetDistanceRaced(this.agentRaceState) - GetDistanceRaced(RaceController.Instance.playerRacer.state);
+		float distanceDifference = GetDistanceRaced(this.agentRaceState) - GetDistanceRaced(RaceControllerBase.Instance.playerRacer.state);
 		return distanceDifference;
 	}
 

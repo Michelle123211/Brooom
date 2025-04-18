@@ -55,8 +55,8 @@ public class FirstRaceTutorial : TutorialStageBase {
 		UtilsMonoBehaviour.FindObject<GamePause>().SetupOptionsForTutorial();
 		Tutorial.Instance.panel.ShowEscapePanel();
 		// Let RaceController know tutorial is running (so that training is not skipped and visited regions are not stored)
-		yield return new WaitUntil(() => RaceController.Instance.IsInitialized);
-		RaceController.Instance.isInTutorial = true;
+		yield return new WaitUntil(() => RaceControllerBase.Instance.IsInitialized);
+		(RaceControllerBase.Instance as RaceController).isInTutorial = true;
 	}
 
 	protected override bool UpdateTutorialStage() {

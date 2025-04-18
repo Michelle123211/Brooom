@@ -138,3 +138,19 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
     }
 
 }
+
+[System.Serializable]
+public class RegionUnlockValue {
+    [Tooltip("Region unlocked by a specific value of some stat (e.g. max altitude, endurance).")]
+    public LevelRegionType region;
+    [Tooltip("If the stat is greater then this value, the region becomes available.")]
+    public int minValue;
+}
+
+[System.Serializable]
+public class RegionUnlockTutorialStage {
+    [Tooltip("Region unlocked by a specific tutorial stage.")]
+    public LevelRegionType region;
+    [Tooltip("If the player gets into this tutorial stage, the region becomes available.")]
+    public TutorialStage tutorialStage;
+}

@@ -116,7 +116,7 @@ public class HoopGoal : TrackElementGoal {
     protected Plane trackPointPlane;
 
 	public HoopGoal(GameObject agent, int index) : base(agent, index) {
-        this.trackPoint = RaceController.Instance.Level.Track[this.index];
+        this.trackPoint = RaceControllerBase.Instance.Level.Track[this.index];
         this.trackPointPlane = new Plane(this.trackPoint.assignedHoop.transform.forward, this.trackPoint.position);
     }
 
@@ -144,7 +144,7 @@ public class HoopGoal : TrackElementGoal {
         if (this.index != this.raceState.trackPointToPassNext)
             return 0;
         // And in a reasonable position relative to the agent
-        if (Mathf.Abs(Vector3.SignedAngle(this.agent.transform.forward, RaceController.Instance.Level.Track[index].position - this.agent.transform.position, Vector3.up)) < 70f)
+        if (Mathf.Abs(Vector3.SignedAngle(this.agent.transform.forward, RaceControllerBase.Instance.Level.Track[index].position - this.agent.transform.position, Vector3.up)) < 70f)
             return 1;
         else
             return 0;
@@ -222,7 +222,7 @@ public class BonusGoal : TrackElementGoal {
 
     public BonusGoal(GameObject agent, int index) : base(agent, index) {
         // Choose the closest instance available
-        this.bonusSpot = RaceController.Instance.Level.bonuses[this.index];
+        this.bonusSpot = RaceControllerBase.Instance.Level.bonuses[this.index];
         ChooseRandomInstance();
     }
 
@@ -319,7 +319,7 @@ public class FinishNavigationGoal : NavigationGoal {
     public override Vector3 TargetPosition => GetTargetPoint();
 
     public FinishNavigationGoal(GameObject agent) : base(agent) {
-        this.finishObject = RaceController.Instance.Level.finish;
+        this.finishObject = RaceControllerBase.Instance.Level.finish;
     }
 
     public override bool IsReached() {
@@ -355,7 +355,7 @@ public class FinishNavigationGoal : NavigationGoal {
     private Vector3 GetTargetPoint() {
         Vector3 target = this.finishObject.transform.position;
         // Find the direction from the last hoop to the finish - this is the ideal direction to take to the finish
-        Vector3 lastHoopPosition = RaceController.Instance.Level.Track[RaceController.Instance.Level.Track.Count - 1].position;
+        Vector3 lastHoopPosition = RaceControllerBase.Instance.Level.Track[RaceControllerBase.Instance.Level.Track.Count - 1].position;
         Vector3 targetDirection = (target - lastHoopPosition).WithY(0);
         // Find intersection between this direction from the agent and the finish's right vector
         if (Utils.TryGetLineIntersectionXZ(
@@ -367,7 +367,7 @@ public class FinishNavigationGoal : NavigationGoal {
         // Keep the agent't Y coordinate
         target.y = this.agent.transform.position.y;
         // Adjust Y based on terrain underneath
-        float terrainHeight = RaceController.Instance.Level.GetNearestTerrainPoint(target).position.y;
+        float terrainHeight = RaceControllerBase.Instance.Level.GetNearestTerrainPoint(target).position.y;
         if (target.y < terrainHeight) target.y = terrainHeight + 2; // a bit higher, just to be safe
         return target;
     }

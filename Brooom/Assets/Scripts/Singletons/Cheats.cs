@@ -630,11 +630,11 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			// Handle errors
 			if (commandParts.Length != 1) message = "Invalid number of parameters, there should be none.";
 			else {
-				if (RaceController.Instance.State != RaceState.Training) {
+				if (RaceControllerBase.Instance.State != RaceState.Training) {
 					message = "The race has already started.";
 				} else {
 					// Perform the command
-					RaceController.Instance.StartRace();
+					RaceControllerBase.Instance.StartRace();
 					Destroy(FindObjectOfType<StartingZone>().transform.parent.gameObject);
 					success = true;
 					message = "The race is starting";
@@ -655,7 +655,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			string message = string.Empty;
 			// Handle errors
 			if (commandParts.Length < 2 || commandParts.Length > 4) message = "Invalid number of parameters, there should be at least one and at most three.";
-			else if (RaceController.Instance.State != RaceState.RaceInProgress)
+			else if (RaceControllerBase.Instance.State != RaceState.RaceInProgress)
 				message = "The race has not started yet and therefore cannot be finished.";
 			else {
 				int playerTime = -1;
@@ -695,9 +695,9 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					return new CommandParseResult {
 						isSuccessful = false, message = $"Invalid parameter, the 'time' must be at least 2."
 					};
-				if (playerPlace < 1 || playerPlace > RaceController.Instance.racers.Count)
+				if (playerPlace < 1 || playerPlace > RaceControllerBase.Instance.racers.Count)
 					return new CommandParseResult {
-						isSuccessful = false, message = $"Invalid parameter, the 'place' must be between 1 and {RaceController.Instance.racers.Count} (inclusive)."
+						isSuccessful = false, message = $"Invalid parameter, the 'place' must be between 1 and {RaceControllerBase.Instance.racers.Count} (inclusive)."
 					};
 				// Perform the command - make sure the player finishes at the desired place
 				void FillRaceState(CharacterRaceState raceState, int time, int hoopsMissed) {
@@ -706,7 +706,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					raceState.hoopsMissed = 0;
 					raceState.hoopsPassed = 0;
 					for (int i = 0; i < raceState.hoopsPassedArray.Length; i++) {
-						if (RaceController.Instance.Level.Track[i].isCheckpoint || hoopsMissed <= 0) {
+						if (RaceControllerBase.Instance.Level.Track[i].isCheckpoint || hoopsMissed <= 0) {
 							raceState.hoopsPassedArray[i] = true;
 							raceState.hoopsPassed++;
 						} else {
@@ -716,13 +716,13 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 						}
 					}
 					// Set time and penalization
-					int penalization = Mathf.RoundToInt(RaceController.Instance.missedHoopPenalization * actualMissedHoops);
+					int penalization = Mathf.RoundToInt(RaceControllerBase.Instance.missedHoopPenalization * actualMissedHoops);
 					raceState.finishTime = time;
 					raceState.timePenalization = penalization;
 				}
 				int opponentPlace = 1;
-				foreach (var racer in RaceController.Instance.racers) {
-					if (racer == RaceController.Instance.playerRacer) {
+				foreach (var racer in RaceControllerBase.Instance.racers) {
+					if (racer == RaceControllerBase.Instance.playerRacer) {
 						FillRaceState(racer.state, playerTime, playerHoopsMissed);
 					} else {
 						if (opponentPlace == playerPlace) opponentPlace++;
@@ -735,9 +735,9 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					}
 				}
 				// End race
-				RaceController.Instance.EndRace();
+				RaceControllerBase.Instance.EndRace();
 				success = true;
-				message = $"The race is finishing with finish time {playerTime} s, place {playerPlace} and {RaceController.Instance.playerRacer.state.hoopsMissed} missed hoops (resulting in penalization {RaceController.Instance.playerRacer.state.timePenalization} s).";
+				message = $"The race is finishing with finish time {playerTime} s, place {playerPlace} and {RaceControllerBase.Instance.playerRacer.state.hoopsMissed} missed hoops (resulting in penalization {RaceControllerBase.Instance.playerRacer.state.timePenalization} s).";
 			}
 			// Return the result
 			return new CommandParseResult {
