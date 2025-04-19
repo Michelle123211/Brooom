@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Text;
 
 
 
@@ -56,8 +57,34 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		// Get values from UI elements, store them into current state and save settings persistently
 		SetStateFromCurrentlySelectedtValues();
 		SaveQuickRaceSettings();
+		LogQuickRaceStarted();
 		// Load QuickRace scene
 		SceneLoader.Instance.LoadScene(Scene.QuickRace);
+	}
+
+	private void LogQuickRaceStarted() {
+		// Difficulty level
+		int difficultyLevel = difficultyDropdown.value;
+		string difficultyName;
+		if (difficultyLevel < difficultyOptions.Count) difficultyName = difficultyOptions[difficultyLevel].difficultyNameLocalizationKey;
+		else difficultyName = "QuickRaceDifficultyCustom";
+		// Broom upgrades
+		StringBuilder broomUpgrades = new StringBuilder();
+		for (int i = 0; i < broomUpgradesUI.Count; i++) {
+			broomUpgrades.Append($"{broomUpgradesUI[i].UpgradeName} {PlayerState.Instance.GetBroomUpgradeLevel(broomUpgradesUI[i].UpgradeName)}/{broomUpgradesUI[i].MaxLevel}");
+			if (i < broomUpgradesUI.Count - 1) broomUpgrades.Append(" - ");
+		}
+		// Equipped spells
+		StringBuilder slotsContent = new StringBuilder();
+		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
+			Spell equippedSpell = PlayerState.Instance.equippedSpells[i];
+			if (equippedSpell != null && !string.IsNullOrEmpty(equippedSpell.Identifier))
+				slotsContent.Append(equippedSpell.SpellName);
+			else slotsContent.Append("Empty");
+			if (i < PlayerState.Instance.equippedSpells.Length - 1) slotsContent.Append(" - ");
+		}
+
+		Analytics.Instance.LogEvent(AnalyticsCategory.Race, $"Quick Race started with difficulty level {difficultyLevel} ({difficultyName}), stats {PlayerState.Instance.CurrentStats}, broom upgrades {broomUpgrades} and spells {slotsContent} (spells enabled is {enableSpellsToggle.isOn}).");
 	}
 
 	private void InitializeStateFromLoadedData(QuickRaceSaveData data) {
@@ -235,6 +262,12 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 
 		InitializeDifficultyDropdownValue(difficultyLevel);
 		InitializeEnableSpellsToggleValue(enableSpells); // based on whether there is a spell equipped, or not
+
+		Analytics.Instance.LogEvent(AnalyticsCategory.Race, "Quick Race settings opened.");
+	}
+
+	private void OnDisable() {
+		Analytics.Instance.LogEvent(AnalyticsCategory.Race, "Quick Race settings closed.");
 	}
 
 }

@@ -14,6 +14,7 @@ public class PlayerOverviewUI : MonoBehaviour
 
 
     public void ReturnToMenu() {
+        Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Returned to Main Menu.");
         SceneLoader.Instance.LoadScene(Scene.MainMenu);
     }
 

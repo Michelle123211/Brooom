@@ -46,10 +46,12 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	private void RegisterSceneSpecificCallbacks(Scene scene) {
 		switch (scene) {
 			case Scene.Race:
+			case Scene.QuickRace:
 				RegisterCallbacksInRaceScene();
 				break;
 			case Scene.TestingTrack:
-				RegisterCallbacksInTestingTrackScene();
+			case Scene.Tutorial:
+				RegisterSpellCallbacksInSimpleScene(); // on spell cast, on selected spell changed
 				break;
 		}
 	}
@@ -57,10 +59,12 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	private void UnregisterSceneSpecificCallbacks(Scene scene) {
 		switch (scene) {
 			case Scene.Race:
+			case Scene.QuickRace:
 				UnregisterCallbacksInRaceScene();
 				break;
 			case Scene.TestingTrack:
-				UnregisterCallbacksInTestingTrackScene();
+			case Scene.Tutorial:
+				UnregisterSpellCallbacksInSimpleScene(); // on spell cast, on selected spell changed
 				break;
 		}
 	}
@@ -132,7 +136,6 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		RaceControllerBase.Instance.playerRacer.state.onCheckpointMissed += OnCheckpointMissed;
 		RaceControllerBase.Instance.playerRacer.state.onWrongDirectionChanged += OnWrongDirectionChanged;
 	}
-
 	private void UnregisterCallbacksInRaceScene() {
 		// Unregister callbacks
 		this.playerSpellController.onSpellCast -= OnSpellCast;
@@ -156,15 +159,14 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		this.levelGenerator = null;
 	}
 
-	private void RegisterCallbacksInTestingTrackScene() {
+	private void RegisterSpellCallbacksInSimpleScene() {
 		// Initialize data fields
 		this.playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 		// Register callbacks
 		this.playerSpellController.onSpellCast += OnSpellCast;
 		this.playerSpellController.onSelectedSpellChanged += OnSelectedSpellChanged;
 	}
-
-	private void UnregisterCallbacksInTestingTrackScene() {
+	private void UnregisterSpellCallbacksInSimpleScene() {
 		// Unregister callbacks
 		this.playerSpellController.onSpellCast -= OnSpellCast;
 		this.playerSpellController.onSelectedSpellChanged -= OnSelectedSpellChanged;
