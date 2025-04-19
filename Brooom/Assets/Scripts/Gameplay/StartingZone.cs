@@ -12,11 +12,19 @@ public class StartingZone : MonoBehaviour
 	[Tooltip("Label displaying countdown to the race start.")]
 	[SerializeField] TextMeshProUGUI countdownLabel;
 
+	[Tooltip("A parent of all UI components shown on the screen (e.g., instructions to enter, countdown).")]
+	[SerializeField] GameObject UIElements;
+
 	private bool isCountingDown = false;
 	private float currentTime = 0;
 	private int secondsLeft = int.MaxValue;
 
 	private string countdownText = string.Empty;
+
+
+	public void ShowOrHideUI(bool show) {
+		UIElements.SetActive(show);
+	}
 
 	private void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player") && !other.isTrigger) { // only actual collider, not trigger around player to detect potential spell targets

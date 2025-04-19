@@ -165,6 +165,7 @@ public enum Scene {
 	TestingTrack = 7,
 	Ending = 8,
 	Exit = 9,
+	LevelGeneratorDemo = 10,
 
 	None = 8888,
 	ProceduralTerrain = 9999 // TODO: Remove when not necessary (it is there for debugging purposes only)

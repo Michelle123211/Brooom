@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   durationToStart: 3
   countdownLabel: {fileID: 7719607707665008684}
+  UIElements: {fileID: 8456197424436010582}
 --- !u!33 &3619719423323591491
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -420,7 +421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6112458546251473157}
   m_Layer: 7
-  m_Name: GameObject
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// This class is responsible for generating a level at the start of the scene.
+/// Parameters for generation are selected based on current game state (e.g., player stats, broom upgrades).
+/// Other classes may extend this one to alter its behaviour (e.g., to make it independent of game state and instead set parameters in a different way).
+/// </summary>
 public class RaceGeneration : MonoBehaviourLongInitialization {
 
     [Header("Level length (Endurance)")]
@@ -36,6 +42,10 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
     public List<RegionUnlockValue> regionsUnlockedByEndurance;
     public List<RegionUnlockValue> regionsUnlockedByAltitude;
 
+    [Header("Opponents")]
+    [Tooltip("Number of opponents to generate.")]
+    public int opponentsCount = 5;
+
 
     protected LevelGenerationPipeline levelGenerator;
 
@@ -55,8 +65,23 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
 
     protected IEnumerator GenerateLevel() {
         // Generate level (terrain + track)
-        SetLevelGeneratorParameters();
+        SetLevelGeneratorParametersFromPlayerState(GetPlayerStats(), GetMaxAltitude(),
+            GetRegionsAvailability(), GetRegionsVisited());
         yield return levelGenerator.GenerateLevel();
+    }
+
+    protected virtual PlayerStats GetPlayerStats() => PlayerState.Instance.CurrentStats;
+
+    protected virtual float GetMaxAltitude() => PlayerState.Instance.maxAltitude;
+
+    protected virtual Dictionary<LevelRegionType, bool> GetRegionsAvailability() {
+        // Update regions availability first
+        UpdateRegionsAvailability();
+        return PlayerState.Instance.regionsAvailability;
+    }
+
+    protected virtual Dictionary<LevelRegionType, bool> GetRegionsVisited() {
+        return PlayerState.Instance.regionsVisited;
     }
 
     /// <summary>
@@ -101,41 +126,40 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
         return chosenRegions;
     }
 
-    private void SetLevelGeneratorParameters() {
-        // Compute parameters based on player's stats
+    protected void SetLevelGeneratorParametersFromPlayerState(PlayerStats stats, float maxAltitude, Dictionary<LevelRegionType, bool> regionsAvailability, Dictionary<LevelRegionType, bool> regionsVisited) {
+        // Compute parameters based on the given player stats
         // ... number of checkpoints from Endurance
-        int numOfCheckpoints = Mathf.RoundToInt(Mathf.Lerp(initialNumberOfCheckpoints, finalNumberOfCheckpoints, PlayerState.Instance.CurrentStats.endurance / 100f));
+        int numOfCheckpoints = Mathf.RoundToInt(Mathf.Lerp(initialNumberOfCheckpoints, finalNumberOfCheckpoints, stats.endurance / 100f));
         // ... maximum direction change from Dexterity
-        Vector2 directionChange = Vector2.Lerp(initialDirectionChange, finalDirectionChange, PlayerState.Instance.CurrentStats.dexterity / 100f);
+        Vector2 directionChange = Vector2.Lerp(initialDirectionChange, finalDirectionChange, stats.dexterity / 100f);
         // ... hoop scale from Precision
-        float hoopScale = Mathf.Lerp(initialHoopScale, finalHoopScale, PlayerState.Instance.CurrentStats.precision / 100f);
+        float hoopScale = Mathf.Lerp(initialHoopScale, finalHoopScale, stats.precision / 100f);
         // ... distance between adjacent hoops from Speed
-        Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, PlayerState.Instance.CurrentStats.speed / 100f);
+        Vector2 distanceRange = Vector2.Lerp(initialHoopDistanceRange, finalHoopDistanceRange, stats.speed / 100f);
         // ... available regions + chosen terrain regions
-        UpdateRegionsAvailability();
         List<LevelRegionType> chosenTerrainRegions = ChooseTerrainRegionsForLevel(); // these will be used in the level
         // Set parameters (make sure to set all modules of the same type, if there are multiple) 
         // ... regions
         levelGenerator.terrainRegionsToInclude = chosenTerrainRegions;
-        levelGenerator.regionsAvailability = PlayerState.Instance.regionsAvailability;
-        levelGenerator.regionsVisited = PlayerState.Instance.regionsVisited;
+        levelGenerator.regionsAvailability = regionsAvailability;
+        levelGenerator.regionsVisited = regionsVisited;
         // ... track generation
         foreach (var module in levelGenerator.GetComponents<TrackGenerationBase>()) {
-            module.maxAltitude = PlayerState.Instance.maxAltitude;
+            module.maxAltitude = maxAltitude;
             module.numberOfCheckpoints = numOfCheckpoints;
             module.maxDirectionChangeAngle = directionChange;
             module.distanceRange = distanceRange;
         }
         // ... track terrain height postprocessing
         foreach (var module in levelGenerator.GetComponents<TrackTerrainHeightPostprocessing>())
-            module.maxAltitude = PlayerState.Instance.maxAltitude;
+            module.maxAltitude = maxAltitude;
         // ... track elements
         foreach (var module in levelGenerator.GetComponents<TrackObjectsPlacement>())
             module.hoopScale = hoopScale;
         foreach (var module in levelGenerator.GetComponents<MaximumAngleCorrection>())
             module.maxAngle = directionChange.x;
         foreach (var module in levelGenerator.GetComponents<OpponentsGeneration>())
-            module.opponentsCount = 5;
+            module.opponentsCount = opponentsCount;
     }
 
     private void UpdateRegionsAvailability() {

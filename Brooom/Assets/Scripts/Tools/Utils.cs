@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -164,6 +166,16 @@ public static class Utils
 
     public static bool IsCursorLocked() {
         return Cursor.lockState != CursorLockMode.None;
+    }
+
+
+
+    public static void SaveScreenshot() {
+        string screenshotsFolder = Path.Combine(Application.persistentDataPath, "Screenshots");
+        if (!Directory.Exists(screenshotsFolder)) Directory.CreateDirectory(screenshotsFolder);
+        string screenshotName = $"LevelScreenshot_{DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss")}.png";
+        ScreenCapture.CaptureScreenshot(Path.Combine(screenshotsFolder, screenshotName));
+        Debug.Log($"Screenshot captured and stored as {screenshotName}");
     }
 
 }

@@ -28,10 +28,11 @@ public class BonusPlacement : LevelGeneratorModule {
     private void FillTheBonusSpots(LevelRepresentation level) {
         // Fill the spots according to bonus patterns
         foreach (var bonus in bonuses) {
-            if (!bonus.bonusPrefab.IsAvailable() && !allBonusesAvailable) continue; // skip bonuses which are not available (yet)
-            for (int i = 0; i < level.bonuses.Count; i++) {
-                if (level.bonuses[i].isEmpty && bonus.pattern[i % bonus.pattern.Count]) {  // populate empty spots according to the pattern
-                    CreateBonusInstances(level, level.bonuses[i], bonus);
+            if (allBonusesAvailable || bonus.bonusPrefab.IsAvailable()) { // bonuses which are not available (yet) are skipped
+                for (int i = 0; i < level.bonuses.Count; i++) {
+                    if (level.bonuses[i].isEmpty && bonus.pattern[i % bonus.pattern.Count]) {  // populate empty spots according to the pattern
+                        CreateBonusInstances(level, level.bonuses[i], bonus);
+                    }
                 }
             }
         }
