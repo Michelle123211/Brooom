@@ -47,6 +47,10 @@ public class LevelGenerationPipeline : MonoBehaviour {
 	private Dictionary<LevelRegionType, LevelRegion> trackRegionsDict;
 
 
+	public void EnableOrDisableModule(int index, bool enable) {
+		modules[index].isModuleEnabled = enable;
+	}
+
 #if UNITY_EDITOR
 	[ContextMenu("Regenerate level")]
 	private void RegenerateLevel() { // Regenerates the level with previous parameters + parameters specified below

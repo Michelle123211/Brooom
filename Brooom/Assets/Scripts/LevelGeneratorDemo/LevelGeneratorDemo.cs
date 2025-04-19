@@ -28,6 +28,18 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	// Magic stat has no effect on level generation
 	[SerializeField] Slider maxAltitudeSlider;
 
+	[Header("General settings UI elements")]
+	[SerializeField] TMP_Dropdown moduleDropdown;
+	[SerializeField] List<ModuleListOption> modulesToEnableOptions;
+
+	[Header("Level layers")]
+	[SerializeField] GameObject terrainParent;
+	[SerializeField] GameObject startAndFinishParent;
+	[SerializeField] GameObject hoopsParent;
+	[SerializeField] GameObject bonusesParent;
+	[SerializeField] GameObject environmentElementsParent;
+	[SerializeField] GameObject trackBorderParent;
+
 	// There are two options of setting generator parameters (based on stats, or directly) - we can switch between them
 	private bool useStats = true;
 
@@ -36,10 +48,12 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 
 	public void RegenerateLevel() {
 		levelGenerator.onLevelGenerated += OnLevelGenerated;
+		DeletePreviousLevel();
+		SetupGeneratorModules();
 		// If level should be generated based on stats, use inherited method
 		if (useStats) StartCoroutine(GenerateLevel()); // set parameters and generate level
 		// Else use custom method for setting parameters directly
-		else return;
+		else StartCoroutine(GenerateLevelWithDirectParameters());
 	}
 
 	public void GoBackToMainMenu() {
@@ -57,8 +71,29 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	/// This method overrides the inherited method so that the level is not generated immediately at the start.
 	/// </summary>
 	protected override IEnumerator InitializeAfterPreparation() {
+		InitializeModuleDropdownOptions();
 		// Do nothing, don't generate level right at the start
 		yield break;
+	}
+	private void DeletePreviousLevel() {
+		// Delete all previously generated objects
+		//	- modules usually do that themselves, but here we have an option to disable modules so then they cannot clean up
+		UtilsMonoBehaviour.RemoveAllChildren(terrainParent.transform);
+		UtilsMonoBehaviour.RemoveAllChildren(startAndFinishParent.transform);
+		UtilsMonoBehaviour.RemoveAllChildren(hoopsParent.transform);
+		UtilsMonoBehaviour.RemoveAllChildren(bonusesParent.transform);
+		UtilsMonoBehaviour.RemoveAllChildren(environmentElementsParent.transform);
+		UtilsMonoBehaviour.RemoveAllChildren(trackBorderParent.transform);
+	}
+
+	private void SetupGeneratorModules() {
+		// Based on the currently selected dropdown option
+		int currentOption = moduleDropdown.value;
+		for (int i = 0; i < modulesToEnableOptions.Count; i++) {
+			// All modules from the current option and all previous options are enabled, all modules from later options are disabled
+			foreach (int moduleIndex in modulesToEnableOptions[i].addedModulesIndices)
+				levelGenerator.EnableOrDisableModule(moduleIndex, i <= currentOption);
+		}
 	}
 
 	#region Stats-based generator parameters
@@ -106,6 +141,32 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	#endregion
 
 	#region Direct generator parameters
+
+	private IEnumerator GenerateLevelWithDirectParameters() {
+		// Set parameters directly
+		// Generate level
+		yield return levelGenerator.GenerateLevel();
+	}
+
+	#endregion
+
+	#region General settings parameters
+
+	public void OnTerrainShowOrHide(bool show) => terrainParent.SetActive(show);
+	public void OnStartAndFinishShowOrHide(bool show) => startAndFinishParent.SetActive(show);
+	public void OnHoopsShowOrHide(bool show) => hoopsParent.SetActive(show);
+	public void OnBonusesShowOrHide(bool show) => bonusesParent.SetActive(show);
+	public void OnEnvironmentElementsShowOrHide(bool show) => environmentElementsParent.SetActive(show);
+	public void OnTrackBorderShowOrHide(bool show) => trackBorderParent.SetActive(show);
+
+	private void InitializeModuleDropdownOptions() {
+		moduleDropdown.ClearOptions();
+		foreach (var moduleListOption in modulesToEnableOptions)
+			moduleDropdown.options.Add(new TMP_Dropdown.OptionData(moduleListOption.dropdownOption));
+		moduleDropdown.value = modulesToEnableOptions.Count - 1;
+		moduleDropdown.GetComponentInChildren<TextMeshProUGUI>().text = modulesToEnableOptions[moduleDropdown.value].dropdownOption;
+	}
+
 	#endregion
 
 	private void ToggleUIVisibility() {
@@ -118,7 +179,7 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 
 	private void OnLevelGenerated(LevelRepresentation level) {
 		this.level = level;
-		FindObjectOfType<StartingZone>().ShowOrHideUI(false);
+		FindObjectOfType<StartingZone>()?.ShowOrHideUI(false);
 		levelGenerator.onLevelGenerated -= OnLevelGenerated;
 	}
 
@@ -135,4 +196,12 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 			Utils.SaveScreenshot();
 	}
 
+}
+
+[System.Serializable]
+internal class ModuleListOption {
+	[Tooltip("Name of this option visible in a dropdown.")]
+	public string dropdownOption;
+	[Tooltip("Indices of modules which should be enabled on top of the previous option if this option is selected.")]
+	public List<int> addedModulesIndices;
 }
