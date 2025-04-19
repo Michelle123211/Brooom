@@ -207,12 +207,12 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 	private void InitializeSceneCommand() {
 		// scene - change scene
-		commands.Add(new CheatCommand("scene", "Changes the current scene to the given one. Usage: 'scene <sceneName>', e.g. 'scene PlayerOverview'.\nAvailable scenes: MainMenu, CharacterCreation, Tutorial, Race, PlayerOverview, TestingTrack, Ending, Start, Exit.", (commandParts) => {
+		commands.Add(new CheatCommand("scene", "Changes the current scene to the given one. Usage: 'scene <sceneName>', e.g. 'scene PlayerOverview'.\nAvailable scenes: MainMenu, CharacterCreation, Tutorial, Race, PlayerOverview, TestingTrack, QuickRace, Ending, LevelGeneratorDemo, Start, Exit.", (commandParts) => {
 			bool success = false;
 			string message = string.Empty;
 			// Handle errors
 			if (commandParts.Length != 2) message = "Invalid number of parameters, one is required.";
-			else if (SceneManager.GetSceneByName(commandParts[1]) == null) message = $"Scene named '{commandParts[1]} does not exist. Try using one of the following instead: MainMenu, CharacterCreation, Tutorial, Race, PlayerOverview, TestingTrack, Ending, Start, Exit.'";
+			else if (!Enum.TryParse<Scene>(commandParts[1], out _)) message = $"Scene named '{commandParts[1]}' does not exist. Try using one of the following instead: MainMenu, CharacterCreation, Tutorial, Race, PlayerOverview, TestingTrack, QuickRace, Ending, LevelGeneratorDemo, Start, Exit.";
 			// Perform the command
 			else {
 				SceneLoader.Instance.LoadScene(commandParts[1]);
@@ -299,7 +299,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				};
 			}
 		},
-		disabledScenes: new Scene[] { Scene.MainMenu }));
+		disabledScenes: new Scene[] { Scene.MainMenu, Scene.LevelGeneratorDemo, Scene.QuickRace }));
 	}
 
 	private void InitializeCompletionCommand() {
@@ -329,7 +329,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					message = message
 				};
 			},
-			disabledScenes: new Scene[] { Scene.MainMenu })
+			disabledScenes: new Scene[] { Scene.MainMenu, Scene.LevelGeneratorDemo, Scene.QuickRace })
 		);
 	}
 
@@ -354,7 +354,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		},
-		disabledScenes: new Scene[] { Scene.MainMenu }));
+		disabledScenes: new Scene[] { Scene.MainMenu, Scene.LevelGeneratorDemo, Scene.QuickRace }));
 	}
 
 	private void InitializeUpgradeCommand() {
@@ -399,7 +399,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				isSuccessful = success,
 				message = message
 			};
-		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.Tutorial })); // broom must be available
+		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.Tutorial, Scene.QuickRace })); // broom must be available
 	}
 	private void InitializeDowngradeCommand() {
 		// downgrade - downgrade the broom
@@ -443,7 +443,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				isSuccessful = success,
 				message = message
 			};
-		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.Tutorial })); // broom must be available
+		}, enabledScenes: new Scene[] { Scene.Race, Scene.PlayerOverview, Scene.TestingTrack, Scene.Tutorial, Scene.QuickRace })); // broom must be available
 	}
 
 	private void InitializeSpellCommand() {
@@ -503,7 +503,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		},
-		disabledScenes: new Scene[] { Scene.MainMenu }));
+		disabledScenes: new Scene[] { Scene.MainMenu, Scene.LevelGeneratorDemo, Scene.QuickRace }));
 	}
 	private void FillManaUp() {
 		SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
@@ -555,7 +555,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					message = message
 				};
 			},
-			enabledScenes: new Scene[] { Scene.Race }));
+			enabledScenes: new Scene[] { Scene.Race, Scene.QuickRace }));
 	}
 	private void InitializeRechargeCommand() {
 		// recharge - change spells' charge or enable/disable cooldown, available only in Race
@@ -594,7 +594,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 					message = message
 				};
 			},
-			enabledScenes: new Scene[] { Scene.Race }));
+			enabledScenes: new Scene[] { Scene.Race, Scene.QuickRace }));
 	}
 
 	private void InitializeSpeedCommand() {
@@ -620,7 +620,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		},
-		enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack, Scene.Tutorial }));
+		enabledScenes: new Scene[] { Scene.Race, Scene.TestingTrack, Scene.Tutorial, Scene.QuickRace }));
 	}
 	private void InitializeStartCommand() {
 		// start - quick race start, available only in Race
@@ -745,7 +745,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				message = message
 			};
 		},
-		enabledScenes: new Scene[] { Scene.Race }));
+		enabledScenes: new Scene[] { Scene.Race, Scene.QuickRace }));
 	}
 	#endregion
 
@@ -772,8 +772,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		if (cheatsEnabled) {
 			// Handle input
 			// ... show/hide cheats
-			if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.C) && // all keys are pressed
-				(Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.C))) { // and one of them was pressed just now
+			if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.C)) { // all keys are pressed, and C was the last one pressed just now
 				ToggleVisibility();
 			}
 			// ... enter cheat
