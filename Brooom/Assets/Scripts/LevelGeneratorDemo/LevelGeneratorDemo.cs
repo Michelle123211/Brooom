@@ -210,7 +210,7 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 		if (Input.GetKeyDown(KeyCode.Escape))
 			GoBackToMainMenu();
 		// ... Ctrl + C - capture (ans save) screenshot
-		if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.C))
+		if (Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.C)) // no alt so screenshot is not captured when showing/hiding cheats command line
 			Utils.SaveScreenshot();
 	}
 
