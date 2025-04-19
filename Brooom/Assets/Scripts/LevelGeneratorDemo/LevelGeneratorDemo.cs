@@ -15,10 +15,12 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	[Header("UI sections")]
 	[Tooltip("A parent object containing all UI elements. Can be shown or hidden using Space.")]
 	[SerializeField] GameObject canvas;
-	[Tooltip("A parent object containing all UI elements for setting generator parameters based on player stats.")]
-	[SerializeField] GameObject statsParameterSection;
-	[Tooltip("A parent object containing all UI elements for setting generator parameters directly.")]
-	[SerializeField] GameObject generatorParameterSection;
+
+	// TODO: Uncomment for support of second option of setting generator parameters directly (instead of based on stats) - to toggle between them
+	//[Tooltip("A parent object containing all UI elements for setting generator parameters based on player stats.")]
+	//[SerializeField] GameObject statsParameterSection;
+	//[Tooltip("A parent object containing all UI elements for setting generator parameters directly.")]
+	//[SerializeField] GameObject generatorParameterSection;
 
 	[Header("Stats-based UI elements")]
 	[SerializeField] Slider enduranceSlider;
@@ -27,6 +29,17 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	[SerializeField] Slider precisionSlider;
 	// Magic stat has no effect on level generation
 	[SerializeField] Slider maxAltitudeSlider;
+
+	// TODO: Uncomment for support of second option of setting generator parameters directly (instead of based on stats) - to toggle between them
+	//[Header("Direct parameters UI elements")]
+	//[SerializeField] TMP_InputField numOfCheckpoints;
+	//[SerializeField] TMP_InputField numOfHoops;
+	//[SerializeField] TMP_InputField maxDirectionChangeX;
+	//[SerializeField] TMP_InputField maxDirectionChangeY;
+	//[SerializeField] TMP_InputField hoopScale;
+	//[SerializeField] TMP_InputField minHoopDistance;
+	//[SerializeField] TMP_InputField maxHoopDistance;
+	// TODO: And many more - e.g., available regions, number of opponents, maximum altitude, ...
 
 	[Header("General settings UI elements")]
 	[SerializeField] TMP_Dropdown moduleDropdown;
@@ -40,8 +53,9 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	[SerializeField] GameObject environmentElementsParent;
 	[SerializeField] GameObject trackBorderParent;
 
+	// TODO: Uncomment for support of second option of setting generator parameters directly (instead of based on stats) - to toggle between them
 	// There are two options of setting generator parameters (based on stats, or directly) - we can switch between them
-	private bool useStats = true;
+	//private bool useStats = true;
 
 	private LevelRepresentation level;
 
@@ -50,22 +64,25 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 		levelGenerator.onLevelGenerated += OnLevelGenerated;
 		DeletePreviousLevel();
 		SetupGeneratorModules();
+		// TODO: Uncomment for support of second option of setting generator parameters directly (instead of based on stats) - to toggle between them
 		// If level should be generated based on stats, use inherited method
-		if (useStats) StartCoroutine(GenerateLevel()); // set parameters and generate level
+		//if (useStats) 
+			StartCoroutine(GenerateLevel()); // set parameters and generate level
 		// Else use custom method for setting parameters directly
-		else StartCoroutine(GenerateLevelWithDirectParameters());
+		//else StartCoroutine(GenerateLevelWithDirectParameters());
 	}
 
 	public void GoBackToMainMenu() {
 		SceneLoader.Instance.LoadScene(Scene.MainMenu);
 	}
 
-	public void OnParameterModeChanged(bool useStats) {
-		// Show/hide corresponding UI elements
-		this.useStats = useStats;
-		statsParameterSection.SetActive(useStats);
-		generatorParameterSection.SetActive(!useStats);
-	} 
+	// TODO: Uncomment for support of second option of setting generator parameters directly (instead of based on stats) - to toggle between them
+	//public void OnInputModeChanged(bool useStats) {
+	//	// Show/hide corresponding UI elements
+	//	this.useStats = useStats;
+	//	statsParameterSection.SetActive(useStats);
+	//	generatorParameterSection.SetActive(!useStats);
+	//} 
 
 	/// <summary>
 	/// This method overrides the inherited method so that the level is not generated immediately at the start.
@@ -142,8 +159,9 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 
 	#region Direct generator parameters
 
+	// TODO: Implement support of second option of setting generator parameters directly (instead of based on stats) - to toggle between them
 	private IEnumerator GenerateLevelWithDirectParameters() {
-		// Set parameters directly
+		// TODO: Set parameters directly
 		// Generate level
 		yield return levelGenerator.GenerateLevel();
 	}
