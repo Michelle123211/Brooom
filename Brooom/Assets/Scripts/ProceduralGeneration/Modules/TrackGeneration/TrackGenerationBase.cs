@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class TrackGenerationBase : LevelGeneratorModule {
 
+	[Tooltip("Maximum altitude (Y coordinate) the player can fly up to (no track element can be higher than that).")]
+	public float maxAltitude = 15f;
 	[Tooltip("How many checkpoints should be generated.")]
 	public int numberOfCheckpoints = 4;
 	[Tooltip("How many hoops should be generated between two consecutive checkpoints.")]

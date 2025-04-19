@@ -61,7 +61,7 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 		float angle;
 		if (lastPosition.y < 1) // only up possible
 			angle = Random.Range(-maxDirectionChangeAngle.x, 0);
-		else if (lastPosition.y > PlayerState.Instance.maxAltitude - 1) // only down possible
+		else if (lastPosition.y > maxAltitude - 1) // only down possible
 			angle = Random.Range(0, maxDirectionChangeAngle.x);
 		else {
 			float randomValue = Random.value;

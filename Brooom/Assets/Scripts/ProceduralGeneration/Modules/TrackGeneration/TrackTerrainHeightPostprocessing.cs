@@ -6,6 +6,8 @@ using UnityEngine;
 // Moves track points higher according to the terrain underneath them
 public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
+	[Tooltip("Maximum altitude (Y coordinate) the player can fly up to (no track element can be higher than that).")]
+	public float maxAltitude = 15f;
 	[Tooltip("Each hoop's Y coordinate is adjusted according to the maximum terrain height in a close neighbourhood of the given radius.")]
 	public int hoopHeightAreaRadius = 4;
 	[Tooltip("Hoops and checkpoints should be placed in this minimum height above ground.")]
@@ -26,7 +28,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 			float height = FindMaximumHeightInNeighbourhood(level, trackPoint.gridCoords); // already including offset above terrain
 			if (trackPoint.position.y < height) trackPoint.position.y = height;
 			// Limit the Y coordinate according to the maximum altitude of the broom
-			trackPoint.position.y = Mathf.Clamp(trackPoint.position.y, 0, PlayerState.Instance.maxAltitude); // TODO: Consider negative height if necessary (e.g. when going underground)
+			trackPoint.position.y = Mathf.Clamp(trackPoint.position.y, 0, maxAltitude); // TODO: Consider negative height if necessary (e.g. when going underground)
 			// TODO: Distribute any change to 2 or 3 adjacent points in both sides as well to smooth it out - if hoops are too close to each other
 		}
 
@@ -38,7 +40,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 			float heightTerrain = FindMaximumHeightInNeighbourhood(level, bonus.gridCoords);
 			if (bonus.position.y < heightTerrain) bonus.position.y = heightTerrain;
 			// Limit it according to the maximum altitude of the broom
-			bonus.position.y = Mathf.Clamp(bonus.position.y, 0, PlayerState.Instance.maxAltitude); // TODO: Consider negative height if necessary (e.g. when going underground)
+			bonus.position.y = Mathf.Clamp(bonus.position.y, 0, maxAltitude); // TODO: Consider negative height if necessary (e.g. when going underground)
 		}
 
 		// Change Y coordinate of the player's start position according to the terrain height
@@ -48,7 +50,7 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		int z = Mathf.RoundToInt(Mathf.Abs(level.playerStartPosition.z - topleft.z) / offset);
 		float computedHeight = FindMaximumHeightInNeighbourhood(level, new Vector2Int(x, z));
 		// Take maximum and limit it according to the maximum altitude of the broom
-		level.playerStartPosition.y = Mathf.Clamp(Mathf.Max(level.playerStartPosition.y, computedHeight), 0, PlayerState.Instance.maxAltitude); // TODO: Consider negative height if necessary (e.g. when going underground)
+		level.playerStartPosition.y = Mathf.Clamp(Mathf.Max(level.playerStartPosition.y, computedHeight), 0, maxAltitude); // TODO: Consider negative height if necessary (e.g. when going underground)
 	}
 
 	private void PrepareRegionHeightDictionary(LevelRepresentation level) {

@@ -114,17 +114,28 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
         // ... available regions + chosen terrain regions
         UpdateRegionsAvailability();
         List<LevelRegionType> chosenTerrainRegions = ChooseTerrainRegionsForLevel(); // these will be used in the level
-        // Set parameters
+        // Set parameters (make sure to set all modules of the same type, if there are multiple) 
+        // ... regions
         levelGenerator.terrainRegionsToInclude = chosenTerrainRegions;
         levelGenerator.regionsAvailability = PlayerState.Instance.regionsAvailability;
         levelGenerator.regionsVisited = PlayerState.Instance.regionsVisited;
-        TrackPointsGenerationRandomWalk trackGenerator = levelGenerator.GetComponent<TrackPointsGenerationRandomWalk>();
-        trackGenerator.numberOfCheckpoints = numOfCheckpoints;
-        trackGenerator.maxDirectionChangeAngle = directionChange;
-        trackGenerator.distanceRange = distanceRange;
-        levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale = hoopScale;
-        levelGenerator.GetComponent<MaximumAngleCorrection>().maxAngle = directionChange.x;
-        levelGenerator.GetComponent<OpponentsGeneration>().opponentsCount = 5;
+        // ... track generation
+        foreach (var module in levelGenerator.GetComponents<TrackGenerationBase>()) {
+            module.maxAltitude = PlayerState.Instance.maxAltitude;
+            module.numberOfCheckpoints = numOfCheckpoints;
+            module.maxDirectionChangeAngle = directionChange;
+            module.distanceRange = distanceRange;
+        }
+        // ... track terrain height postprocessing
+        foreach (var module in levelGenerator.GetComponents<TrackTerrainHeightPostprocessing>())
+            module.maxAltitude = PlayerState.Instance.maxAltitude;
+        // ... track elements
+        foreach (var module in levelGenerator.GetComponents<TrackObjectsPlacement>())
+            module.hoopScale = hoopScale;
+        foreach (var module in levelGenerator.GetComponents<MaximumAngleCorrection>())
+            module.maxAngle = directionChange.x;
+        foreach (var module in levelGenerator.GetComponents<OpponentsGeneration>())
+            module.opponentsCount = 5;
     }
 
     private void UpdateRegionsAvailability() {

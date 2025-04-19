@@ -13,6 +13,9 @@ public class BonusPlacement : LevelGeneratorModule {
     [Tooltip("An object which will be parent of all the bonus objects in the hierarchy.")]
     public Transform bonusParent;
 
+    [Tooltip("Whether all bonuses should be instantiated regardless of whether they are available in the current game state (can be used for experimentation).")]
+    public bool allBonusesAvailable = false;
+
 
     public override void Generate(LevelRepresentation level) {
         // Remove any previously instantiated bonuses
@@ -25,7 +28,7 @@ public class BonusPlacement : LevelGeneratorModule {
     private void FillTheBonusSpots(LevelRepresentation level) {
         // Fill the spots according to bonus patterns
         foreach (var bonus in bonuses) {
-            if (!bonus.bonusPrefab.IsAvailable()) continue; // skip bonuses which are not available (yet)
+            if (!bonus.bonusPrefab.IsAvailable() && !allBonusesAvailable) continue; // skip bonuses which are not available (yet)
             for (int i = 0; i < level.bonuses.Count; i++) {
                 if (level.bonuses[i].isEmpty && bonus.pattern[i % bonus.pattern.Count]) {  // populate empty spots according to the pattern
                     CreateBonusInstances(level, level.bonuses[i], bonus);
