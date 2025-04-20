@@ -4503,25 +4503,25 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.6456715
+      outSlope: 0.6456715
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.047486033
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2.756523
-      outSlope: 2.756523
+      inSlope: 1.61192
+      outSlope: 1.61192
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.03165734
+      inWeight: 0.04096836
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  firstPlaceRewardRange: {x: 100, y: 4000}
+  firstPlaceRewardRange: {x: 100, y: 1000}
   isInTutorial: 0
 --- !u!4 &1820478787
 Transform:
@@ -4749,6 +4749,7 @@ MonoBehaviour:
     minValue: 30
   - region: 211
     minValue: 50
+  opponentsCount: 5
 --- !u!1 &1840252641
 GameObject:
   m_ObjectHideFlags: 0

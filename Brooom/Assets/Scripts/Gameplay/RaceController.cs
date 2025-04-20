@@ -62,8 +62,8 @@ public class RaceController : RaceControllerBase {
         // Compute rewards for individual places
         float firstPlaceRaw = firstPlaceReward.Evaluate(levelDifficulty) * (firstPlaceRewardRange.y - firstPlaceRewardRange.x) + firstPlaceRewardRange.x;
         result[0] = Mathf.FloorToInt(firstPlaceRaw / 10) * 10; // floor to tens
-        result[1] = Mathf.FloorToInt((result[0] * 0.6f) / 10) * 10; // 60 % of the first place reward, floored to tens
-        result[2] = Mathf.FloorToInt((result[0] * 0.2f) / 10) * 10; // 20 % of the first place reward, floored to tens
+        result[1] = Mathf.FloorToInt((result[0] * 0.7f) / 10) * 10; // 70 % of the first place reward, floored to tens
+        result[2] = Mathf.FloorToInt((result[0] * 0.4f) / 10) * 10; // 40 % of the first place reward, floored to tens
         return result;
     }
 

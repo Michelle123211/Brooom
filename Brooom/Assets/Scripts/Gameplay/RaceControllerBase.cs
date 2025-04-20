@@ -160,13 +160,14 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
     protected float ComputeLevelDifficulty() {
         // Weighted average of current player stats which were used for level generation
         // - weight 3: dexterity // the most important
+        // - weight 3: endurance // to make the difficulty value increase reasonably over time
         // - weight 2: precision
-        // - weight 1: endurance, speed // both combined represent length of the track
+        // - weight 1: speed // combined with endurance represents length of the track, but is not so important
         float weightedAverage = (
-            3 * (PlayerState.Instance.CurrentStats.dexterity) +
+            3 * (PlayerState.Instance.CurrentStats.dexterity + PlayerState.Instance.CurrentStats.endurance) +
             2 * (PlayerState.Instance.CurrentStats.precision) +
-            1 * (PlayerState.Instance.CurrentStats.endurance + PlayerState.Instance.CurrentStats.speed))
-            / 7f;
+            1 * (PlayerState.Instance.CurrentStats.speed))
+            / 9f;
         // Mapped from (0, 100) to (0, 1)
         return weightedAverage / 100;
     }
