@@ -4544,7 +4544,7 @@ GameObject:
   - component: {fileID: 1399042169}
   m_Layer: 0
   m_Name: ====== UI ======
-  m_TagString: Untagged
+  m_TagString: EditorOnly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5358,6 +5358,7 @@ MonoBehaviour:
     minValue: 30
   - region: 211
     minValue: 50
+  opponentsCount: 5
 --- !u!1 &1892277902
 GameObject:
   m_ObjectHideFlags: 0
