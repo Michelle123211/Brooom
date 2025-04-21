@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] GameObject continueButtonText;
     [Tooltip("Button to start the game again from the beginning (and not previously saved state) which is hidden when no saved state exists.")]
     [SerializeField] GameObject startAgainButton;
+
+    [Tooltip("A list of UI elements in an order in which they should gradually appear (e.g. logo first, then Start button).")]
+    [SerializeField] List<CanvasGroup> elementsToAppear;
 
     private bool saveExists = false;
 
@@ -61,6 +65,23 @@ public class MainMenuUI : MonoBehaviour
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, $"About Game {(opened ? "opened" : "closed")}.");
     }
 
+    private void OnSceneLoaded(Scene scene) {
+        if (scene == Scene.MainMenu) ShowMenuContent();
+    }
+
+    private void ShowMenuContent() {
+        // Start tweening menu content (gradually show different UI elements)
+        Sequence sequence = DOTween.Sequence();
+        bool isFirst = true;
+        foreach (var element in elementsToAppear) {
+            if (isFirst) { // first element will take longer to appear
+                sequence.Append(element.DOFade(1, 0.5f));
+                isFirst = false;
+            }  else sequence.Append(element.DOFade(1, 0.2f));
+        }
+        sequence.Play();
+    }
+
 	private void Start() {
         // Initialize the language buttons according to the available languages
         string[] languages = LocalizationManager.Instance.GetAvailableLanguages();
@@ -91,5 +112,12 @@ public class MainMenuUI : MonoBehaviour
         }
         // Initialize settings values
         UtilsMonoBehaviour.FindObject<SettingsUI>().LoadSettingsValues();
+        // Make sure menu content is tweened in
+        SceneLoader.Instance.onSceneLoaded += OnSceneLoaded;
+        foreach (var element in elementsToAppear) element.alpha = 0;
+    }
+
+	private void OnDestroy() {
+        SceneLoader.Instance.onSceneLoaded -= OnSceneLoaded;
     }
 }

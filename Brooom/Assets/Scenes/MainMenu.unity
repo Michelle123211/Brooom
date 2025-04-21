@@ -1621,6 +1621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 406877150}
   - component: {fileID: 406877151}
+  - component: {fileID: 406877152}
   m_Layer: 5
   m_Name: About
   m_TagString: Untagged
@@ -1676,6 +1677,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &406877152
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406877149}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &408810868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,6 +1925,7 @@ GameObject:
   - component: {fileID: 476314180}
   - component: {fileID: 476314182}
   - component: {fileID: 476314181}
+  - component: {fileID: 476314183}
   m_Layer: 5
   m_Name: Logo
   m_TagString: Untagged
@@ -1977,6 +1991,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476314179}
   m_CullTransparentMesh: 1
+--- !u!225 &476314183
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476314179}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &513211405
 GameObject:
   m_ObjectHideFlags: 0
@@ -2477,6 +2503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 827188290}
+  - component: {fileID: 827188291}
   m_Layer: 5
   m_Name: StartOrContinue
   m_TagString: Untagged
@@ -2505,6 +2532,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 900, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &827188291
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827188289}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &846733203
 GameObject:
   m_ObjectHideFlags: 0
@@ -6406,6 +6445,12 @@ MonoBehaviour:
   startButtonText: {fileID: 1901134708}
   continueButtonText: {fileID: 1621437931}
   startAgainButton: {fileID: 1154674478}
+  elementsToAppear:
+  - {fileID: 476314183}
+  - {fileID: 827188291}
+  - {fileID: 1635701295}
+  - {fileID: 2145911775}
+  - {fileID: 406877152}
 --- !u!222 &1381716472
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7652,6 +7697,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1635701293}
   - component: {fileID: 1635701294}
+  - component: {fileID: 1635701295}
   m_Layer: 5
   m_Name: StartAgain
   m_TagString: Untagged
@@ -7707,6 +7753,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &1635701295
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635701292}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &1645558345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9684,6 +9742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2145911773}
   - component: {fileID: 2145911774}
+  - component: {fileID: 2145911775}
   m_Layer: 5
   m_Name: QuickRaceOrMultiplayer
   m_TagString: Untagged
@@ -9740,6 +9799,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &2145911775
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145911772}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &1037691112419802578
 RectTransform:
   m_ObjectHideFlags: 0
