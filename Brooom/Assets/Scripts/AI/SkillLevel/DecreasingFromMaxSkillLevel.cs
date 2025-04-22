@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class determining agents' stats values to affect their performance during race.
+/// It starts with maximum stats values, but then decreases them during the race if the agent is in front of the player.
+/// </summary>
 public class DecreasingFromMaxSkillLevel : SkillLevelImplementation {
 
 	[Tooltip("Curve describing stats values modification (fraction of maximum values) based on distance from the player. Positive distance means the agent is in front of the player.")]
@@ -10,6 +14,7 @@ public class DecreasingFromMaxSkillLevel : SkillLevelImplementation {
 	private PlayerStats baseStatsValues;
 	private PlayerStats currentStatsValues;
 
+	/// <inheritdoc/>
 	public override PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType) {
 		// Start on maximum
 		baseStatsValues = new PlayerStats {
@@ -23,6 +28,7 @@ public class DecreasingFromMaxSkillLevel : SkillLevelImplementation {
 		return currentStatsValues;
 	}
 
+	/// <inheritdoc/>
 	public override PlayerStats GetCurrentStats() {
 		float distanceDifference = GetDistanceBetweenAgentAndPlayer();
 		// Stats modifier is determined by a curve

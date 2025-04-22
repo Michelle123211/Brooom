@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// A class holding all parameters describing the amount of different kinds of mistakes agents make based on their skill level.
+/// </summary>
 [CreateAssetMenu(menuName = "AI / AI Mistakes Parameters", fileName = "AIMistakesParameters")]
 public class AISkillBasedMistakesParameters : ScriptableObject {
 
@@ -16,6 +19,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool speedMistakeEnabled = true;
 	[Tooltip("The curve describes mapping from speed mistake probability to percentage of maximum speed which is used to go forward.")]
 	[SerializeField] AnimationCurve speedModifierCurve;
+	/// <summary>The curve describes mapping from speed mistake probability to percentage of maximum speed which is used to go forward.</summary>
 	public AnimationCurve SpeedModifierCurve {
 		get {
 			if (speedMistakeEnabled) return speedModifierCurve;
@@ -28,6 +32,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool keepDirectionMistakeEnabled = true;
 	[Tooltip("The curve describes mapping from dexterity mistake probability to duration of not changing the direction to a new goal (the original direction is kept for this amount of seconds).")]
 	[SerializeField] AnimationCurve keepDirectionDurationCurve;
+	/// <summary>The curve describes mapping from dexterity mistake probability to duration of not changing the direction to a new goal (the original direction is kept for this amount of seconds).</summary>
 	public AnimationCurve KeepDirectionDurationCurve {
 		get {
 			if (keepDirectionMistakeEnabled) return keepDirectionDurationCurve;
@@ -40,6 +45,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool collisionAvoidanceMistakeEnabled = true;
 	[Tooltip("The curve describes weight (between 0 and 1) of the direction to avoid collision based on the probability of corresponding mistake (average of dexterity and precision mistake probabilities).")]
 	[SerializeField] AnimationCurve collisionAvoidanceWeightCurve;
+	/// <summary>The curve describes weight (between 0 and 1) of the direction to avoid collision based on the probability of corresponding mistake (average of dexterity and precision mistake probabilities).</summary>
 	public AnimationCurve CollisionAvoidanceWeightCurve {
 		get {
 			if (collisionAvoidanceMistakeEnabled) return collisionAvoidanceWeightCurve;
@@ -54,6 +60,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool hoopSkipMistakeEnabled = true;
 	[Tooltip("The curve describes probability of skipping a hoop (checkpoint cannot be skipped) based on the precision mistake probability.")]
 	[SerializeField] AnimationCurve hoopSkipCurve;
+	/// <summary>The curve describes probability of skipping a hoop (checkpoint cannot be skipped) based on the precision mistake probability.</summary>
 	public AnimationCurve HoopSkipCurve {
 		get {
 			if (hoopSkipMistakeEnabled) return hoopSkipCurve;
@@ -66,6 +73,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool hoopMissMistakeEnabled = true;
 	[Tooltip("The curve describes distance from the ideal target position of a hoop based on the dexterity mistake probability.")]
 	[SerializeField] AnimationCurve hoopMissCurve;
+	/// <summary>The curve describes distance from the ideal target position of a hoop based on the dexterity mistake probability.</summary>
 	public AnimationCurve HoopMissCurve {
 		get {
 			if (hoopMissMistakeEnabled) return hoopMissCurve;
@@ -80,6 +88,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool speedBonusSkipMistakeEnabled = true;
 	[Tooltip("The curve describes probability of skipping a speed bonus based on the probability of corresponding mistake (average of speed and precision mistake probabilities).")]
 	[SerializeField] AnimationCurve speedBonusSkipCurve;
+	/// <summary>The curve describes probability of skipping a speed bonus based on the probability of corresponding mistake (average of speed and precision mistake probabilities).</summary>
 	public AnimationCurve SpeedBonusSkipCurve {
 		get {
 			if (speedBonusSkipMistakeEnabled) return speedBonusSkipCurve;
@@ -92,6 +101,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool spellBonusSkipMistakeEnabled = true;
 	[Tooltip("The curve describes probability of skipping a mana bonus or spell recharge bonus based on the probability of corresponding mistake (average of precision and magic mistake probabilities).")]
 	[SerializeField] AnimationCurve spellBonusSkipCurve;
+	/// <summary>The curve describes probability of skipping a mana bonus or spell recharge bonus based on the probability of corresponding mistake (average of precision and magic mistake probabilities).</summary>
 	public AnimationCurve SpellBonusSkipCurve {
 		get {
 			if (spellBonusSkipMistakeEnabled) return spellBonusSkipCurve;
@@ -100,10 +110,11 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	}
 	[Space(5)]
 	// Skipping bonus
-	[Tooltip("Whether the AI should make mistake of skipping a bonus (other than speed and mana).")]
+	[Tooltip("Whether the AI should make mistake of skipping a bonus (other than speed, mana and spell recharge).")]
 	[SerializeField] bool bonusSkipMistakeEnabled = true;
-	[Tooltip("The curve describes probability of skipping a bonus (other than speed and mana) based on the precision mistake probability.")]
+	[Tooltip("The curve describes probability of skipping a bonus (other than speed, mana and spell recharge) based on the precision mistake probability.")]
 	[SerializeField] AnimationCurve bonusSkipCurve;
+	/// <summary>The curve describes probability of skipping a bonus (other than speed, mana and spell recharge) based on the precision mistake probability.</summary>
 	public AnimationCurve BonusSkipCurve {
 		get {
 			if (bonusSkipMistakeEnabled) return bonusSkipCurve;
@@ -116,6 +127,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool bonusMissMistakeEnabled = true;
 	[Tooltip("The curve describes distance from the bonus centre which is used as the target position based on the dexterity mistake probability.")]
 	[SerializeField] AnimationCurve bonusMissCurve;
+	/// <summary>The curve describes distance from the bonus centre which is used as the target position based on the dexterity mistake probability.</summary>
 	public AnimationCurve BonusMissCurve {
 		get {
 			if (bonusMissMistakeEnabled) return bonusMissCurve;
@@ -130,6 +142,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool variableSpellDecisionIntervalEnabled = true;
 	[Tooltip("The curve describes duration (in seconds) between subsequent spell cast decisions based on the magic mistake probability.")]
 	[SerializeField] AnimationCurve spellDecisionIntervalCurve;
+	/// <summary>The curve describes duration (in seconds) between subsequent spell cast decisions based on the magic mistake probability.</summary>
 	public AnimationCurve SpellDecisionIntervalCurve {
 		get {
 			if (variableSpellDecisionIntervalEnabled) return spellDecisionIntervalCurve;
@@ -141,6 +154,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool spellCastMistakeEnabled = true;
 	[Tooltip("The curve describes probability of casting a spell (which is ready to be used) based on the magic mistake probability.")]
 	[SerializeField] AnimationCurve spellCastCurve;
+	/// <summary>The curve describes probability of casting a spell (which is ready to be used) based on the magic mistake probability.</summary>
 	public AnimationCurve SpellCastCurve {
 		get {
 			if (spellCastMistakeEnabled) return spellCastCurve;
@@ -152,6 +166,7 @@ public class AISkillBasedMistakesParameters : ScriptableObject {
 	[SerializeField] bool notUsingAllSpellsMistakeEnabled = true;
 	[Tooltip("The curve describes mapping from magic mistake probability to percentage of equipped spells used.")]
 	[SerializeField] AnimationCurve spellUsedCountCurve;
+	/// <summary>The curve describes mapping from magic mistake probability to percentage of equipped spells used.</summary>
 	public AnimationCurve SpellUsedCountCurve {
 		get {
 			if (notUsingAllSpellsMistakeEnabled) return spellUsedCountCurve;

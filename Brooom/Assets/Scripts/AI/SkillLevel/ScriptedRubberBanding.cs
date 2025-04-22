@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A base class determining agents' stats values to affect their performance during race in a way that they will try to stay at a certain distance from the player.
+/// During the race, stats are modified based on the agent's position relatively to a position relative to the player.
+/// </summary>
 public abstract class ScriptedRubberBanding : SkillLevelImplementation {
 
 	[Tooltip("Difference between the actual and desired distance from the player mapped to the stats modifier (fraction of the max stat value added to the initial stat value).")]
 	[SerializeField] protected AnimationCurve statsChangeCurve;
 
+	/// <summary>Initial stats values given by the skill level selected for the agent.</summary>
 	protected PlayerStats baseStatsValues;
+	/// <summary>Current stats values affecting agent's performace (determining amount of mistakes).</summary>
 	protected PlayerStats currentStatsValues;
+	/// <summary>Maximum possible stats values.</summary>
 	protected PlayerStats maxStatsValues = new PlayerStats {
 		endurance = 100,
 		speed = 100,
@@ -16,10 +23,12 @@ public abstract class ScriptedRubberBanding : SkillLevelImplementation {
 		precision = 100,
 		magic = 100
 	};
+	/// <summary>Curve describing in what distance from player the agent tries to stay throughout the race (fraction of the track the player reached mapped to distance). Positive distance means staying in front of the player.</summary>
 	protected AnimationCurve desiredDistanceCurve = AnimationCurve.Constant(0, 1, 0);
 
 	private PlayerStats temporaryStatsValues; // stats values used as a reference for tweening the values in the last segment of race
 
+	/// <inheritdoc/>
 	public override PlayerStats GetCurrentStats() {
 		float raceFraction = RaceControllerBase.Instance.IsInitialized ? GetNormalizedDistanceRaced(agentRaceState) : 0f;
 		// Maximum stats in the first 5 % of the race

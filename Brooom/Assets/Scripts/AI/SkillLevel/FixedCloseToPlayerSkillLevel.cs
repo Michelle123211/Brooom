@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class determining agents' stats values to affect their performance during race.
+/// Stats values are initialized based on predefined modifiers of current player stats for each skill level.
+/// Then they stay the same during the whole race duration.
+/// </summary>
 public class FixedCloseToPlayerSkillLevel : SkillLevelImplementation {
 
 	[Tooltip("All available skill levels (relatively to player) and their corresponding stats modifications.")]
@@ -9,6 +14,7 @@ public class FixedCloseToPlayerSkillLevel : SkillLevelImplementation {
 
 	private PlayerStats currentStatsValues;
 
+	/// <inheritdoc/>
 	public override PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType) {
 		currentStatsValues = PlayerState.Instance.CurrentStats;
 		// Modify the currentStatsValues based on the skillLevelType
@@ -24,6 +30,7 @@ public class FixedCloseToPlayerSkillLevel : SkillLevelImplementation {
 		return currentStatsValues;
 	}
 
+	/// <inheritdoc/>
 	public override PlayerStats GetCurrentStats() {
 		return currentStatsValues;
 	}

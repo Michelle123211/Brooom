@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Rubber banding using race scripts with absolute initial stats values (not derived relatively from the player's stats values)
+/// <summary>
+/// A class determining agents' stats values to affect their performance during race in a way that they will try to stay at a certain distance from the player.
+/// It implements rubber banding using race scripts with predefined initial stats values for each skill level (not derived from the player's stats values).
+/// Then during the race, stats are modified based on the agent's position relatively to a position relative to the player.
+/// </summary>
 public class ScriptedRubberBandingAbsolute : ScriptedRubberBanding {
 
 	[Tooltip("All available skill levels and their corresponding race scripts (mapping fraction of the race to distance from the player).")]
 	[SerializeField] List<SkillLevelRaceScriptAbsolute> skillLevelParameters;
 
+	/// <inheritdoc/>
 	public override PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType) {
 		baseStatsValues = maxStatsValues;
-		// Modify the baseStatsValues based on the skillLevelType
+		// Modify the baseStatsValues based on the skillLevelType - a fraction of maximum stats values
 		if (skillLevelParameters != null) {
 			foreach (var level in skillLevelParameters) {
 				if (level.skillLevel == skillLevelType) {
@@ -28,6 +33,10 @@ public class ScriptedRubberBandingAbsolute : ScriptedRubberBanding {
 
 }
 
+/// <summary>
+/// A class containing parameters for a scripted rubber banding at a certain skill level (i.e., initial stats values, desired distance from the player throughout the race).
+/// Stats values are initialized absolutely as a fraction of the maximum values.
+/// </summary>
 [System.Serializable]
 internal class SkillLevelRaceScriptAbsolute {
     [Tooltip("Skill level associated to the following race script.")]

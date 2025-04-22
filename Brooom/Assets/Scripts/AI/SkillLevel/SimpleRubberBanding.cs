@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class determining agents' stats values to affect their performance during race.
+/// Stats values are initialized based on predefined modifiers of current player stats for each skill level.
+/// Then, during the race, they are further modified based on the agent's position relatively to the player.
+/// </summary>
 public class SimpleRubberBanding : SkillLevelImplementation {
 
 	[Tooltip("All available skill levels (relatively to player) and their corresponding stats modifications.")]
@@ -13,6 +18,7 @@ public class SimpleRubberBanding : SkillLevelImplementation {
 	private PlayerStats baseStatsValues;
 	private PlayerStats currentStatsValues;
 
+	/// <inheritdoc/>
 	public override PlayerStats GetInitialStats(AISkillLevel.SkillType skillLevelType) {
 		baseStatsValues = PlayerState.Instance.CurrentStats;
 		// Modify the baseStatsValues based on the skillLevelType
@@ -29,10 +35,11 @@ public class SimpleRubberBanding : SkillLevelImplementation {
 		return baseStatsValues;
 	}
 
+	/// <inheritdoc/>
 	public override PlayerStats GetCurrentStats() {
 		// Compute current stats values from rubber banding
 		float distanceDifference = GetDistanceBetweenAgentAndPlayer();
-		AnimationCurve modifierCurve = statsModificationBasedOnDistance; // stats modifier is determined by a curve
+		AnimationCurve modifierCurve = statsModificationBasedOnDistance; // stats modifier is determined by a curve (describing multiplier based on distance)
 		distanceDifference = Mathf.Clamp(distanceDifference, modifierCurve.keys[0].time, modifierCurve.keys[modifierCurve.length - 1].time);
 		float modifier = modifierCurve.Evaluate(distanceDifference);
 		if (distanceDifference < 0) { // increase stats (= decrease amount of mistakes)
