@@ -14,7 +14,7 @@ public static class Messaging {
 	private static Dictionary<string, Action<bool>> messageBoolParameter = new();
 	private static Dictionary<string, Action<GameObject>> messageGameObjectParameter = new();
 
-	private static bool debugLogs = false;
+	private static bool debugLogs = false; // whether debug messages should be logged to Debug
 
 	#region Register for message
 	// Methods for registering a callback on a message of the given name

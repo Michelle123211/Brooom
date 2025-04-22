@@ -4,7 +4,10 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-// Class representing a common base for communication with SpellController to select and cast spells
+/// <summary>
+/// A class representing a common base for communication with <c>SpellController</c> to select and cast spells.
+/// Derived classes implement behaviour separately for player, and opponents (including AI).
+/// </summary>
 public abstract class SpellInput : MonoBehaviour {
 
     [Tooltip("SpellController component assigned to this racer.")]
@@ -18,7 +21,10 @@ public abstract class SpellInput : MonoBehaviour {
     private bool isInitialized = false;
     private bool spellsEnabled = false;
 
-    // Enables all spell casting components only if it makes sense (i.e. the racer has at least one spell quipped)
+    /// <summary>
+    /// Enables all spell casting components (registered in <c>onSpellCastingEnabled</c> callback) including this one, but only if it makes sense (i.e. the racer has at least one spell quipped).
+    /// </summary>
+    /// <returns><c>true</c> if spell casting was enabled, <c>false</c> otherwise (the racer has no equipped spells).</returns>
     public bool TryEnableSpellCasting() {
         if (spellController.HasEquippedSpells()) {
             // Enable all components used for spell casting
@@ -30,6 +36,9 @@ public abstract class SpellInput : MonoBehaviour {
         return false;
     }
 
+    /// <summary>
+    /// Disables all spell casting components (registered in <c>onSpellCastingDisabled</c> callback) including this one.
+    /// </summary>
     public void DisableSpellCasting() {
         // Disable all components used for spell casting
         spellsEnabled = false;
@@ -37,6 +46,9 @@ public abstract class SpellInput : MonoBehaviour {
         this.enabled = false;
     }
 
+    /// <summary>
+    /// Derived classes should use this method instead of <c>Update()</c> to do something every frame (it is called from <c>Update()</c>).
+    /// </summary>
 	protected abstract void UpdateWhenGameIsRunning();
 
     private void Update() {

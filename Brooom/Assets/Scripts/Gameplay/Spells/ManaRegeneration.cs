@@ -14,6 +14,7 @@ public class ManaRegeneration : MonoBehaviour {
 	[Tooltip("How much mana is regenerated each time.")]
 	[SerializeField] int manaRegenerationAmount = 5;
 
+	[Tooltip("Whether debug messages should be logged.")]
 	[SerializeField] bool debugLogs;
 
 	private float timeUntilManaRegeneration;

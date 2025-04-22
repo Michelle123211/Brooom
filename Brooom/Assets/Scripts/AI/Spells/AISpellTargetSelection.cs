@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A class responsible for selecting a suitable target for the currently selected spell.
+/// </summary>
 public class AISpellTargetSelection : SpellTargetSelection {
 
 	[Tooltip("Minimum angle in degrees which is used to offset a forward vector when casting a negative spell in some direction (so the racer does not cast it right in front of themselves).")]
@@ -9,6 +13,12 @@ public class AISpellTargetSelection : SpellTargetSelection {
 	[Tooltip("Maximum angle in degrees which is used to offset a forward vector when casting a negative spell in some direction (so the racer does not cast it right in front of themselves).")]
 	[SerializeField] float maxAngleOffset = 5f;
 
+	/// <summary>
+	/// Selects a direction in which the currently selected spell should be cast.
+	/// In case of positive spell, it will be cast right in front of the racer (in the forward direction).
+	/// In case of negative spell, it will be cast a bit to the side or to the back.
+	/// </summary>
+	/// <returns>A direction in which the currently selected spell should be cast.</returns>
 	protected override Vector3 GetCurrentTargetDirection() {
 		// Select simply the forward direction
 		if (spellController.GetCurrentlySelectedSpell().IsPositive) {
@@ -23,6 +33,12 @@ public class AISpellTargetSelection : SpellTargetSelection {
 		}
 	}
 
+	/// <summary>
+	/// Selects a suitable target object for the currently selected spell.
+	/// If the spell's target is opponent, target is selected from all available ones with a probability based on distance from the racer (the closer, the higher probability).
+	/// Otherwise, one of the two closes targets is chosen at random.
+	/// </summary>
+	/// <returns>A GameObject which is a target of the currently selected spell.</returns>
 	protected override GameObject GetCurrentTargetObject() {
 		// Select a single target from all possible ones
 		List<GameObject> potentialTargets = spellTargetDetection.GetPotentialTargetsForSelectedSpell();
@@ -30,7 +46,7 @@ public class AISpellTargetSelection : SpellTargetSelection {
 		// Decide based on spell target type
 		Spell spell = spellController.GetCurrentlySelectedSpell();
 		if (spell.TargetType == SpellTargetType.Opponent) {
-			// Choose opponent with a probability based on distance from the racer (the closest, the higher probability)
+			// Choose opponent with a probability based on distance from the racer (the closer, the higher probability)
 			return ChooseOpponentBasedOnDistance(potentialTargets, spell);
 		} else {
 			// Choose randomly from the two closest targets - so there is a chance Attractio would not be cast at the bonus the racer is currently flying to, which is better
@@ -38,6 +54,7 @@ public class AISpellTargetSelection : SpellTargetSelection {
 		}
 	}
 
+	// Chooses target direction by aplying a random small offset to the forward direction (this is used for negative spells, so the racers don't cast it right in front of themselves)
 	private Vector3 ChooseForwardDirectionWithOffset() {
 		Vector3 direction = transform.forward;
 		// Choose a random offset as two angles (one for offset from forward direction (rotation around right vector), another one for rotation (around forward vector))
@@ -81,6 +98,7 @@ public class AISpellTargetSelection : SpellTargetSelection {
 		return potentialTargets[targetIndex];
 	}
 
+	// Chooses a target object randomly from the two closest ones
 	private GameObject ChooseClosestOrSecondClosestTarget(List<GameObject> potentialTargets) {
 		// Choose randomly from the two closest targets (if available)
 		float minDistance = float.MaxValue;

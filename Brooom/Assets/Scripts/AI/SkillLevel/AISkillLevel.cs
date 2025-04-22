@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Contains all parameters and computations related to mistakes made by AI agents
 /// <summary>
 /// A class containing all parameters and computations related to mistakes made by AI agents.
 /// It uses <c>AISkillBasedMistakesParameters</c> to get amount of different kinds of mistakes the agents may make based on their skill level, 

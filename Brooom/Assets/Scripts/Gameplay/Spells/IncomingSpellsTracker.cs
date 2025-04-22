@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A class managing a list of spells which are being cast at the racer.
+/// </summary>
 public abstract class IncomingSpellsTracker : MonoBehaviour {
 
 	public List<IncomingSpellInfo> IncomingSpells { get; protected set; } = new List<IncomingSpellInfo>();
