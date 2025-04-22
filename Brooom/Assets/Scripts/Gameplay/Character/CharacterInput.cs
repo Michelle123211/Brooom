@@ -3,7 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// A base class for determining character's movement values.
+/// Derived classes are then specialized on player (getting movement values from input) or opponent (different strategies based on navigation).
+/// </summary>
 public abstract class CharacterInput : MonoBehaviour {
+	/// <summary>
+	/// Gets current movement values describing where the character wants to move.
+	/// </summary>
+	/// <returns><c>CharacterMovementValues</c> containing values for 3 different axes of movement.</returns>
 	public abstract CharacterMovementValues GetMovementInput();
 }
 

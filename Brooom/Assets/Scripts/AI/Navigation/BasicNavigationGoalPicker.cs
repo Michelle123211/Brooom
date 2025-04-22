@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Opponents' navigation component responsible for selecting the next goal to which to be navigated.
+/// It uses simple rules to determine, whether to pursue the following hoop/checkpoint or bonus (e.g. based on distance and direction).
+/// </summary>
 public class BasicNavigationGoalPicker : NavigationGoalPicker {
 
 	[Tooltip("The agent will not pursue bonuses whose angle from the agent is not within this threshold.")]
 	[SerializeField] float yawAngleThreshold = 60f;
 	[Tooltip("The agent will not pursue bonuses whose angle from the agent is not within this threshold.")]
 	[SerializeField] float pitchAngleThreshold = 30f;
-	[Tooltip("The agent prefers bonus to next track point, even if going in the wrong direction, if it is at most this far.")]
+	[Tooltip("If the agent is going in the wrong direction, it prefers bonus in that direction to next track point, if it is at most this far.")]
 	[SerializeField] float bonusReturnDistanceThreshold = 8f;
 
-	private int lastBonusPickedUp = -1;
+	private int lastBonusPickedUp = -1; // index of the bonus spot from which the bonus was picked up
 
 	// Remember which hoops/bonuses have been determined to be skipped so that they can be skipped in the next iteration too
 	private HashSet<int> skippedHoops = new HashSet<int>();
 	private HashSet<int> skippedBonuses = new HashSet<int>();
 
+	/// <inheritdoc/>
 	public override NavigationGoal GetGoal() {
 		if (raceState.HasFinished) return new EmptyGoal(this.agent);
 
@@ -42,7 +48,7 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 					nextBonus++;
 				}
 			}
-			// Determine whether the goal should be skipped
+			// Determine whether the goal should be skipped (based on agent's skill level)
 			HashSet<int> skippedGoals = null;
 			int goalIndex = -1;
 			if (nextGoal.Type == NavigationGoalType.Hoop) {
@@ -70,8 +76,8 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 		return nextGoal;
 	}
 
+	// Decides whether to go for the track point (hoop/checkpoint/finish) or bonus
 	private NavigationGoal ChooseBetterGoal(NavigationGoal trackGoal, NavigationGoal bonusGoal) {
-		// Decide whether to go for the track point or bonus
 		Vector3 trackTarget = trackGoal.TargetPosition;
 		Vector3 bonusTarget = bonusGoal.TargetPosition;
 		Vector3 agentPosition = this.agent.transform.position;
@@ -136,9 +142,8 @@ public class BasicNavigationGoalPicker : NavigationGoalPicker {
 		float angleYaw = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, Vector3.up);
 		float anglePitch = Vector3.SignedAngle(this.agent.transform.forward, bonusSpot.position - this.agent.transform.position, this.agent.transform.right);
 		if (Mathf.Abs(angleYaw) > yawAngleThreshold || Mathf.Abs(anglePitch) > pitchAngleThreshold)
-			return false;
-		// Otherwise it is suitable
-		return true;
+			return false; // if too far from the agent's direction, it is not suitable
+		return true; // otherwise it is suitable
 	}
 
 	public override void OnGoalReached(NavigationGoal goal) {

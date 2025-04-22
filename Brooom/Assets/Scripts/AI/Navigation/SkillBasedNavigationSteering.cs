@@ -2,15 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Opponents' navigation component handling steering to a given target point, extending <c>BasicNavigationSteering</c> to consider agent's skill level when trying to avoid collisions.
+/// It uses <c>RaycastCollisionDetection</c> to detect objects in front of the agent to try to avoid collisions with them.
+/// </summary>
 public class SkillBasedNavigationSteering : BasicNavigationSteering {
 
+	/// <summary>Skill level assigned to the agent.</summary>
 	protected AISkillLevel agentSkillLevel;
 
+	/// <inheritdoc/>
 	protected override void InitializeDerivedType() {
 		base.InitializeDerivedType();
 		this.agentSkillLevel = agent.GetComponentInChildren<AISkillLevel>();
 	}
 
+	/// <inheritdoc/>
 	protected override CharacterMovementValues GetMovementToTargetPosition() {
 		CharacterMovementValues movement = base.GetMovementToTargetPosition();
 		// Slow down based on the probability of speed mistakes
@@ -20,6 +28,7 @@ public class SkillBasedNavigationSteering : BasicNavigationSteering {
 		return movement;
 	}
 
+	/// <inheritdoc/>
 	protected override CharacterMovementValues AdjustMovementToAvoidCollisions(CharacterMovementValues movement) {
 		CollisionAvoidanceDirection direction = GetCollisionAvoidanceDirection();
 		// If the direction to avoid collisions has no weight, simply continue in the original direction

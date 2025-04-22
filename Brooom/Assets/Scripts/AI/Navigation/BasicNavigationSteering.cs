@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// Opponents' navigation component handling steering to a given target point.
+/// It uses <c>RaycastCollisionDetection</c> to detect objects in front of the agent to try to avoid collisions with them.
+/// </summary>
 [RequireComponent(typeof(RaycastCollisionDetection))]
 public class BasicNavigationSteering : NavigationSteering {
 
@@ -28,20 +32,25 @@ public class BasicNavigationSteering : NavigationSteering {
 	[Header("Collisions")]
 	[Tooltip("If the agent is closer to the target position than this value, they will not try to avoid collisions at all.")]
 	[SerializeField] float collisionsMinDistance = 1;
-	[Tooltip("If the agent is farther to the target position than this value, they will give full weight to avoiding collisions.")]
+	[Tooltip("If the agent is farther to the target position than this value, they will give full weight to avoiding collisions. Then they will focus more on target position.")]
 	[SerializeField] float collisionsMaxDistance = 30;
-	[Tooltip("Directions with weight lower than this (between 0 and 1) will not be considered possible (to significant collisions would occur).")]
+	[Tooltip("Directions with weight lower than this (between 0 and 1) will not be considered possible (too significant collisions would occur).")]
 	[SerializeField] float directionWeightThreshold = 0.1f;
+
+	[Header("Other")]
+	[Tooltip("Whether debug messages should be logged.")]
 	[SerializeField] protected bool debugLogs = false;
 
-
+	// Unit for detecting objects in front of the agent
 	private RaycastCollisionDetection collisionDetection;
 
+	/// <inheritdoc/>
 	protected override CharacterMovementValues GetMovementToTargetPosition() {
 		CharacterMovementValues movement = ComputeMovementValues();
 		return AdjustMovementToAvoidCollisions(movement);
 	}
 
+	// Computes movement values leading to the current target position
 	private CharacterMovementValues ComputeMovementValues() {
 		Vector3 startPosition = this.agent.transform.position;
 		Vector3 targetDirection = targetPosition - startPosition;
@@ -75,25 +84,34 @@ public class BasicNavigationSteering : NavigationSteering {
 		return movement;
 	}
 
+	/// <summary>
+	/// Adjusts the given movement values to avoid eventual collisions.
+	/// </summary>
+	/// <param name="movement">Original movement values based on the current target position.</param>
+	/// <returns>New movement values combining direction to the target position and direction to avoid collisions.</returns>
 	protected virtual CharacterMovementValues AdjustMovementToAvoidCollisions(CharacterMovementValues movement) {
+		// Get the best direction for avoiding all possible collisions
 		CollisionAvoidanceDirection direction = GetCollisionAvoidanceDirection();
-		// If the direction to avoid collisions has no weight, simply continue in the original direction
-		if (direction.weight == 0) return movement;
+		if (direction.weight == 0) return movement; // not significant enough, simply continue in the original direction
 		// Combine direction to target with the direction to avoid collisions (simple average)
 		return CombineMovementWithCollisionAvoidance(movement, direction);
 	}
 
+	/// <summary>
+	/// Gets the best direction for avoiding all possible collisions.
+	/// It is chosen from 4 directions (left, right, up, down) based on their weights (computed from collision distance and target distance).
+	/// </summary>
+	/// <returns>Collision avoidance direction together with its weight.</returns>
 	protected CollisionAvoidanceDirection GetCollisionAvoidanceDirection() {
 		Vector3 startPosition = this.agent.transform.position;
 		Vector3 targetDirection3 = (targetPosition - startPosition);
 		Vector2 targetDirection = new Vector2(targetDirection3.x, targetDirection3.y).normalized; // only left/right, up/down
 		float distance = Vector3.Distance(startPosition, targetPosition);
 
-		List<CollisionInfo> collisions = collisionDetection.GetListOfCollisions();
+		List<CollisionInfo> collisions = collisionDetection.GetListOfCollisions(); // from 5 raycasts
 		// If there are no collisions to avoid, simply continue in the original direction
 		if (collisions == null || collisions.Count == 0) return new CollisionAvoidanceDirection(Vector3.zero, 0);
-		if (debugLogs)
-			Debug.Log("Collisions detected.");
+		if (debugLogs) Debug.Log("Collisions detected.");
 		// Create list of all possible directions (only left/right, up/down)
 		List<CollisionAvoidanceDirection> possibleDirections = new List<CollisionAvoidanceDirection>();
 		for (int i = -1; i <= 1; i++) {
@@ -135,6 +153,13 @@ public class BasicNavigationSteering : NavigationSteering {
 		return closestDirection;
 	}
 
+	/// <summary>
+	/// Combines direction to target position (given by movement values) with the direction to avoid collisions, using a weighted average.
+	/// </summary>
+	/// <param name="movement">Movement values leading to the target position.</param>
+	/// <param name="direction">Direction to avoid collisions.</param>
+	/// <param name="avoidanceWeight">How much weight the collision avoidance should have in the weighted average (original movement values have weight 1).</param>
+	/// <returns></returns>
 	protected CharacterMovementValues CombineMovementWithCollisionAvoidance(CharacterMovementValues movement, CollisionAvoidanceDirection direction, float avoidanceWeight = 1f) {
 		// Combine direction to target with the direction to avoid collisions (weighted average)
 		if (debugLogs) Debug.Log($"Movement before collision avoidance: {movement.yawMotion} is {movement.yawValue}, {movement.pitchMotion} is {movement.pitchValue} and {movement.forwardMotion} is {movement.forwardValue}.");
@@ -158,8 +183,13 @@ public class BasicNavigationSteering : NavigationSteering {
 
 }
 
+/// <summary>
+/// A class associating direction to avoid collision with its weight (which is given e.g. by collision distance).
+/// </summary>
 public class CollisionAvoidanceDirection {
-	public Vector2 direction; // omiting forward direction (just left/right, up/down)
+	/// <summary>Collision avoidance direction, omiting forward direction (only left, right, up or down).</summary>
+	public Vector2 direction;
+	/// <summary>Weight of this direction in collision avoidance, given e.g. by collision distance.</summary>
 	public float weight;
 
 	public CollisionAvoidanceDirection(Vector2 direction) : this(direction, 1) {

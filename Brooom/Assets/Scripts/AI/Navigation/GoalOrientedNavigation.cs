@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// A class determining opponents' movement values based on goal-oriented navigation.
+/// It uses <c>NavigationGoalPicker</c> implementation for selecting navigation goals and <c>NavigationGoalExecutor</c> implementation for getting movement values leading to fulfilling the current goal.
+/// </summary>
 [RequireComponent(typeof(NavigationGoalPicker))]
 [RequireComponent(typeof(NavigationGoalExecutor))]
 public class GoalOrientedNavigation : CharacterInput {
 
-	// Parameters - may be extracted outside (e.g. to ScriptableObject)
-	[Tooltip("TIme in seconds after which the agent may try to choose another goal.")]
+	// Parameters - could be extracted outside (e.g. to ScriptableObject)
+	[Tooltip("Time in seconds after which the agent may try to choose another goal.")]
 	[SerializeField] float deliberationInterval = 6;
 
 	[Tooltip("Each goal is assigned rationality between 0 (not rational) and 1. Goals with rationality below this threshold will be automatically reconsidered.")]
@@ -17,15 +21,18 @@ public class GoalOrientedNavigation : CharacterInput {
 	[Tooltip("GameObject reference to the agent which is controlled by this AI. If null, .gameObject of this component is taken.")]
 	[SerializeField] GameObject agentObject;
 
+	[Tooltip("Whether debug messages should be logged.")]
 	[SerializeField] bool debugLogs = false;
 
+	// Units for solving partial tasks - selecting next goal and determining actions to fulfill it
 	private NavigationGoalPicker goalPicker;
 	private NavigationGoalExecutor goalExecutor;
 
 	private NavigationGoal currentGoal;
 
-	private float deliberationCountdown;
+	private float deliberationCountdown; // time left before deliberation takes place
 
+	/// <inheritdoc/>
 	public override CharacterMovementValues GetMovementInput() {
 		return goalExecutor.GetCurrentMovementValue();
 	}
@@ -39,6 +46,7 @@ public class GoalOrientedNavigation : CharacterInput {
 	}
 
 	private void Update() {
+		// Do computation only if the race is in progress
 		if (RaceControllerBase.Instance.State != RaceState.RaceInProgress) return;
 
 		deliberationCountdown -= Time.deltaTime;

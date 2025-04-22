@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A component detecting objects in front of the object to which it is attached.
+/// It uses raycasts, where number and directions of rays can be parametrized.
+/// </summary>
 public class RaycastCollisionDetection : MonoBehaviour {
 
     [Tooltip("Only collisions with objects from these layers will be detected.")]
@@ -13,12 +17,17 @@ public class RaycastCollisionDetection : MonoBehaviour {
     [Tooltip("Parameters of all rays which are to be used.")]
     [SerializeField] List<RayParameters> rays;
 
+    [Tooltip("Whether debug messages should be logged.")]
     [SerializeField] bool debugLogs = false;
 
+    /// <summary>
+    /// Detects any potential collisions (based on raycasts) and then returns a list of information for all of them.
+    /// </summary>
+    /// <returns>A list of information about all potential collisions (e.g., direction, distance, detected object).</returns>
     public List<CollisionInfo> GetListOfCollisions() {
         List<CollisionInfo> collisions = new List<CollisionInfo>();
 
-        // Fill the list
+        // For each ray, detect a potential collision
         RaycastHit hit;
         foreach (var ray in rays) {
             if (Physics.Raycast(transform.position, transform.TransformDirection(ray.rayDirection).normalized, out hit, maxDistance, layersToDetect)) {
@@ -59,14 +68,25 @@ internal class RayParameters {
     public Vector2 simplifiedDirection;
 }
 
+/// <summary>
+/// A class containing all important information about raycast collision (e.g., direction, distance, detected object).
+/// </summary>
 public class CollisionInfo {
+    /// <summary>Simplified collision direction, e.g., (-1, 0) for left, (0, 1) for up.</summary>
     public Vector2 direction; // omiting forward direction (just left/right, up/down)
+    /// <summary>How far the detected object is.</summary>
     public float distance;
+    /// <summary>How far the detected object is, relatively to some maximum distance.</summary>
     public float normalizedDistance;
+    /// <summary>Object with which a potential collision was detected.</summary>
     public GameObject collisionObject;
+    /// <summary>A type of the object with which potential collision was detected.</summary>
     public CollisionObjectType objectType;
 }
 
+/// <summary>
+/// A type of the object with which potential collision was detected.
+/// </summary>
 public enum CollisionObjectType { 
     Unknown,
     Opponent,

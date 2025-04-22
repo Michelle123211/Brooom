@@ -4,16 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// A base class for a possible navigation goal in a goal-oriented navigation AI.
+/// </summary>
 public abstract class NavigationGoal {
 
+    /// <summary>Type of the navigation goal.</summary>
     public abstract NavigationGoalType Type { get; }
+    /// <summary>Target position based on the navigation goal.</summary>
     public abstract Vector3 TargetPosition { get; }
 
+    /// <summary>Agent for whom this navigation goal is created.</summary>
     protected GameObject agent;
+    /// <summary>Skill level of the agent whose navigation goal this is (allowing it to adjust to player in a certain way).</summary>
     protected AISkillLevel agentSkillLevel;
+    /// <summary>Race state of the agent whose navigation goal this is.</summary>
     protected CharacterRaceState raceState;
 
-    // If the agent is at most at this distance from the goal, the goal is considered reached
+    /// <summary>If an agent is at most at this distance from the goal, the goal is considered reached.</summary>
     protected const float REACHED_DISTANCE_THRESHOLD = 0.5f;
 
     public NavigationGoal(GameObject agent) {
@@ -22,17 +30,41 @@ public abstract class NavigationGoal {
         this.raceState = agent.GetComponentInChildren<CharacterRaceState>();
     }
 
+    /// <summary>
+    /// Determines if the agent whose goal this is has reached this goal.
+    /// </summary>
+    /// <returns><c>true</c> if reached, <c>false</c> oterhwise.</returns>
     public abstract bool IsReached();
+    /// <summary>
+    /// Determines if this navigation goal is still valid for the agent.
+    /// </summary>
+    /// <returns><c>true</c> if valid, <c>false</c> oterhwise.</returns>
     public abstract bool IsValid();
 
-    // Whether it was decided based on the racer's skills that this goal should be skipped
+    /// <summary>
+    /// Determines if this navigation goal should be skipped. This is decided based on the agent's skill level.
+    /// </summary>
+    /// <returns><c>true</c> if should be skipped, <c>false</c> oterhwise.</returns>
     public abstract bool ShouldBeSkipped();
 
-    // Adjustment to whether it was decided based on the racer's skills that this goal should be pursued but failed
+    /// <summary>
+    /// Determines if this navigation goal should be pursued but failed. This is decided based on the agent's skill level.
+    /// If it should fail, the target position is adjusted accordingly (to miss the goal if necessary).
+    /// </summary>
+    /// <returns><c>true</c> if should be failed, <c>false</c> oterhwise.</returns>
     public abstract bool DetermineIfShouldFail();
 
+    /// <summary>
+    /// Computes a value denoting how rational it is for the agent to pursue this navigation goal based on current situation. 
+    /// </summary>
+    /// <returns>Number between 0 (not rational) and 1 (rational).</returns>
     public abstract float GetRationality();
 
+    /// <summary>
+    /// Compares this navigation goal to the given one and determines if they represent the same goal.
+    /// </summary>
+    /// <param name="other">Other navigation goal to compare this one to.</param>
+    /// <returns><c>true</c> of both represent the same goal, <c>false</c> otherwise.</returns>
     public bool IsSameAs(NavigationGoal other) {
         if (other == null) return false;
         // Check if it is the same instance
@@ -43,11 +75,19 @@ public abstract class NavigationGoal {
         return IsSameAs_SameType(other);
     }
 
-    // It may be presumed the "other" goal can be cast into the same type as the defining type
+    /// <summary>
+    /// Compares this navigation goal to the given one and determines if they represent the same goal.
+    /// Already presuming both navigation goals are of the same type.
+    /// </summary>
+    /// <param name="other">Other navigation goal to compare this one to.</param>
+    /// <returns><c>true</c> of both represent the same goal, <c>false</c> otherwise.</returns>
     protected abstract bool IsSameAs_SameType(NavigationGoal other);
 
 }
 
+/// <summary>
+/// Possible types of navigation goals in goal-oriented navigation.
+/// </summary>
 public enum NavigationGoalType {
     None,
     Checkpoint,
@@ -56,6 +96,10 @@ public enum NavigationGoalType {
     Bonus
 }
 
+/// <summary>
+/// A class representing an empty navigation goal, which is always valid and never reached, skipped or failed.
+/// Can be used when the race has already finished and there are no more goals to be navigated to.
+/// </summary>
 public class EmptyGoal : NavigationGoal {
 	public override NavigationGoalType Type => NavigationGoalType.None;
 	public override Vector3 TargetPosition => this.agent.transform.position;
@@ -81,7 +125,7 @@ public class EmptyGoal : NavigationGoal {
     }
 
     public override float GetRationality() {
-        // Not reasonable at all, should be replaced by another goal
+        // Not reasonable at all, should be replaced by another goal if possible
         return 0;
 	}
 
@@ -90,7 +134,12 @@ public class EmptyGoal : NavigationGoal {
 	}
 }
 
+/// <summary>
+/// A base class representing navigation goal for a track element (e.g., hoop, bonus).
+/// </summary>
 public abstract class TrackElementGoal : NavigationGoal {
+
+    /// <summary>Element's index within the track.</summary>
     public int index;
 
     public TrackElementGoal(GameObject agent, int index) : base(agent) {
@@ -106,13 +155,20 @@ public abstract class TrackElementGoal : NavigationGoal {
 	}
 }
 
+/// <summary>
+/// A class representing navigation goal for flying through a hoop.
+/// </summary>
 public class HoopGoal : TrackElementGoal {
+
+    /// <summary><c>TrackPoint</c> representing the related hoop in the track.</summary>
     public TrackPoint trackPoint;
 
     public override NavigationGoalType Type => NavigationGoalType.Hoop;
 	public override Vector3 TargetPosition => GetTargetPoint();
 
+    /// <summary>Offset from the original target position based on agent's skill level.</summary>
     protected float targetPositionMistakeOffset = 0f;
+    /// <summary>Plane determined by the hoop's position and orientation.</summary>
     protected Plane trackPointPlane;
 
 	public HoopGoal(GameObject agent, int index) : base(agent, index) {
@@ -121,6 +177,7 @@ public class HoopGoal : TrackElementGoal {
     }
 
     public override bool IsReached() {
+        // Based on agent's race state, which hoop is next
         return this.raceState.trackPointToPassNext > this.index;
     }
 
@@ -134,7 +191,7 @@ public class HoopGoal : TrackElementGoal {
     public override bool DetermineIfShouldFail() {
         // Based on Dexterity stat
         float mistakeProbability = agentSkillLevel.GetDexterityMistakeProbability();
-        // Determine target point offset
+        // Determine target point offset (from the hoop's centre)
         targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.HoopMissCurve.Evaluate(mistakeProbability);
         return (targetPositionMistakeOffset == 0);
     }
@@ -162,7 +219,7 @@ public class HoopGoal : TrackElementGoal {
             localTarget = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agentForwardRay.GetPoint(intersectionDistance)).WithZ(0);
         } else {
             // Either no intersection or opposite direction (https://docs.unity3d.com/ScriptReference/Plane.Raycast.html)
-            if (intersectionDistance < 0) { // oppoiste direction
+            if (intersectionDistance < 0) { // opposite direction
                 // Take the intersection in local coordinates and invert it
                 localTarget = this.trackPoint.assignedHoop.transform.InverseTransformPoint(agentForwardRay.GetPoint(intersectionDistance)).WithZ(0);
                 localTarget *= -1f;
@@ -182,6 +239,9 @@ public class HoopGoal : TrackElementGoal {
     }
 }
 
+/// <summary>
+/// A class representing navigation goal for flying through a checkpoint.
+/// </summary>
 public class CheckpointGoal : HoopGoal {
 
     public override NavigationGoalType Type => NavigationGoalType.Checkpoint;
@@ -209,11 +269,18 @@ public class CheckpointGoal : HoopGoal {
     }
 }
 
+/// <summary>
+/// A class representing navigation goal for picking up a bonus.
+/// </summary>
 public class BonusGoal : TrackElementGoal {
+
+    /// <summary><c>BonusSpot</c> representing the related bonus in the track.</summary>
     public BonusSpot bonusSpot;
 
+    /// <summary>Offset from the original target position based on agent's skill level.</summary>
     protected float targetPositionMistakeOffset = 0f;
 
+    /// <summary>Index of a particular bonus instance in a single bonus spot.</summary>
     private int instanceIndex = -1;
 
 
@@ -221,7 +288,7 @@ public class BonusGoal : TrackElementGoal {
     public override Vector3 TargetPosition => GetTargetPoint();
 
     public BonusGoal(GameObject agent, int index) : base(agent, index) {
-        // Choose the closest instance available
+        // Choose a random instance available
         this.bonusSpot = RaceControllerBase.Instance.Level.bonuses[this.index];
         ChooseRandomInstance();
     }
@@ -264,7 +331,7 @@ public class BonusGoal : TrackElementGoal {
     public override bool DetermineIfShouldFail() {
         // Based on Dexterity stat
         float mistakeProbability = agentSkillLevel.GetDexterityMistakeProbability();
-        // Determine target point offset
+        // Determine target point offset (from bonus' centre)
         targetPositionMistakeOffset = agentSkillLevel.mistakesParameters.BonusMissCurve.Evaluate(mistakeProbability);
         return (targetPositionMistakeOffset == 0);
     }
@@ -287,10 +354,8 @@ public class BonusGoal : TrackElementGoal {
         this.instanceIndex = -1;
         // Count all available instances
         int availableInstanceCount = 0;
-        for (int i = 0; i < this.bonusSpot.bonusInstances.Count; i++) {
-            BonusEffect bonus = this.bonusSpot.bonusInstances[i];
-            if (bonus.gameObject.activeInHierarchy) availableInstanceCount++;
-        }
+        for (int i = 0; i < this.bonusSpot.bonusInstances.Count; i++)
+            if (this.bonusSpot.bonusInstances[i].gameObject.activeInHierarchy) availableInstanceCount++;
         // Select a random one
         int randomIndex = UnityEngine.Random.Range(0, availableInstanceCount);
         // Choose the instance index accordingly
@@ -312,7 +377,12 @@ public class BonusGoal : TrackElementGoal {
     }
 }
 
+/// <summary>
+/// A class representing navigation goal for flying through a finish line.
+/// </summary>
 public class FinishNavigationGoal : NavigationGoal {
+
+    /// <summary>A <c>FinishLine</c> object placed in the level.</summary>
     public FinishLine finishObject;
 
     public override NavigationGoalType Type => NavigationGoalType.Finish; 
@@ -323,10 +393,12 @@ public class FinishNavigationGoal : NavigationGoal {
     }
 
     public override bool IsReached() {
+        // If the agent has finished the race
         return this.raceState.HasFinished;
     }
 
     public override bool IsValid() {
+        // If there are no remaining hoops/checkpoints to fly through
         return raceState.trackPointToPassNext >= raceState.hoopsPassedArray.Length;
     }
 
@@ -341,7 +413,7 @@ public class FinishNavigationGoal : NavigationGoal {
     }
 
     public override float GetRationality() {
-        // It is reasonable only if all hoops were passed/missed
+        // It is reasonable only if there are no hoops/checkpoints remaining to fly through
         if (this.raceState.trackPointToPassNext >= this.raceState.hoopsPassedArray.Length)
             return 1;
         else
