@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// A class whose instance represents one type of achievement with its different levels (and values necessary to obtain these levels).
+/// </summary>
 [CreateAssetMenu(menuName = "Achievements / Achievement", fileName = "Achievement")]
 public class Achievement : ScriptableObject {
 
