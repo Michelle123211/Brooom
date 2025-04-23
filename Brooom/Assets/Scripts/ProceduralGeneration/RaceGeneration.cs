@@ -60,9 +60,14 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
         yield return GenerateLevel();
     }
 
+    /// <inheritdoc/>
     protected override void UpdateAfterInitialization() {
     }
 
+    /// <summary>
+    /// Starts generating a level based on parameters obtained from <c>GetPlayerStats()</c>, <c>GetMaxAltitude()</c>, <c>GetRegionsAvailability()</c> and <c>GetRegionsVisited()</c>.
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator GenerateLevel() {
         // Generate level (terrain + track)
         SetLevelGeneratorParametersFromPlayerState(GetPlayerStats(), GetMaxAltitude(),
@@ -70,16 +75,32 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
         yield return levelGenerator.GenerateLevel();
     }
 
+    /// <summary>
+    /// Gets current stats values which can be used to compute parameters for level generation.
+    /// </summary>
+    /// <returns>Current stats values.</returns>
     protected virtual PlayerStats GetPlayerStats() => PlayerState.Instance.CurrentStats;
 
+    /// <summary>
+    /// Gets current maximum altitude to which the broom can get. It can be then used to parametrize level generation.
+    /// </summary>
+    /// <returns>Maximum altitude possible.</returns>
     protected virtual float GetMaxAltitude() => PlayerState.Instance.maxAltitude;
 
+    /// <summary>
+    /// Gets a dictionary which contains <c>bool</c> value for each region in the game indicating whether it is currently available and can be used for level generation.
+    /// </summary>
+    /// <returns>Dictionary indicating regions' availability for level generation.</returns>
     protected virtual Dictionary<LevelRegionType, bool> GetRegionsAvailability() {
         // Update regions availability first
         UpdateRegionsAvailability();
         return PlayerState.Instance.regionsAvailability;
     }
 
+    /// <summary>
+    /// Gets a dictionary which contains <c>bool</c> value for each region in the game indicating whether it has already been visited by the player (i.e. player has finished a race going through that region).
+    /// </summary>
+    /// <returns>Dictionary indicating whether a regions has been visited or not.</returns>
     protected virtual Dictionary<LevelRegionType, bool> GetRegionsVisited() {
         return PlayerState.Instance.regionsVisited;
     }

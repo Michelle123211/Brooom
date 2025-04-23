@@ -7,8 +7,9 @@ using System.IO;
 using System;
 
 /// <summary>
-/// This class is derived from <c>QuickRaceGeneration</c> to inherit all parameters (with their default values) and also useful methods.
-/// It is not derived from <c>RaceGeneration</c> to inherit more suitable implementation of <c>ChooseTerrainRegionsForLevel()</c>, which selects regions at random from all available ones.
+/// This class handles level generation based on parameters given by UI element.
+/// It is derived from <c>QuickRaceGeneration</c> to inherit all parameters (with their default values), useful methods, 
+/// and a suitable implementation of <c>ChooseTerrainRegionsForLevel()</c>, which selects regions at random from all available ones.
 /// </summary>
 public class LevelGeneratorDemo : QuickRaceGeneration {
 
@@ -23,11 +24,16 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	//[SerializeField] GameObject generatorParameterSection;
 
 	[Header("Stats-based UI elements")]
+	[Tooltip("Slider for setting the Endurance stat.")]
 	[SerializeField] Slider enduranceSlider;
+	[Tooltip("Slider for setting the Speed stat.")]
 	[SerializeField] Slider speedSlider;
+	[Tooltip("Slider for setting the Dexterity stat.")]
 	[SerializeField] Slider dexteritySlider;
+	[Tooltip("Slider for setting the Precision stat.")]
 	[SerializeField] Slider precisionSlider;
 	// Magic stat has no effect on level generation
+	[Tooltip("Slider for setting the maximum altitude the broom can get to.")]
 	[SerializeField] Slider maxAltitudeSlider;
 
 	// TODO: Uncomment for support of second option of setting generator parameters directly (instead of based on stats) - to toggle between them
@@ -42,15 +48,23 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	// TODO: And many more - e.g., available regions, number of opponents, maximum altitude, ...
 
 	[Header("General settings UI elements")]
+	[Tooltip("Dropdown with options to select only a subset of all modules used for level generation.")]
 	[SerializeField] TMP_Dropdown moduleDropdown;
+	[Tooltip("Different options for enabling only a subset of modules used for level generation. Options should be additive, i.e. one options enables additional modules on top of all modules enabled in all previous options.")]
 	[SerializeField] List<ModuleListOption> modulesToEnableOptions;
 
 	[Header("Level layers")]
+	[Tooltip("A parent object containing all terrain meshes.")]
 	[SerializeField] GameObject terrainParent;
+	[Tooltip("A parent object containing objects of starting zone and finish line.")]
 	[SerializeField] GameObject startAndFinishParent;
+	[Tooltip("A parent object containing all hoops and checkpoints.")]
 	[SerializeField] GameObject hoopsParent;
+	[Tooltip("A parent object containing all bonuses.")]
 	[SerializeField] GameObject bonusesParent;
+	[Tooltip("A parent object containing all environment elements.")]
 	[SerializeField] GameObject environmentElementsParent;
+	[Tooltip("A parent object containing all track border objects.")]
 	[SerializeField] GameObject trackBorderParent;
 
 	// TODO: Uncomment for support of second option of setting generator parameters directly (instead of based on stats) - to toggle between them
@@ -60,6 +74,9 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	private LevelRepresentation level;
 
 
+	/// <summary>
+	/// Completely deletes everything from the previously generated level and generates a new one using current values from UI elements as parameters.
+	/// </summary>
 	public void RegenerateLevel() {
 		levelGenerator.onLevelGenerated += OnLevelGenerated;
 		DeletePreviousLevel();
@@ -72,6 +89,9 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 		//else StartCoroutine(GenerateLevelWithDirectParameters());
 	}
 
+	/// <summary>
+	/// Loads Main Menu scene.
+	/// </summary>
 	public void GoBackToMainMenu() {
 		SceneLoader.Instance.LoadScene(Scene.MainMenu);
 	}
@@ -85,16 +105,17 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	//} 
 
 	/// <summary>
-	/// This method overrides the inherited method so that the level is not generated immediately at the start.
+	/// Initializes dropdown options for modules selection, but does not generate a level right-away.
 	/// </summary>
 	protected override IEnumerator InitializeAfterPreparation() {
 		InitializeModuleDropdownOptions();
 		// Do nothing, don't generate level right at the start
 		yield break;
 	}
+
+	// Deletes all previously generates objects
+	//	- modules usually do that themselves, but here we have an option to disable modules so then they cannot clean up
 	private void DeletePreviousLevel() {
-		// Delete all previously generated objects
-		//	- modules usually do that themselves, but here we have an option to disable modules so then they cannot clean up
 		UtilsMonoBehaviour.RemoveAllChildren(terrainParent.transform);
 		UtilsMonoBehaviour.RemoveAllChildren(startAndFinishParent.transform);
 		UtilsMonoBehaviour.RemoveAllChildren(hoopsParent.transform);
@@ -103,8 +124,8 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 		UtilsMonoBehaviour.RemoveAllChildren(trackBorderParent.transform);
 	}
 
+	// Enables or disables level generation modules based on the currently selected dropdown option
 	private void SetupGeneratorModules() {
-		// Based on the currently selected dropdown option
 		int currentOption = moduleDropdown.value;
 		for (int i = 0; i < modulesToEnableOptions.Count; i++) {
 			// All modules from the current option and all previous options are enabled, all modules from later options are disabled
@@ -114,6 +135,8 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	}
 
 	#region Stats-based generator parameters
+
+	/// <inheritdoc/>
 	protected override PlayerStats GetPlayerStats() {
 		// Get values from UI elements
 		return new PlayerStats {
@@ -125,11 +148,13 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 		};
 	}
 
+	/// <inheritdoc/>
 	protected override float GetMaxAltitude() {
 		// Get value from UI element
 		return maxAltitudeSlider.value;
 	}
 
+	/// <inheritdoc/>
 	protected override Dictionary<LevelRegionType, bool> GetRegionsAvailability() {
 		// Make regions available based on endurance value and maximum altitude (from UI elements)
 
@@ -148,6 +173,7 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 		return regionsAvailability;
 	}
 
+	/// <inheritdoc/>
 	protected override Dictionary<LevelRegionType, bool> GetRegionsVisited() {
 		// Simply mark all regions in the game as visited (otherwise e.g. unvisited track region would be always added in TrackRegionGenerator)
 		Dictionary<LevelRegionType, bool> visitedRegions = new Dictionary<LevelRegionType, bool>();
@@ -170,13 +196,27 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 
 	#region General settings parameters
 
+	/// <summary>Shows or hides all terrain objects. </summary>
+	/// <param name="show"><c>true</c> to show the objects, <c>false</c> to hide them.</param>
 	public void OnTerrainShowOrHide(bool show) => terrainParent.SetActive(show);
+	/// <summary>Shows or hides starting zone and finish line objects. </summary>
+	/// <param name="show"><c>true</c> to show the objects, <c>false</c> to hide them.</param>
 	public void OnStartAndFinishShowOrHide(bool show) => startAndFinishParent.SetActive(show);
+	/// <summary>Shows or hides all hoops and checkpoints objects. </summary>
+	/// <param name="show"><c>true</c> to show the objects, <c>false</c> to hide them.</param>
 	public void OnHoopsShowOrHide(bool show) => hoopsParent.SetActive(show);
+	/// <summary>Shows or hides all bonuses objects. </summary>
+	/// <param name="show"><c>true</c> to show the objects, <c>false</c> to hide them.</param>
 	public void OnBonusesShowOrHide(bool show) => bonusesParent.SetActive(show);
+	/// <summary>Shows or hides all environment element objects. </summary>
+	/// <param name="show"><c>true</c> to show the objects, <c>false</c> to hide them.</param>
 	public void OnEnvironmentElementsShowOrHide(bool show) => environmentElementsParent.SetActive(show);
+	/// <summary>Shows or hides all track border objects. </summary>
+	/// <param name="show"><c>true</c> to show the objects, <c>false</c> to hide them.</param>
 	public void OnTrackBorderShowOrHide(bool show) => trackBorderParent.SetActive(show);
 
+
+	// Initialized options for dropdown enabling only a subset of level generation modules (based on options listed in moduleListOption)
 	private void InitializeModuleDropdownOptions() {
 		moduleDropdown.ClearOptions();
 		foreach (var moduleListOption in modulesToEnableOptions)
@@ -187,6 +227,7 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 
 	#endregion
 
+	// Shows or hides all UI elements in the screen
 	private void ToggleUIVisibility() {
 		bool show = !canvas.activeInHierarchy;
 		canvas.SetActive(show);
@@ -201,6 +242,7 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 		levelGenerator.onLevelGenerated -= OnLevelGenerated;
 	}
 
+	/// <inheritdoc/>
 	protected override void UpdateAfterInitialization() {
 		// Detect any input
 		// ... Space - show/hide UI
@@ -216,10 +258,14 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 
 }
 
+
+/// <summary>
+/// A class describing one option of enabling only a subset of modules for level generation.
+/// </summary>
 [System.Serializable]
 internal class ModuleListOption {
 	[Tooltip("Name of this option visible in a dropdown.")]
 	public string dropdownOption;
-	[Tooltip("Indices of modules which should be enabled on top of the previous option if this option is selected.")]
+	[Tooltip("Indices of modules which should be enabled on top of modules from all previous options if this option is selected.")]
 	public List<int> addedModulesIndices;
 }

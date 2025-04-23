@@ -37,19 +37,30 @@ public abstract class MonoBehaviourLongInitialization : MonoBehaviour {
 	// All the following methods are abstract, even though they can be empty, to emphasize that these should
 	// be used instead of standard Awake(), Start() and Update() inherited from MonoBehaviour
 
-	// This method should contain only a fast initialization
-	// It replaces Awake() method in derived classes (in fact, it is called from Awake() method of this class)
+	/// <summary>
+	/// This method is used for a fast initialization which can be done in a single frame.
+	/// It replaces <c>Awake()</c> method in derived classes (in fact, it is called from <c>Awake()</c> method of this class).
+	/// </summary>
 	protected abstract void PrepareForInitialization_ReplacingAwake();
-	// This method should contain only a fast initialization
-	// It replaces Start() method in derived classes (in fact, it is called from Start() method of this class)
+
+	/// <summary>
+	/// This method is used for a fast initialization which can be done in a single frame.
+	/// It replaces <c>Start()</c> method in derived classes (in fact, it is called from <c>Start()</c> method of this class).
+	/// </summary>
 	protected abstract void PrepareForInitialization_ReplacingStart();
 
-	// This method is used for long initialization
-	// It should return control back as often as possible using "yield return"
+	/// <summary>
+	/// This method is used for long initialization, i.e. anything which should not be done in a single frame.
+	/// It should return control back as often as possible using <c>yield return</c>.
+	/// </summary>
+	/// <returns></returns>
 	protected abstract IEnumerator InitializeAfterPreparation();
 
-	// This method replaces Update() method in derived classes (in fact, it is called from Update() method of this class)
-	// It ensures any code in update loop runs only after inicialization has finished
+
+	/// <summary>
+	/// This method replaces <c>Update()</c> method in derived classes (in fact, it is called from <c>Update()</c> method of this class).
+	/// It ensures any code in update loop runs only after inicialization has finished.
+	/// </summary>
 	protected abstract void UpdateAfterInitialization();
 
 }
