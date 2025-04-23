@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// A component handling audio of <c>Slider</c> or <c>Scrollbar</c> changing its value.
+/// It registers callback in <c>onValueChanged</c>, and makes sure that for continuous values the sound is not played every time, but at reasonable intervals.
+/// </summary>
 public class UIOnValueChangedAudio : MonoBehaviour {
 
 	[Tooltip("Which audio event should be played.")]
@@ -15,9 +20,9 @@ public class UIOnValueChangedAudio : MonoBehaviour {
 	Slider slider;
 	Scrollbar scrollbar;
 
-	bool isInitialized = false; // indicated whether the initial value has been set (onValueChanged should not play sound for the initialization)
+	bool isInitialized = false; // indicating whether the initial value has been set (onValueChanged should not play sound for the initialization)
 
-	// Callback actions stored in fields so they can be unregistered
+	// Callback actions are stored in fields so they can be unregistered
 	UnityAction<float> playSoundAction;
 	UnityAction<float> playSoundInIntervalsAction;
 
