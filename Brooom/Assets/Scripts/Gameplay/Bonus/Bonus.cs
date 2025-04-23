@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-// Common component of all the bonus objects (handles common functionality and triggering the specific effect)
+/// <summary>
+/// A common component of all bonus objects. It handles common functionality and triggering the specific effect.
+/// </summary>
 [RequireComponent(typeof(Collider))]
 public class Bonus : MonoBehaviour {
+
     [Tooltip("Material assigned to the bonus.")]
     public Material bonusMaterial;
 
@@ -51,11 +54,18 @@ public class Bonus : MonoBehaviour {
         }
 	}
     
+    /// <summary>
+    /// Sets the assigned material to a <c>MeshRenderer</c> component. This method can be also used from Inspector context menu to immediately preview changes.
+    /// </summary>
     [ContextMenu("Refresh Visual")]
     public void RefreshVisual() {
         GetComponentInChildren<MeshRenderer>().material = bonusMaterial;
     }
 
+    /// <summary>
+    /// Deactivates the bonus object and invokes <c>deactivationEvent</c> if not empty.
+    /// This method is called when the bonus has been picked up.
+    /// </summary>
     public void Deactivate() {
         if (!Utils.IsNullEvent(deactivationEvent))
             deactivationEvent.Invoke();
@@ -64,6 +74,10 @@ public class Bonus : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Activates the bonus object (while ensuring it is at its original position) and invokes <c>activationEvent</c> if not empty.
+    /// This method is called when the bonus is reactivated after some time after being picked up.
+    /// </summary>
     public void Activate() {
         // TODO: Add some tweening and activation event
         transform.position = originalPosition; // make sure to spawn the bonus at its original location
@@ -72,6 +86,10 @@ public class Bonus : MonoBehaviour {
             activationEvent.Invoke();
     }
 
+    /// <summary>
+    /// Destroys the bonus object.
+    /// This method is called when the bonus is picked up and it should not be reactivated.
+    /// </summary>
     public void DestroySelf() {
         Destroy(gameObject);
     }
@@ -82,7 +100,7 @@ public class Bonus : MonoBehaviour {
 
     private void Start() {
         originalPosition = transform.position;
-        RefreshVisual();
+        RefreshVisual(); // set correct material
         Activate();
 	}
 }

@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+
+/// <summary>
+/// A component for an object which is moving along a path of points and is destroyed after some time upon reaching the end.
+/// It is used by <c>NavigationBonusEffect</c> to highlight path between next few hoops, where the object also leaves trail behind.
+/// </summary>
 public class HighlightTrajectory : MonoBehaviour
 {
     [Tooltip("How many units the object travels in a second.")]
@@ -10,10 +15,17 @@ public class HighlightTrajectory : MonoBehaviour
 
     private List<Vector3> points;
 
+    /// <summary>
+    /// Adds a point for the object to go through.
+    /// </summary>
+    /// <param name="point">Point to be added to the path.</param>
     public void AddTrajectoryPoint(Vector3 point) {
         points.Add(point);
     }
 
+    /// <summary>
+    /// Starts moving the object along a defined path. When the object reaches the end, it is destroyed after a while.
+    /// </summary>
 	public void Play() {
         // Tween the position between the points
         Sequence movementSequence = DOTween.Sequence();

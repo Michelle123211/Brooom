@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Displays a line/curve going through the next 2 significant points (hoops/checkpoints)
+/// <summary>
+/// A bonus which displayes a line going through the next few significant track points (hoops/checkpoints) for easier navigation.
+/// </summary>
 public class NavigationBonusEffect : BonusEffect {
 
 	[Tooltip("To how many track points (hoops/checkpoints) ahead the trajectory is highlighted.")]
 	public int numberOfPoints = 2;
-
+	[Tooltip("A prefab of an object leaving trail behind which is used as a visual effect for highlighting a trajectory.")]
 	public HighlightTrajectory trajectoryHighlighterPrefab;
 
+	/// <inheritdoc/>
 	public override void ApplyBonusEffect(CharacterMovementController character) {
 		// This bonus is visual, therefore it works for the player only
 		if (!character.CompareTag("Player"))
@@ -28,6 +31,7 @@ public class NavigationBonusEffect : BonusEffect {
 		highlighter.Play();
 	}
 
+	/// <inheritdoc/>
 	public override bool IsAvailable() {
 		if (SceneLoader.Instance.CurrentScene == Scene.TestingTrack) return false; // not available in Testing Track
 		else return true; // otherwise, always available
