@@ -2,25 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A component responsible for changing the character's appearance based on selected customization variants.
+/// </summary>
 public class CharacterAppearance : MonoBehaviour
 {
     [Header("Character model parts")]
+    [Tooltip("SkinnedMeshRenderer component which contains mesh for head.")]
     public SkinnedMeshRenderer headRenderer;
+    [Tooltip("SkinnedMeshRenderer component which contains mesh for hair.")]
     public SkinnedMeshRenderer hairRenderer;
+    [Tooltip("SkinnedMeshRenderer component which contains mesh for hands.")]
     public SkinnedMeshRenderer handsRenderer;
+    [Tooltip("SkinnedMeshRenderer component which contains mesh for outfit.")]
     public SkinnedMeshRenderer outfitRenderer;
+    [Tooltip("SkinnedMeshRenderer component which contains mesh for shoes.")]
     public SkinnedMeshRenderer shoesRenderer;
 
+    /// <summary>Name assigned to the character.</summary>
     [HideInInspector] public string characterName;
 
+    // Currently selected (and applied) customization variants
     private CustomizationVariantData currentSkinCustomization;
     private CustomizationVariantData currentHairColorCustomization;
     private CustomizationVariantData currentHairStyleCustomization;
     private CustomizationVariantData currentOutfitCustomization;
     private CustomizationVariantData currentShoesCustomization;
 
-    private CharacterCustomizationOptions customizationOptions;
+    private CharacterCustomizationOptions customizationOptions; // all available customization options
 
+    /// <summary>
+    /// Takes customization options from the given customization data and changes character's appearance accordingly.
+    /// </summary>
+    /// <param name="customizationData">Customization options to set for the character.</param>
     public void InitializeFromCustomizationData(CharacterCustomizationData customizationData) {
         characterName = customizationData.characterName;
         // Apply all the customizations
@@ -31,12 +46,19 @@ public class CharacterAppearance : MonoBehaviour
         ApplyCustomization(CustomizedPart.Shoes, customizationData.shoes);
     }
 
+    /// <summary>
+    /// Selects random customization options and changes character's appearance accordingly.
+    /// </summary>
     public void RandomizeCharacterCustomization() {
         CharacterCustomizationData customizationData = new CharacterCustomizationData();
         customizationData.InitializeToRandomValues(customizationOptions);
         InitializeFromCustomizationData(customizationData);
     }
 
+    /// <summary>
+    /// Converts current customization options set for this character to a <c>CharacterCustomizationData</c>.
+    /// </summary>
+    /// <returns><c>CharacterCustomizationData</c> of this character's appearance.</returns>
     public CharacterCustomizationData GetCustomizationData() {
         return new CharacterCustomizationData {
             skinColor = currentSkinCustomization,
@@ -47,7 +69,11 @@ public class CharacterAppearance : MonoBehaviour
         };
     }
 
-    // Applies the given customization to the character (changes the given material or renderer)
+    /// <summary>
+    /// Applies the given customization to the character, i.e. changes material color and/or mesh of a corresponding renderer.
+    /// </summary>
+    /// <param name="part">Character part which is to be modified by the customization.</param>
+    /// <param name="customization">Customization variant to be applied to the given part.</param>
     public void ApplyCustomization(CustomizedPart part, CustomizationVariantData customization) {
         if (part == CustomizedPart.SkinTone) {
             ApplyCustomization(headRenderer.material, customization);
@@ -94,6 +120,9 @@ public class CharacterAppearance : MonoBehaviour
     }
 }
 
+/// <summary>
+/// Different character parts which can be customized.
+/// </summary>
 public enum CustomizedPart { 
     SkinTone,
     HairColor,
