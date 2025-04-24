@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class managing a list of spells which are being cast at the player.
+/// </summary>
 public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 
-	[Tooltip("Parent object of all indicators of incoming spells. Applicable only for player.")]
+	[Tooltip("Parent object of all UI indicators of incoming spells.")]
 	[SerializeField] Transform incomingSpellIndicatorParent;
-	[Tooltip("Prefab of indicator of incoming spell. Applicable only for player.")]
+	[Tooltip("Prefab of UI indicator of incoming spell.")]
 	[SerializeField] IncomingSpellIndicator incomingSpellIndicatorPrefab;
 
 	[Tooltip("For how many seconds the camera shakes when player is hit by a spell.")]
@@ -14,12 +17,19 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 	[Tooltip("How much the camera shakes when player is hit by a spell.")]
 	[SerializeField] float cameraShakeIntensity = 3f;
 
+	// All currently instantiated UI indicators of incoming spells
 	private List<IncomingSpellIndicator> incomingSpellIndicators = new List<IncomingSpellIndicator>();
+	// RectTransforms of all currently instantiated UI indicator of incoming spells (used for positioning indicators on the screen)
 	private List<RectTransform> incomingSpellIndicatorTransforms = new List<RectTransform>();
 
-	private float maxCircleRadius = 400f;
-	private float minCircleRadius = 80f;
+	private float maxCircleRadius = 400f; // radius of a circle on which indicators appear when the spell is at the maximum distance from the player
+	private float minCircleRadius = 80f; // radius of a circle on which indicators appear when the spell is at the minimum distance from the player
 
+	/// <summary>
+	/// <inheritdoc/>
+	/// It shows UI indicator of this newly added spell on the screen.
+	/// </summary>
+	/// <param name="spellInfo">Incoming spell to be added.</param>
 	protected override void OnIncomingSpellAdded(IncomingSpellInfo spellInfo) {
 		// Show an indicator
 		spellInfo.SpellObject.onSpellHit += ShakeCamera;
@@ -28,7 +38,11 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 		incomingSpellIndicators.Add(indicator);
 		incomingSpellIndicatorTransforms.Add(indicator.GetComponent<RectTransform>());
 	}
-
+	/// <summary>
+	/// <inheritdoc/>
+	/// It destroys UI indicator of this removed spell.
+	/// </summary>
+	/// <param name="spellInfo">Incoming spell to be removed.</param>
 	protected override void OnIncomingSpellRemoved(IncomingSpellInfo spellInfo) {
 		// Destroy the indicator
 		for (int i = incomingSpellIndicators.Count - 1; i >= 0; i--) {
@@ -42,6 +56,10 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 		}
 	}
 
+	/// <summary>
+	/// <inheritdoc/>
+	/// It places UI indicators of all incoming spells on a circle, where angle indicates spell's direction and radius indicates spell's distance.
+	/// </summary>
 	protected override void UpdateAfterParent() {
 		// Place indicators on a circle (angle according to direction, radius according to distance)
 		for (int i = 0; i < incomingSpellIndicators.Count; i++) {

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Detects collisions between the player and other objects
-// Notifies anyone interested that a collision occurred
+/// <summary>
+/// A component detecting collisions between the player and other objects.
+/// It notifies anyone interested that a collision occurred.
+/// </summary>
 public class PlayerCollisions : MonoBehaviour {
+
 	[Tooltip("Only collisions with objects from these layers will be detected.")]
 	[SerializeField] LayerMask layersToDetect;
 
