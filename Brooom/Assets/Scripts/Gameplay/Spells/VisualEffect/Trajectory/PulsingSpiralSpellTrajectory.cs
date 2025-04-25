@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A class computing points on a spell's trajectory towards the target in a shape of pulsing spiral
+/// (i.e. offseting points from direct line in a circle around it which gets repeatedly larger and smaller).
+/// </summary>
 public class PulsingSpiralSpellTrajectory : SpiralSpellTrajectory {
 
 	[Tooltip("The minimum offset from the direct line.")]
@@ -9,6 +14,7 @@ public class PulsingSpiralSpellTrajectory : SpiralSpellTrajectory {
 	[Tooltip("How fast the spiral decreases and increases.")]
 	[SerializeField] protected float pulseFrequency = 1f;
 
+	/// <inheritdoc/>
 	public override SpellTrajectoryPoint GetNextTrajectoryPoint(float distanceFromStart) {
 		// Get basic spiral point
 		SpellTrajectoryPoint point = base.GetNextTrajectoryPoint(distanceFromStart);
@@ -19,4 +25,5 @@ public class PulsingSpiralSpellTrajectory : SpiralSpellTrajectory {
 		point.offset = point.offset * scale;
 		return point;
 	}
+
 }

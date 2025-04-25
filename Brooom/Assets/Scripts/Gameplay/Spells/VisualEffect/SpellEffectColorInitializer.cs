@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Initializes visual effect colors (shaders, particles) based on spell identifier
+/// <summary>
+/// A component which initializes visual effect colors (in shaders and particles) based on spell identifier.
+/// </summary>
 public class SpellEffectColorInitializer : MonoBehaviour {
 
 	[Tooltip("Target color will be initialized based on color assigned to a spell with the given identifier.")]
@@ -30,6 +32,7 @@ public class SpellEffectColorInitializer : MonoBehaviour {
 			SetParticlesStartColor(particlesInitializer);
 	}
 
+	// Sets all shaders' color parameters
 	private void SetShaderColorParameters(SpellShaderColorInitializer shaderInitializer) {
 		if (shaderInitializer.shaderParameters == null) return;
 		Material material = shaderInitializer.renderer.material;
@@ -39,12 +42,14 @@ public class SpellEffectColorInitializer : MonoBehaviour {
 		}
 	}
 
+	// Sets all particle systems' start color
 	private void SetParticlesStartColor(SpellParticlesColorInitializer particlesInitializer) {
 		// Set start color
 		ParticleSystem.MainModule mainModule = particlesInitializer.particles.main;
 		mainModule.startColor = GetNewColor(particlesInitializer.colorParameter);
 	}
 
+	// Gets new color based on the spell, considering whether base or emmissive color should be used, and overriding any components if required
 	private Color GetNewColor(SpellColorInitializerParameter colorInitializer) {
 		Color colorToUse = colorInitializer.colorType == SpellColorInitializerType.BaseColor ? color : emissionColor;
 		// Modify individual components if necessary
@@ -57,11 +62,18 @@ public class SpellEffectColorInitializer : MonoBehaviour {
 
 }
 
+/// <summary>
+/// Which color assigned to the spell should be used when initializing a color of a visual effect.
+/// </summary>
 public enum SpellColorInitializerType { 
 	BaseColor,
 	EmissionColor
 }
 
+/// <summary>
+/// A class describing how a specific color parameter should be initialized based on corresponding spell's color.
+/// It allows to choose between base color and emmissive color, and also to override individual color components with a specific cstom value.
+/// </summary>
 [System.Serializable]
 public class SpellColorInitializerParameter {
 
@@ -94,6 +106,9 @@ public class SpellColorInitializerParameter {
 
 }
 
+/// <summary>
+/// A class describing a shader color parameter whos color should be initialized based on spell's color.
+/// </summary>
 [System.Serializable]
 public class SpellShaderColorInitializerParameter : SpellColorInitializerParameter {
 	
@@ -102,6 +117,9 @@ public class SpellShaderColorInitializerParameter : SpellColorInitializerParamet
 
 }
 
+/// <summary>
+/// A class describing a shader whose color parameter should be initialized based on spell's color.
+/// </summary>
 [System.Serializable]
 public class SpellShaderColorInitializer {
 	
@@ -113,6 +131,9 @@ public class SpellShaderColorInitializer {
 
 }
 
+/// <summary>
+/// A class describing a particle system whose start color should be initialized based on spell's color.
+/// </summary>
 [System.Serializable]
 public class SpellParticlesColorInitializer {
 	
