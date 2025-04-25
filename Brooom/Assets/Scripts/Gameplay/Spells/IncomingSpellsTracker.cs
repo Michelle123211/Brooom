@@ -19,7 +19,7 @@ public abstract class IncomingSpellsTracker : MonoBehaviour {
 	public void AddIncomingSpell(SpellEffectController spell) {
 		IncomingSpellInfo spellInfo = new IncomingSpellInfo(spell, transform);
 		IncomingSpells.Add(spellInfo);
-		spell.onSpellCastFinished += RemoveIncomingSpell;
+		spell.OnSpellCastFinished += RemoveIncomingSpell;
 		OnIncomingSpellAdded(spellInfo);
 		onIncomingSpellAdded?.Invoke(spellInfo);
 	}

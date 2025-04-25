@@ -3,12 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// A component handling the whole lifetime of spell effect after a spell is cast.
+/// It makes sure the spell object moves to the target and on target hit the spell effect is applied.
+/// It also plays visual effects in corresponding times.
+/// At the end, the spell object is destroyed.
+/// </summary>
 public class SpellEffectController : MonoBehaviour {
 
-    public event Action<SpellEffectController> onSpellCastFinished;
-    public event Action<SpellEffectController> onSpellHit;
+    /// <summary>Called when the spell cast has finished, i.e. the spell reached its target. Parameter is this <c>SpellEffectController</c> component.</summary>
+    public event Action<SpellEffectController> OnSpellCastFinished;
+	/// <summary>Called when the spell hits its target. Parameter is this <c>SpellEffectController</c> component.</summary>
+	public event Action<SpellEffectController> OnSpellHit;
 
+    /// <summary>The spell this <c>SpellEffectController</c> component controls.</summary>
     public Spell Spell => castParameters.Spell;
 
     [Tooltip("A component derived from SpellEffect which is responsible for applying the actual spell effect.")]
@@ -21,19 +29,23 @@ public class SpellEffectController : MonoBehaviour {
 
     private bool isDestroyScheduled = false;
 
-    private enum SpellCastState {
+    private enum SpellCastState { // the cast spell goes through several states over its lifetime
         NOT_STARTED,
-        CAST,
-        HIT,
-        EFFECT,
+        CAST, // moving towards the target object/position
+        HIT, // hitting the target
+        EFFECT, // applying the spell effect
         FINISHED
 	}
     private SpellCastState currentState = SpellCastState.NOT_STARTED;
 
     private SpellCastParameters castParameters;
 
-
-    public void InvokeSpellEffect(SpellCastParameters castParameters) {
+	/// <summary>
+	/// Starts invoking a spell effect, starting from actually casting the spell towards its target together with a visual effect.
+    /// If the spell's target is another racer, this method adds the spell among the racer's incoming spells.
+	/// </summary>
+	/// <param name="castParameters">Parameters of the spell cast (e.g., spell, source object, target object/direction).</param>
+	public void InvokeSpellEffect(SpellCastParameters castParameters) {
         this.castParameters = castParameters;
         AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.SpellCast, gameObject);
         // Let the target racer know there is an incoming spell
@@ -54,7 +66,7 @@ public class SpellEffectController : MonoBehaviour {
         // Handle finishing casting the spell
         if (currentState == SpellCastState.CAST) {
             if (!spellTrajectoryVisualEffect.IsPlaying) {
-                onSpellCastFinished?.Invoke(this);
+                OnSpellCastFinished?.Invoke(this);
                 currentState = SpellCastState.HIT;
             }
         }
@@ -71,7 +83,7 @@ public class SpellEffectController : MonoBehaviour {
                     targetHitVisualEffect.StartPlaying();
                 if (castParameters.Spell.TargetType != SpellTargetType.Self && targetObject != null)
                     AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.SpellHit, targetObject);
-                onSpellHit?.Invoke(this);
+                OnSpellHit?.Invoke(this);
                 currentState = SpellCastState.EFFECT;
                 actualSpellEffect.ApplySpellEffect(castParameters);
             }

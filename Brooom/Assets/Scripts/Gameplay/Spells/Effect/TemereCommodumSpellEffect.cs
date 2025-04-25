@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Spell for creating a random bonus
+/// <summary>
+/// A spell creating a random bonus (from those which are available) in the direction it was cast in.
+/// </summary>
 public class TemereCommodumSpellEffect : OneShotSpellEffect {
 
+	[Tooltip("Prefabs of all different bonus types which can be instantiated as an effect of this spell.")]
 	[SerializeField] List<BonusEffect> bonusPrefabs;
 
+	/// <summary>
+	/// Creates a random bonus (from those which are available) in the spell's target position.
+	/// </summary>
 	protected override void ApplySpellEffect_Internal() {
 		// Choose a random bonus to spawn (but only from those which are available)
 		List<int> availableBonusIndices = new List<int>();

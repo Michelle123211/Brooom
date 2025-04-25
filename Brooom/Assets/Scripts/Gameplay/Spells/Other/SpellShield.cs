@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A component handling behaviour of a shield around a racer created by Defensio spell.
+/// It uses visual effects for appearing and disappearing, and at the end of its duration it is destroyed.
+/// </summary>
 public class SpellShield : MonoBehaviour {
 
 	[Tooltip("Visual effect which is played when the shield is appearing around the racer.")]
@@ -9,7 +14,7 @@ public class SpellShield : MonoBehaviour {
 	[Tooltip("Visual effect which is played when the shield is disappearing at the end of its duration.")]
 	[SerializeField] CustomVisualEffect shieldDisappearingEffect;
 
-	private enum ShieldState {
+	private enum ShieldState { // the shield is going through several states during its lifetime
 		NotVisible,
 		Appearing,
 		Visible,
@@ -18,11 +23,17 @@ public class SpellShield : MonoBehaviour {
 	}
 	private ShieldState currentState = ShieldState.NotVisible;
 
+	/// <summary>
+	/// Starts playing a visual effect which makes the shield appear around the racer.
+	/// </summary>
 	public void Appear() {
 		currentState = ShieldState.Appearing;
 		shieldAppearingEffect.StartPlaying();
 	}
 
+	/// <summary>
+	/// Starts playing a visual effect which makes the shield disappear at the end of its duration.
+	/// </summary>
 	public void Disappear() {
 		currentState = ShieldState.Disappearing;
 		shieldDisappearingEffect.StartPlaying();

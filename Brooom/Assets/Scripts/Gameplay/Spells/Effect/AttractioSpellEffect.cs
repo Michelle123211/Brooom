@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Spell for pulling a bonus closer
+/// <summary>
+/// A spell pulling target bonus to the racer who cast it.
+/// </summary>
 public class AttractioSpellEffect : DurativeSpellEffect {
 
 	[Tooltip("A curve describing how to tween between the start position (bonus position) and end position (racer position). Tweens between 0 and 1.")]
@@ -14,6 +16,10 @@ public class AttractioSpellEffect : DurativeSpellEffect {
 
 	private Transform bonusTransform;
 
+	/// <summary>
+	/// Moves the target bonus a bit closer to the racer casting the spell.
+	/// </summary>
+	/// <param name="time">Number between 0 and 1 (indicating how far we are in the total duration).</param>
 	protected override void ApplySpellEffect_OneIteration(float time) {
 		// Update end position and move the bonus a bit closer to it (the racer)
 		endPosition = castParameters.GetCastPosition();
@@ -21,9 +27,11 @@ public class AttractioSpellEffect : DurativeSpellEffect {
 			bonusTransform.position = startPosition + movementTween.Evaluate(time) * (endPosition - startPosition);
 	}
 
+	/// <inheritdoc/>
 	protected override void FinishApplyingSpellEffect() {
 	}
 
+	/// <inheritdoc/>
 	protected override void StartApplyingSpellEffect() {
 		// Make sure the target object is still valid - it could be a bonus spawned by Temere Commodum which was picked up while the spell was flying towards it
 		// ... if not, there's nothing to be done anymore

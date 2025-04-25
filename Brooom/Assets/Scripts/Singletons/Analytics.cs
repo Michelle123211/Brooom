@@ -243,7 +243,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	}
 
 	private void OnSpellCastAtPlayer(IncomingSpellInfo spellInfo) {
-		spellInfo.SpellObject.onSpellHit += OnSpellHitPlayer;
+		spellInfo.SpellObject.OnSpellHit += OnSpellHitPlayer;
 	}
 	private void OnSpellHitPlayer(SpellEffectController spellEffectController) {
 		LogEvent(AnalyticsCategory.Spells, $"Player was hit by a spell {spellEffectController.Spell.SpellName}.");

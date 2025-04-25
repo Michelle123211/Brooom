@@ -32,7 +32,7 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 	/// <param name="spellInfo">Incoming spell to be added.</param>
 	protected override void OnIncomingSpellAdded(IncomingSpellInfo spellInfo) {
 		// Show an indicator
-		spellInfo.SpellObject.onSpellHit += ShakeCamera;
+		spellInfo.SpellObject.OnSpellHit += ShakeCamera;
 		IncomingSpellIndicator indicator = Instantiate<IncomingSpellIndicator>(incomingSpellIndicatorPrefab, incomingSpellIndicatorParent);
 		indicator.Initialize(spellInfo);
 		incomingSpellIndicators.Add(indicator);

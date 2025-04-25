@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Spell for creating a wall obstacle
+/// <summary>
+/// A spell creating a wall obstacle in the direction it was cast in.
+/// </summary>
 public class MateriaMuriSpellEffect : OneShotSpellEffect {
 
+	[Tooltip("Prefab of a brick wall to be instantiated as an effect of this spell.")]
 	[SerializeField] Transform brickWallPrefab;
 
+	/// <summary>
+	/// Creates a brick wall in the spell's target position.
+	/// </summary>
 	protected override void ApplySpellEffect_Internal() {
 		// Create an instance of a wall prefab and set its position and rotation
 		Transform wall = Instantiate<Transform>(brickWallPrefab, castParameters.GetTargetPosition(), Quaternion.identity);
