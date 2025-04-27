@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A component responsible for automatic mana regeneration over time.
+/// </summary>
 public class ManaRegeneration : MonoBehaviour {
 
+	/// <summary>How much mana has been regenerated in the race so far in total.</summary>
 	public int TotalManaGenerated { get; private set; }
 
 	[Tooltip("Spell Controller component managing mana amount. It is used to change the amount.")]
@@ -31,6 +36,7 @@ public class ManaRegeneration : MonoBehaviour {
 	}
 
 	private void OnEnable() {
+		// Reset to initial values
 		timeUntilManaRegeneration = manaRegenerationInterval;
 		TotalManaGenerated = 0;
 	}

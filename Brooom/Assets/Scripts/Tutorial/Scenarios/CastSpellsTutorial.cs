@@ -248,11 +248,11 @@ internal class SpellCastProgress : TutorialStepProgressTracker {
 	}
 
 	protected override void FinishStepProgress() {
-		Messaging.UnregisterFromMessage("SpellCasted", OnSpellCast);
+		Messaging.UnregisterFromMessage("SpellCast", OnSpellCast);
 	}
 
 	protected override void InitializeStepProgress() {
-		Messaging.RegisterForMessage("SpellCasted", OnSpellCast);
+		Messaging.RegisterForMessage("SpellCast", OnSpellCast);
 	}
 
 	protected override void UpdateStepProgress() {

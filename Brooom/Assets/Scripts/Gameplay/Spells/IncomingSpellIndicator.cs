@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// A component representing an indicator of an incoming spell which is displayed on the screen.
+/// Scale and opacity are determined from the spell's distance from the player.
+/// </summary>
 public class IncomingSpellIndicator : MonoBehaviour {
 
+    /// <summary>The incoming spell this indicator represents.</summary>
     public IncomingSpellInfo IncomingSpellInfo { get; private set; }
 
     [Tooltip("An Image component used as an arrow indicating from which direction the spell is coming.")]
@@ -34,16 +40,16 @@ public class IncomingSpellIndicator : MonoBehaviour {
         arrowIcon.color = incomingSpellInfo.SpellObject.Spell.BaseColor;
     }
 
-    // Changes icon size/opacity according to distance
+    // Changes icon size/opacity according to distance from the player
     private void UpdateVisual() {
         float oneMinusDistanceNormalized = 1f - IncomingSpellInfo.DistanceNormalized;
-        // Scale
+        // Scale - the closer, the bigger
         transform.localScale = Vector3.one * (scaleKeyframes.x + scaleTweenCurve.Evaluate(oneMinusDistanceNormalized) * (scaleKeyframes.y - scaleKeyframes.x));
-        // Opacity
+        // Opacity - the closer, the less transparent
         float alpha = opacityKeyframes.x + opacityTweenCurve.Evaluate(oneMinusDistanceNormalized) * (opacityKeyframes.y - opacityKeyframes.x);
         spellIndicatorBackground.color = spellIndicatorBackground.color.WithA(alpha);
         arrowIcon.color = arrowIcon.color.WithA(alpha);
-        // Rotation
+        // Rotation of the arrow
         float angle = IncomingSpellInfo.GetAngleFromDirection(false);
         arrowIcon.transform.localEulerAngles = arrowIcon.transform.localEulerAngles.WithZ(angle);
     }

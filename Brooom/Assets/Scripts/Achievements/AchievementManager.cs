@@ -6,6 +6,7 @@ using UnityEngine;
 
 /// <summary>
 /// A singleton which keeps track of all achievements in the game and their progress.
+/// It also ensures that any changes are stored persistently.
 /// </summary>
 public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, ISingleton {
 	// All necessary values for the achievements (updated in reaction to specific messages)
@@ -332,14 +333,14 @@ class SpellsData : AchievementData {
 
 	/// <inheritdoc/>
 	public override void RegisterCallbacks() {
-		Messaging.RegisterForMessage("SpellCasted", OnSpellCast);
+		Messaging.RegisterForMessage("SpellCast", OnSpellCast);
 		Messaging.RegisterForMessage("SpellPurchased", OnSpellPurchased);
 		Messaging.RegisterForMessage("AllSpellsPurchased", OnAllSpellsPurchased);
 	}
 
 	/// <inheritdoc/>
 	public override void UnregisterCallbacks() {
-		Messaging.UnregisterFromMessage("SpellCasted", OnSpellCast);
+		Messaging.UnregisterFromMessage("SpellCast", OnSpellCast);
 		Messaging.UnregisterFromMessage("SpellPurchased", OnSpellPurchased);
 		Messaging.UnregisterFromMessage("AllSpellsPurchased", OnAllSpellsPurchased);
 	}

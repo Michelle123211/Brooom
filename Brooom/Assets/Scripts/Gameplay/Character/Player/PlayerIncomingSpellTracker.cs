@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// A class managing a list of spells which are being cast at the player.
+/// A class managing a list of spells which are being cast at the player and displaying their indicators on the screen.
+/// Each indicator is placed on a circle, where the radius is determined by the spell's distance to the player,
+/// and the angle is determined by the direction from which the spell is approaching the player.
 /// </summary>
 public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 
@@ -32,7 +34,7 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 	/// <param name="spellInfo">Incoming spell to be added.</param>
 	protected override void OnIncomingSpellAdded(IncomingSpellInfo spellInfo) {
 		// Show an indicator
-		spellInfo.SpellObject.OnSpellHit += ShakeCamera;
+		spellInfo.SpellObject.onSpellHit += ShakeCamera;
 		IncomingSpellIndicator indicator = Instantiate<IncomingSpellIndicator>(incomingSpellIndicatorPrefab, incomingSpellIndicatorParent);
 		indicator.Initialize(spellInfo);
 		incomingSpellIndicators.Add(indicator);

@@ -5,11 +5,13 @@ using UnityEngine;
 
 
 /// <summary>
-/// A class managing a list of spells which are being cast at the racer.
+/// A component managing a list of spells which are being cast at the racer.
 /// </summary>
 public abstract class IncomingSpellsTracker : MonoBehaviour {
 
+	/// <summary>A list of all currently incoming spells.</summary>
 	public List<IncomingSpellInfo> IncomingSpells { get; protected set; } = new List<IncomingSpellInfo>();
+	/// <summary>Called when a new spell has been cast at the racer and added among the incoming spells.</summary>
 	public event Action<IncomingSpellInfo> onIncomingSpellAdded;
 
 	/// <summary>
@@ -19,13 +21,13 @@ public abstract class IncomingSpellsTracker : MonoBehaviour {
 	public void AddIncomingSpell(SpellEffectController spell) {
 		IncomingSpellInfo spellInfo = new IncomingSpellInfo(spell, transform);
 		IncomingSpells.Add(spellInfo);
-		spell.OnSpellCastFinished += RemoveIncomingSpell;
+		spell.onSpellCastFinished += RemoveIncomingSpell;
 		OnIncomingSpellAdded(spellInfo);
 		onIncomingSpellAdded?.Invoke(spellInfo);
 	}
 
 	/// <summary>
-	/// Removes an incoming spell from a list of all currently incoming spells (e.g. because it hit the the target racer).
+	/// Removes an incoming spell from a list of all currently incoming spells (e.g. because it hit the target racer).
 	/// </summary>
 	/// <param name="spell">Incoming spell to be removed.</param>
 	public void RemoveIncomingSpell(SpellEffectController spell) {
@@ -39,8 +41,6 @@ public abstract class IncomingSpellsTracker : MonoBehaviour {
 		}
 		OnIncomingSpellRemoved(spellInfo);
 	}
-
-	// TODO: Add any API methods which could be used with spell casting AI
 
 	/// <summary>
 	/// Finds out whether a specific spell is being cast at the racer.
@@ -58,7 +58,7 @@ public abstract class IncomingSpellsTracker : MonoBehaviour {
 	/// <summary>
 	/// Called when a new incoming spell has been added into a list of all currently incoming spells.
 	/// </summary>
-	/// <param name="spellInfo">Infomration about the incoming spell to be added.</param>
+	/// <param name="spellInfo">Information about the incoming spell to be added.</param>
 	protected abstract void OnIncomingSpellAdded(IncomingSpellInfo spellInfo);
 	/// <summary>
 	/// Called when an incoming spell has been removed from a list of all currently incoming spells.

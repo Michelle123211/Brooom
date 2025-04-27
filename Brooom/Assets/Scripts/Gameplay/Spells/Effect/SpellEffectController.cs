@@ -12,9 +12,9 @@ using UnityEngine;
 public class SpellEffectController : MonoBehaviour {
 
     /// <summary>Called when the spell cast has finished, i.e. the spell reached its target. Parameter is this <c>SpellEffectController</c> component.</summary>
-    public event Action<SpellEffectController> OnSpellCastFinished;
+    public event Action<SpellEffectController> onSpellCastFinished;
 	/// <summary>Called when the spell hits its target. Parameter is this <c>SpellEffectController</c> component.</summary>
-	public event Action<SpellEffectController> OnSpellHit;
+	public event Action<SpellEffectController> onSpellHit;
 
     /// <summary>The spell this <c>SpellEffectController</c> component controls.</summary>
     public Spell Spell => castParameters.Spell;
@@ -66,7 +66,7 @@ public class SpellEffectController : MonoBehaviour {
         // Handle finishing casting the spell
         if (currentState == SpellCastState.CAST) {
             if (!spellTrajectoryVisualEffect.IsPlaying) {
-                OnSpellCastFinished?.Invoke(this);
+                onSpellCastFinished?.Invoke(this);
                 currentState = SpellCastState.HIT;
             }
         }
@@ -83,7 +83,7 @@ public class SpellEffectController : MonoBehaviour {
                     targetHitVisualEffect.StartPlaying();
                 if (castParameters.Spell.TargetType != SpellTargetType.Self && targetObject != null)
                     AudioManager.Instance.PlayOneShotAttached(AudioManager.Instance.Events.Game.SpellHit, targetObject);
-                OnSpellHit?.Invoke(this);
+                onSpellHit?.Invoke(this);
                 currentState = SpellCastState.EFFECT;
                 actualSpellEffect.ApplySpellEffect(castParameters);
             }
