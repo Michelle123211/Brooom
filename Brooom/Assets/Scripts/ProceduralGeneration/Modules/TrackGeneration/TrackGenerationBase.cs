@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A base for a level generator module responsible for generating a list of track points (i.e. points in which hoops or checkpoints will be placed).
+/// This class provides a common base like parameters and useful methods.
+/// Different derived classes may adopt different approaches.
+/// </summary>
 public abstract class TrackGenerationBase : LevelGeneratorModule {
 
 	[Tooltip("Maximum altitude (Y coordinate) the player can fly up to (no track element can be higher than that).")]
@@ -10,11 +16,11 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 	public int numberOfCheckpoints = 4;
 	[Tooltip("How many hoops should be generated between two consecutive checkpoints.")]
 	public int numberOfHoopsBetween = 3;
-	[Tooltip("The approximate minimum and maximum distance between two points.")]
+	[Tooltip("The minimum and maximum distance between two points (final distance may be a bit smaller/larger because track points are snapped to terrain grid).")]
 	public Vector2 distanceRange = new Vector2(40f, 50f);
-	[Tooltip("Maximum angle between two consecutive points in the X (up/down) and Y (left/right) axis.")]
+	[Tooltip("Maximum angle between two consecutive points in the X (up/down) and Y (left/right) axes.")]
 	public Vector2 maxDirectionChangeAngle = new Vector2(10f, 20f);
-	[Tooltip("Dimensions of the level are adjusted according to the generated track dimensions with some padding around.")]
+	[Tooltip("Dimensions of the level (i.e. terrain) are adjusted to cover the generated track dimensions with some padding around.")]
 	public int levelPadding = 200;
 	[Tooltip("How far in front of the first point the player should be placed.")]
 	public float playerStartDistance = 60f;
@@ -23,8 +29,17 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 	private Vector2 minPosition;
 	private Vector2 maxPosition;
 
+	/// <summary>
+	/// Generates a list of track points using some algorithm and sets it in the level representation.
+	/// </summary>
+	/// <param name="level">Initial level representation to be modified during the generation process.</param>
 	protected abstract void GenerateTrackPoints(LevelRepresentation level);
 
+	/// <summary>
+	/// Generates a list of track points, moves them so that the track is centered around the world origin, and then changes level dimensions to cover the whole track with some padding.
+	/// Also sets the player's start position to be in front of the first track point.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		GenerateTrackPoints(level);
 		CenterTrackPoints(level);
@@ -38,7 +53,11 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 		level.playerStartPosition = level.Track[0].position + Vector3.back * playerStartDistance;
 	}
 
-	// Adds track point with the given position to the level
+	/// <summary>
+	/// Creates a new <c>TrackPoint</c> with the given position and adds it to the level.
+	/// </summary>
+	/// <param name="level">Level representation to which a new track point will be added.</param>
+	/// <param name="position">World position of the track point to be added.</param>
 	protected void AddTrackPoint(LevelRepresentation level, Vector3 position) {
 		TrackPoint trackPoint = new TrackPoint();
 		trackPoint.position = position;
@@ -46,7 +65,7 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 		level.Track.Add(trackPoint);
 	}
 
-	// Moves all the points so that the final track is centered around the world origin
+	// Moves all track points so that the final track is centered around the world origin
 	private void CenterTrackPoints(LevelRepresentation level) {
 		// Compute min and max positions
 		minPosition = new Vector2(float.MaxValue, float.MaxValue);
@@ -74,16 +93,17 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 		maxPosition.y = newMaxPositionZ;
 	}
 
+	// Goes through the track points and snaps each of them to the closest point on the underlying terrain grid
 	private void SnapPointsToGrid(LevelRepresentation level) {
 		int i, j;
 		Vector3 topleft = level.Terrain[0, 0].position; // position of the top-left grid point
 		float offset = level.pointOffset; // distance between adjacent grid points
 		foreach (var trackPoint in level.Track) {
-			// Snap the points to the underlying terrain grid (to the closest grid point)
+			// Snap the point to the underlying terrain grid (to the closest grid point)
 			i = Mathf.RoundToInt(Mathf.Abs(trackPoint.position.x - topleft.x) / offset);
 			j = Mathf.RoundToInt(Mathf.Abs(trackPoint.position.z - topleft.z) / offset);
 			trackPoint.position = level.Terrain[i, j].position.WithY(trackPoint.position.y);
-			// Set grid coordinates of the points
+			// Set grid coordinates of the point
 			trackPoint.gridCoords = new Vector2Int(i, j);
 		}
 	}

@@ -3,15 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Generates points the track goes through (using random walk)
-// Prevents the track from intersecting itself
+/// <summary>
+/// A level generator module responsible for generating a list of track points (i.e. points in which hoops or checkpoints will be placed) using a random walk.
+/// It also prevents the track from intersecting itself by limiting accumulated turn angle.
+/// </summary>
 public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 
-	private float globalAngle = 0; // accumulating overall angle while adding new points, to make sure we never turn for more than 180° and intersection is not possible
-	private float lastAngle = 0; // last geenrated angle around Y axis
+	private float globalAngle = 0; // accumulating overall angle while adding new points, to make sure we never turn for more than 90° and intersection is not possible
+	private float lastAngle = 0; // last generated angle around Y axis
 
-	LevelRepresentation levelDebug;
+	LevelRepresentation levelDebug; // level representation stored so it is possible to draw gizmos in track points (for debug purposes)
 
+	
+	/// <summary>
+	/// Generates a list of track points using a random walk while limiting turning angle to prevent the track from intersecting itself.
+	/// Then sets these track points in the level representation.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	protected override void GenerateTrackPoints(LevelRepresentation level) {
 		levelDebug = level;
 
@@ -41,22 +49,22 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 		}
 	}
 
+	// Sets new values for direction (according to the new last segment) and distance
 	private void SelectParametersForNextStep(LevelRepresentation level, Vector3 position, ref Vector3 direction, ref float distance) {
-		// Set new values for direction (according to the new last segment) and distance
 		direction = level.Track.Count < 2 ? Vector3.forward : (level.Track[level.Track.Count - 1].position - level.Track[level.Track.Count - 2].position);
 		direction = SelectDirection(level, position, direction);
 		distance = Random.Range(distanceRange.x, distanceRange.y);
 	}
 
+	// Chooses next direction vector (by rotating the previous vector by a reasonably small amount)
 	private Vector3 SelectDirection(LevelRepresentation level, Vector3 position, Vector3 previousDirection) {
-		// Choose next direction vector (rotate the previous vector by a reasonably small amount)
 		Vector3 direction = Quaternion.Euler(0, SelectRotationAngleY(), 0) * previousDirection; // left/right, rotation around the Y axis
 		float newY = (Quaternion.Euler(SelectRotationAngleX(level, position, direction), 0, 0) * Vector3.forward).y; // rotate forward vector around X axis to get the Y coordinate
 		direction = direction.normalized.WithY(newY).normalized; // override Y make the rotation absolute not relative
 		return direction;
 	}
 
-	// Select angle up/down
+	// Selects angle up/down
 	private float SelectRotationAngleX(LevelRepresentation level, Vector3 lastPosition, Vector3 lastDirection) {
 		float angle;
 		if (lastPosition.y < 1) // only up possible
@@ -75,7 +83,7 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 		return angle;
 	}
 
-	// Select angle left/right
+	// Selects angle left/right
 	private float SelectRotationAngleY() {
 		float randomValue = Random.value;
 		Vector2 angleInterval = GetMinAndMaxAngleY();
@@ -90,13 +98,14 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 		return lastAngle;
 	}
 
+	// Chooses a random angle to the same side as was the last angle
 	private float SelectAngleInTheSameDirection(Vector2 angleInterval) {
-		// Choose random angle to the correct side
 		float direction = Mathf.Sign(lastAngle);
 		if (direction < 0) return Random.Range(angleInterval.x, 0);
 		else return Random.Range(0, angleInterval.y);
 	}
 
+	// Chooses a random angle which is closer to the maximum possible angle to allow for bigger turns
 	private float SelectAngleForBiggerTurn(Vector2 angleInterval) {
 		// First check to which side it is possible to turn - if both, choose by random
 		bool isLeftPossible = angleInterval.x < (-maxDirectionChangeAngle.y / 2);
@@ -112,12 +121,14 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 		}
 	}
 
+	// Chooses a random angle from the given interval
 	private float SelectAngleRandomly(Vector2 angleInterval) {
 		return Random.Range(angleInterval.x, angleInterval.y);
 	}
 
+	// Gets allowed range of angles for turning left/right, while considering maximum angle possible and limiting angles to prevent the track from intersecting itself
 	private Vector2 GetMinAndMaxAngleY() {
-		// Select minimum and maximum angle of rotation around Y (left/right) so that no intersections can happen (global angle cannot go over 180 in any direction)
+		// Select minimum and maximum angle of rotation around Y (left/right) so that no intersections can happen (global angle cannot go over 90 in any direction)
 		Vector2 minMaxAngle = new Vector2(-maxDirectionChangeAngle.y, maxDirectionChangeAngle.y);
 		if (globalAngle < 0) { // there is more space to turn right (positive angle)
 			minMaxAngle.x = Mathf.Max(-90 - globalAngle, -maxDirectionChangeAngle.y);

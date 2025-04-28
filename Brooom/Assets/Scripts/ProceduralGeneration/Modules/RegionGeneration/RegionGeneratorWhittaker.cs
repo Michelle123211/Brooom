@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Uses a diagram with a function similar to Whittaker's biome diagram to divide map into regions
+/// <summary>
+/// A level generator module responsible for generating terrain regions.
+/// It uses a diagram similar to Whittaker's biome diagram to divide map into regions.
+/// Each region occupies a range of values in a 2D space, then for each terrain point Perlin noise is used to determine random values and a region is selected based on them
+/// (as a region which is available and is the closest one to these values).
+/// </summary>
 public class RegionGeneratorWhittaker : LevelGeneratorModule {
 
-	[Tooltip("Diagram describing different map regions with functionality similar to Whittaker's biome diagram")]
+	[Tooltip("Diagrams describing different map regions with functionality similar to Whittaker's biome diagram. One of them is chosen based on how many available regions it supports.")]
 	public List<RegionDiagram> availableDiagrams;
 
 	[Tooltip("Frequency of the Perlin noise used for the diagram's X axis.")]
@@ -16,6 +21,10 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 
 	private RegionDiagram diagram;
 
+	/// <summary>
+	/// Assigns a terrain region to each terrain point based on a region diagram similar to Whittaker's biome diagram.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		// Random Perlin noise offsets to use to determine point in the diagram
 		int randOffsetX1 = Random.Range(0, 1000); // for X axis in the diagram
@@ -61,6 +70,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		}
 	}
 
+	// Gets a region covering the given values in the diagram
 	private LevelRegionType GetRegionTypeFromDiagram(float x, float y) {
 		LevelRegionType regionType = LevelRegionType.NONE;
 		// Get the region exactly on these coordinates
@@ -73,6 +83,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		return regionType;
 	}
 
+	// Gets a region which is the closest one to the given values, cosnidering only allowed regions
 	private LevelRegionType GetClosestAllowedRegion(float x, float y, List<LevelRegionType> terrainRegionsToInclude) {
 		// Get the allowed region on coordinates closest to the original ones (if none exists, return MapRegionType.NONE)
 		// ... using simple Manhattan distance
@@ -90,6 +101,7 @@ public class RegionGeneratorWhittaker : LevelGeneratorModule {
 		return regionType;
 	}
 
+	// Checks if a region is allowed and can be used
 	private bool IsRegionAllowed(List<LevelRegionType> regionsToInclude, LevelRegionType regionType) {
 		return regionsToInclude.Contains(regionType);
 	}

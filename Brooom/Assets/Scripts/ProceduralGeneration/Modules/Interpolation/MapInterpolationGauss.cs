@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Applies Gaussian kernel to blur heightmap of the level
-// Depending on parameters may apply the kernel only on region borders
+
+/// <summary>
+/// A level generator module which applies Gaussian kernel to blur terrain's heightmap.
+/// Depending on parameters, it may apply the kernel only to terrain points on region borders (to smooth out larger differences between regions).
+/// </summary>
 public class MapInterpolationGauss : LevelGeneratorModule {
 
     [Tooltip("If true interpolates only heights along the region borders.")]
@@ -42,6 +45,11 @@ public class MapInterpolationGauss : LevelGeneratorModule {
     };
     #endregion
 
+    /// <summary>
+    /// Applies Gaussian kernel to interpolate/blur terrain's heightmap.
+    /// Depending on parameters, this may be repeated several times and may be applied only to terrain points on region borders.
+    /// </summary>
+    /// <param name="level"><inheritdoc/></param>
     public override void Generate(LevelRepresentation level) {
         // Select kernel of the given size
         float[,] kernel = SelectKernel();
@@ -56,19 +64,17 @@ public class MapInterpolationGauss : LevelGeneratorModule {
         }
     }
 
+    // Selects Gaussian kernel based on the chosen size (set in kernelSize field)
     private float[,] SelectKernel() {
-        switch (kernelSize) {
-            case GaussianKernelSize.Kernel3x3:
-                return kernel3;
-            case GaussianKernelSize.Kernel5x5:
-                return kernel5;
-            case GaussianKernelSize.Kernel7x7:
-                return kernel7;
-            default:
-                return kernel5;
-        }
+        return kernelSize switch {
+            GaussianKernelSize.Kernel3x3 => kernel3,
+            GaussianKernelSize.Kernel5x5 => kernel5,
+            GaussianKernelSize.Kernel7x7 => kernel7,
+            _ => kernel5
+        };
     }
 
+    // Iterates over all terrain points, applies Gaussian kernel in each of them and store new interpolated heights into newHeights array
     private void ApplyKernel(LevelRepresentation level, float[,] newHeights, float[,] kernel) {
         // Compute new heights which are weighted averages of neighbouring points
         for (int x = 0; x < level.pointCount.x; x++) {
@@ -90,6 +96,7 @@ public class MapInterpolationGauss : LevelGeneratorModule {
         }
     }
 
+    // Updates terrain height based on the newly computed interpolated heights
     private void UpdateHeights(LevelRepresentation level, float[,] newHeights) {
         // Use the interpolated heights in the level
         for (int x = 0; x < level.pointCount.x; x++) {
@@ -104,6 +111,9 @@ public class MapInterpolationGauss : LevelGeneratorModule {
 
 }
 
+/// <summary>
+/// All supported sizes of Gaussian kernel.
+/// </summary>
 public enum GaussianKernelSize { 
     Kernel3x3,
     Kernel5x5,

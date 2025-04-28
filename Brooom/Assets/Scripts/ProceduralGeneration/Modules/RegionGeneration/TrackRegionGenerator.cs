@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Determines locations of track regions (e.g. Above Clouds)
-// These regions do not affect the terrain and are occurring in the track at most once
-public class TrackRegionGenerator : LevelGeneratorModule
-{
-    [Tooltip("All track regions with parameters of their occurrences.")]
+
+/// <summary>
+/// A level generator module responsible for determining locations of track regions (e.g. Above Clouds).
+/// These regions do not affect the terrain and occur in the track at most once.
+/// </summary>
+public class TrackRegionGenerator : LevelGeneratorModule {
+
+    [Tooltip("All track regions with parameters of their occurrences (e.g. probability, length).")]
     public List<TrackRegionParameters> trackRegions;
 
-    private float[] kernel = new float[] { 1f/10, 2f/10, 4f/10, 2f/10, 1f/10 };
+    private float[] kernel = new float[] { 1f/10, 2f/10, 4f/10, 2f/10, 1f/10 }; // 1D kernel for smoothing out track height
 
+    /// <summary>
+    /// For each available track region, determines if this region should be added to the track, and if so, modifies the track accordingly.
+    /// Available but unvisited track regions are added automatically.
+    /// </summary>
+    /// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
         if (trackRegions == null) trackRegions = new List<TrackRegionParameters>();
+        // Consider all track regions
         foreach (var region in trackRegions) {
             // Skip not available regions
             if (!level.RegionsAvailability.TryGetValue(region.trackRegion, out bool isAvailable) || !isAvailable)
@@ -41,7 +50,7 @@ public class TrackRegionGenerator : LevelGeneratorModule
         }
 	}
 
-    // Smooths out height in the region and its immediate neighbourhood
+    // Smooths out height in the track region and its immediate neighbourhood
     private void InterpolateHeightsInRegion(LevelRepresentation level, int regionStartIndex, int regionEndIndex) {
         int startIndex = regionStartIndex - 2;
         if (startIndex < 0) startIndex = 0;
@@ -63,7 +72,9 @@ public class TrackRegionGenerator : LevelGeneratorModule
     }
 }
 
-// Describes parameters of track region occurrence
+/// <summary>
+/// A class describing parameters of track region occurrence (e.g. probability, length, height).
+/// </summary>
 [System.Serializable]
 public class TrackRegionParameters {
     public LevelRegionType trackRegion;

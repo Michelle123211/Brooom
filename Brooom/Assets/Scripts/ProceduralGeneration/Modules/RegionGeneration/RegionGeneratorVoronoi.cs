@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Divides the map into a grid, then chooses centres of regions as random point in each grid tile
-// This way the centres are distributed semi-uniformly and semi-randomly
-// Then creates a Voronoi diagram to determine regions
+/// <summary>
+/// A level generator module responsible for generating terrain regions.
+/// It divides the terrain into a grid, then chooses centres of regions as a random point in each grid tile.
+/// This way the centres are distributed semi-uniformly and semi-randomly.
+/// Then it creates a Voronoi diagram to determine regions (i.e. each terrain point is assigned a region from the closest region centre).
+/// </summary>
 public class RegionGeneratorVoronoi : LevelGeneratorModule {
 
-	[Tooltip("The map is divided into a grid of squares. This number determines each square's width.")]
+	[Tooltip("The terrain is divided into a grid of squares. This number determines each square's width.")]
 	public int regionSize = 200;
 
 	private int regionCountX, regionCountY; // number of regions in each axis
 	private int regionSizeX, regionSizeY; // size of each grid tile in the number of terrain points
 
-	private Vector2[,] centres; // centres if the regions (for each grid tile there is a randomly selected point)
+	private Vector2[,] centres; // centres of the regions (for each grid tile there is a randomly selected point)
 
+	/// <summary>
+	/// Assigns a terrain region to each terrain point based on Voronoi diagram from randomly selected region centres.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		// Compute number of regions in each axis
 		regionCountX = Mathf.Max(Mathf.FloorToInt(level.dimensions.x / regionSize), 1); // ensure at least 1
@@ -31,6 +38,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		AssignClosestRegionToAllPoints(level);
 	}
 
+	// Randomly chooses a point within each grid tile as a region centre and assigns a random allowed region to it
 	private Vector2[,] RandomlySelectCentres(LevelRepresentation level) {
 		Vector2[,] centres = new Vector2[regionCountX, regionCountY];
 		// For each grid tile choose randomly a point within it as a region centre and assign it a region it represents
@@ -57,6 +65,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		return centres;
 	}
 
+	// Goes through all terrain points and assigns region from the closest centre
 	private void AssignClosestRegionToAllPoints(LevelRepresentation level) {
 		// Go through all the terrain points and assign them region from the closest centre
 		for (int x = 0; x < level.pointCount.x; x++) {
@@ -69,6 +78,7 @@ public class RegionGeneratorVoronoi : LevelGeneratorModule {
 		}
 	}
 
+	// Finds the closest region centre to the given point while looking to the same tile and its neighbours
 	private void FindAndAssignCentreWithMinimumDistance(LevelRepresentation level, int x, int y) {
 		// Get coordinates of the tile the point belongs to
 		Vector2Int currentTile = new Vector2Int(x / regionSizeX, y / regionSizeY);

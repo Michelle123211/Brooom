@@ -2,14 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A level generator module responsible for instantiating borders around the track, preventing racers from leaving it.
+/// The border is composed of several smaller segments limiting the track between two consecutive track points.
+/// </summary>
 public class TrackBorderGeneration : LevelGeneratorModule {
-	[Tooltip("What is the distance between two parallel borders limiting the track between two consecutive track points.")]
+
+	[Tooltip("Distance between two parallel borders limiting the track between two consecutive track points.")]
 	[SerializeField] float trackWidth = 80f;
 
 	[Tooltip("The border will be covering exactly this height range.")]
 	[SerializeField] Vector2 borderHeightRange = new Vector2(-10f, 70f);
 
-	[Tooltip("The border is closed in front of the first track pointat a distance specified by this parameter.")]
+	[Tooltip("The border is closed in front of the first track point at a distance specified by this parameter.")]
 	[SerializeField] float startPadding = 150f;
 	[Tooltip("The border is closed behind the finish line at a distance specified by this parameter.")]
 	[SerializeField] float endPadding = 200f;
@@ -19,6 +25,11 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 	[Tooltip("An object which will be parent of all the border objects in the hierarchy.")]
 	public Transform borderParent;
 
+	/// <summary>
+	/// Instantiates border around the track, composed of smaller segments on each side of each pair of two consecutive track points.
+	/// Also closes the border around the starting zone and behind the finish line.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		// Remove any previously instantiated borders
 		UtilsMonoBehaviour.RemoveAllChildren(borderParent);
@@ -26,6 +37,7 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		GenerateBorders(level);
 	}
 
+	// Instantiates borders along the track, around the starting zone and behing the finish line
 	private void GenerateBorders(LevelRepresentation level) {
 
 		// Start from points to the sides of the first hoop
@@ -60,7 +72,7 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 					nextPoint1 = point1;
 					nextPoint2 = point2;
 				}
-			} else { // of the last segment, simply take points to the sides of the hoop
+			} else { // if the last segment, simply take points to the sides of the hoop
 				nextPoint1 = point1;
 				nextPoint2 = point2;
 			}
@@ -76,10 +88,12 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		CloseBorder(previousPoint1, previousPoint2, previousDirection, endPadding);
 	}
 
+	// Gets direction orthogonal to the given direction in the XZ plane (by simply rotating it by 90 degrees around the Y axis)
 	private Vector3 GetOrthogonalDirectionXZ(Vector3 direction) {
 		return Quaternion.Euler(0, 90, 0) * direction.WithY(0).normalized;
 	}
 
+	// Gets direction in which a particular track segment is oriented (in most cases, it is a direction from one hoop to the next one)
 	private Vector3 GetSegmentDirection(LevelRepresentation level, int startHoopIndex) {
 		if (level.Track.Count < 2) // not enough points for a segment, return simply forward (implicit first direction when generating track)
 			return Vector3.forward;
@@ -89,6 +103,7 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 			return (level.Track[startHoopIndex + 1].position - level.Track[startHoopIndex].position).WithY(0).normalized;
 	}
 
+	// Closes border from the two given end points, in the given direction and the given distance
 	private void CloseBorder(Vector3 point1, Vector3 point2, Vector3 direction, float padding) {
 		Vector3 corner1 = point1 + direction * padding;
 		Vector3 corner2 = point2 + direction * padding;
@@ -98,8 +113,8 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		InstantiateBorder(corner1, corner2);
 	}
 
-	private void InstantiateBorder(Vector3 startPoint, Vector3 endPoint) {//, Vector3 direction) {
-		//Debug.Log($"Border from {startPoint} to {endPoint}");
+	// Instantiates a border connecting the two given points
+	private void InstantiateBorder(Vector3 startPoint, Vector3 endPoint) {
 		Vector3 direction = (endPoint - startPoint).WithY(0).normalized;
 		// Border length and position
 		float length = (endPoint - startPoint).magnitude;

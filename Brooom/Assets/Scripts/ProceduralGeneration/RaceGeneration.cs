@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// This class is responsible for generating a level at the start of the scene.
+/// This class is responsible for generating a level at the start of the Race scene.
 /// Parameters for generation are selected based on current game state (e.g., player stats, broom upgrades).
 /// Other classes may extend this one to alter its behaviour (e.g., to make it independent of game state and instead set parameters in a different way).
 /// </summary>
@@ -37,25 +37,35 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
     [Header("Regions")]
     [Tooltip("This many distinct regions will be used at maximum in each generated level.")]
     public int regionCountInLevel = 3;
+    [Tooltip("A list of regions which are available by default, under no special conditions.")]
     public List<LevelRegionType> defaultRegions;
+    [Tooltip("A list of regions which become available when the player reaches a certain point in tutorial.")]
     public List<RegionUnlockTutorialStage> regionsUnlockedByTutorial;
+    [Tooltip("A list of regions which become available when the player reaches a certain value of the Endurance stat.")]
     public List<RegionUnlockValue> regionsUnlockedByEndurance;
+    [Tooltip("A list of regions which become available when the player is able to reach a certain altitude (based on Altitude broom upgrade level).")]
     public List<RegionUnlockValue> regionsUnlockedByAltitude;
 
     [Header("Opponents")]
     [Tooltip("Number of opponents to generate.")]
     public int opponentsCount = 5;
 
-
+    /// <summary>Level generation pipeline used for setting level generation parameters and generating it.</summary>
     protected LevelGenerationPipeline levelGenerator;
 
+    /// <inheritdoc/>
     protected override void PrepareForInitialization_ReplacingAwake() {
     }
 
+    /// <inheritdoc/>
     protected override void PrepareForInitialization_ReplacingStart() {
         levelGenerator = FindObjectOfType<LevelGenerationPipeline>();
     }
 
+    /// <summary>
+    /// Starts generating a level as a part of long initialization.
+    /// </summary>
+    /// <returns>Yields control back inbetween modules to allow other code to run (e.g. animation of loading screen).</returns>
     protected override IEnumerator InitializeAfterPreparation() {
         yield return GenerateLevel();
     }
@@ -67,7 +77,7 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
     /// <summary>
     /// Starts generating a level based on parameters obtained from <c>GetPlayerStats()</c>, <c>GetMaxAltitude()</c>, <c>GetRegionsAvailability()</c> and <c>GetRegionsVisited()</c>.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Yields control back inbetween modules to allow other code to run (e.g. animation of loading screen).</returns>
     protected IEnumerator GenerateLevel() {
         // Generate level (terrain + track)
         SetLevelGeneratorParametersFromPlayerState(GetPlayerStats(), GetMaxAltitude(),
@@ -147,6 +157,13 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
         return chosenRegions;
     }
 
+    /// <summary>
+    /// Sets level generator parameters, directly in <c>LevelGenerationPipeline</c> and also in individual modules.
+    /// </summary>
+    /// <param name="stats">Current stats values from which some parameters are computed.</param>
+    /// <param name="maxAltitude">Maximum altitude to which the broom can get.</param>
+    /// <param name="regionsAvailability">Dictionary indicating regions' availability for level generation.</param>
+    /// <param name="regionsVisited">Dictionary indicating whether a regions has been visited or not.</param>
     protected void SetLevelGeneratorParametersFromPlayerState(PlayerStats stats, float maxAltitude, Dictionary<LevelRegionType, bool> regionsAvailability, Dictionary<LevelRegionType, bool> regionsVisited) {
         // Compute parameters based on the given player stats
         // ... number of checkpoints from Endurance
@@ -183,6 +200,7 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
             module.opponentsCount = opponentsCount;
     }
 
+    // For each region in the game, checks whether it is currently available (based on its specific conditions), or not, and updates PlayerState accordingly
     private void UpdateRegionsAvailability() {
         // ... default available regions
         foreach (var region in defaultRegions)
@@ -200,14 +218,20 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
 
 }
 
+/// <summary>
+/// A class pairing a region with a specific minimum value (e.g. max altitude, endurance) which needs to be reached for the region to be unlocked.
+/// </summary>
 [System.Serializable]
 public class RegionUnlockValue {
-    [Tooltip("Region unlocked by a specific value of some stat (e.g. max altitude, endurance).")]
+    [Tooltip("Region unlocked by a specific value (e.g. max altitude, endurance).")]
     public LevelRegionType region;
-    [Tooltip("If the stat is greater then this value, the region becomes available.")]
+    [Tooltip("If the current value is greater then this value, the region becomes available.")]
     public int minValue;
 }
 
+/// <summary>
+/// A class pairing a region with a specific tutorial stage which needs to be reached for the region to be unlocked.
+/// </summary>
 [System.Serializable]
 public class RegionUnlockTutorialStage {
     [Tooltip("Region unlocked by a specific tutorial stage.")]

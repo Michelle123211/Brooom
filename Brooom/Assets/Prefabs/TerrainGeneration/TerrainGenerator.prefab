@@ -371,39 +371,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modules:
-  - module: {fileID: 7011073760170370752}
+  - displayName: Track points - random walk
+    module: {fileID: 7011073760170370752}
     isModuleEnabled: 1
-  - module: {fileID: 9121179430083006447}
+  - displayName: Bonus spots
+    module: {fileID: 9121179430083006447}
     isModuleEnabled: 1
-  - module: {fileID: 9042582758647628370}
+  - displayName: Regions - Voronoi
+    module: {fileID: 9042582758647628370}
     isModuleEnabled: 1
-  - module: {fileID: 9042582758647628382}
+  - displayName: Height map - Perlin for regions
+    module: {fileID: 9042582758647628382}
     isModuleEnabled: 1
-  - module: {fileID: 9042582758647628376}
+  - displayName: Region border detection
+    module: {fileID: 9042582758647628376}
     isModuleEnabled: 1
-  - module: {fileID: 4301535814927083996}
+  - displayName: Track regions
+    module: {fileID: 4301535814927083996}
     isModuleEnabled: 1
-  - module: {fileID: 9042582758647628377}
+  - displayName: Region border interpolation
+    module: {fileID: 9042582758647628377}
     isModuleEnabled: 1
-  - module: {fileID: 9042582758647628378}
+  - displayName: Whole terrain interpolation
+    module: {fileID: 9042582758647628378}
     isModuleEnabled: 1
-  - module: {fileID: 6151264501117884229}
+  - displayName: Track height postprocessing (above terrain)
+    module: {fileID: 6151264501117884229}
     isModuleEnabled: 1
-  - module: {fileID: 6727678963712564295}
+  - displayName: Track maximum angle correction
+    module: {fileID: 6727678963712564295}
     isModuleEnabled: 1
-  - module: {fileID: 6151264501117884229}
+  - displayName: Track height postprocessing (above terrain)
+    module: {fileID: 6151264501117884229}
     isModuleEnabled: 1
-  - module: {fileID: 7590517373936672831}
+  - displayName: Track objects
+    module: {fileID: 7590517373936672831}
     isModuleEnabled: 1
-  - module: {fileID: 5708007630854056561}
+  - displayName: Bonuses
+    module: {fileID: 5708007630854056561}
     isModuleEnabled: 1
-  - module: {fileID: 8828255952473319498}
+  - displayName: Water
+    module: {fileID: 8828255952473319498}
     isModuleEnabled: 1
-  - module: {fileID: 1533366935923736327}
+  - displayName: Environment elements
+    module: {fileID: 1533366935923736327}
     isModuleEnabled: 1
-  - module: {fileID: 2346958430670841784}
+  - displayName: Track border
+    module: {fileID: 2346958430670841784}
     isModuleEnabled: 1
-  - module: {fileID: 4135809981501154050}
+  - displayName: Opponents
+    module: {fileID: 4135809981501154050}
     isModuleEnabled: 1
   dimensions: {x: 100, y: 100}
   pointOffset: 2
@@ -582,6 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463b8b52ae125204fa8c6896c6b49c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxAltitude: 15
   numberOfCheckpoints: 4
   numberOfHoopsBetween: 3
   distanceRange: {x: 40, y: 50}
@@ -617,6 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02076d2b7af6fcc4ba8041825486e48b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxAltitude: 15
   hoopHeightAreaRadius: 4
   defaultMinimumOffsetAboveGround: 4
   minHeightOffsetOverrides:
@@ -712,6 +731,7 @@ MonoBehaviour:
     pattern: 00000100000100
   spacing: 2
   bonusParent: {fileID: 2155503869580160128}
+  allBonusesAvailable: 0
 --- !u!114 &8828255952473319498
 MonoBehaviour:
   m_ObjectHideFlags: 0

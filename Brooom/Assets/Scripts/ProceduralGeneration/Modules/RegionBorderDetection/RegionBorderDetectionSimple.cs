@@ -2,7 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Identifies points on region borders (of some given width)
+/// <summary>
+/// A level generator module responsible for identifying terrain points which are on region borders (of some given width).
+/// A certain border tolerance is defined, then points whose distance to other regions (in 8 directions) is less than or equal to that are considered border between regions.
+/// Different regions may override this border tolerance value to consider wider or narrower border.
+/// Points on region borders may be treated differently further in the level generation pipeline.
+/// </summary>
 public class RegionBorderDetectionSimple : LevelGeneratorModule {
 
     [Tooltip("Points whose distance to other regions (in 8 directions) is less than or equal to this number are considered border between regions.")]
@@ -10,13 +15,17 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
     [Tooltip("Some regions may prefer different border tolerance than the default one (e.g. smaller for mountains).")]
     public List<RegionBorderTolerance> borderToleranceOverrides;
 
-    private Dictionary<LevelRegionType, int> regionBorderTolerance;
+    private Dictionary<LevelRegionType, int> regionBorderTolerance; // border tolerance for each region (either default or override)
 
+    /// <summary>
+    /// Identifies points which are on region borders (i.e. they are closer to a different region than some border tolerance value).
+    /// </summary>
+    /// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
         // Prepare Dictionary of border tolerances for each region type
         regionBorderTolerance = new Dictionary<LevelRegionType, int>();
         foreach (var region in level.TerrainRegions) {
-            regionBorderTolerance.Add(region.Key, defaultBorderTolerance);
+            regionBorderTolerance.Add(region.Key, defaultBorderTolerance); // default border tolerance at first
         }
         // Override border tolerance for specific regions
         if (borderToleranceOverrides != null) {
@@ -33,13 +42,12 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
         }
     }
 
+    // Determines whether the point is on the border based on distance to other regions
     private bool IsPointOnBorder(LevelRepresentation level, int x, int y) {
-        // Determine whether the point is on the border based on distance to other regions
         int step = 1;
-        int tolerance;
-        if (!regionBorderTolerance.TryGetValue(level.Terrain[x, y].region, out tolerance))
+        if (!regionBorderTolerance.TryGetValue(level.Terrain[x, y].region, out int tolerance))
             tolerance = defaultBorderTolerance;
-        while (step <= tolerance) {
+        while (step <= tolerance) { // check gradually larger neighbourhood
             // Go through 8 directions
             for (int i = -1; i < 2; i++) {
                 int otherX = x + step * i;
@@ -60,9 +68,14 @@ public class RegionBorderDetectionSimple : LevelGeneratorModule {
     }
 }
 
+/// <summary>
+/// A class specifying a region border tolerance for a specific region.
+/// Terrain points in this region whose distance to other regions (in 8 directions) is less than or equal to this number are considered border between regions
+/// </summary>
 [System.Serializable]
 public class RegionBorderTolerance {
+    [Tooltip("A region for which the border tolerance is specified.")]
     public LevelRegionType region = LevelRegionType.NONE;
-    [Tooltip("Points whose distance to other regions (in 8 directions) is less than or equal to this number are considered border between regions.")]
+    [Tooltip("Terrain points in this region whose distance to other regions (in 8 directions) is less than or equal to this number are considered border between regions.")]
     public int borderTolerance = 3;
 }

@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Generates height map using octaved Perlin noise with different parameters for different regions
+
+/// <summary>
+/// A level generator module responsible for generating a height map using several octaves of Perlin noise.
+/// However different parameters are used for different regions (e.g., minimum and maximum height, number of octaves).
+/// </summary>
 public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 
-	[Tooltip("Different Parlin noise parameters for different regions.")]
+	[Tooltip("Different octaved Perlin noise parameters for different regions.")]
 	public List<RegionHeightMapParameters> regionParameters;
 
 	private Dictionary<LevelRegionType, OctavedPerlinNoise> regionPerlinNoise;
 	private Dictionary<LevelRegionType, Vector2> regionHeightRange;
-	private OctavedPerlinNoise defaultPerlinNoise;
+	private OctavedPerlinNoise defaultPerlinNoise; // used for regions for which parameters have not been specified
 	private Vector2 defaultHeightRange = Vector2.up;
 
+
+	/// <summary>
+	/// Assigns height to each terrain point based on an octaved Perlin noise (with different parameters for different regions).
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		// Initialize Dictionaries of octaved perlin noises and region heights for easier access
 		// Select default values (used when the region assigned to the point does not have parameters specified)
@@ -41,6 +50,7 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 		RemapHeightsInEachRegion(level, currMinHeight, currMaxHeight);
 	}
 
+	// Initializes Dictionaries of octaved perlin noises and region heights for easier access
 	private void InitializeValues() {
 		// Initialize Dictionaries of octaved perlin noises and region heights for easier access
 		regionPerlinNoise = new Dictionary<LevelRegionType, OctavedPerlinNoise>();
@@ -57,6 +67,7 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 		defaultHeightRange = new Vector2(0, 6);
 	}
 
+	// Remaps the terrain height from the original range to a new range based on the region
 	private void RemapHeightsInEachRegion(LevelRepresentation level, float currentMinHeight, float currentMaxHeight) {
 		// Remap the range to the one according to the parameters and current height range
 		for (int x = 0; x < level.pointCount.x; x++) {
@@ -74,13 +85,17 @@ public class HeightMapGenerationRegionPerlin : LevelGeneratorModule {
 }
 
 
+/// <summary>
+/// A class containing parameters for generating a height map using an octaved Perlin noise in a specific region.
+/// </summary>
 [System.Serializable]
 public class RegionHeightMapParameters {
+	[Tooltip("A region these parameters are for.")]
 	public LevelRegionType region;
 
+	[Tooltip("Parameters of the octaved Perlin noise, e.g. number of octaves, frequency of each octave.")]
 	public PerlinNoiseOctaveParameters octaveParams = new PerlinNoiseOctaveParameters();
 
-	//[Header("Height")]
-	[Tooltip("What is the minimum and maximum height in this region.")]
+	[Tooltip("The minimum and maximum height in this region.")]
 	public Vector2 heightRange = new Vector2(0, 6);
 }

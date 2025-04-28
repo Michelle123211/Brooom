@@ -2,25 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Represents the terrain internally divided into blocks
+
+/// <summary>
+/// This class represents a terrain in a level as a grid of points which is internally divided into blocks.
+/// It holds references to all these blocks and creates a grid of points according to some parameters (e.g., dimensions, distance between points).
+/// </summary>
 public class TerrainRepresentation {
 
-	private TerrainPoint[,][,] terrainInBlocks;// 2D array of blocks, each block is 2D array of TerrainPoints
+	/// <summary>A 2D array of terrain blocks, where each block is a 2D array of <c>TerrainPoint</c>s.</summary>
+	private TerrainPoint[,][,] terrainInBlocks;
 
-	public float pointOffset = 0.5f; // Distance between two adjacent points in the grid.
-	public Vector2Int pointCount; // Number of points on the grid in the X and Z axes
-	public Vector2 terrainStartPosition; // Position of the bottom left point of Mesh
+	/// <summary>Distance between two adjacent points of the grid.</summary>
+	public float pointOffset = 0.5f;
+	/// <summary>Number of points on the grid in the X and Z axes.</summary>
+	public Vector2Int pointCount;
+	/// <summary>Position of the bottom-left point of terrain mesh.</summary>
+	public Vector2 terrainStartPosition;
 
-	public int blockSizePoints; // Level is divided into blocks whose width is this many points
-	public Vector2Int blockCount; // Number of blocks in each axis
+	/// <summary>Terrain is divided into blocks, each block having this many points in each direction.</summary>
+	public int blockSizePoints;
+	/// <summary>Number of blocks in the X and Z axes.</summary>
+	public Vector2Int blockCount;
 
+	/// <summary>
+	/// Creates a terrain representation as a grid of points divided into blocks with the given parameters.
+	/// </summary>
+	/// <param name="dimensions">Required terrain dimensions in the X and Z axes (final dimensions will be determined as the closest larger multiple of <c>pointOffset</c>).</param>
+	/// <param name="pointOffset">Distance between two adjacent grid points.</param>
+	/// <param name="blockSizeInPoints">How many points each block has in each direction.</param>
 	public TerrainRepresentation(Vector2 dimensions, float pointOffset, int blockSizeInPoints) {
-		this.pointOffset = pointOffset;
-		this.blockSizePoints = blockSizeInPoints;
-		ComputeDependentParameters(dimensions);
-		ResetTerrain();
+		UpdateParameters(dimensions, pointOffset, blockSizeInPoints);
 	}
 
+	/// <summary>
+	/// Accesses a <c>TerrainPoint</c> on the given grid indices (while considering terrain divided into blocks).
+	/// Can be used to alter terrain point's properties, e.g. height.
+	/// </summary>
+	/// <param name="i">Grid index of the point in the X axis.</param>
+	/// <param name="j">Grid index of the point in the Z axis.</param>
+	/// <returns></returns>
 	public TerrainPoint this[int i, int j] {
 		get {
 			// Get point from a corresponding block
@@ -32,18 +52,29 @@ public class TerrainRepresentation {
 		}
 	}
 
+	/// <summary>
+	/// Resets a terrain representation as a grid of points divided into blocks with the given parameters.
+	/// </summary>
+	/// <param name="dimensions">Required terrain dimensions in the X and Z axes (final dimensions will be determined as the closest larger multiple of <c>pointOffset</c>).</param>
+	/// <param name="pointOffset">Distance between two adjacent grid points.</param>
+	/// <param name="blockSizeInPoints">How many points each block has in each direction.</param>
 	public void UpdateParameters(Vector2 dimensions, float pointOffset, int blockSizeInPoints) {
 		this.pointOffset = pointOffset;
 		this.blockSizePoints = blockSizeInPoints;
 		ComputeDependentParameters(dimensions);
+		ResetTerrain();
 	}
 
+	/// <summary>
+	/// Changes dimensions of the terrain represented, while keeping the bottom-left corner (<c>TerrainPoint</c>s already existing in the grid with all of their properties).
+	/// </summary>
+	/// <param name="newDimensions">New required terrain dimensions in the X and Z axes (final dimensions will be determined as the closest larger multiple of <c>pointOffset</c>).</param>
 	public void ChangeDimensions(Vector2 newDimensions) {
 		Vector2Int oldPointCount = this.pointCount;
 		TerrainPoint[,][,] oldTerrainInBlocks = terrainInBlocks;
 		ComputeDependentParameters(newDimensions);
 		ResetTerrain();
-		// Copy the upper-left corner of the old terrain to an array of new dimensions
+		// Copy the upper-left corner of the old terrain grid to an array of new dimensions
 		for (int x = 0; x < Mathf.Min(oldPointCount.x, pointCount.x); x++) {
 			for (int y = 0; y < Mathf.Min(oldPointCount.y, pointCount.y); y++) {
 				TerrainPoint oldTerrainPoint = oldTerrainInBlocks[Mathf.FloorToInt(x / (float)blockSizePoints), Mathf.FloorToInt(y / (float)blockSizePoints)][x % blockSizePoints, y % blockSizePoints];
@@ -55,10 +86,20 @@ public class TerrainRepresentation {
 		}
 	}
 
-	public TerrainPoint[,] GetTerrainBlock(int blockX, int blockY) {
-		return terrainInBlocks[blockX, blockY];
+	/// <summary>
+	/// Gets terrain block from the given indices.
+	/// </summary>
+	/// <param name="blockX">Block index in the X axis.</param>
+	/// <param name="blockZ">Block index in the Z axis.</param>
+	/// <returns></returns>
+	public TerrainPoint[,] GetTerrainBlock(int blockX, int blockZ) {
+		return terrainInBlocks[blockX, blockZ];
 	}
 
+	/// <summary>
+	/// Lazily enumerates all terrain blocks (i.e. 2D arrays of <c>TerrainPoint</c>s) the terrain is composed of.
+	/// </summary>
+	/// <returns>An enumerable of terrain blocks of the terrain.</returns>
 	public IEnumerable<TerrainPoint[,]> EnumerateTerrainBlocks() {
 		for (int i = 0; i < blockCount.x; i++) {
 			for (int j = 0; j < blockCount.y; j++) {
@@ -67,6 +108,10 @@ public class TerrainRepresentation {
 		}
 	}
 
+	/// <summary>
+	/// Regenerates a grid of terrain points divided into blocks based on the currently stored parameters.
+	/// All terrain points will have their initial values, i.e. it will be a completely flat terrain with height 0.
+	/// </summary>
 	public void ResetTerrain() {
 		terrainInBlocks = new TerrainPoint[blockCount.x, blockCount.y][,];
 		for (int i = 0; i < blockCount.x; i++) {
@@ -92,8 +137,8 @@ public class TerrainRepresentation {
 		}
 	}
 
+	// Computes parameters which are not set from outside but are dependent on the ones which are
 	private void ComputeDependentParameters(Vector2 dimensions) {
-		// Compute parameters which are not set from outside
 		this.pointCount = new Vector2Int(Mathf.CeilToInt(dimensions.x / pointOffset) + 1, Mathf.CeilToInt(dimensions.y / pointOffset) + 1); // multiple of pointOffset which is the closest larger number than the given dimensions
 		this.terrainStartPosition = new Vector2(-(float)(pointCount.x - 1) * pointOffset / 2, -(float)(pointCount.y - 1) * pointOffset / 2); // centre is in zero, distance between adjacent points is pointOffset
 		this.blockCount = new Vector2Int(

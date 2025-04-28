@@ -2,9 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A level generator module responsible for instantiating bonuses in bonus spots which have already been determined and are specified in the level representation.
+/// Each bonus type has different placement parameters and based on them a particular bonus type is assigned to a bonus spot
+/// and a certain number of bonus instances are spawned in a row.
+/// </summary>
 public class BonusPlacement : LevelGeneratorModule {
 
-    [Tooltip("Placement parameters for all the specific types of bonuses. The top ones have higher priority when occupying a spot.")]
+    [Tooltip("Placement parameters for all the specific types of bonuses. The top ones have higher priority when occupying a spot where more types are applicable.")]
     public List<BonusPlacementParameters> bonuses;
 
     [Tooltip("The spacing between bonuses in a single row.")]
@@ -17,6 +23,10 @@ public class BonusPlacement : LevelGeneratorModule {
     public bool allBonusesAvailable = false;
 
 
+    /// <summary>
+    /// Instantiates bonuses in bonus spots specified in the level representation, based on some placement parameters of each bonus type.
+    /// </summary>
+    /// <param name="level"><inheritdoc/></param>
     public override void Generate(LevelRepresentation level) {
         // Remove any previously instantiated bonuses
         UtilsMonoBehaviour.RemoveAllChildren(bonusParent);
@@ -25,6 +35,7 @@ public class BonusPlacement : LevelGeneratorModule {
         RemoveEmptySpots(level);
     }
 
+    // For each bonus spots, selects the type of bonus to spawn there based on patterns (if any), chooses a number of instances and then creates them
     private void FillTheBonusSpots(LevelRepresentation level) {
         // Fill the spots according to bonus patterns
         foreach (var bonus in bonuses) {
@@ -38,6 +49,7 @@ public class BonusPlacement : LevelGeneratorModule {
         }
     }
 
+    // Chooses a random number of instances (within an allowed range), instantiates them in a row and assignes them to the bonus spot in the level representation
     private void CreateBonusInstances(LevelRepresentation level, BonusSpot spot, BonusPlacementParameters bonus) {
         // Choose number of bonuses in a single row
         int min = Mathf.Max(Mathf.Min(bonus.countRange.x, bonus.countRange.y), 0); // at least 0 and make it swap-resistant
@@ -57,6 +69,7 @@ public class BonusPlacement : LevelGeneratorModule {
         spot.isEmpty = false;
     }
 
+    // Removes bonus spots without any bonus instances from the level representation
     private void RemoveEmptySpots(LevelRepresentation level) {
         // Remove all spots without assigned bonus object
         for (int i = level.bonuses.Count - 1; i >= 0; i--) {
@@ -66,15 +79,18 @@ public class BonusPlacement : LevelGeneratorModule {
     }
 }
 
-// Describes placement parameters for a specific type of bonus
+/// <summary>
+/// A class describing placement parameters for a particular type of bonus (i.e. bonus prefab, number of instances, which bonus spots to populate).
+/// </summary>
 [System.Serializable]
 public class BonusPlacementParameters {
+    [Tooltip("A name which is displayed in the Inspector when this class' instance is added to a list.")]
     public string visibleName;
-    [Tooltip("Prefab of the bonus object.")]
+    [Tooltip("Prefab of the bonus object of a particular type for which placement parameters are being specified.")]
     public BonusEffect bonusPrefab;
     [Tooltip("How many instances should be next to each other in one spot (min and max, must be non-negative).")]
     public Vector2Int countRange;
-    [Tooltip("Pattern describing frequency of occurences (e.g. [false, true] means every other, e.g. [true, false, true] means every first and third).")]
+    [Tooltip("Pattern describing frequency of occurences (e.g., [false, true] means every other, [true, false, true] means every first and third).")]
     public List<bool> pattern;
 }
 

@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+
+/// <summary>
+/// Terrain in a level is separated into several blocks and this components represents one of them placed in the scene.
+/// It holds terrain data of a single block, i.e. a grid of terrain points, and it is also responsible for creating its mesh.
+/// </summary>
 public class TerrainBlock : MonoBehaviour {
 
 	[Header("Debug")]
+	[Tooltip("Whether to use gizmos to highlight terrain mesh vertices.")]
 	[SerializeField] bool showVertices = false;
+	[Tooltip("Whether to use gizmos to highlight terrain mesh edges.")]
 	[SerializeField] bool showEdges = false;
+	[Tooltip("Whether to use gizmos to highlight terrain points which are considered to be on border between adjacent regions.")]
 	[SerializeField] bool showBorders = false;
 
 	// Mesh and its data
@@ -20,19 +28,29 @@ public class TerrainBlock : MonoBehaviour {
 
 	// Terrain data
 	TerrainPoint[,] terrainBlock;
-	int blockX, blockY;
+	int blockX, blockZ;
 
 
-	// The whole TerrainRepresentation is passed in (and not only one block) because we need acees to adjacent blocks to fill gaps
-	public void GenerateTerrainMesh(TerrainRepresentation terrain, int blockX, int blockY, Dictionary<LevelRegionType, LevelRegion> terrainRegionsDict) {
-		this.terrainBlock = terrain.GetTerrainBlock(blockX, blockY);
+	/// <summary>
+	/// Generates a mesh of a single terrain block based on its object representation.
+	/// The whole <c>TerrainRepresentation</c> is passed in (and not only one block), because adjacent blocks are needed to fill gaps.
+	/// </summary>
+	/// <param name="terrain">Object representation of the terrain in the level.</param>
+	/// <param name="blockX">Block index in the X axis.</param>
+	/// <param name="blockZ">Block index in the Z axis.</param>
+	/// <param name="terrainRegionsDict">A dictionary of terrain regions with their data.</param>
+	public void GenerateTerrainMesh(TerrainRepresentation terrain, int blockX, int blockZ, Dictionary<LevelRegionType, LevelRegion> terrainRegionsDict) {
+		this.terrainBlock = terrain.GetTerrainBlock(blockX, blockZ);
 		this.blockX = blockX;
-		this.blockY = blockY;
+		this.blockZ = blockZ;
 		CreateMeshData(terrain, terrainRegionsDict);
 		ConvertMeshFromSmoothToFlat();
 		UpdateMesh();
 	}
 
+	/// <summary>
+	/// Initializes everything necessary before being able to generate a terrain mesh.
+	/// </summary>
 	public void Initialize() {
 		mesh = new Mesh();
 		GetComponent<MeshFilter>().mesh = mesh;
@@ -40,6 +58,7 @@ public class TerrainBlock : MonoBehaviour {
 	}
 
 #if UNITY_EDITOR
+	// Saves the current mesh as an asset
 	[ContextMenu("Save Mesh")]
 	private void SaveMesh() {
 		if (mesh == null) return;
@@ -56,12 +75,13 @@ public class TerrainBlock : MonoBehaviour {
 	}
 #endif
 
+	// Prepares all data for the terrain mesh (vertices, triangles, colors) based on the terrain representation
 	private void CreateMeshData(TerrainRepresentation terrain, Dictionary<LevelRegionType, LevelRegion> terrainRegionsDict) {
 		int startX = blockX * terrain.blockSizePoints;
-		int startY = blockY * terrain.blockSizePoints;
+		int startY = blockZ * terrain.blockSizePoints;
 		// If there is another block next to it, add one more point in that direction (to fill gaps between blocks)
 		int pointCountX = this.terrainBlock.GetLength(0) + (blockX < terrain.blockCount.x - 1 ? 1 : 0);
-		int pointCountY = this.terrainBlock.GetLength(1) + (blockY < terrain.blockCount.y - 1 ? 1 : 0);
+		int pointCountY = this.terrainBlock.GetLength(1) + (blockZ < terrain.blockCount.y - 1 ? 1 : 0);
 		// Vertices
 		vertices = new Vector3[pointCountX * pointCountY];
 		for (int x = 0, vertexIndex = 0; x < pointCountX; x++) {
@@ -75,12 +95,12 @@ public class TerrainBlock : MonoBehaviour {
 		for (int x = 0, triangleIndex = 0, vertexIndex = 0; x < pointCountX - 1; x++) {
 			for (int y = 0; y < pointCountY - 1; y++) {
 				// For each possible lower left corner add a quad composed of two triangles
-				triangles[triangleIndex] = vertexIndex; // terrain[x, y].vertexIndex;
-				triangles[triangleIndex + 1] = vertexIndex + 1; // terrain[x, y + 1].vertexIndex;
-				triangles[triangleIndex + 2] = vertexIndex + pointCountY; // terrain[x + 1, y].vertexIndex;
-				triangles[triangleIndex + 3] = vertexIndex + pointCountY; // terrain[x + 1, y].vertexIndex;
-				triangles[triangleIndex + 4] = vertexIndex + 1; // terrain[x, y + 1].vertexIndex;
-				triangles[triangleIndex + 5] = vertexIndex + pointCountY + 1; // terrain[x + 1, y + 1].vertexIndex;
+				triangles[triangleIndex] = vertexIndex;
+				triangles[triangleIndex + 1] = vertexIndex + 1;
+				triangles[triangleIndex + 2] = vertexIndex + pointCountY;
+				triangles[triangleIndex + 3] = vertexIndex + pointCountY;
+				triangles[triangleIndex + 4] = vertexIndex + 1;
+				triangles[triangleIndex + 5] = vertexIndex + pointCountY + 1;
 				triangleIndex += 6;
 				vertexIndex++;
 			}
@@ -102,6 +122,7 @@ public class TerrainBlock : MonoBehaviour {
 		}
 	}
 
+	// Duplicates mesh vertices so they are not shared between triangles and the resulting mesh is flat shaded (not smoothed out)
 	private void ConvertMeshFromSmoothToFlat() {
 		Vector3[] newVertices = new Vector3[triangles.Length];
 		int[] newTriangles = new int[triangles.Length];
@@ -118,6 +139,7 @@ public class TerrainBlock : MonoBehaviour {
 		colors = newColors;
 	}
 
+	// Updates the mesh assigned to the MeshCollider component based on the current data
 	private void UpdateMesh() {
 		mesh.Clear();
 
@@ -134,6 +156,7 @@ public class TerrainBlock : MonoBehaviour {
 		meshCollider.sharedMesh = mesh; // the Mesh needs to be assigned every time again
 	}
 
+	// Highlights mesh vertices, mesh edges or terrain points belonging to borders between regions, if requested
 	private void OnDrawGizmosSelected() {
 		// Vertices
 		if (showVertices) {

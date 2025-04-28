@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// A level generator module responsible for instantiating track objects (i.e. hoops, checkpoints, starting zone and finish line)
+/// in points which have already been determined and are specified in the level representation.
+/// </summary>
 public class TrackObjectsPlacement : LevelGeneratorModule {
+
 	[Tooltip("Prefab of the hoop.")]
 	public Hoop hoopPrefab;
 	[Tooltip("Scale of the hoop.")]
@@ -23,6 +28,10 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 	[Tooltip("An object which will be parent of the starting zone and finish line.")]
 	public Transform startFinishParent;
 
+	/// <summary>
+	/// Instantiates all track objects (i.e. hoops, checkpoints, starting zone, finish line) in points specified in the level representation.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		// Remove any previously instantiated hoops
 		UtilsMonoBehaviour.RemoveAllChildren(hoopsParent);
@@ -59,4 +68,5 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 		FinishLine finish = Instantiate<FinishLine>(finishLinePrefab, finishLinePosition, Quaternion.FromToRotation(Vector3.forward, direction), startFinishParent);
 		level.finish = finish;
 	}
+
 }

@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A level generator module responsible for instantiating environment elements based on their placement parameters and the region underneath.
+/// </summary>
 public class EnvironmentElementsPlacement : LevelGeneratorModule {
 
 	[Header("Basic parameters")]
 
-	[Tooltip("The level is divided into a grid of tiles and within each tile a spot for environment element is randomly selected.")]
+	[Tooltip("The level is divided into a grid of tiles of the given size, and within each tile a spot for environment element is randomly selected.")]
 	public int gridTileSize = 5;
 
 	[Tooltip("Edges of the level (of this width in number of terrain points) will be kept empty.")]
@@ -29,7 +33,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	[Tooltip("An object which will be parent of all the environment objects in the hierarchy.")]
 	public Transform environmentParent;
 
-	[Tooltip("List of default environment elements which should be in every region (e.g. clouds).")]
+	[Tooltip("List of default environment elements which are allowed in every region (e.g. clouds).")]
 	public RegionEnvironment defaultElements;
 
 	[Tooltip("List of environment elements specific for each region.")]
@@ -38,6 +42,10 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	// Size measured in number of terrain points (as opposed to gridTileSize which is in default units)
 	private int tileSizeInPoints;
 
+	/// <summary>
+	/// Randomly instantiates environment elements in random spots while considering their placement/randomization parameters and the region underneath.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		// Remove any previously instantiated elements
 		UtilsMonoBehaviour.RemoveAllChildren(environmentParent);
@@ -62,8 +70,8 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		}
 	}
 
+	// Decides what will be on a given spot according to its region (if anything at all) and instantiates it
 	private void FillEnvironmentSpot(LevelRepresentation level, int spotX, int spotY) {
-		// Decide what will be there according to its region and instantiate it
 		LevelRegionType regionType = level.Terrain[spotX, spotY].region;
 		foreach (var region in regionElements) {
 			if (region.region == regionType) {
@@ -79,6 +87,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		}
 	}
 
+	// Selects an environment element which should be instantiated by mapping a number between 0 and 1 to a specific option (each option occupies a range of values)
 	private EnvironmentElement SelectElementType(RegionEnvironment environment, ref float randomNumber) {
 		if (environment.elements != null && environment.elements.Count > 0) { // There are some options
 			foreach (var element in environment.elements) {
@@ -92,6 +101,7 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		return null;
 	}
 
+	// Instantiates a random variant of the given environment element on the given spot with a random rotation and scale
 	private void CreateElementInstance(LevelRepresentation level, int spotX, int spotY, EnvironmentElement element) {
 		// Check for available variants
 		if (element.elementPrefabs == null || element.elementPrefabs.Count == 0) return;
@@ -106,10 +116,10 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 		if (IsCloseToStartLine(level, spotX, spotY) && !CanBeSpawnedAtStartLine(level, elementVariant, spotX, spotY)) {
 			return;
 		}
-		// Compute parameters
+		// Compute parameters - position, rotation, scale
 		Vector3 position = level.Terrain[spotX, spotY].position;
 		if (element.specificHeightRange) {
-			if (position.y >= element.heightRange.y) return; // not possible to place the object above terrain
+			if (position.y >= element.heightRange.y) return; // not possible to place the object below terrain
 			else position.y = Random.Range(element.heightRange.x, element.heightRange.y);
 		}
 		Quaternion rotation = element.randomRotation ? Quaternion.Euler(0, Random.Range(0, 360), 0) : Quaternion.identity;
@@ -145,18 +155,25 @@ public class EnvironmentElementsPlacement : LevelGeneratorModule {
 	}
 }
 
+/// <summary>
+/// A class describing a list of available environment elements (with their placement and randomization parameters) for a specific region.
+/// </summary>
 [System.Serializable]
 public class RegionEnvironment {
-	[Tooltip("Used just to display a reasonable name instead of default 'Element X'.")]
+	[Tooltip("Used just to display a reasonable name instead of default 'Element X' when added to a list in the Inspector.")]
 	public string name;
+	[Tooltip("A region to which these environment elements belong.")]
 	public LevelRegionType region;
 	[Tooltip("Elements with their variations and probabilities of them being placed on a generated spot. If probabilities don't add up to 1, the rest is probability of empty spot.")]
 	public List<EnvironmentElement> elements;
 }
 
+/// <summary>
+/// A class describing a single environment element with its different variants, and with placement and randomization parameters.
+/// </summary>
 [System.Serializable]
 public class EnvironmentElement {
-	[Tooltip("Used just to display a reasonable name instead of default 'Element X'.")]
+	[Tooltip("Used just to display a reasonable name instead of default 'Element X' when added to a list in the Inspector.")]
 	public string name;
 	[Tooltip("From these elements one will be chosen randomly whenever an element is placed.")]
 	public List<GameObject> elementPrefabs;
@@ -164,13 +181,13 @@ public class EnvironmentElement {
 	public float probability;
 	[Tooltip("Whether the objects should use random rotation around Y axis when instantiated.")]
 	public bool randomRotation = true;
-	[Tooltip("The instance will be scaled according to a random number from the interval (in all 3 axes).")]
+	[Tooltip("The instance will be scaled according to a random number from the interval (uniformly in all 3 axes).")]
 	public Vector2 scaleRange = Vector2.one;
-	[Tooltip("Some objects may not be fitting very well on region borders.")]
+	[Tooltip("Whether this environment element can be placed in points which are considered region borders (some objects may not be fitting very well there).")]
 	public bool canBeOnRegionBorder = true;
 	[Tooltip("If false, the objects will be placed on the ground. If true, objects will be placed at random height from the range given below.")]
 	public bool specificHeightRange = false;
-	[Tooltip("Objects will be placed to a random height from this interval if the 'specificHeightRange' is set to true.")]
+	[Tooltip("Objects will be placed to a random absolute height from this interval if the 'specificHeightRange' is set to true.")]
 	public Vector2 heightRange = Vector2.zero;
 	[Tooltip("Whether these objects should cast shadows.")]
 	public bool castShadows = true;

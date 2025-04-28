@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A level generator module responsible for instantiating randomized opponents on the start line.
+/// Each opponent has a random skill level assigned (in such a way that no skill level is used twice),
+/// and also other aspects are randomized (appearance, name, broom upgrades, equipped spells).
+/// </summary>
 public class OpponentsGeneration : LevelGeneratorModule {
 
 	[Tooltip("Number of opponents to generate.")]
 	public int opponentsCount = 5;
-	[Tooltip("Skill levels of the opponents.")]
+	[Tooltip("Skill levels of the opponents, each will be chosen at most once. If there are not enough skill levels for the number of opponents, AISkillLevel.SkillType.Average will be chosen by default.")]
 	public List<AISkillLevel.SkillType> skillLevels;
 	[Tooltip("Space between the racers on the start line.")]
 	public float spacing = 2;
@@ -17,6 +23,11 @@ public class OpponentsGeneration : LevelGeneratorModule {
 	[Tooltip("Colors assigned to the opponents which are then used in the minimap.")]
 	public Color[] opponentColors;
 
+
+	/// <summary>
+	/// Instantiates opponents on the start line, each with randomized parameters such as skill level, appearance, name, broom upgrades and equipped spells.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		// Remove any previously instantiated opponents
 		UtilsMonoBehaviour.RemoveAllChildren(opponentsParent);
@@ -41,4 +52,5 @@ public class OpponentsGeneration : LevelGeneratorModule {
 			opponent.Randomize(opponentColors[i % opponentColors.Length]);
 		}
 	}
+
 }

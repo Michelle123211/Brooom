@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// Moves track points higher according to the terrain underneath them
+/// <summary>
+/// A level generator module responsible for moving track points, bonus spots and start position higher according to the terrain underneath them,
+/// so that they are always at a minimum height above ground.
+/// </summary>
 public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 
 	[Tooltip("Maximum altitude (Y coordinate) the player can fly up to (no track element can be higher than that).")]
 	public float maxAltitude = 15f;
-	[Tooltip("Each hoop's Y coordinate is adjusted according to the maximum terrain height in a close neighbourhood of the given radius.")]
-	public int hoopHeightAreaRadius = 4;
-	[Tooltip("Hoops and checkpoints should be placed in this minimum height above ground.")]
+	[Tooltip("Y coordinate of each hoop, checkpoint, bonus and start position is adjusted according to the maximum terrain height in a close neighbourhood of the given radius.")]
+	public int neighbourhoodRadius = 4;
+	[Tooltip("Hoops, checkpoints, bonuses and start position should be placed in this minimum height above ground.")]
 	public float defaultMinimumOffsetAboveGround = 4;
 	[Tooltip("Some regions may prefer different minimum height above ground than the default one (e.g. larger for forest).")]
 	public List<TrackInRegionHeight> minHeightOffsetOverrides;
@@ -20,6 +23,11 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 	// Minimum absolute height for each region
 	private Dictionary<LevelRegionType, float> minimumAbsoluteHeight;
 
+	/// <summary>
+	/// Goes through all track points and bonus spots and changes their Y coordinate if necessary to ensure they are in at least some minimum height above ground,
+	/// which can be specified for each region separately. Also changes Y coordinate of the player's start position, if necessary.
+	/// </summary>
+	/// <param name="level"><inheritdoc/></param>
 	public override void Generate(LevelRepresentation level) {
 		PrepareRegionHeightDictionary(level);
 
@@ -53,12 +61,13 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		level.playerStartPosition.y = Mathf.Clamp(Mathf.Max(level.playerStartPosition.y, computedHeight), 0, maxAltitude); // TODO: Consider negative height if necessary (e.g. when going underground)
 	}
 
+	// Creates a dictionary containing minimum height above ground (default or override) for each region
 	private void PrepareRegionHeightDictionary(LevelRepresentation level) {
 		// Prepare Dictionary of minimum height for each region type
 		minimumOffsetAboveGround = new Dictionary<LevelRegionType, float>();
 		minimumAbsoluteHeight = new Dictionary<LevelRegionType, float>();
 		foreach (var region in level.TerrainRegions) {
-			minimumOffsetAboveGround.Add(region.Key, defaultMinimumOffsetAboveGround);
+			minimumOffsetAboveGround.Add(region.Key, defaultMinimumOffsetAboveGround); // use default value first
 		}
 		// Override minimum height for specific regions
 		if (minHeightOffsetOverrides != null) {
@@ -71,15 +80,16 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 		}
 	}
 
+	// Finds maximum height in a small neighbourhood around the given point while considering the terrain height plus minimum height above ground
 	private float FindMaximumHeightInNeighbourhood(LevelRepresentation level, Vector2Int gridCoords) {
 		// Get maximum height in some small neighbourhood
 		float maxHeight = GetMinimumHeightInPoint(level.Terrain[gridCoords.x, gridCoords.y]);
 		float height;
 		int x, y;
-		for (int i = -hoopHeightAreaRadius; i <= hoopHeightAreaRadius; i++) {
+		for (int i = -neighbourhoodRadius; i <= neighbourhoodRadius; i++) {
 			x = gridCoords.x + i;
 			if (x < 0 || x >= level.pointCount.x) continue; // out of bounds check
-			for (int j = -hoopHeightAreaRadius; j <= hoopHeightAreaRadius; j++) {
+			for (int j = -neighbourhoodRadius; j <= neighbourhoodRadius; j++) {
 				y = gridCoords.y + j;
 				if (y < 0 || y >= level.pointCount.y) continue; // out of bounds check
 				// Get minimum height (either terrain height + minimum offset above ground, or minimun absolute height)
@@ -109,10 +119,15 @@ public class TrackTerrainHeightPostprocessing : LevelGeneratorModule {
 	}
 }
 
+/// <summary>
+/// A class for assigning a minimum height above ground of track points in a specific region.
+/// </summary>
 [System.Serializable]
 public class TrackInRegionHeight {
+	[Tooltip("Terrain region for which the minimum height above ground is specified.")]
 	public LevelRegionType region = LevelRegionType.NONE;
+	[Tooltip("Minimum height above ground in which track points may be placed in this particular region.")]
 	public float minimumHeight = 1;
-	[Tooltip("The 'minimumHeight' mey be either relative to the ground (i.e. at least this high above ground) or absolute (i.e. at least in this global height).")]
+	[Tooltip("The 'minimumHeight' mey be either relative to the ground (i.e. at least this high above ground) or absolute (i.e. at least this high above sea level).")]
 	public bool isRelativeToGround = true;
 }
