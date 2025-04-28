@@ -18,25 +18,37 @@ public class RaceController : RaceControllerBase {
     [Tooltip("Minimum and maximum reward for the first place.")]
     public Vector2Int firstPlaceRewardRange = new Vector2Int(100, 4000);
 
-    public bool isInTutorial = false; // whether First Race tutorial is running during this race - it may affect behaviour
+    [Tooltip("Whether First Race tutorial is running during this race (it may affect behaviour).")]
+    public bool isInTutorial = false;
 
     // Related objects
+    /// <summary>Responsible for computing new stats values based on performance during the race.</summary>
     protected StatsComputer statsComputer;
 
     private int restartCountInTraining = 0;
 
     private bool isTrainingSkipped = false; // whether the training is already being skipped
 
-
+    /// <summary>
+    /// <inheritdoc/>
+    /// It sends a message that training has ended.
+    /// </summary>
 	protected override void BeforeRaceStartSequence() {
         Messaging.SendMessage("TrainingEnded", restartCountInTraining);
     }
-
+    /// <summary>
+    /// <inheritdoc/>
+    /// It ensures data for stats computation is being collected.
+    /// </summary>
 	protected override void AfterRaceStartSequence() {
         // Start computing player stats
         statsComputer.StartComputingStats();
     }
 
+    /// <summary>
+    /// <inheritdoc/>
+    /// It notes down any newly visited regions and stops collecting data for stats computation.
+    /// </summary>
 	protected override void BeforeRaceEndSequence() {
         // Note down visited regions (but not during First Race tutorial)
         if (!isInTutorial)
@@ -45,11 +57,18 @@ public class RaceController : RaceControllerBase {
         statsComputer.StopComputing();
     }
 
+    /// <summary>
+    /// <inheritdoc/>
+    /// It updates the player's stats values.
+    /// </summary>
 	protected override void AfterRaceEndSequence() {
         // Update player statistics in PlayerState - computation depends on the player's place
         statsComputer.UpdateStats();
     }
 
+    /// <summary>
+    /// Decreases all stats by a small amount and goes back to the Main Menu.
+    /// </summary>
 	protected override void OnRaceGivenUp() {
         // Decrease all stats
         statsComputer.LowerAllStatsOnRaceGivenUp();
@@ -57,6 +76,7 @@ public class RaceController : RaceControllerBase {
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
+    /// <inheritdoc/>
     protected override int[] ComputeCoinRewards() {
         int[] result = new int[racers.Count];
         // Compute rewards for individual places
@@ -71,6 +91,7 @@ public class RaceController : RaceControllerBase {
         statsComputer = GetComponent<StatsComputer>();
     }
 
+    // Prepares everything necessary for the training stage
     private void StartTraining() {
         State = RaceState.Training;
         restartCountInTraining = 0;
@@ -86,6 +107,7 @@ public class RaceController : RaceControllerBase {
             playerRacer.characterController.EnableActions();
     }
 
+    // Notes down all visited regions
     private void DetectVisitedRegions() {
         // For each track point, set its region as visited
         for (int i = 0; i < Level.Track.Count; i++) {

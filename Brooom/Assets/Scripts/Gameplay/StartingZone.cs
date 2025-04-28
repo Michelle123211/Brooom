@@ -4,9 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
+/// <summary>
+/// A component representing a starting zone which the player has to enter during a training to start the race.
+/// </summary>
 public class StartingZone : MonoBehaviour
 {
-	[Tooltip("How many seconds the player must stay in tho starting zone before the race starts.")]
+	[Tooltip("How many seconds the player must stay in the starting zone before the race starts.")]
 	[SerializeField] float durationToStart;
 
 	[Tooltip("Label displaying countdown to the race start.")]
@@ -22,10 +26,15 @@ public class StartingZone : MonoBehaviour
 	private string countdownText = string.Empty;
 
 
+	/// <summary>
+	/// Shows or hides all UI elements related to the starting zone (e.g., instructions to enter, countdown).
+	/// </summary>
+	/// <param name="show">Whether all UI elements should be shown (<c>true</c>) or hidden (<c>false</c>).</param>
 	public void ShowOrHideUI(bool show) {
 		UIElements.SetActive(show);
 	}
 
+	// Starts and displays countdown before entering a race, if the player has entered the trigger zone
 	private void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player") && !other.isTrigger) { // only actual collider, not trigger around player to detect potential spell targets
 			currentTime = durationToStart;
@@ -37,6 +46,7 @@ public class StartingZone : MonoBehaviour
 		}
 	}
 
+	// Stops and hides countdown before entering a race, if the player has exited the trigger zone
 	private void OnTriggerExit(Collider other) {
 		if (other.CompareTag("Player") && !other.isTrigger) { // only actual collider, not trigger around player to detect potential spell targets
 			isCountingDown = false;
@@ -45,6 +55,7 @@ public class StartingZone : MonoBehaviour
 		}
 	}
 
+	// Updates countdown before race (displaying remaining number of seconds)
 	private void UpdateCountdownUI() {
 		int newSecondsLeft = Mathf.CeilToInt(currentTime);
 		if (newSecondsLeft < secondsLeft) { // play countdown sound each second

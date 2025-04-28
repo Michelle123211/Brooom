@@ -2,18 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A class responsible for computing the player's stats values based on their performance during the race.
+/// </summary>
 public class StatsComputer : MonoBehaviour {
 
-    // Parameters for Endurance[
+    // Parameters for Endurance
     [Header("Endurance")]
     [Tooltip("Curve describing amount of change in the Endurance stat based on the player's place in the race.")]
     [SerializeField] AnimationCurve enduranceDeltaBasedOnPlace;
     [Tooltip("Maximum amount of change in the Endurance stat. Exact value depends on the AnimationCurve (this value is multiplied by the one from the AnimationCurve).")]
     [SerializeField] float maxEnduranceDelta = 5;
+
     // Parameters for Speed
     [Header("Speed")]
     [Tooltip("Time interval (in seconds) between two consecutive speed samples.")]
     [SerializeField] float speedSamplingInterval = 3;
+
     // Parameters for Dexterity
     [Header("Distance from 'ideal' trajectory")]
     [Tooltip("Time interval (in seconds) between two consecutive samples of distance from the 'ideal' trajectory.")]
@@ -22,14 +28,17 @@ public class StatsComputer : MonoBehaviour {
     [SerializeField] AnimationCurve penalizationBasedOnDistance;
     [Tooltip("Range of distances in which the exact penalization is computed from the AnimationCurve. Lower distances are not penalized, higher are given the maximum penalization.")]
     [SerializeField] Vector2 distanceRange = new Vector2(0.5f, 10f);
+
     // Parameters for Dexterity and Precision
     [Header("Obstacle collisions")]
     [Tooltip("Curve describing dependency of collision penalization (between 0 and 1) based on track length (between 0 and 1).")]
     [SerializeField] AnimationCurve collisionPenalizationBasedOnTrackLength;
+
     // Parameters for Precision
     [Header("Wrong direction")]
     [Tooltip("Curve describing dependency of wrong direction penalization (between 0 and 1) based on track length (between 0 and 1).")]
     [SerializeField] AnimationCurve wrongDirectionPenalizationBasedOnTrackLength;
+
     // Parameters for Magic
     [Header("Casting spells")]
     [Tooltip("Curve describing fraction of Magic value depending on the percentage of the equipped spells which were used.")]
@@ -83,7 +92,9 @@ public class StatsComputer : MonoBehaviour {
     private int statWeightBasedOnPlace; // When combining the old stat value with the new one, the weight of the new value is based on the place
 
 
-    // Called from RaceController at the start of the race
+    /// <summary>
+    /// Initializes everything necessary and starts collecting data necessary for stats values' computation. This should be called at the start of the race.
+    /// </summary>
     public void StartComputingStats() {
         isComputing = true;
 
@@ -128,7 +139,9 @@ public class StatsComputer : MonoBehaviour {
         playerSpellController.onSpellCast += OnSpellCast;
 }
 
-    // Called from RaceController at the end of the race
+    /// <summary>
+    /// Stops collecting data necessary for stats values' computation. This should be called at the end of the race.
+    /// </summary>
     public void StopComputing() {
         isComputing = false;
         // Unregister callbacks
@@ -139,6 +152,10 @@ public class StatsComputer : MonoBehaviour {
         playerSpellController.onSpellCast -= OnSpellCast;
     }
 
+    /// <summary>
+    /// Computes new stats values based on collected data, adds some error tolerance, combines the new stats values with the old ones (using weighted average)
+    /// and then stores the final values into <c>PlayerState</c>.
+    /// </summary>
     public void UpdateStats() {
         // Compute new stats values
         CompleteComputationParameters();
@@ -175,7 +192,9 @@ public class StatsComputer : MonoBehaviour {
         PlayerState.Instance.CurrentStats = combinedValues;
     }
 
-    // Called when the player gives up the race from the pause menu
+    /// <summary>
+    /// Penalizes the player for giving up a race by lowering all of their stats values by a small amount.
+    /// </summary>
     public void LowerAllStatsOnRaceGivenUp() {
         // Percentual decrease in all stats
         PlayerStats oldValues = PlayerState.Instance.CurrentStats;
@@ -199,7 +218,7 @@ public class StatsComputer : MonoBehaviour {
         passedHoops = 0;
         foreach (var isHoopPassed in playerRaceState.hoopsPassedArray)
             if (isHoopPassed) passedHoops++;
-        // Sum of weights of all the bonuses - from RaceController.Instance.level
+        // Sum of weights of all the bonuses (only one instance from each bonus spot) - from RaceController.Instance.level
         totalBonusWeightSum = 0;
         foreach (var bonusSpot in RaceControllerBase.Instance.Level.bonuses) {
             if (bonusSpot.isEmpty) continue;
@@ -223,25 +242,29 @@ public class StatsComputer : MonoBehaviour {
             if (spellCast.Value) totalSpellUsedCount++;
         totalSpellCount = Mathf.Max(SpellManager.Instance.AllSpells.Count, 1); // how many spells are available in the game (must be > 0 for further computation)
         spellUsageValue = (totalSpellUsedCount / (float)totalSpellCount); // number between 0 and 1 describing how diverse spells the player has ever cast
-        // Weight of the new stat value when cimbining it with the old one
-        float middle = (totalRacers - 1) / 2f + 1;
-        statWeightBasedOnPlace = Mathf.FloorToInt(Mathf.Abs(middle - playerPlace) + 1); // e.g. 3 for 1st place among 5-6 racers
+        // Weight of the new stat value when combining it with the old one
+        float middlePlace = (totalRacers - 1) / 2f + 1;
+        statWeightBasedOnPlace = Mathf.FloorToInt(Mathf.Abs(middlePlace - playerPlace) + 1); // e.g. 3 for 1st place among 5-6 racers
     }
 
+    // Computes Endurance value based on collected data
     private int ComputeEnduranceValue() {
-        // Change the current Endurance value based on place
+        // Change based on place
         float delta = enduranceDeltaBasedOnPlace.Evaluate(1 - ((playerPlace - 1f) / (totalRacers - 1f))) * maxEnduranceDelta;
         int newValue = Mathf.Min(Mathf.RoundToInt(currentEndurance + delta), 100); // must not exceed 100
         Analytics.Instance.LogEvent(AnalyticsCategory.Stats, $"Endurance: Player placed {playerPlace}/{totalRacers}, endurance delta is {delta}, new value is {newValue}.");
         return newValue;
     }
 
+    // Computes Speed value based on collected data
     private int ComputeSpeedValue() {
+        // Ratio between the sum of measured speed and sum of maximum speed
         int newValue = Mathf.RoundToInt(Mathf.Clamp((float)(currentSpeedSum / maxSpeedSum), 0, 1) * 100); // Clamp in case the player has maximum speed broom upgrade and picks up speed bonuses
         Analytics.Instance.LogEvent(AnalyticsCategory.Stats, $"Speed: Current speed sum is  {currentSpeedSum}, maximum speed sum is {maxSpeedSum}, new value is {newValue}.");
         return newValue;
     }
 
+    // Computes Dexterity value based on collected data
     private int ComputeDexterityValue() {
         // Combination of distance from the 'ideal' trajectory and number of collisions with obstacles
         float distancePart = (float)(1 - (currentDistancePenalizationSum / maxDistancePenalizationSum)) * 100;
@@ -251,6 +274,7 @@ public class StatsComputer : MonoBehaviour {
         return newValue;
     }
 
+    // Computes Precision value based on collected data
     private int ComputePrecisionValue() {
         // Combination of passed/missed hoops, picked/missed bonuses, obstacle collisions and wrong directions
         float hoopPart = (passedHoops / (float)totalHoops) * 100;
@@ -262,6 +286,7 @@ public class StatsComputer : MonoBehaviour {
         return newValue;
     }
 
+    // Computes Magic value based on collected data
     private int ComputeMagicValue() {
         // Combination of picked up mana bonuses and diverse spell usage
         if (PlayerState.Instance.availableSpellCount == 0) { // no purchased spells, just return 0
@@ -274,46 +299,52 @@ public class StatsComputer : MonoBehaviour {
         return newValue;
     }
 
+    // Combines old Endurance value with the new one
     private int CombineEnduranceValues(int oldValue, int newValue) {
         // Only the new value may be taken in this case
         Analytics.Instance.LogEvent(AnalyticsCategory.Stats, $"Endurance: Old value {oldValue}, new value {newValue}, combined value {newValue}.");
         return newValue;
     }
 
+    // Combines old Speed value with the new one
     private int CombineSpeedValues(int oldValue, int newValue) {
         // Weighted average of the old and new stat value
-        // Weight of current value depends on place
+        //  - weight of current value depends on place
         int combinedValue = Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1));
         Analytics.Instance.LogEvent(AnalyticsCategory.Stats, $"Speed: Old value {oldValue} with weight 1, new value {newValue} with weight {statWeightBasedOnPlace}, combined value {combinedValue}.");
         return combinedValue;
     }
 
+    // Combines old Dexterity value with the new one
     private int CombineDexterityValues(int oldValue, int newValue) {
         // Weighted average of the old and new stat value
-        // Weight of current value depends on place
-        // Old value has more weight so the stat does not immediately jump to very high values
+        //  - weight of current value depends on place
+        //  - old value has more weight so the stat does not immediately jump to very high values
         int combinedValue = Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 3) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 3));
         Analytics.Instance.LogEvent(AnalyticsCategory.Stats, $"Dexterity: Old value {oldValue} with weight {statWeightBasedOnPlace + 3}, new value {newValue} with weight {statWeightBasedOnPlace}, combined value {combinedValue}.");
         return combinedValue;
     }
 
+    // Combines old Precision value with the new one
     private int CombinePrecisionValues(int oldValue, int newValue) {
         // Weighted average of the old and new stat value
-        // Weight of current value depends on place
-        // Old value has more weight so the stat does not immediately jump to very high values
+        //  - weight of current value depends on place
+        //  - old value has more weight so the stat does not immediately jump to very high values
         int combinedValue = Mathf.RoundToInt((oldValue * (statWeightBasedOnPlace + 3) + newValue * statWeightBasedOnPlace) / (float)(2 * statWeightBasedOnPlace + 3));
         Analytics.Instance.LogEvent(AnalyticsCategory.Stats, $"Precision: Old value {oldValue} with weight {statWeightBasedOnPlace + 3}, new value {newValue} with weight {statWeightBasedOnPlace}, combined value {combinedValue}.");
         return combinedValue;
     }
 
+    // Combines old Magic value with the new one
     private int CombineMagicValues(int oldValue, int newValue) {
         // Weighted average of the old and new stat value
-        // Weight of current values depends on place
+        //  - weight of current value depends on place
         int combinedValue = Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1));
         Analytics.Instance.LogEvent(AnalyticsCategory.Stats, $"Magic: Old value {oldValue} with weight 1, new value {newValue} with weight {statWeightBasedOnPlace}, combined value {combinedValue}.");
         return Mathf.RoundToInt((oldValue + newValue * statWeightBasedOnPlace) / (float)(statWeightBasedOnPlace + 1));
     }
 
+    // Updates collected data
     private void Update() {
         if (isComputing) {
             // Update stats intermediate results
@@ -321,10 +352,10 @@ public class StatsComputer : MonoBehaviour {
             speedSampleCountdown -= Time.deltaTime;
             if (speedSampleCountdown < 0) {
                 speedSampleCountdown += speedSamplingInterval;
-                currentSpeedSum += Mathf.Max(playerRepresentation.characterController.GetCurrentSpeed() - speedLowerBound, 0); // subtracting so the speed from broom upgrade has larger weight
-                maxSpeedSum += Mathf.Max(CharacterMovementController.MAX_SPEED - speedLowerBound, 0);
+                currentSpeedSum += Mathf.Max(playerRepresentation.characterController.GetCurrentSpeed() - speedLowerBound, 0); // decreasing the value by speedLowerBound to increase weight of broom upgrade
+                maxSpeedSum += Mathf.Max(CharacterMovementController.MAX_SPEED - speedLowerBound, 0); // decreasing the value by speedLowerBound to increase weight of broom upgrade
             }
-            // --- sample distance from "ideal" trajectory between hoops in regular intervals
+            // --- sample distance from "ideal" trajectory between hoops in regular intervals and accumulate penalization
             distanceSampleCountdown -= Time.deltaTime;
             if (distanceSampleCountdown < 0) {
                 distanceSampleCountdown += distanceSampleInterval;
@@ -339,8 +370,8 @@ public class StatsComputer : MonoBehaviour {
         }
 	}
 
+    // Computes distance between the player and an "ideal" trajectory between hoops
     private float GetPlayerDistanceFromTrajectory() {
-        // Compute distance between the player and the trajectory
         Vector3 playerPosition = playerRaceState.transform.position;
         // Get positions of two track points between which the player is located
         Vector3 firstPoint = RaceControllerBase.Instance.Level.playerStartPosition;
@@ -354,12 +385,14 @@ public class StatsComputer : MonoBehaviour {
         }
         // Project vector from the first point to the player onto the vector from the first point to the second point
         Vector3 projection = Vector3.Project(playerPosition - firstPoint, (secondPoint - firstPoint).normalized);
-        // Distance between the first vector and the projection should be the desired distance
+        // Distance between the player and the projection should be the desired distance
         float distance = Vector3.Distance(playerPosition, firstPoint + projection);
         return distance;
     }
 
-    private void OnObstacleCollision() {
+	#region Callbacks
+
+	private void OnObstacleCollision() {
         obstacleCollisionCount++;
     }
 
@@ -385,4 +418,7 @@ public class StatsComputer : MonoBehaviour {
         spellUsedCount++;
         spellUsed[index] = true;
     }
+
+	#endregion
+
 }

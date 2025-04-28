@@ -2,18 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Broom : MonoBehaviour
-{
+
+/// <summary>
+/// A component representing a broom of a racer, which handles correct initialization based on upgrade levels.
+/// </summary>
+public class Broom : MonoBehaviour {
+
 	private BroomUpgrade[] upgradesAvailable;
 
 	private bool isPlayer = false;
 
-	// Set everything according to the the player's highest purchased levels of each broom upgrade
+	/// <summary>
+	/// Sets everything up for the player's broom, according to the highest purchased level of each broom upgrade.
+	/// </summary>
 	public void UpdateFromPlayerState() {
 		// Make sure all upgrades are known in the PlayerState
 		foreach (var upgrade in upgradesAvailable) {
 			if (PlayerState.Instance.GetBroomUpgradeLevel(upgrade.UpgradeName) < 0)
-				PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, 0, upgrade.MaxLevel);
+				PlayerState.Instance.SetBroomUpgradeLevel(upgrade.UpgradeName, 0, upgrade.MaxLevel); // initialize at 0
 		}
 		// Level up according to the PlayerState
 		foreach (var upgrade in upgradesAvailable) {
@@ -23,10 +29,18 @@ public class Broom : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Gets a list of all upgrades available for the broom together with their current level.
+	/// </summary>
+	/// <returns>An array of broom upgrades available.</returns>
 	public BroomUpgrade[] GetAvailableUpgrades() {
 		return upgradesAvailable;
 	}
 
+	/// <summary>
+	/// Initializes the broom with upgrade levels similar to the player
+	/// (randomly distributing the same number of levels plus or minus one, while ensuring Elevation is on at least the same level as for the player).
+	/// </summary>
 	public void RandomizeStateCloseToPlayer() {
 		// Choose random level of broom upgrades (at least the same Elevation as the player, the same total number of upgrades +/- 1)
 		int totalPlayerLevels = 0;
@@ -50,10 +64,13 @@ public class Broom : MonoBehaviour
 			levelsToDistribute -= elevationUpgrade.CurrentLevel;
 		}
 		// Distribute the rest randomly
-		levelsToDistribute += Random.Range(-1, 2); // just a small offset
+		levelsToDistribute += Random.Range(-1, 2); // +/- 1
 		if (levelsToDistribute > 0) RandomizeState(levelsToDistribute);
 	}
 
+	/// <summary>
+	/// Initializes the broom with a completely random upgrade levels.
+	/// </summary>
 	public void RandomizeState() {
 		// Choose random level of broom upgrades
 		int levelsTotal = 0;
@@ -62,6 +79,7 @@ public class Broom : MonoBehaviour
 		RandomizeState(Random.Range(0, levelsTotal + 1));
 	}
 
+	// Initializes the broom with random levels, while distributing only the requested numebr of levels in total
 	private void RandomizeState(int levelsToDistribute) {
 		// Distribute the levels randomly
 		while (levelsToDistribute > 0) {
@@ -87,6 +105,7 @@ public class Broom : MonoBehaviour
 		}
 	}
 
+	// Levels up the given upgrade if possible (if it is not already at the maximum level), returns true if level up occurred
 	private bool TryToLevelUpgradeUp(BroomUpgrade upgrade) {
 		if (upgrade.CurrentLevel < upgrade.MaxLevel) {
 			upgrade.LevelUp();
@@ -107,5 +126,5 @@ public class Broom : MonoBehaviour
 			// Initialize individual upgrades from the PlayerState
 			UpdateFromPlayerState();
 		}
-    }
+	}
 }

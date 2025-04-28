@@ -59,7 +59,7 @@ public abstract class MonoBehaviourLongInitialization : MonoBehaviour {
 
 	/// <summary>
 	/// This method replaces <c>Update()</c> method in derived classes (in fact, it is called from <c>Update()</c> method of this class).
-	/// It ensures any code in update loop runs only after inicialization has finished.
+	/// It ensures any code in update loop runs only after initialization has finished.
 	/// </summary>
 	protected abstract void UpdateAfterInitialization();
 

@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrackBorder : MonoBehaviour
-{
-    [SerializeField] MeshRenderer meshRenderer;
+
+/// <summary>
+/// A component representing a border around the track and reacting to collisions with player by highlighting the impact point.
+/// </summary>
+public class TrackBorder : MonoBehaviour {
+
+	[Tooltip("MeshRenderer component rendering the border with a shader capable of highlighting an impact point on collision with the player.")]
+	[SerializeField] MeshRenderer meshRenderer;
 
 	[Tooltip("Another impact point is highlighted only after at least this amount of time after the previous highlighted impact.")]
 	[SerializeField] float impactCooldown = 5f;
@@ -18,6 +23,7 @@ public class TrackBorder : MonoBehaviour
 	private float t = 0;
 
 
+	// Detects collisions with the player and highlights the impact point if enough time has passed from the last time
 	private void OnCollisionEnter(Collision collision) {
 		if (collision.gameObject.CompareTag("Player") && showImpact) {
 			showImpact = false;
@@ -28,11 +34,13 @@ public class TrackBorder : MonoBehaviour
 		}
 	}
 
+	// Enables impact point highlighting
 	private void EnableShowingImpact() {
 		showImpact = true;
 	}
 
 	private void Update() {
+		// Update impact point highlighting
 		if (isHighlighting) {
 			t += (Time.deltaTime / impactHighlightDuration);
 			if (t > 1) {

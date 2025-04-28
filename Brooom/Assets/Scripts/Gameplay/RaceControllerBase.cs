@@ -11,36 +11,43 @@ using UnityEngine.Playables;
 public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
 
     // Simple singleton
-    /// <summary>
-    /// Holds instance of <c>RaceControllerBase</c> or any derived class in the current scene (simple singleton implementation).
-    /// </summary>
+    /// <summary>Instance of <c>RaceControllerBase</c> or any derived class in the current scene (simple singleton implementation).</summary>
     public static RaceControllerBase Instance;
 
     [Header("Penalizations")]
     [Tooltip("How many seconds are added to the time when player misses a hoop.")]
     public int missedHoopPenalization = 10;
 
-    public RaceState State { get; protected set; } = RaceState.BeforeRace; // distinguish between training and race
+    /// <summary>Current state of the race (to distinguish between training and race).</summary>
+    public RaceState State { get; protected set; } = RaceState.BeforeRace;
 
-    // Level - to get access to track points and record racers' position within the track
+    /// <summary>Object representation of the level, to get access to track points and record racers' position within the track.</summary>
     public LevelRepresentation Level { get; private set; } = null;
+    /// <summary>Number between 0 and 1 denoting how difficult the track is (computed based on stats values which were used to generate it).</summary>
     protected float levelDifficulty; // number between 0 and 1
 
-    // Current time elapsed in the race
+    /// <summary>Current time elapsed in the race.</summary>
     [HideInInspector] public float raceTime = 0;
 
+    /// <summary>A list of all racers, including the player.</summary>
     public List<RacerRepresentation> racers;
+    /// <summary>References to important components of the player racer.</summary>
     public RacerRepresentation playerRacer;
 
     // Related objects
+    /// <summary>Manages all UI elements which are part of HUD.</summary>
     protected RaceUI raceHUD;
+    /// <summary>Responsible for displaying race results UI.</summary>
     protected RaceResultsUI raceResults;
+    /// <summary>Generates level based on some parameters.</summary>
     protected LevelGenerationPipeline levelGenerator;
+    /// <summary>Parent object of all bonuses (it is used to hide all bonuses during training and show them during race).</summary>
     protected Transform bonusParent;
+    /// <summary>Parent object of all opponents (it is used to hide all opponents during training and show them during race).</summary>
     protected Transform opponentParent;
 
     /// <summary>
-    /// Enter a race, i.e. initialize everything and play race start cutscene.
+    /// Initializes everything necessary and starts playing the race start cutscene.
     /// </summary>
     public virtual void StartRace() {
         // Start animation sequence
@@ -48,7 +55,7 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
     }
 
     /// <summary>
-    /// Finish a race, i.e. finalize everything, play race end cutscene, show results.
+    /// Finalizes everything and starts playing the race end cutscene which finishes with displaying race results.
     /// </summary>
     public virtual void EndRace() {
         GamePause.DisableGamePause();
@@ -56,9 +63,8 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         StartCoroutine(PlayRaceEndSequence());
     }
 
-    // Called when player gives up race (from an option in Pause Menu)
     /// <summary>
-    /// Give up a race, i.e. do anything necessary and then go to Player Overview.
+    /// This method is called when the player gives the race up (from an option in Pause Menu).
     /// </summary>
     public virtual void GiveUpRace() {
         // Send message
@@ -66,6 +72,10 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         OnRaceGivenUp();
     }
 
+    /// <summary>
+    /// Disables actions of the racer who has finished the race and plays an animation.
+    /// </summary>
+    /// <param name="racerState"><c>CharacterRaceState</c> of a racer who has just finished the race.</param>
     public void OnRacerFinished(CharacterRaceState racerState) {
         foreach (var racer in racers) {
             if (racer.state == racerState) {
@@ -78,6 +88,9 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         }
     }
 
+    /// <summary>
+    /// Determines each racer's place and updates it in their <c>CharacterRaceState</c> component.
+    /// </summary>
     protected void ComputeRacerPlaces() {
         // Sort the racers according to their place
         racers.Sort((x, y) => CompareRacers(x, y));
@@ -87,6 +100,11 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         }
     }
 
+    /// <summary>
+    /// Computes race results (finish time, penalization) for opponents which haven't finished before the race ended because the player finished it.
+    /// Finish time and number of missed hoops are predicted based on the values so far,
+    /// while ensuring any finish time predicted this way is higher than the player's one.
+    /// </summary>
     protected void CompleteOpponentState() {
         // Handle case when the opponent did not finish
         foreach (var racer in racers) {
@@ -111,6 +129,10 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         }
     }
 
+    /// <summary>
+    /// Collects race results from all racers and displays them on the screen.
+    /// </summary>
+    /// <param name="coinRewards">An array of coins reward for each place.</param>
     protected void ShowRaceResults(int[] coinRewards) {
         // Collect results from individual racers
         RaceResultData[] results = new RaceResultData[racers.Count];
@@ -133,6 +155,13 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         raceResults.gameObject.TweenAwareEnable();
     }
 
+    /// <summary>
+    /// Compares two racers according to who should be placed higher.
+    /// Handles places after the race has ended (comparing finish times) and also during the race (comparing racer's positions within the race).
+    /// </summary>
+    /// <param name="x">First racer to compare.</param>
+    /// <param name="y">Second racer to compare.</param>
+    /// <returns>Negative number if <c>x</c> should be first, positive if <c>y</c> should be first.</returns>
     protected int CompareRacers(RacerRepresentation x, RacerRepresentation y) {
         // If both have finish time, the better one should be first
         if (x.state.HasFinished && y.state.HasFinished)
@@ -157,6 +186,10 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         return xDistance.CompareTo(yDistance);
     }
 
+    /// <summary>
+    /// Computes track difficulty as a weighted average of stats values which were used to generate it.
+    /// </summary>
+    /// <returns>Number between 0 and 1 denoting how difficult the track is.</returns>
     protected float ComputeLevelDifficulty() {
         // Weighted average of current player stats which were used for level generation
         // - weight 3: dexterity // the most important
@@ -174,10 +207,12 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
 
     #region Long initialization
 
+    /// <inheritdoc/>
     protected override void PrepareForInitialization_ReplacingAwake() {
         Instance = this;
     }
 
+    /// <inheritdoc/>
     protected override void PrepareForInitialization_ReplacingStart() {
         raceHUD = FindObjectOfType<RaceUI>();
         raceResults = UtilsMonoBehaviour.FindObject<RaceResultsUI>();
@@ -186,6 +221,7 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         InitializeAnythingRelated();
     }
 
+    /// <inheritdoc/>
     protected override IEnumerator InitializeAfterPreparation() {
         yield return new WaitUntil(() => Level != null); // wait until level is generated
         InitializeRacers();
@@ -204,6 +240,10 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         AfterInitialization();
     }
 
+    /// <summary>
+    /// This method replaces <c>Update()</c> method from which it is in fact called (after ensuring object initialization has already finished).
+    /// It updates everything necessary (together with HUD) based on the current race state.
+    /// </summary>
     protected override void UpdateAfterInitialization() {
         // Update state
         switch (State) {
@@ -228,6 +268,7 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
 
     #endregion
 
+    // Initializes a list of all racers (with their most important components) and a reference to the player racer
     private void InitializeRacers() {
         // Get references to the characters
         List<CharacterMovementController> characters = UtilsMonoBehaviour.FindObjects<CharacterMovementController>();
@@ -247,6 +288,7 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         }
     }
 
+    // Computes the level's difficulty after it has been generated (it is registered as a callback on level generated)
     private void OnLevelGenerated(LevelRepresentation level) {
         this.Level = level;
         levelGenerator.onLevelGenerated -= OnLevelGenerated;
@@ -254,6 +296,7 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         Analytics.Instance.LogEvent(AnalyticsCategory.Race, $"Track's difficulty is {levelDifficulty}.");
     }
 
+    // Does everything necessary before the race starts - prepares everything, starts cutscene, displays countdown, starts the race and enables racer's actions
     private IEnumerator PlayRaceStartSequence() {
         BeforeRaceStartSequence(); // point of possible functionality extension
 
@@ -309,6 +352,7 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         AfterRaceStartSequence(); // point of possible functionality extension
     }
 
+    // Does everything necessary after the race ended - disables player's, plays cutscene, computes race results and displays them
     private IEnumerator PlayRaceEndSequence() {
         BeforeRaceEndSequence(); // point of possible functionality extension
 
@@ -360,6 +404,7 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
             Level.Track[nextHoopIndex].assignedHoop.StartHighlighting();
     }
 
+    // Notifies the player that a checkpoint has been missed
     private void ReactOnCheckpointMissed() {
         // Make the screen red briefly
         raceHUD.FlashScreenColor(Color.red);
@@ -367,6 +412,7 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         raceHUD.ShowMissedCheckpointWarning();
     }
 
+    // Notifies the player that a hoop has been missed
     private void ReactOnHoopMissed() {
         // Make the screen red briefly
         raceHUD.FlashScreenColor(Color.red);
@@ -374,15 +420,37 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
 
     #region Virtual methods to extend functionality
     // Different virtual methods which can be overridden by derived classes to add some functionality
-    
+
+    /// <summary>
+    /// This method is called before the race start sequence (i.e. preparation of the track, cutscene, countdown and race start) starts.
+    /// </summary>
     protected virtual void BeforeRaceStartSequence() { }
+    /// <summary>
+    /// This method is called after the race start sequence (i.e. preparation of the track, cutscene, countdown and race start) ended.
+    /// </summary>
     protected virtual void AfterRaceStartSequence() { }
-    
+
+    /// <summary>
+    /// This method is called before the race end sequence (i.e. cutscene, computing and displaying race results) starts.
+    /// </summary>
     protected virtual void BeforeRaceEndSequence() { }
+    /// <summary>
+    /// This method is called after the race end sequence (i.e. cutscene, computing and displaying race results) ended.
+    /// </summary>
     protected virtual void AfterRaceEndSequence() { }
-    
+
+    /// <summary>
+    /// This method is called from <c>Update()</c> method when the race is in <c>BeforeRace</c> state.
+    /// </summary>
     protected virtual void Update_BeforeRace() { }
+    /// <summary>
+    /// This method is called from <c>Update()</c> method when the race is in <c>Training</c> state.
+    /// </summary>
     protected virtual void Update_Training() { }
+    /// <summary>
+    /// This method is called from <c>Update()</c> method when the race is in <c>RaceInProgress</c> state.
+    /// It updates time from the start of the race and also racer's places.
+    /// </summary>
     protected virtual void Update_RaceInProgress() {
         // Update time from the start of the race
         raceTime += Time.deltaTime;
@@ -390,6 +458,9 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         // Update racers' place
         ComputeRacerPlaces();
     }
+    /// <summary>
+    /// This method is called from <c>Update()</c> method when the race is in <c>RaceFinished</c> state.
+    /// </summary>
     protected virtual void Update_RaceFinished() {
         // Update time from the start of the race
         raceTime += Time.deltaTime;
@@ -413,10 +484,14 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
     protected abstract void OnDestroy_Derived();
 
     /// <summary>
-    /// This method determines what should happen when player decides to give up race from pause menu.
+    /// This method is called when the player decides to give up race from pause menu.
     /// </summary>
     protected abstract void OnRaceGivenUp();
 
+    /// <summary>
+    /// Prepares a list of coin rewards for each place in race. 
+    /// </summary>
+    /// <returns>An array of coin rewards for individual places in race.</returns>
     protected abstract int[] ComputeCoinRewards();
 	// TODO: Uncomment when coin penalization is added
 	//protected abstract int[] ComputeCoinPenalizations();
@@ -424,14 +499,24 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
 
 }
 
-// Everything the RaceController needs for a character
+/// <summary>
+/// References to all important components which the <c>RaceControllerBase</c> implementation needs for each racer.
+/// </summary>
 public class RacerRepresentation {
+    /// <summary>Name of the racer.</summary>
     public string characterName = string.Empty;
+    /// <summary>Component which can be used to enable/disable all movement actions.</summary>
     public CharacterMovementController characterController;
+    /// <summary>Component describing current race state of the racer.</summary>
     public CharacterRaceState state;
+    /// <summary>Component which can be used to enable/disable spell casting.</summary>
     public SpellInput spellInput;
 }
 
+
+/// <summary>
+/// All possible states in which the race could be.
+/// </summary>
 public enum RaceState {
     BeforeRace,
     Training,
