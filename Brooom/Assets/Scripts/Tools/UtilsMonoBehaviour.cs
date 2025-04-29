@@ -5,13 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class UtilsMonoBehaviour : MonoBehaviour
 {
-    // Activate/deactivate all objects in the list
+    /// <summary>
+    /// Activates/deactivates all objects in the list.
+    /// </summary>
+    /// <typeparam name="T">Type of objects to be activated/deactivated.</typeparam>
+    /// <param name="objectsToActivate">A list of objects to be activated/deactivated.</param>
+    /// <param name="activeValue"><c>true</c> if the objects should be activated, <c>false</c> if deactivated.</param>
     public static void SetActiveForAll<T>(List<T> objectsToActivate, bool activeValue) where T : Component {
         foreach (var objectToActivate in objectsToActivate)
             objectToActivate.gameObject.SetActive(activeValue);
     }
 
-    // Find objects including not active ones
+    /// <summary>
+    /// Finds objects of the given type in the scene, including objects which are not active.
+    /// </summary>
+    /// <typeparam name="T">Type of the objects to find.</typeparam>
+    /// <returns>A list of objects found in the scene.</returns>
     public static List<T> FindObjects<T>() where T : Component {
         List<T> result = new List<T>();
         foreach (GameObject root in SceneManager.GetActiveScene().GetRootGameObjects()) {
@@ -19,11 +28,17 @@ public class UtilsMonoBehaviour : MonoBehaviour
         }
         return result;
     }
+    /// <summary>
+    /// Finds an object of the given type in the scene, including objects which are not active.
+    /// </summary>
+    /// <typeparam name="T">Type of the object to find.</typeparam>
+    /// <returns>An object found in the scene.</returns>
     public static T FindObject<T>() where T : Component {
         List<T> result = FindObjects<T>();
         if (result == null || result.Count == 0) return null;
         else return result[0];
     }
+    // Adds all components of the given type from the whole hierarchy starting from the given root object into a list of results
     private static void AddHidden<T>(GameObject root, List<T> result) where T : Component {
         if (root == null) return;
         foreach (T component in root.GetComponents<T>()) {
@@ -35,7 +50,12 @@ public class UtilsMonoBehaviour : MonoBehaviour
         }
     }
 
-    // Find object of the given type and tag
+    /// <summary>
+    /// Finds an object of the given type and with the given tag in the scene.
+    /// </summary>
+    /// <typeparam name="T">Type of the object to find.</typeparam>
+    /// <param name="tag">Tag to find.</param>
+    /// <returns>An object found in the scene.</returns>
     public static T FindObjectOfTypeAndTag<T>(string tag) where T : Component {
         List<T> objectsOfType = FindObjects<T>();
         foreach (var obj in objectsOfType) {
@@ -43,6 +63,12 @@ public class UtilsMonoBehaviour : MonoBehaviour
         }
         return null;
     }
+    /// <summary>
+    /// Finds objects of the given type and with the given tag in the scene.
+    /// </summary>
+    /// <typeparam name="T">Type of the objects to find.</typeparam>
+    /// <param name="tag">Tag to find.</param>
+    /// <returns>Objects found in the scene.</returns>
     public static List<T> FindObjectsOfTypeAndTag<T>(string tag) where T : Component {
         List<T> objectsOfType = FindObjects<T>();
         List<T> result = new List<T>();
@@ -53,13 +79,21 @@ public class UtilsMonoBehaviour : MonoBehaviour
         return result;
     }
 
-    // Destroys all children of the given Transform
+    /// <summary>
+    /// Destroys all children of the given <c>Transform</c>.
+    /// </summary>
+    /// <param name="parent">Parent whose children will be destroyed.</param>
+    /// <param name="startIndex">Child index from which to start.</param>
     public static void RemoveAllChildren(Transform parent, int startIndex = 0) {
         for (int i = parent.childCount - 1; i >= startIndex; i--) {
             Destroy(parent.GetChild(i).gameObject);
         }
     }
-
+    /// <summary>
+    /// Destroys all children of a particular type of the given <c>Transform</c>.
+    /// </summary>
+    /// <typeparam name="T">Type of the objects to destroy.</typeparam>
+    /// <param name="parent">Parent whose children will be destroyed.</param>
     public static void RemoveAllChildrenOfType<T>(Transform parent) where T : MonoBehaviour {
         T[] children = parent.GetComponentsInChildren<T>();
         for (int i = children.Length - 1; i >= 0; i--)

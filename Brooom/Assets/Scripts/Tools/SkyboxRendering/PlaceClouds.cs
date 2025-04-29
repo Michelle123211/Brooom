@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+/// <summary>
+/// A components randomly instantiating cloud object on an upper hemisphere around the world origin.
+/// It is used to prepare a scene from which skybox with clouds can be rendered.
+/// </summary>
 public class PlaceClouds : MonoBehaviour {
 
 	[Tooltip("Clouds will be placed randomly on an upper hemisphere around (0,0,0) with this radius.")]
@@ -18,6 +24,9 @@ public class PlaceClouds : MonoBehaviour {
 	[SerializeField] Vector2 scaleRange = new Vector2(1, 4);
 
 #if UNITY_EDITOR
+	/// <summary>
+	/// Generates clouds with random rotation and scale in random points on an upper hemisphere around the world origin.
+	/// </summary>
 	[ContextMenu("Regenerate clouds")]
 	private void GenerateClouds() {
 		// Remove any previously instantiated elements

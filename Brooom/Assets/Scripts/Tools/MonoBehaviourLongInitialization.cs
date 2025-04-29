@@ -3,15 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// An abstract class which should be extended by components requiring long initialization which cannot be done in a single frame 
+/// (as is usually done in <c>Awake()</c> or <c>Start()</c> methods).
+/// Instead a special method for long initialization is added and started as a coroutine, while yielding control back as often as possible.
+/// If <c>SceneLoader</c> instance is located in the scene, it is made aware of such components
+/// and doesn't hide loading screen until all components' initialization has finished completely.
+/// </summary>
 public abstract class MonoBehaviourLongInitialization : MonoBehaviour {
 
-	// Whether the object is initialized completely
-	// Should be checked before any interaction with this object
+	/// <summary>Whether the object is initialized completely (i.e. its long initialization has finished). This should be checked before any further interaction.</summary>
 	public bool IsInitialized { get; private set; } = false;
-
+	/// <summary>Called when the long initialization has finished.</summary>
 	public event Action onInitializationFinished;
 
-	// This method is called from SceneLoader to initialize the object after the standard Awake() and Start() have taken place
+	/// <summary>
+	/// This method is started as a coroutine from the standard <c>Start()</c> method.
+	/// It initializes the component over several frames while returning control back inbetween using <c>yield return</c>.
+	/// </summary>
+	/// <returns>Yields control back to allow other code to run inbetween (e.g. animation of loading screen).</returns>
 	public IEnumerator Initialize() {
 		yield return InitializeAfterPreparation();
 		IsInitialized = true;
@@ -53,13 +64,13 @@ public abstract class MonoBehaviourLongInitialization : MonoBehaviour {
 	/// This method is used for long initialization, i.e. anything which should not be done in a single frame.
 	/// It should return control back as often as possible using <c>yield return</c>.
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>Yields control back to allow other code to run inbetween (e.g. animation of loading screen).</returns>
 	protected abstract IEnumerator InitializeAfterPreparation();
 
 
 	/// <summary>
 	/// This method replaces <c>Update()</c> method in derived classes (in fact, it is called from <c>Update()</c> method of this class).
-	/// It ensures any code in update loop runs only after initialization has finished.
+	/// It ensures any code in update loop runs only after initialization has finished completely.
 	/// </summary>
 	protected abstract void UpdateAfterInitialization();
 

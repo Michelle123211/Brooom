@@ -3,20 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-// This class is used to provide names for the opponents in leaderboard and the randomization in character creation
-public class NamesManagement : MonoBehaviour
-{
+/// <summary>
+/// This class is used to provide random names for the opponents (in race and in leaderboard) as well as random names used in character creation.
+/// </summary>
+public class NamesManagement : MonoBehaviour {
+
 	// Name of the file in the StreamingAssets folder containing possible names for the randomization
 	private const string namesFilename = "names.txt";
-
+	// All possible names to choose from (loaded from a file)
 	private static List<string> possibleNames = null;
 
+	/// <summary>
+	/// Returns a random name from a list of names loaded from a file.
+	/// </summary>
+	/// <returns>A random name.</returns>
 	public static string GetRandomName() {
 		if (possibleNames == null || possibleNames.Count == 0)
 			LoadNamesFromFile();
 		return possibleNames[Random.Range(0, possibleNames.Count)];
 	}
 
+	// Loads names from a file into the possibleNames list
 	private static void LoadNamesFromFile() {
 		// Load list of names from a file
 		if (string.IsNullOrEmpty(namesFilename)) { // empty filename
@@ -38,6 +45,7 @@ public class NamesManagement : MonoBehaviour
 			possibleNames = UseDefaultNames();
 	}
 
+	// Parses names from a StreamReader of the names file
 	private static List<string> ParseNamesFromReader(StreamReader reader) {
 		List<string> names = new List<string>();
 		string line;
@@ -52,9 +60,21 @@ public class NamesManagement : MonoBehaviour
 		return names;
 	}
 
+	// Returns a list of default names (used when the names file is not found)
 	private static List<string> UseDefaultNames() {
 		List<string> names = new List<string>();
 		names.Add("Emil");
+		names.Add("Michelle");
+		names.Add("Igor");
+		names.Add("Airin");
+		names.Add("Lucie");
+		names.Add("Karel");
+		names.Add("Iveta");
+		names.Add("Cassie");
+		names.Add("Bedøich");
+		names.Add("Lída");
+		names.Add("Villie");
+		names.Add("Pavel");
 		return names;
 	}
 }

@@ -322,3 +322,12 @@ public struct SpellTarget {
 	}
 
 }
+
+
+/// <summary>
+/// Possible directions of iteration over some elements.
+/// </summary>
+public enum IterationDirection {
+	Decreasing = -1,
+	Increasing = 1
+}

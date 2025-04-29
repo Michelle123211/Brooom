@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A component controlling a minimap camera, which is placed above a particular object and follows it at a constant height.
+/// </summary>
 public class MinimapCameraController : MonoBehaviour
 {
     [Tooltip("Camera will follow this object and take its position and rotation along the Y axis.")]

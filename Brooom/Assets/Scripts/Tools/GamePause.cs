@@ -4,14 +4,23 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
+
+/// <summary>
+/// A component handling pausing and resuming the game.
+/// It detects input from player to pause/resume the game and show/hide pause menu with different options,
+/// but it also provides methods to pause/resume the game even without pause menu (which may be used e.g. from a tutorial)
+/// and also to enable or disable pausing the game.
+/// </summary>
 public class GamePause : MonoBehaviour {
 
+    /// <summary>The state in which the game currently is when it comes to pause.</summary>
     public static GamePauseState PauseState { get; private set; } = GamePauseState.Running;
+    /// <summary>Whether the pause menu is visible right now.</summary>
     public static bool isPauseMenuVisible = false;
-
+    /// <summary>Whether the game can be paused (and resumed).</summary>
     private static bool canBePaused = true;
 
-    [Tooltip("Set to true if options specific for tutorial should be displayed.")]
+    [Tooltip("Set to true if options specific for tutorial should be displayed in the pause menu.")]
     [SerializeField] bool isInTutorial = false;
 
     [Tooltip("Objects representing menu options which should be displayed when pausing the game in race.")]
@@ -19,21 +28,31 @@ public class GamePause : MonoBehaviour {
     [Tooltip("Objects representing menu options which should be displayed when pausing the game in tutorial.")]
     [SerializeField] List<GameObject> optionsInTutorial = new List<GameObject>();
 
-    private Animator animator;
+    private Animator animator; // to show/hide pause menu
 
     private ShowHidePanelUI settings;
 
     private int pauseCount = 0; // increment when paused, decrement when unpaused - allows for nested pauses (with correct unpausing)
     private bool wasCursorLocked = false; // before opening pause menu, rememeber cursor state so it can be restored correctly after closing the menu
 
-    // The following two methods may be used to disable pause when not desirable - e.g. when loading screen is on or after a race is finished
+    /// <summary>
+    /// Enables game pause, so it can be paused either by a corresponding key pressed or by calling <c>PauseGame()</c> method.
+    /// </summary>
     public static void EnableGamePause() {
         canBePaused = true;
     }
+    /// <summary>
+    /// Disables game pause, so it cannot be paused until it is enabled again.
+    /// This may be useful for example when loading screen is on or after a race is finished.
+    /// </summary>
     public static void DisableGamePause() {
         canBePaused = false;
     }
 
+    /// <summary>
+    /// Pauses the game (only if game pause is enabled) while also displaying pause menu if requested.
+    /// </summary>
+    /// <param name="showMenu">Whether pause menu should be shown.</param>
     public void PauseGame(bool showMenu = false) {
         if (!canBePaused) return;
         // Pause
@@ -51,7 +70,9 @@ public class GamePause : MonoBehaviour {
         }
         DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0f, 0.25f).SetUpdate(true);
     }
-
+    /// <summary>
+    /// Resumes the game (only if game pause is enabled and there are no more nested pauses) while also hiding pause menu if it is visible.
+    /// </summary>
     public void ResumeGame() {
         if (!canBePaused) return;
         // Hide pause menu and restore cursor
@@ -71,27 +92,42 @@ public class GamePause : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Shows settings panel (used as a callback when a corresponding button is pressed in the pause menu).
+    /// </summary>
     public void OpenSettings() {
         DisableGamePause();
         settings.ShowPanel();
     }
 
+    /// <summary>
+    /// Tells the <c>RaceControllerBase</c> implementation in the scene to give up the race (used as a callback when a corresponding button is pressed in the pause menu).
+    /// </summary>
     public void GiveUpRace() {
         Exit();
         RaceControllerBase.Instance.GiveUpRace();
     }
 
+    /// <summary>
+    /// Tells the <c>Tutorial</c> to skip the current tutorial stage (used as a callback when a corresponding button is pressed in the pause menu).
+    /// </summary>
     public void SkipTutorial() {
         ResumeGame();
         Tutorial.Instance.SkipCurrentTutorialStage();
     }
 
+    /// <summary>
+    /// Tells the <c>Tutorial</c> to leave the current tutorial stage and goes to Main Menu (used as a callback when a corresponding button is pressed in the pause menu).
+    /// </summary>
     public void LeaveTutorial() {
         Tutorial.Instance.LeaveCurrentTutorialStage();
         Exit();
         SceneLoader.Instance.LoadScene(Scene.MainMenu);
     }
 
+    /// <summary>
+    /// Enables pause menu options which should be available during a race, disables all other options.
+    /// </summary>
     public void SetupOptionsForRace() {
         isInTutorial = false;
         // Disable all other options
@@ -101,7 +137,9 @@ public class GamePause : MonoBehaviour {
         foreach (var option in optionsInRace)
             option.SetActive(true);
     }
-
+    /// <summary>
+    /// Enables pause menu options which should be available during a tutorial, disables all other options.
+    /// </summary>
     public void SetupOptionsForTutorial() {
         isInTutorial = true;
         // Disable all other options
@@ -112,6 +150,7 @@ public class GamePause : MonoBehaviour {
             option.SetActive(true);
     }
 
+    // Resumes the game
     private void Exit() {
         // Change state to running
         PauseState = GamePauseState.Running;
@@ -156,6 +195,9 @@ public class GamePause : MonoBehaviour {
     }
 }
 
+/// <summary>
+/// Possible game states regarding pause.
+/// </summary>
 public enum GamePauseState { 
     Running,
     Pausing,

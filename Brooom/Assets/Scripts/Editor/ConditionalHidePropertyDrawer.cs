@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 
+// TODO: Right now this attribute doesn't work properly for fields/properties which are arrays
 [CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
 public class ConditionalHidePropertyDrawer : PropertyDrawer {
 

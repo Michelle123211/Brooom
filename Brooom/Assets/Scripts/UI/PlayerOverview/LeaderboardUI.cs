@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+
+
+// Once a name is generated for an opponent on a particular place in the global leaderboard, this name is stored persistently
+// so that it can be used again next time the leaderboard is displayed.
 public class LeaderboardUI : MonoBehaviour {
 
 	[Header("Parameters")]
