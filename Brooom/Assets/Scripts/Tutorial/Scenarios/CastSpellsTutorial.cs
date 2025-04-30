@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// An object representation of the Cast Spells tutorial stage - introducing the player to how to use spells.
+/// It keeps track of the progress within this stage and moves forward from one step to another.
+/// </summary>
 public class CastSpellsTutorial : TutorialStageBase {
 
+	// All steps of this tutorial stage
 	private enum Step {
 		NotStarted,
 		Started,
@@ -24,8 +30,13 @@ public class CastSpellsTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.NotStarted;
 
+	/// <inheritdoc/>
 	protected override string LocalizationKeyPrefix => "CastSpells";
 
+	/// <summary>
+	/// <inheritdoc/>
+	/// Leaves Tutorial scene and loads PlayerOverview scene.
+	/// </summary>
 	public override void Finish() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} finished.");
 		Tutorial.Instance.FadeIn();
@@ -36,15 +47,23 @@ public class CastSpellsTutorial : TutorialStageBase {
 			SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
 	}
 
+	/// <inheritdoc/>
 	public override string GetCurrentState() {
 		return currentStep.ToString();
 	}
 
+	/// <inheritdoc/>
 	public override void SetCurrentState(string state) {
 		// Always starting from the beginning
 		currentStep = Step.NotStarted;
 	}
 
+	/// <summary>
+	/// <inheritdoc/>
+	/// For this stage to start, the current scene must be PlayerOverview
+	/// and the player has to have at least one equipped spell.
+	/// </summary>
+	/// <returns><inheritdoc/></returns>
 	protected override bool CheckTriggerConditions() {
 		// Player Overview scene + at least one equipped spell
 		if (SceneLoader.Instance.CurrentScene != Scene.PlayerOverview) return false;
@@ -56,12 +75,18 @@ public class CastSpellsTutorial : TutorialStageBase {
 		return false;
 	}
 
+	/// <inheritdoc/>
 	protected override IEnumerator InitializeTutorialStage() {
 		Tutorial.Instance.panel.ShowEscapePanel(false);
 		Tutorial.Instance.highlighter.Highlight(null, true); // block raycasts
 		yield break;
 	}
 
+	/// <summary>
+	/// Updates the tutorial stage (called from <c>Update()</c> method).
+	/// Handles starting the scenario.
+	/// </summary>
+	/// <returns><inheritdoc/></returns>
 	protected override bool UpdateTutorialStage() {
 		// Handle starting the tutorial scenario
 		if (currentStep == Step.NotStarted) {
@@ -71,6 +96,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 		return currentStep != Step.Finished;
 	}
 
+	// The whole scenario of this tutorial stage
 	private IEnumerator GoThroughTutorialScenario() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} started.");
 
@@ -188,6 +214,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 		Tutorial.Instance.panel.HideTutorialPanel();
 	}
 
+	// Gets name of the current spell's target type
 	private string GetCurrentSpellTarget() {
 		// Get current spell and its target type
 		SpellController spellController = TutorialSceneManager.Instance.player.GetComponentInChildren<SpellController>();
@@ -195,6 +222,7 @@ public class CastSpellsTutorial : TutorialStageBase {
 		return LocalizationManager.Instance.GetLocalizedString($"Spell{currentSpell.Identifier}Target");
 	}
 
+	// Chooses recharge bonus in the Tutorial scene which is the farthest from the player
 	private GameObject GetSuitableRechargeBonus() {
 		// Choose the one farthest from the player
 		float maxDistance = float.MinValue;
@@ -211,6 +239,11 @@ public class CastSpellsTutorial : TutorialStageBase {
 
 }
 
+
+/// <summary>
+/// A class tracking progress based on mana.
+/// The player has to collect at least one mana bonus and have the mana completely filled up.
+/// </summary>
 internal class ManaProgress : TutorialStepProgressTracker {
 
 	private SpellController spellController;
@@ -239,6 +272,10 @@ internal class ManaProgress : TutorialStepProgressTracker {
 	}
 }
 
+/// <summary>
+/// A class tracking progress based on casting spells.
+/// The player has to cast a spell at least once.
+/// </summary>
 internal class SpellCastProgress : TutorialStepProgressTracker {
 
 	private bool spellCast = false;

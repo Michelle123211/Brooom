@@ -6,7 +6,7 @@ using TMPro;
 
 
 /// <summary>
-/// A component representing a single spell which can be purchased in the shop's inventory.
+/// A component representing a single spell which can be purchased from the shop's catalogue.
 /// It uses <c>SpellSlotUI</c> for the basic spell slot functionality,
 /// but adds behaviour for displaying the spell's price, for changing the appearance based on whether the spell has been purchased or not,
 /// and for purchasing the spell by clicking on it.

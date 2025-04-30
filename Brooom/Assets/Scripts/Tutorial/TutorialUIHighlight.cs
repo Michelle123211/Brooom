@@ -4,11 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
+
+/// <summary>
+/// A component capable of highlighting a particular rectangular part of the screen (based on a <c>Rect</c> or <c>RectTransform</c>),
+/// all other parts of the screen are faded out.
+/// It is also possible to choose whether raycasts should be blocked in the highlighted area (so it is not possible to click
+/// on something through it), or not.
+/// </summary>
 public class TutorialUIHighlight : MonoBehaviour {
 
-	[Tooltip("CanvasScaler component of Canvas in which all UI elements for highlighting an area are located.")]
+	[Tooltip("RectTransform component of Canvas in which all UI elements for highlighting an area are located.")]
 	[SerializeField] RectTransform canvasRectTransform;
-	private CanvasScaler canvasScaler;
+	private CanvasScaler canvasScaler; // CanvasScaler component of Canvas in which all UI elements for highlighting an area are located
 
 	[Header("Parameters")]
 	[Tooltip("How long it takes to highlight something (move highlight there and adjust size of the highlight).")]
@@ -33,8 +40,13 @@ public class TutorialUIHighlight : MonoBehaviour {
 	// Whether area around the highlighted one should fade out to black next time we highlight something (i.e. nothing is highlighted right now)
 	private bool shouldFadeOut = true;
 
-	// Highlights area given by RectTransform, blocks raycasts everywhere around it
-	// If blockRaycasts is true, raycasts in the highlighted area will be blocked as well
+
+	/// <summary>
+	/// Highlights an area of the screen given by the <c>RectTransform</c> with the given padding, while blocking raycasts everywhere around it.
+	/// </summary>
+	/// <param name="rectTransform"><c>RectTransform</c> specifying an area to be highlighted. If it is <c>null</c>, the whole screen is highlighted (and raycasts may be still blocked).</param>
+	/// <param name="blockRaycasts"><c>true</c> if raycasts should be blocked in the highlighted area as well, <c>false</c> otherwise.</param>
+	/// <param name="padding">Padding around the <c>RectTransform</c> which will be highlighted as well.</param>
 	public void Highlight(RectTransform rectTransform, bool blockRaycasts = false, int padding = 0) {
 		// If rectTransform is null, stop highlighting but consider blocking raycasts
 		if (rectTransform == null) {
@@ -47,15 +59,18 @@ public class TutorialUIHighlight : MonoBehaviour {
 		rectTransform.GetWorldCorners(corners);
 		// Get coordinates of top-left corner in screen space
 		Vector3 position = canvasRectTransform.InverseTransformPoint(corners[1]);
-		position.x = canvasScaler.scaleFactor * canvasRectTransform.rect.width / 2f + position.x; // works for different aspect ratio
+		position.x = canvasScaler.scaleFactor * canvasRectTransform.rect.width / 2f + position.x; // works for different aspect ratios
 		position.y = canvasScaler.scaleFactor * canvasRectTransform.rect.height / 2f - position.y;
 
 		Highlight(new Rect(position - Vector3.one * padding, rectTransform.rect.size + Vector2.one * padding * 2), blockRaycasts);
 	}
 
-	// Highlights area given by Rect, blocks raycasts everywhere around it
-	// Coordinates (0, 0) are at the top-left corner and increase in the direction to bottom-right corner
-	// If blockRaycasts is true, raycasts in the highlighted area will be blocked as well
+	/// <summary>
+	/// Highlights an area of the screen given by the <c>Rect</c>, while blocking raycasts everywhere around it.
+	/// Coordinates (0, 0) are at the top-left corner and increase in the direction to the bottom-right corner.
+	/// </summary>
+	/// <param name="rect"><c>Rect</c> specifying an area to be highlighted.</param>
+	/// <param name="blockRaycasts"><c>true</c> if raycasts should be blocked in the highlighted area as well, <c>false</c> otherwise.</param>
 	public void Highlight(Rect rect, bool blockRaycasts = false) {
 		// Block raycasts anywhere around the highlighted area
 		left.sizeDelta = left.sizeDelta.WithX(rect.x);
@@ -74,6 +89,9 @@ public class TutorialUIHighlight : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Resets everything (size, position, etc.) to stop highlighting and to stop blocking raycasts.
+	/// </summary>
 	public void StopHighlighting() {
 		// Reset everything (size, position etc.)
 		left.sizeDelta = left.sizeDelta.WithX(0);
@@ -88,15 +106,36 @@ public class TutorialUIHighlight : MonoBehaviour {
 		shouldFadeOut = true;
 	}
 
-	// The following methods may be used as coroutines to be able to wait until they finish
+	// The following three methods may be used from coroutines to be able to wait until they finish
+
+	/// <summary>
+	/// Highlights an area of the screen given by the <c>RectTransform</c> with the given padding, while blocking raycasts everywhere around it,
+	/// and waits until it is finished (the tween is completed).
+	/// </summary>
+	/// <param name="rectTransform"><c>RectTransform</c> specifying an area to be highlighted. If it is <c>null</c>, the whole screen is highlighted (and raycasts may be still blocked).</param>
+	/// <param name="blockRaycasts"><c>true</c> if raycasts should be blocked in the highlighted area as well, <c>false</c> otherwise.</param>
+	/// <param name="padding">Padding around the <c>RectTransform</c> which will be highlighted as well.</param>
+	/// <returns>Running over several frames, yielding until some condition is met.</returns>
 	public IEnumerator HighlightAndWaitUntilFinished(RectTransform rectTransform, bool blockRaycasts = false, int padding = 0) {
 		Highlight(rectTransform, blockRaycasts, padding);
 		yield return new WaitForSecondsRealtime(tweenDuration);
 	}
+	/// <summary>
+	/// Highlights an area of the screen given by the <c>Rect</c>, while blocking raycasts everywhere around it,
+	/// and waits until it is finished (the tween is completed).
+	/// </summary>
+	/// <param name="rect"><c>Rect</c> specifying an area to be highlighted.</param>
+	/// <param name="blockRaycasts"><c>true</c> if raycasts should be blocked in the highlighted area as well, <c>false</c> otherwise.</param>
+	/// <returns>Running over several frames, yielding until some condition is met.</returns>
 	public IEnumerator HighlightAndWaitUntilFinished(Rect rect, bool blockRaycasts = false) {
 		Highlight(rect, blockRaycasts);
 		yield return new WaitForSecondsRealtime(tweenDuration);
 	}
+	/// <summary>
+	/// Resets everything (size, position, etc.) to stop highlighting and to stop blocking raycasts,
+	/// and waits until it is finished (the tween is completed).
+	/// </summary>
+	/// <returns>Running over several frames, yielding until some condition is met.</returns>
 	public IEnumerator StopHighlightingAndWaitUntilFinished() {
 		StopHighlighting();
 		yield return new WaitForSecondsRealtime(tweenDuration);

@@ -3,8 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// An object representation of the Introduction tutorial stage - introducing the player to the basic controls and track elements.
+/// It keeps track of the progress within this stage and moves forward from one step to another.
+/// </summary>
 public class IntroductionTutorial : TutorialStageBase {
 
+	// All steps of this tutorial stage
 	private enum Step {
 		NotStarted,
 		Part1_Start,
@@ -31,18 +37,25 @@ public class IntroductionTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.NotStarted;
 
+	/// <inheritdoc/>
 	protected override string LocalizationKeyPrefix => "Introduction";
 
+	/// <summary>
+	/// <inheritdoc/>
+	/// Loads Race scene so that the next tutorial stage can be started rightaway.
+	/// </summary>
 	public override void Finish() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} finished.");
 		// Load Race scene so that the next stage can be started
 		SceneLoader.Instance.LoadScene(Scene.Race);
 	}
 
+	/// <inheritdoc/>
 	public override string GetCurrentState() {
 		return currentStep.ToString();
 	}
 
+	/// <inheritdoc/>
 	public override void SetCurrentState(string state) {
 		Step lastStep = Enum.Parse<Step>(state);
 		// Go back to a checkpoint
@@ -55,6 +68,12 @@ public class IntroductionTutorial : TutorialStageBase {
 		currentStep = lastStep;
 	}
 
+	/// <summary>
+	/// <inheritdoc/>
+	/// For this stage to start, the current scene must be Tutorial.
+	/// But if the tutorial is disabled in settings, this stage is automatically triggered so it can be skipped and the tutorial can move on. 
+	/// </summary>
+	/// <returns><inheritdoc/></returns>
 	protected override bool CheckTriggerConditions() {
 		// Tutorial scene
 		//	- But if the tutorial is disabled, we trigger it automatically so it can be skipped and we are not stuck here in case tutorial is enabled later on
@@ -62,6 +81,7 @@ public class IntroductionTutorial : TutorialStageBase {
 		return SceneLoader.Instance.CurrentScene == Scene.Tutorial;
 	}
 
+	/// <inheritdoc/>
 	protected override IEnumerator InitializeTutorialStage() {
 		// We should be already in Tutorial scene
 		TutorialSceneManager.Instance.ResetAll();
@@ -69,6 +89,11 @@ public class IntroductionTutorial : TutorialStageBase {
 		yield break;
 	}
 
+	/// <summary>
+	/// Updates the tutorial stage (called from <c>Update()</c> method).
+	/// Handles starting the scenario, moving from one part of this tutorial stage to another, and also moving to the finished state.
+	/// </summary>
+	/// <returns><inheritdoc/></returns>
 	protected override bool UpdateTutorialStage() {
 		// Handle moving from one part to another
 		switch (currentStep) {
@@ -88,6 +113,7 @@ public class IntroductionTutorial : TutorialStageBase {
 		return true;
 	}
 
+	// The whole scenario of the first part of this tutorial stage
 	private IEnumerator GoThroughPart1() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} (part 1) started.");
 		
@@ -155,6 +181,7 @@ public class IntroductionTutorial : TutorialStageBase {
 		currentStep = Step.Part1_End;
 	}
 
+	// The whole scenario of the seconds part of this tutorial stage
 	private IEnumerator GoThroughPart2() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} (part 2) started.");
 
@@ -241,20 +268,27 @@ public class IntroductionTutorial : TutorialStageBase {
 
 }
 
-// The player has used actions for flying forward, braking and turning
+
+/// <summary>
+/// A class tracking progress based on basic movement.
+/// The player has to use actions for flying forward, braking and turning several times.
+/// </summary>
 internal class BasicMovementProgress : TutorialStepProgressTracker {
 
 	private int forwardCount, brakeCount, leftCount, rightCount;
 	private float previousForwardValue, previousTurnValue;
 
+	/// <inheritdoc/>
 	protected override bool CheckIfPossibleToMoveToNextStep() {
 		// Enough time has passed (10 s) and each direction was used enough times (2-3x) to progress further
 		return elapsedTime > 10 && forwardCount >= 2 && brakeCount >= 2 && leftCount >= 3 && rightCount >= 3;
 	}
 
+	/// <inheritdoc/>
 	protected override void FinishStepProgress() {
 	}
 
+	/// <inheritdoc/>
 	protected override void InitializeStepProgress() {
 		forwardCount = 0;
 		brakeCount = 0;
@@ -264,6 +298,7 @@ internal class BasicMovementProgress : TutorialStepProgressTracker {
 		previousTurnValue = 0;
 	}
 
+	/// <inheritdoc/>
 	protected override void UpdateStepProgress() {
 		// Detect changes in direction - forward/brake, left/right
 		float forwardValue = InputManager.Instance.GetFloatValue("Forward");
@@ -291,26 +326,33 @@ internal class BasicMovementProgress : TutorialStepProgressTracker {
 	}
 }
 
-// The player has used actions for flying up and down
+/// <summary>
+/// A class tracking progress based on basic movement.
+/// The player has to use actions for flying up and down several times.
+/// </summary>
 internal class UpAndDownMovementProgress : TutorialStepProgressTracker {
 
 	private int upCount, downCount;
 	private float previousUpValue;
 
+	/// <inheritdoc/>
 	protected override bool CheckIfPossibleToMoveToNextStep() {
 		// Enough time has passed (10 s) and each direction was used enough times (3x) to progress further
 		return elapsedTime > 10 && upCount >= 3 && downCount >= 3;
 	}
 
+	/// <inheritdoc/>
 	protected override void FinishStepProgress() {
 	}
 
+	/// <inheritdoc/>
 	protected override void InitializeStepProgress() {
 		upCount = 0;
 		downCount = 0;
 		previousUpValue = -1;
 	}
 
+	/// <inheritdoc/>
 	protected override void UpdateStepProgress() {
 		// Detect changes in direction
 		float upValue = InputManager.Instance.GetFloatValue("Pitch");
@@ -327,24 +369,31 @@ internal class UpAndDownMovementProgress : TutorialStepProgressTracker {
 	}
 }
 
-// The player has used actions for back view and resetting view
+/// <summary>
+/// A class tracking progress based on looking around.
+/// The player has to use actions for back view and reseting view several times.
+/// </summary>
 internal class LookAroundMovementProgress : TutorialStepProgressTracker {
 
 	private int resetViewCount, backViewCount;
 
+	/// <inheritdoc/>
 	protected override bool CheckIfPossibleToMoveToNextStep() {
 		// Enough time has passed (10 s) and each action was used enough times (2x) to progress further
 		return elapsedTime > 10 && resetViewCount >= 2 && backViewCount >= 4; // back view is toggle, so we need at least 4
 	}
 
+	/// <inheritdoc/>
 	protected override void FinishStepProgress() {
 	}
 
+	/// <inheritdoc/>
 	protected override void InitializeStepProgress() {
 		resetViewCount = 0;
 		backViewCount = 0;
 	}
 
+	/// <inheritdoc/>
 	protected override void UpdateStepProgress() {
 		if (InputManager.Instance.GetBoolValue("ResetView"))
 			resetViewCount++;
@@ -353,24 +402,31 @@ internal class LookAroundMovementProgress : TutorialStepProgressTracker {
 	}
 }
 
-// The player has entered the tutorial trigger zone
+/// <summary>
+/// A class tracking progress based on a tutorial trigger zone.
+/// The player has to enter the trigger zone.
+/// </summary>
 internal class TutorialTriggerZoneProgress : TutorialStepProgressTracker {
 
 	private bool zoneTriggered;
 
+	/// <inheritdoc/>
 	protected override bool CheckIfPossibleToMoveToNextStep() {
 		return zoneTriggered;
 	}
 
+	/// <inheritdoc/>
 	protected override void FinishStepProgress() {
 		TutorialSceneManager.Instance.tutorialTriggerZone.onPlayerEntered -= OnPlayerEnteredZone;
 	}
 
+	/// <inheritdoc/>
 	protected override void InitializeStepProgress() {
 		zoneTriggered = false;
 		TutorialSceneManager.Instance.tutorialTriggerZone.onPlayerEntered += OnPlayerEnteredZone;
 	}
 
+	/// <inheritdoc/>
 	protected override void UpdateStepProgress() {
 	}
 
@@ -379,16 +435,21 @@ internal class TutorialTriggerZoneProgress : TutorialStepProgressTracker {
 	}
 }
 
-// The player has flown through all hoops and checkpoints
+/// <summary>
+/// A class tracking progress in a small track.
+/// The player has to fly through all hoops and checkpoints.
+/// </summary>
 internal class SmallTrackProgress : TutorialStepProgressTracker {
 
 	private bool[] hoopPassed;
 	private int hoopsRemaining;
 
+	/// <inheritdoc/>
 	protected override bool CheckIfPossibleToMoveToNextStep() {
 		return hoopsRemaining == 0;
 	}
 
+	/// <inheritdoc/>
 	protected override void FinishStepProgress() {
 		// Unregister callbacks
 		foreach (var hoop in TutorialSceneManager.Instance.hoops) {
@@ -399,6 +460,7 @@ internal class SmallTrackProgress : TutorialStepProgressTracker {
 		}
 	}
 
+	/// <inheritdoc/>
 	protected override void InitializeStepProgress() {
 		// Activate all hoops and checkpoints and register callbacks
 		int index = 1; // starting from 1 and not from zero so that race-specific code is not invoked (next hoop to pass is initialized to 0)
@@ -416,6 +478,7 @@ internal class SmallTrackProgress : TutorialStepProgressTracker {
 		hoopsRemaining = index - 1;
 	}
 
+	/// <inheritdoc/>
 	protected override void UpdateStepProgress() {
 	}
 
@@ -425,26 +488,34 @@ internal class SmallTrackProgress : TutorialStepProgressTracker {
 	}
 }
 
-// A certain type of bonus has been picked up a certain number of times
+/// <summary>
+/// A class tracking progress based collected bonuses.
+/// The player has to collect a certain type of bonus a certain number of times.
+/// The type parameter determines the type of bonus and a static data field determines the number.
+/// </summary>
 public class BonusProgress<T> : TutorialStepProgressTracker where T : BonusEffect {
 	
 	public static int count = 1; // How many times the bonus should be picked up before the progress is finished (static so we can set it without instantiation)
 
 	private int bonusPickedUpCount;
 
+	/// <inheritdoc/>
 	protected override bool CheckIfPossibleToMoveToNextStep() {
 		return bonusPickedUpCount == count;
 	}
 
+	/// <inheritdoc/>
 	protected override void FinishStepProgress() {
 		Messaging.UnregisterFromMessage("BonusPickedUp", OnBonusPickedUp);
 	}
 
+	/// <inheritdoc/>
 	protected override void InitializeStepProgress() {
 		Messaging.RegisterForMessage("BonusPickedUp", OnBonusPickedUp);
 		bonusPickedUpCount = 0;
 	}
 
+	/// <inheritdoc/>
 	protected override void UpdateStepProgress() {
 	}
 
@@ -454,22 +525,29 @@ public class BonusProgress<T> : TutorialStepProgressTracker where T : BonusEffec
 	}
 }
 
-// There are no more effects affecting the player
+/// <summary>
+/// A class tracking progress based on effects affecting the player.
+/// There mustn't be any effect affecting the player.
+/// </summary>
 internal class EffectsProgress : TutorialStepProgressTracker {
 
 	EffectibleCharacter playerEffects;
 
+	/// <inheritdoc/>
 	protected override bool CheckIfPossibleToMoveToNextStep() {
 		return playerEffects.effects.Count == 0;
 	}
 
+	/// <inheritdoc/>
 	protected override void FinishStepProgress() {
 	}
 
+	/// <inheritdoc/>
 	protected override void InitializeStepProgress() {
 		playerEffects = TutorialSceneManager.Instance.player.GetComponentInChildren<EffectibleCharacter>();
 	}
 
+	/// <inheritdoc/>
 	protected override void UpdateStepProgress() {
 	}
 }

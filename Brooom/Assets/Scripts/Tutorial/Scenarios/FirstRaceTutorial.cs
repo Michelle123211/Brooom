@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// An object representation of the First Race tutorial stage - introducing the player to the concept of training and starting zone.
+/// It keeps track of the progress within this stage and moves forward from one step to another.
+/// </summary>
 public class FirstRaceTutorial : TutorialStageBase {
 
+	// All steps of this tutorial stage
 	private enum Step {
 		NotStarted,
 		Started,
@@ -16,10 +22,12 @@ public class FirstRaceTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.NotStarted;
 
+	/// <inheritdoc/>
 	protected override string LocalizationKeyPrefix => "FirstRace";
 
 	private CharacterMovementController player;
 
+	/// <inheritdoc/>
 	public override void Finish() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} finished.");
 		// We should stay in the Race scene, so we need to reset everything
@@ -34,20 +42,28 @@ public class FirstRaceTutorial : TutorialStageBase {
 		TutorialBasicManager.Instance.cutsceneCamera.ResetView();
 	}
 
+	/// <inheritdoc/>
 	public override string GetCurrentState() {
 		return currentStep.ToString();
 	}
 
+	/// <inheritdoc/>
 	public override void SetCurrentState(string state) {
 		// Always starting from the beginning
 		currentStep = Step.NotStarted;
 	}
 
+	/// <summary>
+	/// <inheritdoc/>
+	/// For this stage to start, the current scene must be Race.
+	/// </summary>
+	/// <returns><inheritdoc/></returns>
 	protected override bool CheckTriggerConditions() {
 		// Race scene
 		return SceneLoader.Instance.CurrentScene == Scene.Race;
 	}
 
+	/// <inheritdoc/>
 	protected override IEnumerator InitializeTutorialStage() {
 		// Prepare everything necessary
 		SettingsUI.skipTraining = false; // in tutorial, don't skip training regardless of the settings
@@ -59,6 +75,11 @@ public class FirstRaceTutorial : TutorialStageBase {
 		(RaceControllerBase.Instance as RaceController).isInTutorial = true;
 	}
 
+	/// <summary>
+	/// Updates the tutorial stage (called from <c>Update()</c> method).
+	/// Handles starting the scenario.
+	/// </summary>
+	/// <returns><inheritdoc/></returns>
 	protected override bool UpdateTutorialStage() {
 		// Handle starting the tutorial scenario
 		if (currentStep == Step.NotStarted) {
@@ -68,6 +89,7 @@ public class FirstRaceTutorial : TutorialStageBase {
 		return currentStep != Step.Finished;
 	}
 
+	// The whole scenario of this tutorial stage
 	private IEnumerator GoThroughTutorialScenario() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} started.");
 
@@ -110,6 +132,10 @@ public class FirstRaceTutorial : TutorialStageBase {
 
 }
 
+/// <summary>
+/// A class tracking progress based on starting zone.
+/// The player has to enter the race starting zone and the training needs to be ended.
+/// </summary>
 internal class StartingZoneProgress : TutorialStepProgressTracker {
 
 	bool trainingEnded = false;
@@ -134,6 +160,10 @@ internal class StartingZoneProgress : TutorialStepProgressTracker {
 	}
 }
 
+/// <summary>
+/// A class tracking progress based on displayed dialog for selectiong whether training should be skipped.
+/// The player has to select an option and confirm it. This option is then persistently stored.
+/// </summary>
 internal class SkipTrainingPanelProgress : TutorialStepProgressTracker {
 
 	private Button confirmButton;

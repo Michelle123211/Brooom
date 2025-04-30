@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// An object representation of the Player Overview tutorial stage - introducing the player to individual parts of the screen.
+/// It keeps track of the progress within this stage and moves forward from one step to another.
+/// </summary>
 public class PlayerOverviewTutorial : TutorialStageBase {
 
+	// All steps of this tutorial stage
 	private enum Step {
 		NotStarted,
 		Started,
@@ -20,33 +26,48 @@ public class PlayerOverviewTutorial : TutorialStageBase {
 	}
 	private Step currentStep = Step.NotStarted;
 
+	/// <inheritdoc/>
 	protected override string LocalizationKeyPrefix => "PlayerOverview";
 
+	/// <inheritdoc/>
 	public override void Finish() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} finished.");
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		Tutorial.Instance.highlighter.StopHighlighting();
 	}
 
+	/// <inheritdoc/>
 	public override string GetCurrentState() {
 		return currentStep.ToString();
 	}
 
+	/// <inheritdoc/>
 	public override void SetCurrentState(string state) {
 		// Always starting from the beginning
 		currentStep = Step.NotStarted;
 	}
 
+	/// <summary>
+	/// <inheritdoc/>
+	/// For this stage to start, the current scene must be PlayerOverview.
+	/// </summary>
+	/// <returns><inheritdoc/></returns>
 	protected override bool CheckTriggerConditions() {
 		// Player Overview scene
 		return SceneLoader.Instance.CurrentScene == Scene.PlayerOverview;
 	}
 
+	/// <inheritdoc/>
 	protected override IEnumerator InitializeTutorialStage() {
 		Tutorial.Instance.panel.ShowEscapePanel(false);
 		yield break;
 	}
 
+	/// <summary>
+	/// Updates the tutorial stage (called from <c>Update()</c> method).
+	/// Handles starting the scenario.
+	/// </summary>
+	/// <returns><inheritdoc/></returns>
 	protected override bool UpdateTutorialStage() {
 		// Handle starting the tutorial scenario
 		if (currentStep == Step.NotStarted) {
@@ -56,6 +77,7 @@ public class PlayerOverviewTutorial : TutorialStageBase {
 		return currentStep != Step.Finished;
 	}
 
+	// The whole scenario of this tutorial stage
 	private IEnumerator GoThroughTutorialScenario() {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Tutorial, $"Tutorial stage {LocalizationKeyPrefix} started.");
 
