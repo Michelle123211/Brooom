@@ -94,13 +94,16 @@ public class LocalizationManager : MonoBehaviourSingleton<LocalizationManager>, 
 		return availableLanguages;
 	}
 
-	static LocalizationManager() { 
+	static LocalizationManager() {
+		// Singleton options override
 		Options = SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances | SingletonOptions.LazyInitialization;
 	}
 
+	/// <inheritdoc/>
 	public void AwakeSingleton() {
 	}
 
+	/// <inheritdoc/>
 	public void InitializeSingleton() {
 		LoadDataFromJSONFile();
 		// Load the persistently saved selected language from earlier

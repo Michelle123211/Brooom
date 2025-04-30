@@ -6,6 +6,13 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
+
+/// <summary>
+/// A singleton providing functionality for logging different analytics events into a file.
+/// These can be used for debugging purposes or during playtesting to understand better what the player did and to be able to analyze it somehow.
+/// Each event is logged together with the current date and time, the current scene and a analytics category to which it belongs.
+/// This makes processing the file with events easier.
+/// </summary>
 public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	[Tooltip("If this is false, no events will be logged into a file.")]
@@ -14,17 +21,18 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	[Tooltip("Name of the file (without extension) the analytics will be saved into.")]
 	[SerializeField] string analyticsFileName = "Events";
 
-	[Tooltip("Whether the analytics file should be copied over to Desktop when the game is closed.")]
+	[Tooltip("Whether the analytics file should be copied over to Desktop when the game is closed (this can be used during experiments).")]
 	[SerializeField] bool copyToDesktop = false;
 
 	[Tooltip("Name of the file (without extension) which should be created on Desktop when the analytics file is copied there.")]
 	[SerializeField] string desktopFileName = "Events";
 
+	// The maximum allowed size of the analytics file (the file is emptied out when this size is exceeded)
 	private static readonly long maxFileSize = 10485760; // 10 MB
 	
 
-	private CultureInfo culture = new CultureInfo("cs-CZ");
-	private StreamWriter file;
+	private CultureInfo culture = new CultureInfo("cs-CZ"); // used for date and time formatting
+	private StreamWriter file; // analytics file to which events are logged
 
 	private Scene currentScene = Scene.Start;
 
@@ -34,15 +42,23 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	private LevelGenerationPipeline levelGenerator; // onLevelGenerated
 
 
+	/// <summary>
+	/// Logs analytics event of the given category and with the given description into the analytics file.
+	/// </summary>
+	/// <param name="category">Category of the event to log.</param>
+	/// <param name="eventDescription">Event description.</param>
 	public void LogEvent(AnalyticsCategory category, string eventDescription) {
 		if (!analyticsEnabled) return;
 		// Output into a file in the following format - "CurrentDatetime | CurrentScene | Category | EventDescription"
 		file.WriteLine($"{DateTime.Now.ToString(culture)} | {SceneLoader.Instance.CurrentScene} | {category} | {eventDescription}");
 	}
-	static Analytics() { 
+
+	static Analytics() {
+		// Singleton options override
 		Options = SingletonOptions.RemoveRedundantInstances | SingletonOptions.CreateNewGameObject | SingletonOptions.PersistentBetweenScenes;
 	}
 
+	// Registers necessary callbacks based on the scene
 	private void RegisterSceneSpecificCallbacks(Scene scene) {
 		switch (scene) {
 			case Scene.Race:
@@ -55,7 +71,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 				break;
 		}
 	}
-
+	// Unregisters all registered callbacks based on the scene
 	private void UnregisterSceneSpecificCallbacks(Scene scene) {
 		switch (scene) {
 			case Scene.Race:
@@ -70,6 +86,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	}
 
 	#region Global callbacks and messages
+	// Registers callbacks for messages (global, not dependent on the current scene)
 	private void RegisterForMessages() {
 		Messaging.RegisterForMessage("TrainingEnded", OnTrainingEnded);
 		Messaging.RegisterForMessage("RaceStarted", OnRaceStarted);
@@ -84,7 +101,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		Messaging.RegisterForMessage("RankChanged", OnRankChanged);
 		Messaging.RegisterForMessage("CoinsChanged", OnCoinsAmountChanged);
 	}
-
+	// Unregisters callbacks from messages (global, not dependent on the current scene)
 	private void UnregisterFromMessages() {
 		Messaging.UnregisterFromMessage("TrainingEnded", OnTrainingEnded);
 		Messaging.UnregisterFromMessage("RaceStarted", OnRaceStarted);
@@ -100,12 +117,13 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		Messaging.UnregisterFromMessage("CoinsChanged", OnCoinsAmountChanged);
 	}
 
+	// Registers global callbacks (not dependent on the current scene)
 	private void RegisterGlobalCallbacks() {
 		SceneLoader.Instance.onSceneStartedLoading += OnSceneStartedLoading;
 		SceneLoader.Instance.onSceneLoaded += OnSceneLoaded;
 		PlayerState.Instance.onEquippedSpellChanged += OnEquippedSpellChanged;
 	}
-
+	// Unregisters global callbacks (not dependent on the current scene)
 	private void UnregisterGlobalCallbacks() {
 		SceneLoader.Instance.onSceneStartedLoading -= OnSceneStartedLoading;
 		SceneLoader.Instance.onSceneLoaded -= OnSceneLoaded;
@@ -114,6 +132,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	#endregion
 
 	#region Scene-based callbacks
+	// Registers callbacks relevant only in the Race or QuickRace scene
 	private void RegisterCallbacksInRaceScene() {
 		// Initialize data fields
 		this.playerSpellController = RaceControllerBase.Instance.playerRacer.characterController.GetComponentInChildren<SpellController>();
@@ -136,6 +155,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		RaceControllerBase.Instance.playerRacer.state.onCheckpointMissed += OnCheckpointMissed;
 		RaceControllerBase.Instance.playerRacer.state.onWrongDirectionChanged += OnWrongDirectionChanged;
 	}
+	// Unregisters callbacks relevant only in the Race or QuickRace scene
 	private void UnregisterCallbacksInRaceScene() {
 		// Unregister callbacks
 		this.playerSpellController.onSpellCast -= OnSpellCast;
@@ -159,6 +179,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		this.levelGenerator = null;
 	}
 
+	// Registers spell-related callbacks relevant only in the Tutorial or Testing Track scene
 	private void RegisterSpellCallbacksInSimpleScene() {
 		// Initialize data fields
 		this.playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
@@ -166,6 +187,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		this.playerSpellController.onSpellCast += OnSpellCast;
 		this.playerSpellController.onSelectedSpellChanged += OnSelectedSpellChanged;
 	}
+	// Unregisters spell-related callbacks relevant only in the Tutorial or Testing Track scene
 	private void UnregisterSpellCallbacksInSimpleScene() {
 		// Unregister callbacks
 		this.playerSpellController.onSpellCast -= OnSpellCast;
@@ -175,14 +197,13 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	}
 	#endregion
 
+	// Unregisters scene-specific callbacks from the old scene (stored in currentScene)
 	private void OnSceneStartedLoading(Scene newScene) {
-		// Unregister scene-specific callbacks from the old scene (stored in currentScene)
 		UnregisterSceneSpecificCallbacks(currentScene);
 	}
-
+	// Registers scene-specific callbacks in the new scene
 	private void OnSceneLoaded(Scene newScene) {
 		LogEvent(AnalyticsCategory.Game, $"Scene changed from {currentScene} to {newScene}.");
-		// Register scene-specific callbacks in the new scene
 		RegisterSceneSpecificCallbacks(newScene);
 
 		currentScene = newScene;
@@ -359,6 +380,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	#region Initialization + singleton stuff
 
+	/// <inheritdoc/>
 	public void AwakeSingleton() {
 		// Make sure the analytics output file exists
 		string eventsFolder = Path.Combine(Application.persistentDataPath, "Events");
@@ -378,6 +400,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		LogEvent(AnalyticsCategory.Analytics, "Analytics set up.");
 	}
 
+	/// <inheritdoc/>
 	public void InitializeSingleton() {
 		// Nothing to do here because it uses eager initialization, so this method is called at the same time as AwakeSingleton()
 	}
@@ -412,6 +435,9 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	#endregion
 }
 
+/// <summary>
+/// Different analytics categories to which individual analytics events may belong.
+/// </summary>
 public enum AnalyticsCategory { 
 	Analytics,
 	Game,

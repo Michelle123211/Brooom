@@ -173,15 +173,18 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
     }
 
 	#region Singleton initialization
-	static TooltipController() { 
+	static TooltipController() {
+        // Singleton options override
         Options = SingletonOptions.LazyInitialization | SingletonOptions.RemoveRedundantInstances | SingletonOptions.PersistentBetweenScenes;
     }
 
-	public void AwakeSingleton() {
+    /// <inheritdoc/>
+    public void AwakeSingleton() {
         gameObject.SetActive(false);
     }
 
-	public void InitializeSingleton() {
+    /// <inheritdoc/>
+    public void InitializeSingleton() {
         tooltipPanel = GetComponentInChildren<TooltipPanel>();
         // Load default tooltip style if necessary
         if (tooltipStyle == null)

@@ -105,13 +105,16 @@ public class AchievementManager : MonoBehaviourSingleton<AchievementManager>, IS
 
 	#region Singleton initialization
 
-	static AchievementManager() { 
+	static AchievementManager() {
+		// Singleton options override
 		Options = SingletonOptions.CreateNewGameObject | SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances;
 	}
 
+	/// <inheritdoc/>
 	public void AwakeSingleton() {
 	}
 
+	/// <inheritdoc/>
 	public void InitializeSingleton() {
 		// Register for all necessary messages in the Messaging class
 		foreach (var data in achievementData)

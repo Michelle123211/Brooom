@@ -108,12 +108,15 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>, ISingleton {
 	#region Singleton
 
 	static AudioManager() {
+		// Singleton options override
 		Options = SingletonOptions.CreateNewGameObject | SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances;
 	}
 
+	/// <inheritdoc/>
 	public void AwakeSingleton() {
 	}
 
+	/// <inheritdoc/>
 	public void InitializeSingleton() {
 		SceneLoader.Instance.onSceneStartedLoading += OnSceneLoading;
 		SceneLoader.Instance.onSceneLoaded += OnSceneLoaded;

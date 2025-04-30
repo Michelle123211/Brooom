@@ -172,12 +172,15 @@ public class Tutorial : MonoBehaviourSingleton<Tutorial>, ISingleton {
 
 	#region Singleton initialization
 	static Tutorial() {
+		// Singleton options override
 		Options = SingletonOptions.LazyInitialization | SingletonOptions.RemoveRedundantInstances | SingletonOptions.CreateNewGameObject | SingletonOptions.PersistentBetweenScenes;
 	}
 
+	/// <inheritdoc/>
 	public void AwakeSingleton() {
 	}
 
+	/// <inheritdoc/>
 	public void InitializeSingleton() {
 		LoadCurrentProgress();
 	}
@@ -300,7 +303,7 @@ public abstract class TutorialStageBase {
 	protected abstract bool UpdateTutorialStage();
 
 	/// <summary>
-	/// Gets localized string stored under the key "Tutorial(LocalizationKeyPrefix)_(localizationKeySuffix)".
+	/// Gets localized string stored under the key "Tutorial&lt;LocalizationKeyPrefix&gt;_&lt;localizationKeySuffix&gt;".
 	/// </summary>
 	/// <param name="localizationKeySuffix">Suffix of the localization key, distinguishing strings from the same tutorial stage.</param>
 	/// <returns>Localized string under the given key.</returns>

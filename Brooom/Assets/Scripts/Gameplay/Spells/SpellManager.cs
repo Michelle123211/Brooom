@@ -65,13 +65,16 @@ public class SpellManager : MonoBehaviourSingleton<SpellManager>, ISingleton {
 	}
 
 	#region Singleton initialization
-	static SpellManager() { 
+	static SpellManager() {
+		// Singleton options override
 		Options = SingletonOptions.CreateNewGameObject | SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances;
 	}
 
+	/// <inheritdoc/>
 	public void AwakeSingleton() {
 	}
 
+	/// <inheritdoc/>
 	public void InitializeSingleton() {
 	}
 	#endregion

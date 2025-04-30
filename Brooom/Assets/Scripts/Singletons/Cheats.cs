@@ -7,6 +7,10 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+
+/// <summary>
+/// A singleton providing all the UI and functionality to support cheats in the game.
+/// </summary>
 public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 	[Header("Parameters")]
@@ -29,8 +33,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 
 	// Cheat commands
-	private Dictionary<string, CheatCommand> commandsDictionary;
-	private List<CheatCommand> commands;
+	private Dictionary<string, CheatCommand> commandsDictionary; // command name --> CheatCommand instance (with parameters)
+	private List<CheatCommand> commands; // a list of all available commands
 
 	private bool cheatsAreVisible = false;
 
@@ -38,10 +42,15 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	private int lastCommandIndex; // last command entered
 	private int historyOffset; // offset of the last command displayed from the history
 
+	/// <summary>
+	/// Plays sound effect. Called whenever the value in cheats' input field changes (i.e. with each key stroke).
+	/// </summary>
+	/// <param name="currentCommand">Current content of the cheats' input field.</param>
 	public void OnCommandInput(string currentCommand) {
 		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.KeyDown);
 	}
 
+	// Tries to process the command entered (parse it, perform it) and clears the command line
 	private void OnCommandEntered() {
 		string command = commandField.text;
 		if (!string.IsNullOrEmpty(command)) {
@@ -55,6 +64,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		commandField.ActivateInputField();
 	}
 
+	// Processes the given command, i.e. divides it into tokens, finds corresponding CheatCommand instance and uses it to perform the command
 	private void ProcessCommand(string commandLine) {
 		// Parse the command
 		string[] commandParts = commandLine.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -65,7 +75,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		}
 		// Handle command
 		else {
-			string commandName = commandParts[0];
+			string commandName = commandParts[0]; // command name is always first
 			if (commandsDictionary.ContainsKey(commandName)) {
 				if (commandsDictionary[commandName].IsAvailable()) {
 					CommandParseResult result = commandsDictionary[commandName].parseCommand(commandParts);
@@ -87,8 +97,9 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		historyOffset = -1;
 	}
 
+	// Provides help based on the input (called if the first token is "help")
 	private void ProvideHelp(string[] commandParts) {
-		if (commandParts.Length == 1) {
+		if (commandParts.Length == 1) { // only "help" - outputs a list of available commands and an overview of controls
 			StringBuilder message = new StringBuilder();
 			message.Append("Use a command or type 'help <command>' for more info. \nAvailable commands:");
 			foreach (var command in commands) {
@@ -100,7 +111,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			message.Append(".");
 			message.Append("\n(Close with Ctrl+Alt+C, use arrow up/down to browse command history.)");
 			DisplayMessage(message.ToString());
-		} else if (commandParts.Length == 2) {
+		} else if (commandParts.Length == 2) { // "help" and some other command - outputs help message for that command
 			string commandName = commandParts[1];
 			if (commandsDictionary.ContainsKey(commandName)) {
 				if (commandsDictionary[commandName].IsAvailable()) {
@@ -128,6 +139,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		Utils.TweenAwareEnable(messageArea);
 	}
 
+	// Toggles visibility of the cheats UI - invoked by correponding key combination
 	private void ToggleVisibility() {
 		if (!cheatsAreVisible) {
 			// Show the cheats UI
@@ -147,6 +159,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		}
 	}
 
+	// Reacts to arrow up or down and shows corresponding part of command history
 	private void HandleCommandHistory() {
 		// Reset if the field was erased
 		if (string.IsNullOrEmpty(commandField.text)) {
@@ -181,6 +194,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 
 	#region Initialization
+	// Adds all commands (their CheatCommand instances) into a list of all available commands
 	private void InitializeCommandList() {
 		commands = new List<CheatCommand>();
 
@@ -191,18 +205,18 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 		// Shop commands
 		InitializeCoinsCommand(); // coins - change coins amount
-		InitializeUpgradeCommand(); // upgrade - upgrade the broom, available in Tutorial, Player Overview, Race and Testing Track
-		InitializeDowngradeCommand(); // downgrade - downgrade broom, available in Tutorial, Player Overview, Race and Testing Track
+		InitializeUpgradeCommand(); // upgrade - upgrade the broom, available in Tutorial, Player Overview, Race, Quick Race, Tutorial and Testing Track
+		InitializeDowngradeCommand(); // downgrade - downgrade broom, available in Tutorial, Player Overview, Race, Quick Race, Tutorial and Testing Track
 
 		// Spell commands
 		InitializeSpellCommand(); // spell - unlock all spells or only the given one
-		InitializeManaCommand(); // mana - change mana amount or enable/disable unlimited mana, available only in Race
-		InitializeRechargeCommand(); // recharge - change spells' charge or enable/disable cooldown, available only in Race
+		InitializeManaCommand(); // mana - change mana amount or enable/disable unlimited mana, available only in Race and Quick Race
+		InitializeRechargeCommand(); // recharge - change spells' charge or enable/disable cooldown, available only in Race and Quick Race
 
 		// Race commands
-		InitializeSpeedCommand(); // speed - change maximum speed, available only in Race and Testing Track
+		InitializeSpeedCommand(); // speed - change maximum speed, available only in Race, Quick Race, Tutorial and Testing Track
 		InitializeStartCommand(); // start - quick race start, available only in Race
-		InitializeFinishCommand(); // finish - quick race finish, available only in Race
+		InitializeFinishCommand(); // finish - quick race finish, available only in Race and Quick Race
 	}
 
 	private void InitializeSceneCommand() {
@@ -749,13 +763,15 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 	#endregion
 
+	// Performs commands which should be automatically processed when the game starts
 	private void ProcessInitializationCommands() {
 		foreach (var command in initializationCommands) {
 			ProcessCommand(command);
 		}
-		Utils.TweenAwareDisable(messageArea); // hide message area
+		Utils.TweenAwareDisable(messageArea); // hide message area, do it silently
 	}
 
+	// Performs commands which should be automatically processed whenever the corresponding scene is loaded
 	private void ProcessSceneInitializationCommands(Scene currentScene) {
 		// Process commands for the current scene
 		foreach (var sceneCommands in sceneInitializationCommands) {
@@ -765,7 +781,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 				}
 			}
 		}
-		Utils.TweenAwareDisable(messageArea); // hide message area
+		Utils.TweenAwareDisable(messageArea); // hide message area, do it silently
 	}
 
 	private void Update() {
@@ -789,13 +805,16 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	}
 
 	#region SINGLETON
-	static Cheats() { 
+	static Cheats() {
+		// Singleton options override
 		Options = SingletonOptions.PersistentBetweenScenes | SingletonOptions.RemoveRedundantInstances;
 	}
 
+	/// <inheritdoc/>
 	public void AwakeSingleton() {
 	}
 
+	/// <inheritdoc/>
 	public void InitializeSingleton() {
 		commandHistory = new string[historyLength];
 		lastCommandIndex = historyLength - 1;
@@ -814,12 +833,20 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 }
 
+/// <summary>
+/// A class containing everything related to a single cheat command, most notably a function for parsing it.
+/// </summary>
 public class CheatCommand {
+	/// <summary>Name of the command, always used as the first word on the command line.</summary>
 	public string commandName;
+	/// <summary>A function parsing and performing the command.</summary>
 	public Func<string[], CommandParseResult> parseCommand;
+	/// <summary>Message displayed when help for this particular command is requested.</summary>
 	public string helpMessage;
-	public Scene[] enabledInScenes; // scenes in which the command is available, all of them by default (if null)
-	public Scene[] disabledInScenes; // scenes in which the command is not available, none by default (if null)
+	/// <summary>Scenes in which the command is available (all of them by default, if <c>null</c>).</summary>
+	public Scene[] enabledInScenes;
+	/// <summary>Scenes in which the command is not available (none by default, if <c>null</c>).</summary>
+	public Scene[] disabledInScenes;
 
 	public CheatCommand(string name, string helpMessage, Func<string[], CommandParseResult> parsing, Scene[] enabledScenes = null, Scene[] disabledScenes = null) {
 		this.commandName = name;
@@ -830,6 +857,10 @@ public class CheatCommand {
 		this.disabledInScenes = disabledScenes;
 	}
 
+	/// <summary>
+	/// Checks if the command is available based on the current scene.
+	/// </summary>
+	/// <returns><c>true</c> if the command is available in the current scene, <c>false</c> if not available.</returns>
 	public bool IsAvailable() {
 		// Check if it is disabled in the current scene
 		if (disabledInScenes != null) {
@@ -847,11 +878,20 @@ public class CheatCommand {
 	}
 }
 
+/// <summary>
+/// A class representing result of parsing operation.
+/// It contains information about whethet it was successful, and if not, also the error message.
+/// </summary>
 public class CommandParseResult {
+	/// <summary>Whether the parsing operation was successful.</summary>
 	public bool isSuccessful;
+	/// <summary>Error message explaining why it failed, if it failed.</summary>
 	public string message;
 }
 
+/// <summary>
+/// A class representing a single cheat which should be processed whenever a corresponding scene is loaded.
+/// </summary>
 [System.Serializable]
 public struct CheatsForSceneInitialization {
 	public Scene scene;
