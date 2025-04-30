@@ -5,7 +5,13 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 
+
+/// <summary>
+/// A component managing all UI elements related to key bindings displayed in Settings.
+/// It instantiates UI for single key bindings which allow to define binding override for a particular action.
+/// </summary>
 public class KeyRebindingUI : MonoBehaviour {
+
     [Tooltip("Input actions whose binding should not be displayed at all.")]
     public List<InputActionReference> inputActionsToExclude = new List<InputActionReference>();
     [Tooltip("Names of the input actions which should be displayed but not allowed to be modified.")]
@@ -24,10 +30,16 @@ public class KeyRebindingUI : MonoBehaviour {
 
     [SerializeField] private bool logDebuggingMessages = true;
 
+    /// <summary>
+    /// Toggles visibility of this whole GameObject
+    /// </summary>
     public void ToggleVisibility() {
         gameObject.SetActive(!gameObject.activeInHierarchy);
     }
 
+    /// <summary>
+    /// Refreshes all bindings by going through all <c>KeyBindingUI</c> instances and updating their binding text displayed in a rebinding button.
+    /// </summary>
     public void RefreshAllBindings() {
         KeyBindingUI[] children = GetComponentsInChildren<KeyBindingUI>();
         foreach (KeyBindingUI child in children) {
@@ -35,12 +47,16 @@ public class KeyRebindingUI : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Goes through all <c>KeyBindingUI</c> instances and for each one updates its duplicate warning 
+    /// (checks for duplicate bindings and shows/hides duplicate warning accordingly).
+    /// </summary>
     public void UpdateAllDuplicateWarnings() {
         foreach (var keyBinding in keyBindingParent.GetComponentsInChildren<KeyBindingUI>())
             keyBinding.UpdateDuplicateWarning();
     }
 
-    // Adds a new KeyBindingUI for all the actions
+    // Instantiates a new KeyBindingUI for each action available (which is not in a list of excluded actions), also initializes it
     private void CreateRebindingUIsForAllActions() {
         PlayerInput playerInput = InputManager.Instance.GetPlayerInput();
         if (playerInput == null) return;
@@ -74,7 +90,7 @@ public class KeyRebindingUI : MonoBehaviour {
         return false;
     }
 
-    // Returns true if the binding of the given action should not be configurable
+    // Returns true if the binding of the given action should not be configurable (it will be displayed but not interactable)
     private bool ShouldBeReadOnly(InputAction action) {
         foreach (InputActionReference actionReadOnly in inputActionsReadOnly) {
             if (actionReadOnly.action.name == action.name) {
@@ -94,12 +110,4 @@ public class KeyRebindingUI : MonoBehaviour {
 	private void OnDisable() {
         InputManager.Instance.SaveBindings();
 	}
-}
-
-[System.Serializable]
-public class InputActionName {
-    [Tooltip("Action in the InputActions asset assigned to the PlayerInput component whose name should be displayed differently.")]
-    public InputActionReference actionToRename;
-    [Tooltip("Name of the action visible to the player in the rebinding UI.")]
-    public string readableName;
 }

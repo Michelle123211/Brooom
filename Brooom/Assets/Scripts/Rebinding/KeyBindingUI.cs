@@ -6,6 +6,12 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Text;
 
+
+/// <summary>
+/// A component representing a single row of controls table in Settings.
+/// It displays name of the action and the current binding, and contains a button to start a rebinding operation.
+/// There is also a reset button for restoring the original binding before overrides, and an indicator of duplicate bindings.
+/// </summary>
 public class KeyBindingUI : MonoBehaviour {
 
     [Tooltip("Label displaying the readable name of the action.")]
@@ -42,11 +48,21 @@ public class KeyBindingUI : MonoBehaviour {
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
 
 
+    /// <summary>
+    /// Stores reference to the given <c>RebindOverlayUI</c>.
+    /// </summary>
+    /// <param name="rebindOverlay"><c>RebindOverlayUI to be displayed when rebinding process is in progress.</c></param>
     public void SetRebindOverlay(RebindOverlayUI rebindOverlay) {
         this.rebindOverlay = rebindOverlay;
     }
 
-    // Updates the UI according to the action
+    /// <summary>
+    /// Initializes UI elements based on the given action.
+    /// </summary>
+    /// <param name="keyRebindingUI"><c>KeyBindingUI</c> instance which is a parent object managing everything.</param>
+    /// <param name="action">Action corresponding to this key binding UI.</param>
+    /// <param name="name">The name of the action.</param>
+    /// <param name="isReadonly">Whether the key binding is readonly (i.e. an override cannot be created for it).</param>
     public void Initialize(KeyRebindingUI keyRebindingUI, InputAction action, string name, bool isReadonly = false) {
         this.keyRebindingUI = keyRebindingUI;
         this.action = action;
@@ -67,11 +83,13 @@ public class KeyBindingUI : MonoBehaviour {
             resetButton.gameObject.SetActive(true);
         }
         actionNameText.text = name;
-        UpdateResetButtonInteractibility();
+        UpdateResetButtonInteractability();
         UpdateBindingText();
     }
 
-    // Updates the UI to display the current binding
+    /// <summary>
+    /// Displays the current binding in the rebinding button's label.
+    /// </summary>
     public void UpdateBindingText() {
         rebindingButtonText.text = GetBindingText(this.bindingIndex);
     }
@@ -89,6 +107,9 @@ public class KeyBindingUI : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Checks for duplicates among key bindings of other actions. If there is a duplicate, a warning indicator is displayed and its tooltip initialized.
+    /// </summary>
     public void UpdateDuplicateWarning() {
         StringBuilder duplicateBindings = new StringBuilder();
 		// Check bindings of all the other actions in the same action map
@@ -110,11 +131,17 @@ public class KeyBindingUI : MonoBehaviour {
         } else duplicateWarning.TweenAwareDisable();
     }
 
+    /// <summary>
+    /// Gets a human readable binding display string from the given binding index.
+    /// </summary>
+    /// <param name="bindingIndex">Binding index whose display string is to be obtained.</param>
+    /// <returns></returns>
     public string GetBindingText(int bindingIndex) {
         string bindingText = action.GetBindingDisplayString(bindingIndex, out string deviceLayoutName, out string controlPath);
         return InputManager.Instance.PrettifyBindingText(bindingText, deviceLayoutName);
     }
 
+    // Performs an interactive rebinding operation - shows the RebindOverlayUI, waits for an input and stores it as a binding override
     private void PerformSingleRebinding(int bindingIndex, bool allCompositeParts = false) {
         // Deactivate the action we are going to rebind
         action.Disable();
@@ -191,6 +218,9 @@ public class KeyBindingUI : MonoBehaviour {
         rebindingOperation.Start();
     }
 
+    /// <summary>
+    /// Removes all binding overridesand updates UI elements.
+    /// </summary>
     public void ResetRebindingToDefault() {
 		// If composite, remove overrides from part bindings
 		if (action.bindings[bindingIndex].isComposite) {
@@ -202,11 +232,12 @@ public class KeyBindingUI : MonoBehaviour {
 		}
 
 		UpdateBindingText();
-        UpdateResetButtonInteractibility();
+        UpdateResetButtonInteractability();
         keyRebindingUI.UpdateAllDuplicateWarnings();
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, $"Key binding reset for action {(LocalizationManager.Instance.TryGetLocalizedString($"Action{action.name}", out string readableName) ? readableName : action.name)} to {GetBindingText(this.bindingIndex)}.");
     }
 
+    // Check if there is a duplicate binding in different part of the same composite
     private bool CheckForDuplicateBindingsWhileRebinding(int bindingIndex) {
         InputBinding lastBinding = action.bindings[bindingIndex];
         // Check all the composite parts up to the current one
@@ -219,15 +250,17 @@ public class KeyBindingUI : MonoBehaviour {
         return false;
     }
 
+    // Updates UI elements when rebinding operation has finished - hides RebindOverlayUI, shows rebinding button, updates reset button's interactability
     private void UpdateUIAfterRebind() {
         // Update the UI
-        UpdateResetButtonInteractibility();
+        UpdateResetButtonInteractability();
         waitingForInputText.SetActive(false);
         rebindingButton.gameObject.SetActive(true);
         rebindOverlay.gameObject.TweenAwareDisable();
     }
 
-    private void UpdateResetButtonInteractibility() {
+    // Updates reset button's interactability, based on whether a binding override exists, or not
+    private void UpdateResetButtonInteractability() {
         resetButton.interactable = false;
         if (action.bindings[bindingIndex].hasOverrides) {
             resetButton.interactable = true;
