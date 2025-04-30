@@ -1157,6 +1157,7 @@ MonoBehaviour:
   revertAfter: 0
   positionTween:
     tweenThisProperty: 0
+    tweenTarget: {fileID: 0}
     tweenPropertyValues:
       startValue: {x: 0, y: 0, z: 0}
       endValue: {x: 0, y: 0, z: 0}
@@ -1259,6 +1260,7 @@ MonoBehaviour:
       tweenTarget: {fileID: 0}
   rotationTween:
     tweenThisProperty: 0
+    tweenTarget: {fileID: 0}
     tweenPropertyValues:
       startValue: {x: 0, y: 0, z: 0}
       endValue: {x: 0, y: 0, z: 0}
@@ -1361,6 +1363,7 @@ MonoBehaviour:
       tweenTarget: {fileID: 0}
   scaleTween:
     tweenThisProperty: 0
+    tweenTarget: {fileID: 0}
     tweenPropertyValues:
       startValue: {x: 0, y: 0, z: 0}
       endValue: {x: 0, y: 0, z: 0}
@@ -1463,6 +1466,7 @@ MonoBehaviour:
       tweenTarget: {fileID: 0}
   alphaTween:
     tweenThisProperty: 1
+    tweenTarget: {fileID: 0}
     tweenPropertyValues:
       startValue: 0
       endValue: 1
@@ -1519,6 +1523,7 @@ MonoBehaviour:
       tweenTarget: {fileID: 0}
   colorTween:
     tweenThisProperty: 0
+    tweenTarget: {fileID: 0}
     tweenPropertyValues:
       startValue: {r: 0, g: 0, b: 0, a: 0}
       endValue: {r: 0, g: 0, b: 0, a: 0}
@@ -1644,6 +1649,7 @@ MonoBehaviour:
       tweenTarget: {fileID: 0}
   intensityTween:
     tweenThisProperty: 0
+    tweenTarget: {fileID: 0}
     tweenPropertyValues:
       startValue: 0
       endValue: 0
