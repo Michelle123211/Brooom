@@ -5,20 +5,26 @@ using UnityEngine;
 using TMPro;
 
 
-// HUD in Testing Track
-// Displaying speed, altitude, spell slots and description of currently selected spell and instructions on how to use spells
+/// <summary>
+/// A component representing HUD in the testing track.
+/// It extends the <c>SimplifiedHUD</c> class to add functionality for showing description of the currently selected spell
+/// and instructions on how to use spells, on top of the already included parts (i.e. current speed, current altitude, equipped spell slots).
+/// </summary>
 public sealed class TestingTrackUI : SimplifiedHUD {
 
+	[Tooltip("Panel displaying description of the currently selected spell.")]
 	[SerializeField] TooltipPanel spellDescriptionUI;
+	[Tooltip("Panel displaying instructions on how to use spells.")]
 	[SerializeField] TooltipPanel spellInstructionsUI;
 	[Tooltip("Custom tags and their style which is used to format spell description and spell instructions texts.")]
 	[SerializeField] TooltipStyle tooltipStyle;
 
 	private SpellController playerSpellController;
-	private TagsMapping tagsMapping;
+	private TagsMapping tagsMapping; // tags which can be used to format text in panels (it is initialized from tooltipStyle)
 
 
 	#region Currently selected spell description
+	// Shows description of the currently selected spell (or hides it if no spell is selected) - called whenever the selected spell changed
 	private void ShowSpellDescription(int _) { // parameter is there because it is used as a callback on currently selected spell changed
 		if (tagsMapping == null) tagsMapping = TooltipController.GetCustomTagsToTMProTagsMapping(tooltipStyle);
 
@@ -28,13 +34,16 @@ public sealed class TestingTrackUI : SimplifiedHUD {
 			return;
 		}
 		if (spellDescriptionUI.gameObject.activeSelf) {
+			// Spell description is already visible - hide it first, then set its content and show it
 			HideSpellDescription();
 			Invoke(nameof(SetSpellDescriptionContent), 0.15f);
 		} else {
+			// Set the content and show it
 			SetSpellDescriptionContent();
 		}
 	}
 
+	// Shows the current spell's description in a panel
 	private void SetSpellDescriptionContent() {
 		Spell spell = playerSpellController.GetCurrentlySelectedSpell();
 		string keyPrefix = $"Spell{spell.Identifier}";
@@ -65,12 +74,14 @@ public sealed class TestingTrackUI : SimplifiedHUD {
 		spellDescriptionUI.gameObject.TweenAwareEnable();
 	}
 
+	// Hides panel displaying the current spell's description
 	private void HideSpellDescription() {
 		spellDescriptionUI.gameObject.TweenAwareDisable();
 	}
 	#endregion
 
 	#region Spell instructions
+	// Shows instructions on how to use spells
 	private void ShowSpellInstructions() {
 		if (tagsMapping == null) tagsMapping = TooltipController.GetCustomTagsToTMProTagsMapping(tooltipStyle);
 
@@ -83,6 +94,9 @@ public sealed class TestingTrackUI : SimplifiedHUD {
 	}
 	#endregion
 
+	/// <summary>
+	/// Initializes all data fields and UI elements.
+	/// </summary>
 	protected override void Start_Derived() {
 		// Initialize data fields
 		playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");

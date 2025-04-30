@@ -2,23 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A component responsible for the UI of the game ending screen.
+/// It plays sound effect and repeatedly (in random intervals) spawns stars on the screen around a cup.
+/// </summary>
 public class EndingUI : MonoBehaviour {
 
-    EndingStarUI[] stars;
-    bool[] isStarBeingSpawn;
+    EndingStarUI[] stars; // stars which can be repeatedly spawned on the screen
+    bool[] isStarBeingSpawn; // whether the star on the corresponding index is already being spawned (is not idle and cennot be spawned again right now)
 
-    float timeToNextStar = 1.0f;
+    float timeToNextStar = 1.0f; // time remaning until another start should be spawned
 
+    /// <summary>
+    /// Goes to the Player Overview scene from which the player can continue racing.
+    /// </summary>
     public void ContinueRacing() {
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Game continued after completion.");
         SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
     }
 
+    /// <summary>
+    /// Goes to the Main Menu scene.
+    /// </summary>
     public void ReturnToMenu() {
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Returning to menu after completion.");
         SceneLoader.Instance.LoadScene(Scene.MainMenu);
     }
 
+    // Spawns stars repeatedly in random intervals
 	private void Update() {
         // Spawn a random star after a random interval
         timeToNextStar -= Time.deltaTime;
@@ -32,6 +44,7 @@ public class EndingUI : MonoBehaviour {
                 if (!isStarBeingSpawn[i]) readyStarsCount++;
             }
             int randomIndex = Random.Range(0, readyStarsCount);
+            // Spawn the chosen star
             for (int i = 0; i < stars.Length; i++) {
                 if (randomIndex == 0) {
                     stars[i].PlaySpawnAnimation();

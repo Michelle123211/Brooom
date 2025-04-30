@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpellSlotUI : MonoBehaviour
-{
+
+/// <summary>
+/// A component responsible for displaying a single spell as its icon with border around it in the UI.
+/// It uses a separate set of sprites when there is no spell assigned (i.e. it is empty).
+/// It also has a tooltip displaying the assigned spell's description.
+/// </summary>
+public class SpellSlotUI : MonoBehaviour {
+
 	[Header("UI components")]
     [Tooltip("An Image used to display icon of the spell.")]
     [SerializeField] Image spellImage;
@@ -25,15 +31,20 @@ public class SpellSlotUI : MonoBehaviour
 	[Tooltip("A Sprite which is used when the spell does not have assigned icon.")]
 	[SerializeField] Sprite missingIconSprite;
 
-	[Tooltip("A Tooltip component displaying information about the assigned spell after hovering the mouse.")]
+	[Tooltip("A Tooltip component displaying information about the assigned spell after hovering the mouse over it.")]
 	[SerializeField] Tooltip tooltip;
-	TooltipSectionsText? defaultText = null;
-	bool defaultIsLocalized;
+	TooltipSectionsText? defaultText = null; // initial tooltip content (it is restored when there is no assigned spell)
+	bool defaultIsLocalized; // initial tooltip value (it is restored when there is no assigned spell)
 
 
+	/// <summary>Spell assigned to the slot, its icon is displayed in the slot and description in the tooltip.</summary>
 	[HideInInspector] public Spell assignedSpell;
 	private bool isEmpty = true;
 
+	/// <summary>
+	/// Initializes this spell slot with the given spell (i.e. sets the icon and the tooltip accordingly).
+	/// </summary>
+	/// <param name="spell">Spell to be assigned to the slot.</param>
 	public void Initialize(Spell spell) {
 		this.assignedSpell = spell;
 		this.isEmpty = spell == null || string.IsNullOrEmpty(spell.Identifier);
@@ -41,6 +52,7 @@ public class SpellSlotUI : MonoBehaviour
 		SetTooltipContent();
 	}
 
+	// Changes the icon, the background color and the border based on the assigned spell (handles also the case when it is null)
 	private void SetIcon() {
 		// Spell icon
 		spellImage.color = Color.white;
@@ -68,6 +80,7 @@ public class SpellSlotUI : MonoBehaviour
 		}
 	}
 
+	// Sets tooltip content to the assigned spell's description (or to the default one of there is no assigned spell)
 	private void SetTooltipContent() {
 		// Store default tooltip values (so they can be used later when null is assigned)
 		if (!defaultText.HasValue) {

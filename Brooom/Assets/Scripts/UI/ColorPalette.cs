@@ -4,11 +4,16 @@ using UnityEngine;
 
 
 // Similar to UIPalette from Magical Pet Shop (https://github.com/maoap1/magical-pet-shop/blob/main/MagicalPetShop/Assets/Scripts/UI/UIPalette.cs)
+/// <summary>
+/// A singleton containing frequently used colors.
+/// This way they are specified in a single place, while being used from multiple places.
+/// </summary>
 [CreateAssetMenu(fileName = "ColorPalette", menuName = "Color Palette")]
 public class ColorPalette : ScriptableObject {
 
 	#region Simple singleton
 	private static ColorPalette instance;
+	/// <summary>Singleton instance.</summary>
 	public static ColorPalette Instance {
 		get {
 			if (instance == null) {
@@ -17,6 +22,7 @@ public class ColorPalette : ScriptableObject {
 			return instance;
 		}
 	}
+	/// <summary>Resets singleton instance back to <c>null</c>.</summary>
 	public static void ResetInstance() {
 		instance = null;
 	}
@@ -87,6 +93,11 @@ public class ColorPalette : ScriptableObject {
 	#endregion
 
 	#region Enum to color mapping
+	/// <summary>
+	/// Maps an enum value specifying a color to an actual <c>Color</c> instance.
+	/// </summary>
+	/// <param name="color">Enum value corresponding to the color.</param>
+	/// <returns><c>Color</c> corresponding to the given enum value.</returns>
 	public Color GetColor(ColorFromPalette color) {
 		return color switch {
 			// TODO: Add more cases
@@ -146,7 +157,11 @@ public class ColorPalette : ScriptableObject {
 		};
 	}
 
-	// Returns color based on the given place (i.e. gold, silver, bronze)
+	/// <summary>
+	/// Selects color corresponding to the given place (i.e. gold, silver, bronze).
+	/// </summary>
+	/// <param name="place">Place whose color should be selected.</param>
+	/// <returns><c>Color</c> corresponding to the given place.</returns>
 	public Color GetLeaderboardPlaceColor(int place) { 
 		return place switch {
 			1 => GetColor(ColorFromPalette.Leaderboard_PlaceGold),
@@ -156,7 +171,11 @@ public class ColorPalette : ScriptableObject {
 		};
 	}
 
-	// Returns color based on the given spell category
+	/// <summary>
+	/// Selects color corresponding to the given spell category.
+	/// </summary>
+	/// <param name="spellCategory">Spell category whose color should be selected.</param>
+	/// <returns><c>Color</c> corresponding to the given spell category.</returns>
 	public Color GetSpellCategoryColor(SpellCategory spellCategory) {
 		return GetColor(spellCategory switch {
 			SpellCategory.SelfCast => ColorFromPalette.Spells_BackgroundSelfCastSpell,
@@ -170,6 +189,9 @@ public class ColorPalette : ScriptableObject {
 
 }
 
+/// <summary>
+/// Predefined colors in a color palette.
+/// </summary>
 public enum ColorFromPalette {
 	None = 0,
 	// TODO: Add more colors

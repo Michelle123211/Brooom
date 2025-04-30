@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
-// Makes sure the Main Menu content is expanding to use the whole height available
-//	- i.e. UI elements, which should be in corners (e.g. exit button, settings button), stay in corners (even with e.g. 4:3 aspect ratio)
-// (Width is taken care of automatically thanks to RectTransform's size and CanvasScaler.)
+/// <summary>
+/// A component making sure that Main Menu content is expanding to use the whole height available,
+/// i.e. UI elements, which should be in corners (e.g., exit button, settings button), stay in corners even with different aspect ratios.
+/// Width is taken care of automatically thanks to <c>RectTransform</c>'s size and <c>CanvasScaler</c> component.
+/// </summary>
 [ExecuteInEditMode]
 public class MainMenuContentHeight : MonoBehaviour {
 

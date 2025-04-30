@@ -6,9 +6,12 @@ using TMPro;
 using System.Text;
 
 
-
-// Represents panel with settings for quick race
-// Handles any UI interactions inside of this panel and sets current state when the race is started
+/// <summary>
+/// A component representing a UI panel containing Quick Race settings.
+/// It handles all UI interactions inside of this panel and sets current state based on the UI elements' values when the race is started.
+/// All settings are stored persistently so that they can be initialized next time.
+/// Game state needs to be modified for the quick race to work, so a backup of the game state from the "career mode" is created and then restored when needed.
+/// </summary>
 public class QuickRaceSettingsUI : MonoBehaviour {
 
 	[Tooltip("These will be all possible preset difficulty levels. They will affect stats and broom upgrades.")]
@@ -18,7 +21,9 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 	[SerializeField] Broom broom;
 
 	[Header("UI elements")]
+	[Tooltip("Dropdown for selecting quick race difficulty.")]
 	[SerializeField] TMP_Dropdown difficultyDropdown;
+	[Tooltip("Toggle for enabling or disabling spells in the quick race.")]
 	[SerializeField] Toggle enableSpellsToggle;
 	[Tooltip("A parent object of everything related to equipped spells. Is set to inactive when spells are disabled.")]
 	[SerializeField] EquippedSpellsUI equippedSpellsSection;
@@ -37,10 +42,15 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 	[Tooltip("A prefab of a single stat settings.")]
 	[SerializeField] StatSettingsUI statPrefab;
 
-	private List<BroomUpgradeSettingsUI> broomUpgradesUI = new List<BroomUpgradeSettingsUI>();
-	private List<StatSettingsUI> statsUI = new List<StatSettingsUI>();
+	private List<BroomUpgradeSettingsUI> broomUpgradesUI = new List<BroomUpgradeSettingsUI>(); // a list of UI elements for selecting broom upgrades level
+	private List<StatSettingsUI> statsUI = new List<StatSettingsUI>(); // a list of UI elements for selecting stats values
 
 
+	/// <summary>
+	/// Shows advanced options (i.e. broom upgrades, stats) if Custom difficulty is chosen, or hides them if any other difficulty oprion is chosen.
+	/// Called whenever selected difficulty changes.
+	/// </summary>
+	/// <param name="optionValue">Currently selected difficulty.</param>
 	public void OnDifficultyChanged(int optionValue) {
 		// If it is Custom, show all advanced options (broom upgrades, stats), otherwise hide them
 		bool isCustomDifficulty = !(optionValue < difficultyOptions.Count);
@@ -48,11 +58,20 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		statsSection.SetActive(isCustomDifficulty);
 	}
 
+	/// <summary>
+	/// Shows equipped spell slots for selecting spells to the race if spells are enabled, or hides them if spells are disabled.
+	/// Called whenever value of the checkbox for enabling spells changes.
+	/// </summary>
+	/// <param name="spellsEnabled"><c>true</c> if spells are enabled, <c>false</c> if disabled.</param>
 	public void OnSpellsEnabledChanged(bool spellsEnabled) {
 		// If spells are enabled, show equipped spell slots, otherwise hide them
 		equippedSpellsSection.gameObject.SetActive(spellsEnabled);
 	}
 
+	/// <summary>
+	/// Gets values from UI elements, overrides current game state based on them, saves the settings persistently and starts a quick race.
+	/// Called when the button for starting a quick race is pressed.
+	/// </summary>
 	public void OnRaceStarted() {
 		// Get values from UI elements, store them into current state and save settings persistently
 		SetStateFromCurrentlySelectedtValues();
@@ -62,6 +81,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		SceneLoader.Instance.LoadScene(Scene.QuickRace);
 	}
 
+	// Logs an analytics event saying that a quick race has been started and with which settings
 	private void LogQuickRaceStarted() {
 		// Difficulty level
 		int difficultyLevel = difficultyDropdown.value;
@@ -87,6 +107,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		Analytics.Instance.LogEvent(AnalyticsCategory.Race, $"Quick Race started with difficulty level {difficultyLevel} ({difficultyName}), stats {PlayerState.Instance.CurrentStats}, broom upgrades {broomUpgrades} and spells {slotsContent} (spells enabled is {enableSpellsToggle.isOn}).");
 	}
 
+	// Initializes game state from persistently stored settings
 	private void InitializeStateFromLoadedData(QuickRaceSaveData data) {
 		// Broom upgrades
 		if (data.broomUpgrades != null) { // broom upgrades were saved
@@ -107,6 +128,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		}
 	}
 
+	// Overrides game state based on values from UI elements
 	private void SetStateFromCurrentlySelectedtValues() {
 		int difficultyLevel = difficultyDropdown.value;
 		// Stats and broom upgrades
@@ -141,6 +163,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		}
 	}
 
+	// Persistently stores currently selected settings
 	private void SaveQuickRaceSettings() {
 		// Save current settings persistently
 		QuickRaceSaveData data = new QuickRaceSaveData();
@@ -163,6 +186,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		SaveSystem.SaveQuickRaceData(data);
 	}
 
+	// Adds all possible difficulty options into the dropdown
 	private void InitializeDifficultyDropdownOptions() {
 		// All difficulty options + Custom
 		difficultyDropdown.ClearOptions();
@@ -171,6 +195,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		difficultyDropdown.options.Add(new TMP_Dropdown.OptionData(LocalizationManager.Instance.GetLocalizedString("QuickRaceDifficultyCustom")));
 	}
 
+	// Initializes selected difficulty in the dropdown and adjusts other UI elements based on it
 	private void InitializeDifficultyDropdownValue(int value) {
 		// If the value was not loaded from persistently stored state, then choose it based on current stats values (compute average and then closest value is the chosen option)
 		if (value < 0) {
@@ -192,6 +217,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		difficultyDropdown.GetComponentInChildren<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedString(valueLocalizationKey);
 	}
 
+	// Instantiates and initializes UI elements for selecting broom upgrades' levels
 	private void InitializeBroomUpgrades() {
 		// Instantiate a prefab representing a broom upgrade and initialize it (upgrade name, min and max value, current value)
 		UtilsMonoBehaviour.RemoveAllChildren(broomUpgradesParent);
@@ -204,6 +230,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		}
 	}
 
+	// Instantiates and initializes UI element for selecting stats' values
 	private void InitializeStats() {
 		// Instantiate a prefab representing a stat and initialize it (stat name, current value)
 		UtilsMonoBehaviour.RemoveAllChildren(statsParent);
@@ -217,6 +244,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		}
 	}
 
+	// Unlocks all spells so that they are all available in quick race
 	private void InitializeSpells() {
 		// Unlock all spells
 		foreach (var spell in SpellManager.Instance.AllSpells) {
@@ -224,10 +252,8 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		}
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="enableSpells">Could have 3 possible values: -1 if not initialized (spells are then enabled, if a spell is equipped), 0 if disabled, 1 if enabled.</param>
+	// Initializes toggle for enabling spells
+	//	- enableSpells: -1 if not initialized (spells are then enabled, if a spell is equipped), 0 if disabled, 1 if enabled
 	private void InitializeEnableSpellsToggleValue(int enableSpells) {
 		// If the value was not loaded from persistently stored state, then choose it based on equipped spells
 		if (enableSpells < 0 || enableSpells > 1) { 
@@ -239,10 +265,9 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 	}
 
 	private void OnEnable() {
-		// If there is no state backup, create it
+		// If there is no state backup, create it - so that the current game state can be modified and later restored
 		if (!SaveSystem.BackupExists()) SaveSystem.CreateBackup();
 
-		// Create default value for difficulty level
 		int difficultyLevel = -1;
 		int enableSpells = -1;
 		// If there exists persistently saved settings from previous race, load it
@@ -255,13 +280,13 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 			PlayerState.Instance.LoadSavedState();
 		}
 
+		// Initialize all UI elements
 		InitializeDifficultyDropdownOptions();
 		InitializeBroomUpgrades();
 		InitializeStats();
 		InitializeSpells();
-
 		InitializeDifficultyDropdownValue(difficultyLevel);
-		InitializeEnableSpellsToggleValue(enableSpells); // based on whether there is a spell equipped, or not
+		InitializeEnableSpellsToggleValue(enableSpells);
 
 		Analytics.Instance.LogEvent(AnalyticsCategory.Race, "Quick Race settings opened.");
 	}
@@ -272,6 +297,10 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 
 }
 
+
+/// <summary>
+/// A class representing a single preset difficulty option in Quick Race.
+/// </summary>
 [System.Serializable]
 internal class QuickRaceDifficultyOption {
 	[Tooltip("A localization key used to get localized name of this difficulty option.")]

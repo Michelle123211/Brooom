@@ -2,7 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A component representing a selection of spells which could be assigned to a slot of equipped spells.
+/// It is displayed after clicking on any equipped spells slot.
+/// </summary>
 public class SpellSelectionUI : MonoBehaviour {
+
 	[Tooltip("A Transform which is a parent of all the spell selection slots.")]
 	[SerializeField] Transform spellSelectionParent;
 	[Tooltip("A prefab of a spell selection slot which is instantiated multiple times.")]
@@ -10,12 +16,18 @@ public class SpellSelectionUI : MonoBehaviour {
 
 	private EquippedSpellSlotUI lastTargetSlot; // the last slot which invoked ShowSelectionForSlot() method
 	
-	// Called from individual slots with equipped spells
+
+	/// <summary>
+	/// Shows selection of spells for the given equipped spell slot.
+	/// Only spells which are unlocked and are not already assigned in a different slot are displayed in the selection.
+	/// Called after clicking on any slot with equipped spells.
+	/// </summary>
+	/// <param name="slot">Equipped spell slot for which the selection is displayed.</param>
 	public void ShowSelectionForSlot(EquippedSpellSlotUI slot) {
 		this.lastTargetSlot = slot;
 		// Delete all existing slots from the grid
 		UtilsMonoBehaviour.RemoveAllChildren(spellSelectionParent);
-		// Add an empty slot (Initialize with null) so that it can be chosen as well
+		// Add an empty slot (initialize with null) so that it can be chosen as well
 		CreateSlot(null);
 		// Fill the grid with all unlocked spells except the ones which are already assigned in a different slot
 		foreach (var spell in SpellManager.Instance.AllSpells) {
@@ -37,7 +49,12 @@ public class SpellSelectionUI : MonoBehaviour {
 		gameObject.TweenAwareEnable();
 	}
 
-	// Called from a spell selection slot
+	/// <summary>
+	/// Assigns the given spell to the equipped spell slot for which the last spell selection was displayed,
+	/// then hides the spell selection.
+	/// Called from a spell selection slot.
+	/// </summary>
+	/// <param name="spell">Spell to be assigned to the equipped spell slot.</param>
 	public void AssignSpellAndHide(Spell spell) {
 		if (lastTargetSlot != null) {
 			lastTargetSlot.AssignSpell(spell);
@@ -46,7 +63,10 @@ public class SpellSelectionUI : MonoBehaviour {
 		HideSelection();
 	}
 
-	// Invoked after clicking outside of the grid
+	/// <summary>
+	/// Hides the spell selection.
+	/// Called after clicking outside of the grid in spell selection.
+	/// </summary>
 	public void HideSelection() {
 		lastTargetSlot = null;
 		gameObject.TweenAwareDisable();

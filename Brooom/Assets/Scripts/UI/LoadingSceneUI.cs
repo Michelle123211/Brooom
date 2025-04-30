@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class LoadingSceneUI : MonoBehaviour
-{
-    [Tooltip("How much time should pass before the number of dots is updated.")]
-    [SerializeField] private float durationOfOneDot = 0.3f;
 
+/// <summary>
+/// A component representing and controlling a loading screen which is displayed while a different scene is being loaded.
+/// It should be attached to an object persistent between scenes (e.g. <c>SceneLoader</c>).
+/// </summary>
+public class LoadingSceneUI : MonoBehaviour {
+
+    [Tooltip("How much time should pass before the number of dots in a label is updated.")]
+    [SerializeField] private float durationOfOneDot = 0.3f;
+    [Tooltip("Label displaying a localized text saying that it is loading.")]
     [SerializeField] private TextMeshProUGUI loadingText;
 
     private FMODUnity.StudioEventEmitter loadingSound;
@@ -17,9 +22,8 @@ public class LoadingSceneUI : MonoBehaviour
     private string loadingString = "";
 
 
-	// Update is called once per frame
-	void Update()
-    {
+	void Update() {
+        // Update dots in the loading text
         timeout -= Time.unscaledDeltaTime;
         if (timeout < 0) {
             numberOfDots = Utils.Wrap(numberOfDots + 1, 0, 3);
@@ -32,6 +36,7 @@ public class LoadingSceneUI : MonoBehaviour
     }
 
     private void OnEnable() {
+        // Initialize everything
         timeout = durationOfOneDot;
         loadingString = LocalizationManager.Instance.GetLocalizedString("LoadingLabel");
         loadingText.text = loadingString;
@@ -40,6 +45,8 @@ public class LoadingSceneUI : MonoBehaviour
     }
 
     private void OnDisable() {
+        // Finalize everything
         loadingSound.Stop();
 	}
+
 }

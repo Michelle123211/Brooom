@@ -4,9 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class MainMenuUI : MonoBehaviour
-{
+
+/// <summary>
+/// A component representing UI of the Main Menu.
+/// It initializes language toggles and main menu buttons, and tweens the content in.
+/// It also contains methods which are invoked when menu buttons are pressed.
+/// </summary>
+public class MainMenuUI : MonoBehaviour {
+
+    [Tooltip("A prefab of a language toggle.")]
     [SerializeField] LanguageButtonUI languageTogglePrefab;
+    [Tooltip("A parent object of all language toggles.")]
     [SerializeField] Transform languagesParent;
 
     [Tooltip("Text of the button to start playing the game which is hidden if previously saved state exists.")]
@@ -21,6 +29,10 @@ public class MainMenuUI : MonoBehaviour
 
     private bool saveExists = false;
 
+    /// <summary>
+    /// Starts the game, either by continuing from a previously saved state (if it exists), or by starting a new game (if there is no save).
+    /// Makes sure correct scene is loaded (also considering tutorial in progress).
+    /// </summary>
     public void StartOrContinueGame() { 
         // If there is any previously saved state, load it here
         if (saveExists) {
@@ -43,38 +55,50 @@ public class MainMenuUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts a new game by loading the Character Creation scene.
+    /// </summary>
     public void RestartGame() {
         // The saved state and current state will be reset after the new character is created
-        //      This gives the player an option to go back without losing the data
+        //  - this gives the player an option to go back without losing the data.
         // Load the CharacterCreation scene
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, "New game started from menu.");
         SceneLoader.Instance.LoadScene(Scene.CharacterCreation);
     }
 
+    /// <summary>
+    /// Saves the current game state and exits the game.
+    /// </summary>
     public void ExitGame() {
         // Save the game state
         if (SaveSystem.BackupExists()) SaveSystem.RestoreFromBackup(); // quick race settings were opened, so the correct state is in backup
         else PlayerState.Instance.SaveCurrentState();
         // Load the Exit scene (so that all the GameObjects are unloaded except for these in DontDestroyOnLoad)
-        // This way the singletons will be destroyed last
+        //  - this way the singletons will be destroyed last
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Game exited.");
         SceneLoader.Instance.LoadScene(Scene.Exit, true, false);
     }
 
+    /// <summary>
+    /// Logs analytics event saying that the About screen was opened or closed.
+    /// </summary>
+    /// <param name="opened"><c>true</c> if the About screen was opened, <c>false</c> if closed.</param>
     public void LogAboutGameOpenedOrClosed(bool opened = true) {
         Analytics.Instance.LogEvent(AnalyticsCategory.Game, $"About Game {(opened ? "opened" : "closed")}.");
     }
 
+    // Gradually shows the Main Menu content after the Main Menu scene was loaded (ensuring it starts appearing when loading screen is no longer there)
     private void OnSceneLoaded(Scene scene) {
         if (scene == Scene.MainMenu) ShowMenuContent();
     }
 
+    // Gradually shows the Main Menu content (in an order defined by elementsToAppear list)
     private void ShowMenuContent() {
         // Start tweening menu content (gradually show different UI elements)
         Sequence sequence = DOTween.Sequence();
         bool isFirst = true;
         foreach (var element in elementsToAppear) {
-            if (isFirst) { // first element will take longer to appear
+            if (isFirst) { // first element will take longer to appear because it is the most important one
                 sequence.Append(element.DOFade(1, 0.5f));
                 isFirst = false;
             }  else sequence.Append(element.DOFade(1, 0.2f));
@@ -110,7 +134,7 @@ public class MainMenuUI : MonoBehaviour
             continueButtonText.SetActive(false);
             startAgainButton.SetActive(false);
         }
-        // Initialize settings values
+        // Initialize settings values (from saved state)
         UtilsMonoBehaviour.FindObject<SettingsUI>().LoadSettingsValues();
         // Make sure menu content is tweened in
         SceneLoader.Instance.onSceneLoaded += OnSceneLoaded;

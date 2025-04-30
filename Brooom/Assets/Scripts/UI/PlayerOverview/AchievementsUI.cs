@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AchievementsUI : MonoBehaviour
-{
+
+/// <summary>
+/// A component displaying all achievements in the game with their current level obtained.
+/// Achievements are sorted based on their level, so that the achievements with the highest level obtained are first,
+/// and unknown achievements are last.
+/// </summary>
+public class AchievementsUI : MonoBehaviour {
+
     [Tooltip("A prefab of an achievement slot which is instantiated multiple times.")]
     [SerializeField] AchievementSlotUI achievementSlotPrefab;
     [Tooltip("A Transform which is a parent of all the achievements slots.")]
@@ -11,12 +17,15 @@ public class AchievementsUI : MonoBehaviour
 
     HashSet<string> newAchievements = new HashSet<string>(); // resets between scenes
 
+    /// <summary>
+    /// Gets current achievements' progress, instantiates and initializes slots for each of them and and highlights achievements which are new.
+    /// </summary>
     public void UpdateUI() {
         // Get current achievements progress
         List<AchievementProgress> achievements = AchievementManager.Instance.GetAllAchievementsProgress();
         // Whenever we update UI, note down which achievements are new at this moment (add them to those which have been new in previous updates)
-        // This will ensure we highlight new achievements correctly, no matter where they were obtained (Race, Shop, Testing Track)
-        // However this will highlight achievements which we have already seen highlighted, but only during the same scene session (e.g. after going to Shop and back)
+        //  - This will ensure we highlight new achievements correctly, no matter where they were obtained (Race, Shop, Testing Track)
+        //  - However this will highlight achievements which we have already seen highlighted, but only during the same scene session (e.g. after going to Shop and back)
         foreach (var achievement in achievements) {
             if (achievement.isNew && !newAchievements.Contains(achievement.achievement.name)) {
                 newAchievements.Add(achievement.achievement.name);
@@ -40,4 +49,5 @@ public class AchievementsUI : MonoBehaviour
                 slot.HighlightNewAchievement();
         }
     }
+
 }

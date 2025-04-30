@@ -4,8 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EffectSlotUI : MonoBehaviour
-{
+
+/// <summary>
+/// A component displaying a single effect affecting the player in the HUD during race.
+/// </summary>
+public class EffectSlotUI : MonoBehaviour {
+
 	[Tooltip("An image displaying icon of the effect.")]
 	[SerializeField] Image effectIconImage;
 	[Tooltip("A label which displays the time left.")]
@@ -13,7 +17,10 @@ public class EffectSlotUI : MonoBehaviour
 
 	private CharacterEffect assignedEffect;
 
-	// Initialization with icon and duration
+	/// <summary>
+	/// Initializes the slot with the given effect, i.e. sets the icon and duration.
+	/// </summary>
+	/// <param name="effect">Effect to be asigned to the slot.</param>
 	public void Initialize(CharacterEffect effect) {
 		assignedEffect = effect;
 		effectIconImage.sprite = assignedEffect.Icon;

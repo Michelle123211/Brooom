@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
+/// <summary>
+/// A component responsible for displaying information about a new unvisited region in the level.
+/// When there are multiple of these, information about them is displayed one after another.
+/// </summary>
 public class NewRegionInformation : MonoBehaviour {
 
 	[Tooltip("Level generation pipeline for registering callback on level generated.")]
@@ -25,6 +30,9 @@ public class NewRegionInformation : MonoBehaviour {
 	private bool sceneLoaded = false;
 	private bool regionsInitialized = false;
 
+	/// <summary>
+	/// Shows a panel containing information about a new unvisited region which is located in the generated level.
+	/// </summary>
 	public void ShowRegionInformation() {
 		if (currentRegionIndex >= regionsToDisplay.Count) return;
 		// Set panel content
@@ -41,6 +49,10 @@ public class NewRegionInformation : MonoBehaviour {
 		Utils.EnableCursor();
 	}
 
+	/// <summary>
+	/// Hides a panel containing information about a new unvisited region which is located in the generated level.
+	/// If there are more regions to show, moves on to the next one and schedules displaying the panel for it.
+	/// </summary>
 	public void HideRegionInformation() {
 		// Hide panel and mouse cursor
 		AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
@@ -52,6 +64,8 @@ public class NewRegionInformation : MonoBehaviour {
 		if (currentRegionIndex < regionsToDisplay.Count) Invoke(nameof(ShowRegionInformation), 0.3f);
 	}
 
+	// Notes down that the Race scene has finished loading
+	// If a list of unvisited regions is initialized as well, it starts showing information about them
 	private void OnSceneLoaded(Scene scene) {
 		if (scene != Scene.Race) return;
 		sceneLoaded = true;
@@ -59,6 +73,8 @@ public class NewRegionInformation : MonoBehaviour {
 			Invoke(nameof(ShowRegionInformation), 1f);
 	}
 
+	// Prepares a list of unvisited regions located in the level and notes down it is initialized
+	// If the Race scene has finished loading as well, it starts showing information about the unvisited regions
 	private void OnLevelGenerated(LevelRepresentation level) {
 		regionsToDisplay = new List<LevelRegion>();
 		currentRegionIndex = int.MaxValue;
