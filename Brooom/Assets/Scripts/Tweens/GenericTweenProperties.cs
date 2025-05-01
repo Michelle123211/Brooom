@@ -356,7 +356,7 @@ public class TweenVectorCurves {
     // TODO: If tweenComponentWise == false, show tweenCurve, otherwise tweenCurves
 
     [Tooltip("A curve describing interpolation between the start value and the end value (as a number between 0 and 1) over time (normalized between 0 and 1).")]
-    [ConditionalHide("tweenComponentWise", true)] // hidden if tweenComponentWise is true
+    [ConditionalHide(nameof(tweenComponentWise), true)] // hidden if tweenComponentWise is true
     public AnimationCurve tweenCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
     // TODO: Show only if numOfComponents is > 1
@@ -364,7 +364,7 @@ public class TweenVectorCurves {
     public bool tweenComponentWise; // true = tween each axis separately, false = tween the vector as a whole
 
     [Tooltip("Curves describing component-wise interpolation between the start value and the end value (as a number between 0 and 1) over time (normalized between 0 and 1).")]
-    [ConditionalHide("tweenComponentWise")]
+    [ConditionalHide(nameof(tweenComponentWise))]
     public AnimationCurve[] tweenCurves;
 
     /// <summary>

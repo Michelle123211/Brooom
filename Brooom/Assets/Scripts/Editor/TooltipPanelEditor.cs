@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
+// Displays the canvasRectTransform field only if isStatic is false (otherwise it doesn't make sense)
 [CustomEditor(typeof(TooltipPanel))]
 public class TooltipPanelEditor : Editor {
 

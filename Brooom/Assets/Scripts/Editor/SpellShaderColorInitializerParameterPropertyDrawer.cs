@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEditor;
 
 
+// Extends SpellColorInitializerParameterPropertyDrawer,
+// uses the same editor code handling color components overrides (hiding slider unless override is enabled),
+// but adds shader parameter name at the beginning
 [CustomPropertyDrawer(typeof(SpellShaderColorInitializerParameter))]
 public class SpellShaderColorInitializerParameterPropertyDrawer : SpellColorInitializerParameterPropertyDrawer {
 

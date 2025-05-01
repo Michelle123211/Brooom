@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+
+// Displays and hides properties in the Inspector based on which target type is selected
+// Also adds warnings if some properties have invalid values
 [CustomEditor(typeof(Spell))]
 public class SpellEditor : Editor {
 

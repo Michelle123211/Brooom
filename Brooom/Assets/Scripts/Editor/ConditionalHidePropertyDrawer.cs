@@ -5,19 +5,21 @@ using UnityEngine;
 
 
 // TODO: Right now this attribute doesn't work properly for fields/properties which are arrays
+// Visibility of a decorate property in the Inspector is determined by value of another property (set in attribute's parameter)
 [CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
 public class ConditionalHidePropertyDrawer : PropertyDrawer {
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+        // Find out if the property should be visible, or not
         ConditionalHideAttribute attributeTyped = (ConditionalHideAttribute)attribute;
         bool enabled = GetResult(attributeTyped, property);
-
-        bool wasEnabled = GUI.enabled;
+        // Render the property, if necessary
+        bool wasGUIEnabled = GUI.enabled;
         GUI.enabled = enabled;
         if (enabled) {
             EditorGUI.PropertyField(position, property, label, true);
         }
-        GUI.enabled = wasEnabled;
+        GUI.enabled = wasGUIEnabled; // restore back
     }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
@@ -32,11 +34,12 @@ public class ConditionalHidePropertyDrawer : PropertyDrawer {
         }
     }
 
+    // Checks if the property should be visible, or not (based on parameters of the attribute)
     private bool GetResult(ConditionalHideAttribute attributeTyped, SerializedProperty property) {
         bool enabled = true;
 
         string propertyPath = property.propertyPath; // property path of the property the attribute is applied to
-
+        // Get path to the property containing condition
         string[] tokens = propertyPath.Split('.');
         int length = tokens.Length;
         for (int i = 0; i < tokens.Length; ++i) {
@@ -46,10 +49,10 @@ public class ConditionalHidePropertyDrawer : PropertyDrawer {
         for (int i = 0; i < length - 1; ++i) {
             newTokens[i] = tokens[i];
         }
-        newTokens[newTokens.Length - 1] = attributeTyped.conditionField;
+        newTokens[newTokens.Length - 1] = attributeTyped.conditionField; // replace last token with the name of the condition field
         string conditionPath = string.Join(".", newTokens);
         SerializedProperty conditionField = property.serializedObject.FindProperty(conditionPath);
-
+        // Check value in the condition field
         if (conditionField == null) {
             conditionField = property.serializedObject.FindProperty(attributeTyped.conditionField);
         }

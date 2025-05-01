@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+
+// Handles any changes to ColorPalette assets to keep track of the currently used palette
+//	- The palette has to be in a specific folder and have a specific name to be the one which will be used when accessing colors from code
+//	- When the palette instance is moved, singleton instance is reset, so that next time it is initialized correctly again
 public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor {
 
 	private static AssetMoveResult OnWillMoveAsset(string sourcePath, string destinationPath) {

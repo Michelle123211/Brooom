@@ -31,13 +31,25 @@ using UnityEngine;
 
 
 // Inspired by PaletteObject from Colorlink project (https://github.com/leth4/Colorlink/blob/main/Editor/PaletteObject.cs)
+/// <summary>
+/// A scriptable singleton which keeps track of all links between colors from palette and color properties of objects.
+/// It is derived from <c>ScriptableSingleton&lt;ColorPaletteLinks&gt;</c>, ensuring it is automatically saved into a file.
+/// </summary>
 [FilePath("/ProjectSettings/ColorPaletteLinks.asset", FilePathAttribute.Location.ProjectFolder)]
 public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 
+	/// <summary>A list of all links between colors from color palette and color properties.</summary>
 	public List<ColorGroup> colorGroups = new List<ColorGroup>(); // Dictionary would be nicer but it is not serializable
 
 	private ColorPalette currentlyUsedColorPalette = null;
 
+	/// <summary>
+	/// Checks whether the given property is linked specifically with the given color from color palette.
+	/// </summary>
+	/// <param name="color">Color from color palette.</param>
+	/// <param name="guid">GUID of the object having the property.</param>
+	/// <param name="propertyPath">Path of the color property.</param>
+	/// <returns><c>true</c> if there is a link between the property and the color, <c>false</c> otherwise.</returns>
 	public bool HasColorLinked(ColorFromPalette color, string guid, string propertyPath) {
 		foreach (var colorGroup in colorGroups) {
 			if (colorGroup.color == color && colorGroup.HasProperty(guid, propertyPath)) return true;
@@ -45,18 +57,37 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 		return false;
 	}
 
+	/// <summary>
+	/// Checks whether the given property is linked with any color from color palette.
+	/// </summary>
+	/// <param name="guid">GUID of the object having the property.</param>
+	/// <param name="propertyPath">Path of the color property.</param>
+	/// <returns><c>true</c> if there is a link between the property and a color from palette, <c>false</c> otherwise.</returns>
 	public bool HasAnyColorLinked(string guid, string propertyPath) {
 		foreach (var colorGroup in colorGroups)
 			if (colorGroup.HasProperty(guid, propertyPath)) return true;
 		return false;
 	}
 
+	/// <summary>
+	/// Finds a color from color palette linked to the given property.
+	/// </summary>
+	/// <param name="guid">GUID of the object having the property.</param>
+	/// <param name="propertyPath">Path of the color property.</param>
+	/// <returns>Color linked to the given property, or <c>ColorFromPalette.None</c> if there is no link.</returns>
 	public ColorFromPalette GetLinkedColor(string guid, string propertyPath) {
 		foreach (var colorGroup in colorGroups)
 			if (colorGroup.HasProperty(guid, propertyPath)) return colorGroup.color;
 		return ColorFromPalette.None;
 	}
 
+	/// <summary>
+	/// Adds a link of the given property with the given color from color palette.
+	/// </summary>
+	/// <param name="color">Color from color palette.</param>
+	/// <param name="guid">GUID of the object having the property.</param>
+	/// <param name="propertyPath">Path of the color property.</param>
+	/// <param name="objectType">Type of the object having the property.</param>
 	public void AddProperty(ColorFromPalette color, string guid, string propertyPath, ColorProperty.Type objectType) {
 		// Add property to the color, remove it from any other
 		foreach (var colorGroup in colorGroups) {
@@ -66,6 +97,11 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 		Save(true);
 	}
 
+	/// <summary>
+	/// Removes any existing links between the given property and colors from color palette.
+	/// </summary>
+	/// <param name="guid">GUID of the object having the property.</param>
+	/// <param name="propertyPath">Path of the color property.</param>
 	public void RemoveProperty(string guid, string propertyPath) {
 		// Remove property
 		foreach (var colorGroup in colorGroups) {
@@ -74,7 +110,11 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 		Save(true);
 	}
 
-	// Applies all linked colors in all the scenes (while opening them and saving them), while removing any invalid property
+	/// <summary>
+	/// Applies all linked colors in all scenes, while opening them and saving them.
+	/// Also removes any invalid properties along the way.
+	/// </summary>
+	/// <param name="colorPalette">Color palette which is used to provide color values. May be <c>null</c>, then the currently used one will be used.</param>
 	public void ApplyColors(ColorPalette colorPalette = null) {
 		InitializeColorGroups(); // make sure all color groups are present
 
@@ -106,22 +146,20 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 	// Returns false if applying color failed (e.g. because the property is invalid)
 	private bool TryApplyColorToColorProperty(ColorFromPalette color, ColorProperty property) {
 		if (GlobalObjectId.TryParse(property.guid, out GlobalObjectId guidObject)) {
+			// Open correct scene
 			if (property.objectType == ColorProperty.Type.GameObject)
 				EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath(guidObject.assetGUID));
-
+			// Get the color property
 			var obj = GlobalObjectId.GlobalObjectIdentifierToObjectSlow(guidObject);
 			if (obj == null) return false;
-
 			var serializedObject = new UnityEditor.SerializedObject(guidObject.identifierType == 3 ? obj : (Component)obj);
 			var serializedProperty = serializedObject.FindProperty(property.propertyPath);
-
 			if (serializedProperty == null) return false;
-
+			// Set the color
 			serializedProperty.colorValue = currentlyUsedColorPalette.GetColor(color).WithA(serializedProperty.colorValue.a); // keep original alpha
-
+			// Save changes
 			serializedObject.ApplyModifiedProperties();
 			EditorUtility.SetDirty(serializedObject.targetObject);
-
 			if (property.objectType == ColorProperty.Type.GameObject)
 				EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), AssetDatabase.GUIDToAssetPath(guidObject.assetGUID));
 
@@ -131,6 +169,7 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 		}
 	}
 
+	// Checks if there is a ColorGroup for the given color from color palette
 	private bool HasColorGroup(ColorFromPalette color) {
 		foreach (var colorGroup in colorGroups) {
 			if (colorGroup.color == color) return true;
@@ -138,8 +177,8 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 		return false;
 	}
 
+	// Initializes ColorGroup for each color from color palette
 	private void InitializeColorGroups() {
-		// Initialize ColorGroup for each color
 		foreach (ColorFromPalette color in Enum.GetValues(typeof(ColorFromPalette))) {
 			if (!HasColorGroup(color)) {
 				colorGroups.Add(new ColorGroup(color));
@@ -155,28 +194,50 @@ public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 
 
 // Inspired by ColorGroup from Colorlink project (https://github.com/leth4/Colorlink/blob/main/Editor/ColorGroup.cs)
+/// <summary>
+/// Represents one color from a palette, and keeps track of all color properties linked to it.
+/// </summary>
 [System.Serializable]
 public class ColorGroup {
 
+	/// <summary>Color from a palette represented by this instance.</summary>
 	public ColorFromPalette color;
+	/// <summary>Properties linked to this color from a color palette.</summary>
 	public List<ColorProperty> properties = new List<ColorProperty>();
 
 	public ColorGroup(ColorFromPalette color) {
 		this.color = color;
 	}
 
+	/// <summary>
+	/// Checks whether the given property of an object with the given GUID is among properties linked to this color.
+	/// </summary>
+	/// <param name="guid">GUID of the object having the property.</param>
+	/// <param name="propertyPath">Path of the color property.</param>
+	/// <returns><c>true</c> if the property is among properties linked to this color, <c>false</c> otherwise.</returns>
 	public bool HasProperty(string guid, string propertyPath) {
 		foreach (var property in properties)
 			if (property.guid == guid && property.propertyPath == propertyPath) return true;
 		return false;
 	}
 
+	/// <summary>
+	/// Adds the given property of an object with the given GUID among properties linked to this color.
+	/// </summary>
+	/// <param name="guid">GUID of the object having the property.</param>
+	/// <param name="propertyPath">Path of the color property.</param>
+	/// <param name="objectType">Type of the object having the property.</param>
 	public void AddProperty(string guid, string propertyPath, ColorProperty.Type objectType) {
 		if (!HasProperty(guid, propertyPath)) {
 			properties.Add(new ColorProperty(guid, propertyPath, objectType));
 		}
 	}
 
+	/// <summary>
+	/// Removes the given property of an object with the given GUID from properties linked to this color.
+	/// </summary>
+	/// <param name="guid">GUID of the object having the property.</param>
+	/// <param name="propertyPath">Path of the color property.</param>
 	public void RemoveProperty(string guid, string propertyPath) {
 		for (int i = properties.Count - 1; i >= 0; i--) {
 			if (properties[i].guid == guid && properties[i].propertyPath == propertyPath) {
@@ -189,6 +250,9 @@ public class ColorGroup {
 
 
 // Inspired by ColorProperty from Colorlink project (https://github.com/leth4/Colorlink/blob/main/Editor/ColorGroup.cs)
+/// <summary>
+/// Represents a color property of an object which may be linked with a color from palette.
+/// </summary>
 [System.Serializable]
 public class ColorProperty {
 	public string guid;

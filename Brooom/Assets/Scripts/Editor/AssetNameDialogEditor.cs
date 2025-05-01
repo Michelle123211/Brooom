@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
+
+// A modal dialog for selecting an asset name when creating it
 public class AssetNameDialogEditor : EditorWindow {
 
 	private string assetName;

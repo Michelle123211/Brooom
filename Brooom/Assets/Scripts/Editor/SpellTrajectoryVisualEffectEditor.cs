@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 
 
+// Displays error message when there is no SpellTrajectoryComputer component assigned
+// Displays warning when there is no visual effect assigned
 [CustomEditor(typeof(SpellTrajectoryVisualEffect))]
 public class SpellTrajectoryVisualEffectEditor : Editor {
 

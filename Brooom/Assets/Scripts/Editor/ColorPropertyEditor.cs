@@ -31,6 +31,9 @@ using UnityEditor.SceneManagement;
 
 
 // Inspired by ColorPropertyHandler from Colorlink project (https://github.com/leth4/Colorlink/blob/main/Editor/ColorPropertyHandler.cs)
+// For each color property:
+//	- adds context menu items for (un)linking the property with a color from color palette
+//	- shows in the Inspector if there is any link with color from color palette
 public static class ColorPropertyEditor {
 
 	#region Context Menu

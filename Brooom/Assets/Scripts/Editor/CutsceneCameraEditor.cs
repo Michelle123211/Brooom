@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+
+// Displays or hides fields in the Inspector based on which camera behaviour is selected
 [CustomEditor(typeof(CutsceneCamera))]
 public class CutsceneCameraEditor : Editor {
 

@@ -8,6 +8,10 @@ using UnityEditor.SceneManagement;
 // Heavily inspired by solutions from https://discussions.unity.com/t/executing-first-scene-in-build-settings-when-pressing-play-button-in-editor/489673/8
 // and also from https://gist.github.com/pdcp1/6e7f7315fc000de55676
 
+// Adds menu items (also connected with key shortcuts):
+//	- to run the game from the initial scene - can be used while a different scene is opened in the editor
+//	- to reload the last scene - can be used after finishing the game run by the previous command to get back to the originally opened scene
+// Uses EditorPrefs for storing state
 [InitializeOnLoad]
 public class SceneAutoLoader : EditorWindow {
 

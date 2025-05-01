@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using TMPro;
 
+
+// Custom menu items to create predefined objects or assets
 public class GameObjectMenuItems : MonoBehaviour {
 
 	// Adds a menu item to create a GameObject with LocalizedTextMeshProUI component as well as TextMeshProUGUI
@@ -20,7 +22,7 @@ public class GameObjectMenuItems : MonoBehaviour {
 		Selection.activeObject = go;
 	}
 
-	// Adds a menu item to create a spell prefab containing a few basic components
+	// Adds a menu item to create a spell prefab containing a few basic components (directly in Resources/Spells/ folder)
 	[MenuItem("Assets/Create/Spell System/Spell", priority = 10)]
 	public static void CreateSpellPrefab(MenuCommand menuCommand) {
 		// Get an asset name

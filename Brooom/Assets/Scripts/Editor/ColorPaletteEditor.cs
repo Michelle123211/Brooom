@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 
 
+// Adds button to apply colors from the color palette
+// Shows warning to remember to apply color after changes
 [CustomEditor(typeof(ColorPalette))]
 public class ColorPaletteEditor : Editor {
 

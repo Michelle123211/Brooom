@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 
 
+// If an override of a particular color component is enabled, a slider appears next to it to select the custom value
+// If it is disabled, the slider is not visible
 [CustomPropertyDrawer(typeof(SpellColorInitializerParameter), true)]
 public class SpellColorInitializerParameterPropertyDrawer : PropertyDrawer {
 
@@ -68,7 +70,7 @@ public class SpellColorInitializerParameterPropertyDrawer : PropertyDrawer {
 		// Tooltip
 		Rect tooltipPos = new Rect(labelPos.x, labelPos.y, labelPos.width + checkboxPos.width, labelPos.height);
 		EditorGUI.LabelField(tooltipPos, new GUIContent("", overrideProperty.tooltip));
-		// Data field for custom value
+		// Data field for custom value - only if the component override is enabled
 		if (overrideProperty.boolValue) {
 			Rect fieldPos = position;
 			float offset = labelPos.width + checkboxPos.width + 40;

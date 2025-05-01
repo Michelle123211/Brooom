@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
+// Displays error message when SpellEffect component is not assigned to a field
 [CustomEditor(typeof(SpellEffectController))]
 public class SpellEffectControllerEditor : Editor {
 
