@@ -22,7 +22,7 @@ public class UtilsMonoBehaviour : MonoBehaviour
     /// <typeparam name="T">Type of the objects to find.</typeparam>
     /// <returns>A list of objects found in the scene.</returns>
     public static List<T> FindObjects<T>() where T : Component {
-        List<T> result = new List<T>();
+        List<T> result = new();
         foreach (GameObject root in SceneManager.GetActiveScene().GetRootGameObjects()) {
             AddHidden(root, result);
         }
@@ -71,7 +71,7 @@ public class UtilsMonoBehaviour : MonoBehaviour
     /// <returns>Objects found in the scene.</returns>
     public static List<T> FindObjectsOfTypeAndTag<T>(string tag) where T : Component {
         List<T> objectsOfType = FindObjects<T>();
-        List<T> result = new List<T>();
+        List<T> result = new();
         foreach (var obj in objectsOfType) {
             if (obj.CompareTag(tag))
                 result.Add(obj);

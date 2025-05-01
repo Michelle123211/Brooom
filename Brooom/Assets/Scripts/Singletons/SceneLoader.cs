@@ -23,10 +23,10 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	#region Passing parameters between scenes
 
 	private bool hasParameters = false; // whether some parameters have been set for the next scene
-	private Dictionary<string, bool> boolParameters = new Dictionary<string, bool>(); // bool parameters to be passed to the next scene (name --> value)
-	private Dictionary<string, int> intParameters = new Dictionary<string, int>(); // int parameters to be passed to the next scene (name --> value)
-	private Dictionary<string, float> floatParameters = new Dictionary<string, float>(); // float parameters to be passed to the next scene (name --> value)
-	private Dictionary<string, string> stringParameters = new Dictionary<string, string>(); // string parameters to be passed to the next scene (name --> value)
+	private Dictionary<string, bool> boolParameters = new(); // bool parameters to be passed to the next scene (name --> value)
+	private Dictionary<string, int> intParameters = new(); // int parameters to be passed to the next scene (name --> value)
+	private Dictionary<string, float> floatParameters = new(); // float parameters to be passed to the next scene (name --> value)
+	private Dictionary<string, string> stringParameters = new(); // string parameters to be passed to the next scene (name --> value)
 
 	/// <summary>
 	/// Sets a <c>bool</c> parameter with the given name which will be passed to the next scene loaded.
@@ -93,7 +93,7 @@ public class SceneLoader : MonoBehaviourSingleton<SceneLoader>, ISingleton {
 	private int numberOfInitializedObjects = 0;
 	// A list of all (self-registered) objects in the newly loaded scene which have long initialization (extend MonoBehaviourLongInitialization)
 	//	- it is necessary to wait for their initialization to finish before hiding the loading screen and fading into the scene
-	private List<MonoBehaviourLongInitialization> objectsWithLongInitialization = new List<MonoBehaviourLongInitialization>();
+	private List<MonoBehaviourLongInitialization> objectsWithLongInitialization = new();
 
 	/// <summary>
 	/// Remembers the object in a list and then later waits for its initialization to finish.

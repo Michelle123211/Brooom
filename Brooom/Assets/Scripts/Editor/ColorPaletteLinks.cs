@@ -39,7 +39,7 @@ using UnityEngine;
 public class ColorPaletteLinks : ScriptableSingleton<ColorPaletteLinks> {
 
 	/// <summary>A list of all links between colors from color palette and color properties.</summary>
-	public List<ColorGroup> colorGroups = new List<ColorGroup>(); // Dictionary would be nicer but it is not serializable
+	public List<ColorGroup> colorGroups = new(); // Dictionary would be nicer but it is not serializable
 
 	private ColorPalette currentlyUsedColorPalette = null;
 
@@ -203,7 +203,7 @@ public class ColorGroup {
 	/// <summary>Color from a palette represented by this instance.</summary>
 	public ColorFromPalette color;
 	/// <summary>Properties linked to this color from a color palette.</summary>
-	public List<ColorProperty> properties = new List<ColorProperty>();
+	public List<ColorProperty> properties = new();
 
 	public ColorGroup(ColorFromPalette color) {
 		this.color = color;

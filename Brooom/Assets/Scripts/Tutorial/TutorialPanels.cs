@@ -17,7 +17,7 @@ using DG.Tweening;
 public class TutorialPanels : MonoBehaviour {
 
 	[Tooltip("Panels with different alignment used to display main tutorial text (with an option to display information that the player needs to click to continue).")]
-	[SerializeField] List<TutorialPanelWithAlignment> panels = new List<TutorialPanelWithAlignment>();
+	[SerializeField] List<TutorialPanelWithAlignment> panels = new();
 	[Tooltip("Panel in the top-left corner displaying information about using ESC to to skip tutorial or to pause the game.")]
 	[SerializeField] SimpleTutorialPanel escapePanel;
 

@@ -20,9 +20,9 @@ public class PlayerIncomingSpellTracker : IncomingSpellsTracker {
 	[SerializeField] float cameraShakeIntensity = 3f;
 
 	// All currently instantiated UI indicators of incoming spells
-	private List<IncomingSpellIndicator> incomingSpellIndicators = new List<IncomingSpellIndicator>();
+	private List<IncomingSpellIndicator> incomingSpellIndicators = new();
 	// RectTransforms of all currently instantiated UI indicator of incoming spells (used for positioning indicators on the screen)
-	private List<RectTransform> incomingSpellIndicatorTransforms = new List<RectTransform>();
+	private List<RectTransform> incomingSpellIndicatorTransforms = new();
 
 	private float maxCircleRadius = 400f; // radius of a circle on which indicators appear when the spell is at the maximum distance from the player
 	private float minCircleRadius = 80f; // radius of a circle on which indicators appear when the spell is at the minimum distance from the player

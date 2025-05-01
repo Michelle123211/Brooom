@@ -32,7 +32,7 @@ public class RegionsSaveData {
 
 	// Creates a dictionary with information about whether regions were visited or not out of anarray
 	private Dictionary<LevelRegionType, bool> GetDictionaryOfRegions(string[] regionsArray) {
-		Dictionary<LevelRegionType, bool> regionsDictionary = new Dictionary<LevelRegionType, bool>();
+		Dictionary<LevelRegionType, bool> regionsDictionary = new();
 		foreach (var region in regionsArray) {
 			string[] parts = region.Split('|');
 			if (parts.Length == 2 && Enum.TryParse<LevelRegionType>(parts[0], out LevelRegionType regionType)) {

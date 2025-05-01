@@ -20,10 +20,10 @@ public class InputManager : MonoBehaviourSingleton<InputManager>, ISingleton {
 
 
 	// Storing all the input actions together with their last value
-	private Dictionary<string, InputActionValue<bool>> boolActions = new Dictionary<string, InputActionValue<bool>>();
-	private Dictionary<string, InputActionValue<float>> floatActions = new Dictionary<string, InputActionValue<float>>();
-	private Dictionary<string, InputActionValue<Vector2>> vector2Actions = new Dictionary<string, InputActionValue<Vector2>>();
-	private Dictionary<string, InputActionValue<Vector3>> vector3Actions = new Dictionary<string, InputActionValue<Vector3>>();
+	private Dictionary<string, InputActionValue<bool>> boolActions = new();
+	private Dictionary<string, InputActionValue<float>> floatActions = new();
+	private Dictionary<string, InputActionValue<Vector2>> vector2Actions = new();
+	private Dictionary<string, InputActionValue<Vector3>> vector3Actions = new();
 	// TODO: Add more if necessary
 
 
@@ -250,6 +250,6 @@ public class InputActionValue<T> {
 
 	public InputActionValue(InputAction action) {
 		this.action = action;
-		this.value = default(T);
+		this.value = default;
 	}
 }

@@ -121,9 +121,9 @@ public class RaceGeneration : MonoBehaviourLongInitialization {
     /// </summary>
     /// <returns>List of terrain regions to be used in the generated level.</returns>
     protected virtual List<LevelRegionType> ChooseTerrainRegionsForLevel() {
-        List<LevelRegionType> chosenRegions = new List<LevelRegionType>();
-        List<LevelRegionType> unvisitedTerrainRegions = new List<LevelRegionType>();
-        List<LevelRegionType> otherAvailableTerrainRegions = new List<LevelRegionType>();
+        List<LevelRegionType> chosenRegions = new();
+        List<LevelRegionType> unvisitedTerrainRegions = new();
+        List<LevelRegionType> otherAvailableTerrainRegions = new();
         bool unvisitedAvailableTrackRegionExists = false;
         // Prepare lists of available terrain regions
         foreach (var terrainRegion in levelGenerator.terrainRegions) {

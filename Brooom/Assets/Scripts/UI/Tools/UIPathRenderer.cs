@@ -65,7 +65,7 @@ public class UIPathRenderer : Graphic {
 			}
 			// Handle loop
 			if (path.loop)
-				AddPathSegment(vh, path.points[path.points.Count - 1], path.points[0]);
+				AddPathSegment(vh, path.points[^1], path.points[0]);
 		}
 	}
 

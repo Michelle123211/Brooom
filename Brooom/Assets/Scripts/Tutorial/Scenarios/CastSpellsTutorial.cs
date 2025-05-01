@@ -42,7 +42,8 @@ public class CastSpellsTutorial : TutorialStageBase {
 		Tutorial.Instance.FadeIn();
 		Tutorial.Instance.panel.HideAllTutorialPanels();
 		Tutorial.Instance.highlighter.StopHighlighting();
-		UtilsMonoBehaviour.FindObject<GamePause>()?.ResumeGame();
+		GamePause gamePause = UtilsMonoBehaviour.FindObject<GamePause>();
+		if (gamePause != null) gamePause.ResumeGame();
 		if (SceneLoader.Instance.CurrentScene != Scene.PlayerOverview)
 			SceneLoader.Instance.LoadScene(Scene.PlayerOverview);
 	}

@@ -12,7 +12,7 @@ public class TrackRegionGenerator : LevelGeneratorModule {
     [Tooltip("All track regions with parameters of their occurrences (e.g. probability, length).")]
     public List<TrackRegionParameters> trackRegions;
 
-    private float[] kernel = new float[] { 1f/10, 2f/10, 4f/10, 2f/10, 1f/10 }; // 1D kernel for smoothing out track height
+    private readonly float[] kernel = new float[] { 1f/10, 2f/10, 4f/10, 2f/10, 1f/10 }; // 1D kernel for smoothing out track height
 
     /// <summary>
     /// For each available track region, determines if this region should be added to the track, and if so, modifies the track accordingly.

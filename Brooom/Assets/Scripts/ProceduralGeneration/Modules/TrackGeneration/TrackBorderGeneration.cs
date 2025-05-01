@@ -98,7 +98,7 @@ public class TrackBorderGeneration : LevelGeneratorModule {
 		if (level.Track.Count < 2) // not enough points for a segment, return simply forward (implicit first direction when generating track)
 			return Vector3.forward;
 		else if (startHoopIndex == level.Track.Count - 1) // last point, there is no segment starting here so return direction of the previous one
-			return (level.Track[level.Track.Count - 1].position - level.Track[level.Track.Count - 2].position).WithY(0).normalized;
+			return (level.Track[^1].position - level.Track[^2].position).WithY(0).normalized;
 		else
 			return (level.Track[startHoopIndex + 1].position - level.Track[startHoopIndex].position).WithY(0).normalized;
 	}

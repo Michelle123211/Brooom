@@ -51,7 +51,7 @@ public class TrackPointsGenerationRandomWalk : TrackGenerationBase {
 
 	// Sets new values for direction (according to the new last segment) and distance
 	private void SelectParametersForNextStep(LevelRepresentation level, Vector3 position, ref Vector3 direction, ref float distance) {
-		direction = level.Track.Count < 2 ? Vector3.forward : (level.Track[level.Track.Count - 1].position - level.Track[level.Track.Count - 2].position);
+		direction = level.Track.Count < 2 ? Vector3.forward : (level.Track[^1].position - level.Track[^2].position);
 		direction = SelectDirection(level, position, direction);
 		distance = Random.Range(distanceRange.x, distanceRange.y);
 	}

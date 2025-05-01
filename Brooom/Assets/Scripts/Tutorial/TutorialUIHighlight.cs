@@ -62,7 +62,7 @@ public class TutorialUIHighlight : MonoBehaviour {
 		position.x = canvasScaler.scaleFactor * canvasRectTransform.rect.width / 2f + position.x; // works for different aspect ratios
 		position.y = canvasScaler.scaleFactor * canvasRectTransform.rect.height / 2f - position.y;
 
-		Highlight(new Rect(position - Vector3.one * padding, rectTransform.rect.size + Vector2.one * padding * 2), blockRaycasts);
+		Highlight(new Rect(position - Vector3.one * padding, rectTransform.rect.size + 2 * padding * Vector2.one), blockRaycasts);
 	}
 
 	/// <summary>

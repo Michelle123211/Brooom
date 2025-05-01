@@ -55,7 +55,7 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 			point.assignedHoop = Instantiate<Hoop>(prefab, level.Track[i].position, Quaternion.FromToRotation(Vector3.forward, direction), hoopsParent);
 			// Set scale of the hoops
 			if (!point.isCheckpoint)
-				point.assignedHoop.GetComponent<Scalable>()?.SetScale(Vector3.one * hoopScale);
+				if (point.assignedHoop.TryGetComponent(out Scalable scalable)) scalable.SetScale(Vector3.one * hoopScale);
 		}
 		// Remove any previously instantiated starting zone or finish line
 		UtilsMonoBehaviour.RemoveAllChildren(startFinishParent);
@@ -64,7 +64,7 @@ public class TrackObjectsPlacement : LevelGeneratorModule {
 		Instantiate(startingZonePrefab, startingZonePosition, Quaternion.identity, startFinishParent);
 		// Instantiate finish line
 		// ... orientation is the same as for the last hoop
-		Vector3 finishLinePosition = (level.Track[level.Track.Count - 1].position + direction.normalized * finishLineOffset).WithY(0);
+		Vector3 finishLinePosition = (level.Track[^1].position + direction.normalized * finishLineOffset).WithY(0);
 		FinishLine finish = Instantiate<FinishLine>(finishLinePrefab, finishLinePosition, Quaternion.FromToRotation(Vector3.forward, direction), startFinishParent);
 		level.finish = finish;
 	}

@@ -53,7 +53,7 @@ public class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour, 
         if (_Instance == null) {
             // Create a new GameObject representing the singleton if there is none already
             if (Options.HasFlag(SingletonOptions.CreateNewGameObject)) {
-                GameObject go = new GameObject();
+                GameObject go = new();
                 go.name = typeof(T).Name;
                 _Instance = go.AddComponent<T>();
                 // If necessary, make it persistent between scenes

@@ -54,7 +54,7 @@ public abstract class TweenProperty<TValue> {
 public class TweenPropertyPosition : TweenProperty<Vector3> {
 
     /// <summary>Tween values (i.e. start value, end value, interpolation curve(s)) used for tweening this property.</summary>
-    public TweenPropertyValuesVector3 tweenPropertyValues = new TweenPropertyValuesVector3();
+    public TweenPropertyValuesVector3 tweenPropertyValues = new();
 
     private Vector3 initialPosition;
 
@@ -83,7 +83,7 @@ public class TweenPropertyPosition : TweenProperty<Vector3> {
 public class TweenPropertyRotation : TweenProperty<Vector3> {
 
     /// <summary>Tween values (i.e. start value, end value, interpolation curve(s)) used for tweening this property.</summary>
-    public TweenPropertyValuesVector3 tweenPropertyValues = new TweenPropertyValuesVector3();
+    public TweenPropertyValuesVector3 tweenPropertyValues = new();
 
     private Vector3 initialRotation;
 
@@ -112,7 +112,7 @@ public class TweenPropertyRotation : TweenProperty<Vector3> {
 public class TweenPropertyScale : TweenProperty<Vector3> {
 
     /// <summary>Tween values (i.e. start value, end value, interpolation curve(s)) used for tweening this property.</summary>
-    public TweenPropertyValuesVector3 tweenPropertyValues = new TweenPropertyValuesVector3();
+    public TweenPropertyValuesVector3 tweenPropertyValues = new();
 
     /// <inheritdoc/>
     protected override TweenPropertyValues<Vector3> GetTweenPropertyValues() {
@@ -131,7 +131,7 @@ public class TweenPropertyScale : TweenProperty<Vector3> {
 public class TweenPropertyAlpha : TweenProperty<float> {
 
     /// <summary>Tween values (i.e. start value, end value, interpolation curve(s)) used for tweening this property.</summary>
-    public TweenPropertyValuesFloat tweenPropertyValues = new TweenPropertyValuesFloat();
+    public TweenPropertyValuesFloat tweenPropertyValues = new();
 
     /// <inheritdoc/>
     protected override TweenPropertyValues<float> GetTweenPropertyValues() {
@@ -168,7 +168,7 @@ public class TweenPropertyAlpha : TweenProperty<float> {
 public class TweenPropertyColor : TweenProperty<Color> {
 
     /// <summary>Tween values (i.e. start value, end value, interpolation curve(s)) used for tweening this property.</summary>
-    public TweenPropertyValuesColor tweenPropertyValues = new TweenPropertyValuesColor();
+    public TweenPropertyValuesColor tweenPropertyValues = new();
 
     /// <inheritdoc/>
     protected override TweenPropertyValues<Color> GetTweenPropertyValues() {
@@ -219,7 +219,7 @@ public class TweenPropertyColor : TweenProperty<Color> {
 public class TweenPropertyIntensity : TweenProperty<float> {
 
     /// <summary>Tween values (i.e. start value, end value, interpolation curve(s)) used for tweening this property.</summary>
-    public TweenPropertyValuesFloat tweenPropertyValues = new TweenPropertyValuesFloat();
+    public TweenPropertyValuesFloat tweenPropertyValues = new();
 
     /// <inheritdoc/>
     protected override TweenPropertyValues<float> GetTweenPropertyValues() {

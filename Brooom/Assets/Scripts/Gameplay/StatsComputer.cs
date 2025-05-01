@@ -377,7 +377,7 @@ public class StatsComputer : MonoBehaviour {
         Vector3 firstPoint = RaceControllerBase.Instance.Level.playerStartPosition;
         Vector3 secondPoint = RaceControllerBase.Instance.Level.Track[0].position;
         if (playerRaceState.followingTrackPoint >= RaceControllerBase.Instance.Level.Track.Count) { // the player is behind the last hoop
-            firstPoint = RaceControllerBase.Instance.Level.Track[RaceControllerBase.Instance.Level.Track.Count - 1].position;
+            firstPoint = RaceControllerBase.Instance.Level.Track[^1].position;
             secondPoint = RaceControllerBase.Instance.Level.finish.transform.position.WithY(firstPoint.y); // finish line but at the same height as the last hoop
         } else if (playerRaceState.followingTrackPoint > 0) { // the player is somewhere in the middle of the track
             firstPoint = RaceControllerBase.Instance.Level.Track[playerRaceState.followingTrackPoint - 1].position;

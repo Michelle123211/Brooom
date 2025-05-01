@@ -34,11 +34,11 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
 	/// <param name="tooltipStyle">Tooltip style defining all custom tooltip tags.</param>
 	/// <returns>Mappings between custom tooltip tags and TextMesh Pro tags.</returns>
 	public static TagsMapping GetCustomTagsToTMProTagsMapping(TooltipStyle tooltipStyle) {
-        TagsMapping tagsMap = new TagsMapping();
+        TagsMapping tagsMap = new();
         // For each custom tag defined in TooltipStyle, create its TMPro equivalent
         foreach (var tag in tooltipStyle.customTags) {
-            StringBuilder tmproOpenTag = new StringBuilder();
-            StringBuilder tmproCloseTag = new StringBuilder();
+            StringBuilder tmproOpenTag = new();
+            StringBuilder tmproCloseTag = new();
             // Color
             if (tag.changeColor) {
                 tmproOpenTag.Append($"<color={tag.textColor.ToHex()}>");
@@ -78,8 +78,8 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
     public static string ReplaceCustomTagsWithTMProTags(string inputText, TagsMapping tagsMap) {
         // TODO: Make it more efficient (e.g. using trie from tags)
 
-        StringBuilder formattedString = new StringBuilder();
-        Stack<string> tagStack = new Stack<string>(); // stack of tags which were not closed yet
+        StringBuilder formattedString = new();
+        Stack<string> tagStack = new(); // stack of tags which were not closed yet
         // Go through the text and replace tags
         int i = 0;
         while (i < inputText.Length) {
@@ -122,7 +122,7 @@ public class TooltipController : MonoBehaviourSingleton<TooltipController>, ISin
 	/// <param name="content">Strings corresponding to individual fields of tooltip's sections.</param>
 	public void SetTooltipContent(TooltipSectionsText content) {
         // Parse and format text of each section individually
-        List<string> formattedText = new List<string>();
+        List<string> formattedText = new();
         foreach (var text in content.Enumerate()) {
             formattedText.Add(GetFormattedText(text));
         }

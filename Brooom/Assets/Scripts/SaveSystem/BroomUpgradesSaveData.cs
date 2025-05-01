@@ -29,7 +29,7 @@ public class BroomUpgradesSaveData {
 
     // Creates broom upgrades dictionary out of broom upgrades array
     private Dictionary<string, (int currentLevel, int maxLevel)> GetDictionaryOfUpgrades(string[] upgradesArray) {
-        Dictionary<string, (int currentLevel, int maxLevel)> upgradesDictionary = new Dictionary<string, (int currentLevel, int maxLevel)>();
+        Dictionary<string, (int currentLevel, int maxLevel)> upgradesDictionary = new();
         foreach (var upgrade in upgradesArray) {
             string[] parts = upgrade.Split('|');
             if (parts.Length == 3 && int.TryParse(parts[1], out int currentLevel) && int.TryParse(parts[2], out int maxLevel)) {

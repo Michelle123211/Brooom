@@ -26,8 +26,8 @@ public class ShopUI : MonoBehaviour {
 	[Tooltip("A broom object in the scene which provides preview of the changes after upgrade.")]
 	[SerializeField] Broom broom;
 
-	private List<ShopSpellSlotUI> spells = new List<ShopSpellSlotUI>(); // instantiated spell slots
-	private List<BroomUpgradeRowUI> broomUpgrades = new List<BroomUpgradeRowUI>(); // instantiated broom upgrade rows
+	private List<ShopSpellSlotUI> spells = new(); // instantiated spell slots
+	private List<BroomUpgradeRowUI> broomUpgrades = new(); // instantiated broom upgrade rows
 
 
 	/// <summary>

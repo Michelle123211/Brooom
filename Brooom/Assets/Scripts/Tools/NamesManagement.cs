@@ -47,7 +47,7 @@ public class NamesManagement : MonoBehaviour {
 
 	// Parses names from a StreamReader of the names file
 	private static List<string> ParseNamesFromReader(StreamReader reader) {
-		List<string> names = new List<string>();
+		List<string> names = new();
 		string line;
 		while ((line = reader.ReadLine()) != null) {
 			if (string.IsNullOrEmpty(line)) continue; // skip empty rows
@@ -62,19 +62,20 @@ public class NamesManagement : MonoBehaviour {
 
 	// Returns a list of default names (used when the names file is not found)
 	private static List<string> UseDefaultNames() {
-		List<string> names = new List<string>();
-		names.Add("Emil");
-		names.Add("Michelle");
-		names.Add("Igor");
-		names.Add("Airin");
-		names.Add("Lucie");
-		names.Add("Karel");
-		names.Add("Iveta");
-		names.Add("Cassie");
-		names.Add("Bedøich");
-		names.Add("Lída");
-		names.Add("Villie");
-		names.Add("Pavel");
+		List<string> names = new List<string> {
+			"Emil",
+			"Michelle",
+			"Igor",
+			"Airin",
+			"Lucie",
+			"Karel",
+			"Iveta",
+			"Cassie",
+			"Bedøich",
+			"Lída",
+			"Villie",
+			"Pavel"
+		};
 		return names;
 	}
 }

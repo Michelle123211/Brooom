@@ -15,7 +15,7 @@ public class QuickRaceGeneration : RaceGeneration {
 	/// </summary>
 	/// <returns>A list of regions chosen for the currently generated level.</returns>
 	protected override List<LevelRegionType> ChooseTerrainRegionsForLevel() {
-        List<LevelRegionType> availableTerrainRegions = new List<LevelRegionType>();
+        List<LevelRegionType> availableTerrainRegions = new();
         // Prepare list of available terrain regions
         Dictionary<LevelRegionType, bool> regionsAvailability = GetRegionsAvailability();
         foreach (var terrainRegion in levelGenerator.terrainRegions) {
@@ -23,7 +23,7 @@ public class QuickRaceGeneration : RaceGeneration {
                 availableTerrainRegions.Add(terrainRegion.regionType);
         }
         // Choose regions randomly, so that a desirable number of regions is chosen at maximum
-        List<LevelRegionType> chosenRegions = new List<LevelRegionType>();
+        List<LevelRegionType> chosenRegions = new();
         while (chosenRegions.Count < regionCountInLevel && availableTerrainRegions.Count > 0) {
             int randomIndex = Random.Range(0, availableTerrainRegions.Count);
             chosenRegions.Add(availableTerrainRegions[randomIndex]);

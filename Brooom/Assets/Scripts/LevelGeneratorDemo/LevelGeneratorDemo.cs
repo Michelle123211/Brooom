@@ -158,7 +158,7 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	protected override Dictionary<LevelRegionType, bool> GetRegionsAvailability() {
 		// Make regions available based on endurance value and maximum altitude (from UI elements)
 
-		Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>();
+		Dictionary<LevelRegionType, bool> regionsAvailability = new();
 		foreach (var region in defaultRegions)
 			regionsAvailability.Add(region, true); // default regions are always available
 
@@ -176,7 +176,7 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 	/// <inheritdoc/>
 	protected override Dictionary<LevelRegionType, bool> GetRegionsVisited() {
 		// Simply mark all regions in the game as visited (otherwise e.g. unvisited track region would be always added in TrackRegionGenerator)
-		Dictionary<LevelRegionType, bool> visitedRegions = new Dictionary<LevelRegionType, bool>();
+		Dictionary<LevelRegionType, bool> visitedRegions = new();
 		foreach (var region in levelGenerator.terrainRegions) visitedRegions.Add(region.regionType, true);
 		foreach (var region in levelGenerator.trackRegions) visitedRegions.Add(region.regionType, true);
 		return visitedRegions;
@@ -238,7 +238,8 @@ public class LevelGeneratorDemo : QuickRaceGeneration {
 
 	private void OnLevelGenerated(LevelRepresentation level) {
 		this.level = level;
-		FindObjectOfType<StartingZone>()?.ShowOrHideUI(false);
+		StartingZone startingZone = FindObjectOfType<StartingZone>();
+		if (startingZone != null) startingZone.ShowOrHideUI(false);
 		levelGenerator.onLevelGenerated -= OnLevelGenerated;
 	}
 

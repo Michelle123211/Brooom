@@ -12,7 +12,7 @@ public class TextureSwapAnimationPlayer : MonoBehaviour {
 	[SerializeField] List<TextureSwapAnimation> animations;
 
 	// For each animation stores if it is currently playing or not
-	private Dictionary<string, bool> animationsPlaying = new Dictionary<string, bool>();
+	private Dictionary<string, bool> animationsPlaying = new();
 
 	/// <summary>
 	/// Starts playing texture swap animation with the given identifier.
@@ -79,7 +79,7 @@ public class TextureSwapAnimationPlayer : MonoBehaviour {
 
 	private void CompleteAnimation(TextureSwapAnimation animation) {
 		// Set the last keyframe
-		animation.targetMeshRenderer.material.mainTexture = animation.keyframes[animation.keyframes.Count - 1].keyframeTexture;
+		animation.targetMeshRenderer.material.mainTexture = animation.keyframes[^1].keyframeTexture;
 	}
 
 	private void Start() {

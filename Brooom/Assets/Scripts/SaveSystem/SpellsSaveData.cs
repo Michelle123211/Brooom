@@ -29,7 +29,7 @@ public class SpellsSaveData {
 
     // Converts string[] to Dictionary<string, bool> (used for spells availability and spells usage)
     private Dictionary<string, bool> GetDictionaryOfSpells(string[] spellsArray) {
-        Dictionary<string, bool> spellsDictionary = new Dictionary<string, bool>();
+        Dictionary<string, bool> spellsDictionary = new();
         foreach (var spell in spellsArray) {
             string[] parts = spell.Split('|');
             if (parts.Length == 2) {

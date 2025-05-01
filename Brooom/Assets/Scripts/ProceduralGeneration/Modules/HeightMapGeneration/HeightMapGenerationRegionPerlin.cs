@@ -94,7 +94,7 @@ public class RegionHeightMapParameters {
 	public LevelRegionType region;
 
 	[Tooltip("Parameters of the octaved Perlin noise, e.g. number of octaves, frequency of each octave.")]
-	public PerlinNoiseOctaveParameters octaveParams = new PerlinNoiseOctaveParameters();
+	public PerlinNoiseOctaveParameters octaveParams = new();
 
 	[Tooltip("The minimum and maximum height in this region.")]
 	public Vector2 heightRange = new Vector2(0, 6);

@@ -15,7 +15,7 @@ public class PlayerStateSaveData {
     /// <summary>Whether the player has completed the game.</summary>
     public bool gameComplete = false;
     /// <summary>Previous and current stats values.</summary>
-    public StatisticsSaveData stats = new StatisticsSaveData();
+    public StatisticsSaveData stats = new();
     /// <summary>Current amount of coins</summary>
     public int coins = 0;
 

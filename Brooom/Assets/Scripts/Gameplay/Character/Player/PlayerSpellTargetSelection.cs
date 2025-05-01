@@ -15,8 +15,8 @@ public class PlayerSpellTargetSelection : SpellTargetSelection {
 	private GameObject lastTarget = null; // last highlighted target (so we can stop highlighting it when the time comes)
 	private SpellTargetPoint lastTargetPoint = null; // target point indicated by SpellTargetPoint component on the target object
 
-	private List<Renderer> outlinedRenderers = new List<Renderer>(); // all renderers of current target object (so we can highlight it completely)
-	private List<int> originalRendererLayers = new List<int>(); // original layers assigned to renderer objects before changing it to Outline
+	private List<Renderer> outlinedRenderers = new(); // all renderers of current target object (so we can highlight it completely)
+	private List<int> originalRendererLayers = new(); // original layers assigned to renderer objects before changing it to Outline
 
 	private Spell selectedSpell;
 

@@ -30,7 +30,6 @@ public class BroomUpgrade : MonoBehaviour {
     public int CurrentLevel { get; private set; } = 0;
 
     [Tooltip("What should happen when the broom is upgraded to each level.")]
-    [SerializeField]
     public List<UnityEvent> effectsForEachLevel;
 
 

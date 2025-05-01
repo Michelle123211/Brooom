@@ -80,7 +80,8 @@ public abstract class RaceControllerBase : MonoBehaviourLongInitialization {
         foreach (var racer in racers) {
             if (racer.state == racerState) {
                 racer.characterController.DisableActions(CharacterMovementController.StopMethod.BrakeStop);
-                racer.characterController.gameObject.GetComponent<FaceAnimationsController>()?.StartSmiling();
+                if (racer.characterController.gameObject.TryGetComponent(out FaceAnimationsController faceController))
+                    faceController?.StartSmiling();
                 // TODO: Start waving animation
                 racer.spellInput.DisableSpellCasting();
                 break;

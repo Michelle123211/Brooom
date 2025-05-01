@@ -13,9 +13,9 @@ using TMPro;
 public class KeyRebindingUI : MonoBehaviour {
 
     [Tooltip("Input actions whose binding should not be displayed at all.")]
-    public List<InputActionReference> inputActionsToExclude = new List<InputActionReference>();
+    public List<InputActionReference> inputActionsToExclude = new();
     [Tooltip("Names of the input actions which should be displayed but not allowed to be modified.")]
-    public List<InputActionReference> inputActionsReadOnly = new List<InputActionReference>();
+    public List<InputActionReference> inputActionsReadOnly = new();
 
     [Tooltip("Name of the action map whose actions should be displayed for rebinding.")]
     public string actionMapToDisplay = "Game";

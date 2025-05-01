@@ -16,7 +16,7 @@ public class AchievementSlotUI : MonoBehaviour {
 	[Header("Sprites")]
 
 	[Tooltip("Sprites which will be used as backgrounds for different levels of achievement. Highest level should be on the lowest index.")]
-	[SerializeField] List<Sprite> levelBackgrounds = new List<Sprite>();
+	[SerializeField] List<Sprite> levelBackgrounds = new();
 
 	[Tooltip("A Sprite which is used as border of a known achievement.")]
 	[SerializeField] Sprite slotBorderSprite;

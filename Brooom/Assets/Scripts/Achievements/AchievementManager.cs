@@ -278,14 +278,11 @@ class ScoreData : AchievementData {
 
 	/// <inheritdoc/>
 	public override int GetCurrentAchievementLevel(Achievement achievement) {
-		switch (achievement.type) {
-			case AchievementType.NumberOne: // for being first on the leaderboard
-				return highestRank == 1 ? 1 : 0;
-			case AchievementType.MaximumStat: // for having a maximum value (100) in an arbitrary stat
-				return maxStatValue == 100 ? 1 : 0;
-			default: // Unknown type
-				return -1;
-		}
+		return achievement.type switch {
+			AchievementType.NumberOne => highestRank == 1 ? 1 : 0, // for being first on the leaderboard
+			AchievementType.MaximumStat => maxStatValue == 100 ? 1 : 0, // for having a maximum value (100) in an arbitrary stat
+			_ => -1, // unknown type
+		};
 	}
 
 	private void OnRankChanged(int rank) {
@@ -350,14 +347,11 @@ class SpellsData : AchievementData {
 
 	/// <inheritdoc/>
 	public override int GetCurrentAchievementLevel(Achievement achievement) {
-		switch (achievement.type) {
-			case AchievementType.SpellsCasted: // for casting spells a certain number of times
-				return GetAchievementLevelFromValues(achievement, spellsCast);
-			case AchievementType.AllSpells: // for unlocking all spells
-				return allSpellsPurchased ? 1 : 0;
-			default: // Unknown type
-				return -1;
-		}
+		return achievement.type switch {
+			AchievementType.SpellsCasted => GetAchievementLevelFromValues(achievement, spellsCast), // for casting spells a certain number of times
+			AchievementType.AllSpells => allSpellsPurchased ? 1 : 0, // for unlocking all spells
+			_ => -1, // unknown type
+		};
 	}
 
 	private void OnSpellCast(string spellIdentifier) {
@@ -455,24 +449,16 @@ class RaceData : AchievementData {
 
 	/// <inheritdoc/>
 	public override int GetCurrentAchievementLevel(Achievement achievement) {
-		switch (achievement.type) {
-			case AchievementType.RacesFinished: // for a certain number of races finished
-				return GetAchievementLevelFromValues(achievement, racesFinished);
-			case AchievementType.FirstPlaces: // for a certain number of placing first
-				return GetAchievementLevelFromValues(achievement, firstPlace);
-			case AchievementType.LastPlaces: // for a certain number of placing last
-				return GetAchievementLevelFromValues(achievement, lastPlace);
-			case AchievementType.RacesGivenUp: // for a certain number of races finished
-				return GetAchievementLevelFromValues(achievement, racesGivenUp);
-			case AchievementType.LongestLoseStreak: // for a lose streak of certain length
-				return GetAchievementLevelFromValues(achievement, longestLoseStreak);
-			case AchievementType.LongestWinStreak: // for a win streak of certain length
-				return GetAchievementLevelFromValues(achievement, longestWinStreak);
-			case AchievementType.TrackTrials: // for e certain number of trials during training phase
-				return GetAchievementLevelFromValues(achievement, trackTrials);
-			default: // Unknown type
-				return -1;
-		}
+		return achievement.type switch {
+			AchievementType.RacesFinished => GetAchievementLevelFromValues(achievement, racesFinished), // for a certain number of races finished
+			AchievementType.FirstPlaces => GetAchievementLevelFromValues(achievement, firstPlace), // for a certain number of placing first
+			AchievementType.LastPlaces => GetAchievementLevelFromValues(achievement, lastPlace), // for a certain number of placing last
+			AchievementType.RacesGivenUp => GetAchievementLevelFromValues(achievement, racesGivenUp), // for a certain number of races finished
+			AchievementType.LongestLoseStreak => GetAchievementLevelFromValues(achievement, longestLoseStreak), // for a lose streak of certain length
+			AchievementType.LongestWinStreak => GetAchievementLevelFromValues(achievement, longestWinStreak), // for a win streak of certain length
+			AchievementType.TrackTrials => GetAchievementLevelFromValues(achievement, trackTrials), // for e certain number of trials during training phase
+			_ => -1, // unknown type
+		};
 	}
 
 	private void OnRaceStarted(int numRacers) {
@@ -584,22 +570,15 @@ class LevelData : AchievementData {
 
 	/// <inheritdoc/>
 	public override int GetCurrentAchievementLevel(Achievement achievement) {
-		switch (achievement.type) {
-			case AchievementType.ObstacleCollisions: // for colliding with obstacles a certain number of times
-				return GetAchievementLevelFromValues(achievement, obstacleCollisions);
-			case AchievementType.BonusesPickedUp: // for picking up a certain number of bonuses
-				return GetAchievementLevelFromValues(achievement, bonusesPickedUp);
-			case AchievementType.HoopsPassed: // for passing through a certain number of hoops
-				return GetAchievementLevelFromValues(achievement, hoopsPassed);
-			case AchievementType.HoopsMissed: // for missing a certain number of hoops
-				return GetAchievementLevelFromValues(achievement, hoopsMissed);
-			case AchievementType.AllRegionsAvailable: // for unlocking all regions
-				return allRegionsAvailable ? 1 : 0;
-			case AchievementType.AllRegionsVisited: // for visiting all regions
-				return allRegionsVisited ? 1 : 0;
-			default: // Unknown type
-				return -1;
-		}
+		return achievement.type switch {
+			AchievementType.ObstacleCollisions => GetAchievementLevelFromValues(achievement, obstacleCollisions), // for colliding with obstacles a certain number of times
+			AchievementType.BonusesPickedUp => GetAchievementLevelFromValues(achievement, bonusesPickedUp), // for picking up a certain number of bonuses
+			AchievementType.HoopsPassed => GetAchievementLevelFromValues(achievement, hoopsPassed), // for passing through a certain number of hoops
+			AchievementType.HoopsMissed => GetAchievementLevelFromValues(achievement, hoopsMissed), // for missing a certain number of hoops
+			AchievementType.AllRegionsAvailable => allRegionsAvailable ? 1 : 0, // for unlocking all regions
+			AchievementType.AllRegionsVisited => allRegionsVisited ? 1 : 0, // for visiting all regions
+			_ => -1, // unknown type
+		};
 	}
 
 	private void OnCollisionWithObstacle() {
@@ -696,14 +675,11 @@ class CoinsData : AchievementData {
 
 	/// <inheritdoc/>
 	public override int GetCurrentAchievementLevel(Achievement achievement) {
-		switch (achievement.type) {
-			case AchievementType.CoinsEarned: // for a certain amount gained in total over time
-				return GetAchievementLevelFromValues(achievement, totalCoinsGain);
-			case AchievementType.CoinsAmount: // for having a certain amount at a single moment
-				return GetAchievementLevelFromValues(achievement, maxCoins);
-			default: // Unknown type
-				return -1;
-		}
+		return achievement.type switch {
+			AchievementType.CoinsEarned => GetAchievementLevelFromValues(achievement, totalCoinsGain), // for a certain amount gained in total over time
+			AchievementType.CoinsAmount => GetAchievementLevelFromValues(achievement, maxCoins), // for having a certain amount at a single moment
+			_ => -1, // unknown type
+		};
 	}
 
 	private void OnCoinsAmountChanged(int delta) {
@@ -756,12 +732,10 @@ class BroomData : AchievementData {
 
 	/// <inheritdoc/>
 	public override int GetCurrentAchievementLevel(Achievement achievement) {
-		switch (achievement.type) {
-			case AchievementType.AllBroomUpgrades: // for purchasing all broom upgrades
-				return (allUpgradesPurchased ? 1 : 0);
-			default: // Unknown type
-				return -1;
-		}
+		return achievement.type switch {
+			AchievementType.AllBroomUpgrades => (allUpgradesPurchased ? 1 : 0), // for purchasing all broom upgrades
+			_ => -1, // unknown type
+		};
 	}
 
 	private void OnAllBroomUpgradesPurchased() {

@@ -38,7 +38,8 @@ public class EquippedSpellSlotUI : MonoBehaviour {
 	/// <param name="spell">Spell to be assigned to the slot.</param>
 	public void AssignSpell(Spell spell) {
 		this.assignedSpell = spell;
-		spellSlotUI?.Initialize(spell);
+		if (spellSlotUI != null)
+			spellSlotUI.Initialize(spell);
 	}
 
 	/// <summary>

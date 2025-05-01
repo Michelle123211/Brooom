@@ -26,7 +26,8 @@ public class FinishLine : MonoBehaviour {
         if (!isActive) return;
         if (otherObject.isTrigger) return;
         GameObject rootObject = otherObject.GetComponent<ColliderRootObject>().GetRootObject();
-        rootObject.GetComponent<CharacterRaceState>()?.OnFinishPassed(); // root object has CharacterRaceState component
+        if (rootObject.TryGetComponent(out CharacterRaceState raceState))  // root object has CharacterRaceState component
+            raceState.OnFinishPassed();
     }
 
 }

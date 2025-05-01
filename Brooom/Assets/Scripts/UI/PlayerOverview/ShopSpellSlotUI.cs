@@ -33,7 +33,8 @@ public class ShopSpellSlotUI : MonoBehaviour {
     public void Initialize(Spell spell) {
         assignedSpell = spell;
         // Set icon and tooltip content
-        spellSlotUI?.Initialize(spell);
+        if (spellSlotUI != null)
+            spellSlotUI.Initialize(spell);
         UpdateUI();
     }
 

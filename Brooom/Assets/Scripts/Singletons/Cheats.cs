@@ -100,7 +100,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	// Provides help based on the input (called if the first token is "help")
 	private void ProvideHelp(string[] commandParts) {
 		if (commandParts.Length == 1) { // only "help" - outputs a list of available commands and an overview of controls
-			StringBuilder message = new StringBuilder();
+			StringBuilder message = new();
 			message.Append("Use a command or type 'help <command>' for more info. \nAvailable commands:");
 			foreach (var command in commands) {
 				if (command.IsAvailable()) {

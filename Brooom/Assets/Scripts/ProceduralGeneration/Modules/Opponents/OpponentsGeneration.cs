@@ -32,14 +32,14 @@ public class OpponentsGeneration : LevelGeneratorModule {
 		// Remove any previously instantiated opponents
 		UtilsMonoBehaviour.RemoveAllChildren(opponentsParent);
 		// Prepare list of skill levels to choose from
-		List<AISkillLevel.SkillType> remainingSkillLevels = new List<AISkillLevel.SkillType>();
+		List<AISkillLevel.SkillType> remainingSkillLevels = new();
 		foreach (var skillLevel in skillLevels) remainingSkillLevels.Add(skillLevel);
 		// Instantiate and place the opponents
 		for (int i = 0; i < opponentsCount; i++) {
 			// Compute the position on the start line (given by the index) - if the opponent count is odd, there is one more to the left of the player
 			int offset = i - ((opponentsCount + 1) / 2);
 			if (offset >= 0) offset += 1;
-			Vector3 position = level.playerStartPosition + offset * Vector3.right * spacing;
+			Vector3 position = level.playerStartPosition + offset * spacing * Vector3.right;
 			// Instantiate under the common parent
 			OpponentRandomization opponent = Instantiate<OpponentRandomization>(opponentPrefab, position, Quaternion.identity, opponentsParent);
 			// Determine opponent's skill level

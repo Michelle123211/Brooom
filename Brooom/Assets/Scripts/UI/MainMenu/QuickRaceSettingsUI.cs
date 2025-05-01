@@ -42,8 +42,8 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 	[Tooltip("A prefab of a single stat settings.")]
 	[SerializeField] StatSettingsUI statPrefab;
 
-	private List<BroomUpgradeSettingsUI> broomUpgradesUI = new List<BroomUpgradeSettingsUI>(); // a list of UI elements for selecting broom upgrades level
-	private List<StatSettingsUI> statsUI = new List<StatSettingsUI>(); // a list of UI elements for selecting stats values
+	private List<BroomUpgradeSettingsUI> broomUpgradesUI = new(); // a list of UI elements for selecting broom upgrades level
+	private List<StatSettingsUI> statsUI = new(); // a list of UI elements for selecting stats values
 
 
 	/// <summary>
@@ -89,13 +89,13 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 		if (difficultyLevel < difficultyOptions.Count) difficultyName = difficultyOptions[difficultyLevel].difficultyNameLocalizationKey;
 		else difficultyName = "QuickRaceDifficultyCustom";
 		// Broom upgrades
-		StringBuilder broomUpgrades = new StringBuilder();
+		StringBuilder broomUpgrades = new();
 		for (int i = 0; i < broomUpgradesUI.Count; i++) {
 			broomUpgrades.Append($"{broomUpgradesUI[i].UpgradeName} {PlayerState.Instance.GetBroomUpgradeLevel(broomUpgradesUI[i].UpgradeName)}/{broomUpgradesUI[i].MaxLevel}");
 			if (i < broomUpgradesUI.Count - 1) broomUpgrades.Append(" - ");
 		}
 		// Equipped spells
-		StringBuilder slotsContent = new StringBuilder();
+		StringBuilder slotsContent = new();
 		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
 			Spell equippedSpell = PlayerState.Instance.equippedSpells[i];
 			if (equippedSpell != null && !string.IsNullOrEmpty(equippedSpell.Identifier))
@@ -143,7 +143,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 			}
 		} else { // Custom level selected
 			// Use values directly from UI elements
-			List<int> statsValues = new List<int>();
+			List<int> statsValues = new();
 			foreach (var stat in statsUI) statsValues.Add(stat.CurrentValue);
 			PlayerState.Instance.CurrentStats = PlayerStats.FromListOfValues(statsValues);
 			foreach (var upgrade in broomUpgradesUI)
@@ -166,7 +166,7 @@ public class QuickRaceSettingsUI : MonoBehaviour {
 	// Persistently stores currently selected settings
 	private void SaveQuickRaceSettings() {
 		// Save current settings persistently
-		QuickRaceSaveData data = new QuickRaceSaveData();
+		QuickRaceSaveData data = new();
 		// Basic settings are always saved
 		data.difficultyLevel = difficultyDropdown.value;
 		data.enableSpells = enableSpellsToggle.isOn ? 1 : 0;

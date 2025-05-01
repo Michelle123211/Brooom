@@ -40,7 +40,7 @@ public class CharacterMovementController : MonoBehaviour {
     private StopMethod actionsDisabledStop = StopMethod.NoStop; // stop method used when actions are disabled
 
     /// <summary>Additional velocity added on top of the current velocity each frame. Used e.g. for Flante spell.</summary>
-    [HideInInspector] public AdditionalVelocityCombined additionalVelocity = new AdditionalVelocityCombined();
+    [HideInInspector] public AdditionalVelocityCombined additionalVelocity = new();
 
     /// <summary>Whether this component is controlling movement of the player or the opponents.</summary>
     [HideInInspector] public bool isPlayer = true;
@@ -145,8 +145,8 @@ public class CharacterMovementController : MonoBehaviour {
         bonusSpeedDuration = Mathf.Max(bonusSpeedDuration, duration); // don't add it but override it so that the bonus does not accumulate for too long
         hasBonusSpeed = true;
         TweenBonusSpeed(maxBonusSpeed, 1f);
-        if (isPlayer)
-            cameraController?.ZoomIn(true); // zoom the camera in to make the effect stronger
+        if (isPlayer && cameraController != null)
+            cameraController.ZoomIn(true); // zoom the camera in to make the effect stronger
     }
 
     /// <summary>
@@ -154,8 +154,7 @@ public class CharacterMovementController : MonoBehaviour {
     /// </summary>
     /// <param name="position">Position to which the racer should be moved.</param>
     public void ResetPosition(Vector3 position) {
-        transform.position = position;
-        transform.rotation = Quaternion.identity;
+        transform.SetPositionAndRotation(position, Quaternion.identity);
         ResetMovement();
     }
 
@@ -222,8 +221,8 @@ public class CharacterMovementController : MonoBehaviour {
             bonusSpeedDuration = 0;
             hasBonusSpeed = false;
             TweenBonusSpeed(maxBonusSpeed, 1f);
-            if (isPlayer)
-                cameraController?.ZoomIn(false);
+            if (isPlayer && cameraController != null)
+                cameraController.ZoomIn(false);
         } else if (previousForwardInput != forwardInput) { // change of direction, tween the bonus speed accordingly, TODO: Will not work with controllers, sign must be compared then
             TweenBonusSpeed(Mathf.Clamp(forwardInput, 0, 1) * maxBonusSpeed, 1f); // tween to 0 if braking or stopping, tween to maxBonusSpeed if going forward
         }
@@ -336,7 +335,7 @@ public class CharacterMovementController : MonoBehaviour {
 public class AdditionalVelocityCombined {
 
     // List of all additional velocities which should be considered.
-    private List<AdditionalVelocityTweened> additionalVelocities = new List<AdditionalVelocityTweened>();
+    private List<AdditionalVelocityTweened> additionalVelocities = new();
 
     /// <summary>
     /// Adds a new additional velocity to a list of currently active additional velocities.

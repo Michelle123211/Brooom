@@ -46,7 +46,7 @@ public class SpellController : MonoBehaviour {
 		int previouslySelectedSpell = selectedSpell;
 		// Choose the first non-empty slot in the given direction
 		int increment = (int)direction;
-		for (int i = selectedSpell + increment; i >= 0 && i < spellSlots.Length; i = i + increment) {
+		for (int i = selectedSpell + increment; i >= 0 && i < spellSlots.Length; i += increment) {
 			if (spellSlots[i] != null) {
 				selectedSpell = i;
 				break;

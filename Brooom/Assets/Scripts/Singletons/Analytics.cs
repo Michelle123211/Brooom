@@ -31,7 +31,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	private static readonly long maxFileSize = 10485760; // 10 MB
 	
 
-	private CultureInfo culture = new CultureInfo("cs-CZ"); // used for date and time formatting
+	private readonly CultureInfo culture = new CultureInfo("cs-CZ"); // used for date and time formatting
 	private StreamWriter file; // analytics file to which events are logged
 
 	private Scene currentScene = Scene.Start;
@@ -250,7 +250,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	private string GetCurrentSpellSlotsContent(out int spellCount) {
 		spellCount = 0;
-		StringBuilder slotsContent = new StringBuilder();
+		StringBuilder slotsContent = new();
 		for (int i = 0; i < PlayerState.Instance.equippedSpells.Length; i++) {
 			Spell equippedSpell = PlayerState.Instance.equippedSpells[i];
 			if (equippedSpell != null && !string.IsNullOrEmpty(equippedSpell.Identifier)) {
@@ -282,7 +282,7 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		Vector2 distance = trackGenerator.distanceRange;
 		float hoopScale = levelGenerator.GetComponent<TrackObjectsPlacement>().hoopScale;
 		// Prepare a list of regions
-		StringBuilder regions = new StringBuilder();
+		StringBuilder regions = new();
 		int i = 0;
 		foreach (var region in level.RegionsInLevel) {
 			regions.Append(region);

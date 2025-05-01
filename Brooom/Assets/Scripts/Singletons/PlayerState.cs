@@ -26,9 +26,9 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
 	#region Statistics
     /// <summary>Previous stats values.</summary>
-	public PlayerStats PreviousStats { get; set; } = new PlayerStats();
+	public PlayerStats PreviousStats { get; set; } = new();
 
-    private PlayerStats currentStats = new PlayerStats();
+    private PlayerStats currentStats = new();
     /// <summary>Current stats values.</summary>
     public PlayerStats CurrentStats {
         get => currentStats;
@@ -224,7 +224,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
             LoadFromSavedBroomUpgrades(broomUpgrades);
         }
         if (BroomUpgradeLevels.ContainsKey(upgradeName))
-            return BroomUpgradeLevels[upgradeName].Item1;
+            return BroomUpgradeLevels[upgradeName].currentLevel;
         else {
             return -1;
         }
@@ -263,7 +263,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
     /// <summary>
     /// For each region type there is a <c>bool</c> indicating whether it has been visited yet.
     /// </summary>
-	public Dictionary<LevelRegionType, bool> regionsVisited = new Dictionary<LevelRegionType, bool>();
+	public Dictionary<LevelRegionType, bool> regionsVisited = new();
 
     /// <summary>
     /// Marks the given region as visited.
@@ -287,7 +287,7 @@ public class PlayerState : MonoBehaviourSingleton<PlayerState>, ISingleton {
 
     /// <summary>For each region there is a <c>bool</c> value indicating whether the region is available (based on its specific conditions). 
     /// These values are not stored presistently, they are recomputed whenever a level is being generated.</summary>
-    public Dictionary<LevelRegionType, bool> regionsAvailability = new Dictionary<LevelRegionType, bool>();
+    public Dictionary<LevelRegionType, bool> regionsAvailability = new();
 
     /// <summary>
     /// Sets availability of the given region to the given value.
@@ -565,13 +565,14 @@ public struct PlayerStats {
     /// <returns></returns>
     public static PlayerStats FromListOfValues(List<int> values) {
         if (values.Count < 5) throw new ArgumentException("Invalid number of values provided for PlayerStats, should be 5.");
-        PlayerStats stats = new PlayerStats();
-        stats.endurance = values[0];
-        stats.speed = values[1];
-        stats.dexterity = values[2];
-        stats.precision = values[3];
-        stats.magic = values[4];
-        return stats;
+		PlayerStats stats = new PlayerStats {
+			endurance = values[0],
+			speed = values[1],
+			dexterity = values[2],
+			precision = values[3],
+			magic = values[4]
+		};
+		return stats;
     }
 
     #region Operator overloads

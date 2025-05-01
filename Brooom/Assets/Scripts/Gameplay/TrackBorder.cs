@@ -28,8 +28,10 @@ public class TrackBorder : MonoBehaviour {
 		if (collision.gameObject.CompareTag("Player") && showImpact) {
 			showImpact = false;
 			isHighlighting = true;
-			meshRenderer?.sharedMaterial.SetVector("_ImpactPoint", collision.contacts[0].point);
-			meshRenderer?.sharedMaterial.SetFloat("_ImpactTime", 0);
+			if (meshRenderer != null) {
+				meshRenderer.sharedMaterial.SetVector("_ImpactPoint", collision.contacts[0].point);
+				meshRenderer.sharedMaterial.SetFloat("_ImpactTime", 0);
+			}
 			Invoke(nameof(EnableShowingImpact), impactCooldown);
 		}
 	}
@@ -45,17 +47,19 @@ public class TrackBorder : MonoBehaviour {
 			t += (Time.deltaTime / impactHighlightDuration);
 			if (t > 1) {
 				isHighlighting = false;
-				meshRenderer?.sharedMaterial.SetFloat("_ImpactTime", 1);
+				if (meshRenderer != null) meshRenderer.sharedMaterial.SetFloat("_ImpactTime", 1);
 				t = 0;
 			} else {
-				meshRenderer?.sharedMaterial.SetFloat("_ImpactTime", t);
+				if (meshRenderer != null) meshRenderer.sharedMaterial.SetFloat("_ImpactTime", t);
 			}
 		}
 	}
 
 	private void OnDestroy() {
 		// Reset material properties
-		meshRenderer?.sharedMaterial.SetVector("_ImpactPoint", Vector3.zero);
-		meshRenderer?.sharedMaterial.SetFloat("_ImpactTime", 0);
+		if (meshRenderer != null) {
+			meshRenderer.sharedMaterial.SetVector("_ImpactPoint", Vector3.zero);
+			meshRenderer.sharedMaterial.SetFloat("_ImpactTime", 0);
+		}
 	}
 }

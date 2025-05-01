@@ -59,9 +59,10 @@ public abstract class TrackGenerationBase : LevelGeneratorModule {
 	/// <param name="level">Level representation to which a new track point will be added.</param>
 	/// <param name="position">World position of the track point to be added.</param>
 	protected void AddTrackPoint(LevelRepresentation level, Vector3 position) {
-		TrackPoint trackPoint = new TrackPoint();
-		trackPoint.position = position;
-		trackPoint.isCheckpoint = (level.Track.Count) % (numberOfHoopsBetween + 1) == 0;
+		TrackPoint trackPoint = new TrackPoint {
+			position = position,
+			isCheckpoint = (level.Track.Count) % (numberOfHoopsBetween + 1) == 0
+		};
 		level.Track.Add(trackPoint);
 	}
 

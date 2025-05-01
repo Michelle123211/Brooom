@@ -111,7 +111,7 @@ public class KeyBindingUI : MonoBehaviour {
     /// Checks for duplicates among key bindings of other actions. If there is a duplicate, a warning indicator is displayed and its tooltip initialized.
     /// </summary>
     public void UpdateDuplicateWarning() {
-        StringBuilder duplicateBindings = new StringBuilder();
+        StringBuilder duplicateBindings = new();
 		// Check bindings of all the other actions in the same action map
 		foreach (InputBinding otherBinding in action.actionMap.bindings) {
 			if (otherBinding.action == action.bindings[bindingIndex].action) continue; // skip the same action

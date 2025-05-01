@@ -21,7 +21,7 @@ public class Hoop : MonoBehaviour {
 
     private int index = 0; // index of the track point represented by the hoop
     private bool isActive = false; // when active, the hoop detects racer flying through it
-    private Dictionary<int, int> activeTriggersCount = new Dictionary<int, int>(); // how many triggers (value) the racer (instanceID is the key) entered and have not exited
+    private Dictionary<int, int> activeTriggersCount = new(); // how many triggers (value) the racer (instanceID is the key) entered and have not exited
 
     private Animator animator; // for arrow highlighting the hoop
     private Color minimapIconColor;
@@ -78,7 +78,8 @@ public class Hoop : MonoBehaviour {
         }
         // If there are 2 triggers active simultaneously, the racer has passed through the hoop
         if (activeTriggersCount.GetValueOrDefault(instanceID) == 2) {
-            rootObject.GetComponent<CharacterRaceState>()?.OnHoopPassed(index); // root object has CharacterRaceState component
+            if (rootObject.TryGetComponent(out CharacterRaceState raceState))  // root object has CharacterRaceState component
+                raceState.OnHoopPassed(index);
             onHoopPassed?.Invoke(index);
         }
     }

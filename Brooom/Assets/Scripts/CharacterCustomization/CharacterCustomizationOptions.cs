@@ -11,15 +11,15 @@ using UnityEngine;
 public class CharacterCustomizationOptions : ScriptableObject
 {
     // Skin color
-    public MaterialColorCustomization skinTones = new MaterialColorCustomization();
+    public MaterialColorCustomization skinTones = new();
     // Hair style - Mesh
-    public MeshAndMaterialCustomization hair = new MeshAndMaterialCustomization();
+    public MeshAndMaterialCustomization hair = new();
     // Hair color - Color
-    public MaterialColorCustomization hairColor = new MaterialColorCustomization();
+    public MaterialColorCustomization hairColor = new();
     // Outfit - Mesh + Materials
-    public MeshAndMaterialCustomization outfits = new MeshAndMaterialCustomization();
+    public MeshAndMaterialCustomization outfits = new();
     // Shoes - Mesh + Materials
-    public MeshAndMaterialCustomization shoes = new MeshAndMaterialCustomization();
+    public MeshAndMaterialCustomization shoes = new();
     // TODO: Face - Texture
 }
 
@@ -254,7 +254,7 @@ public class CharacterCustomizationData {
     // If any part doesn't have customization option assigned, this method assigns the default one
     private void ReplaceNullsWithDefaults(CharacterCustomizationOptions customizationOptions) {
         if (characterName == null) characterName = "";
-        Color newColor = new Color();
+        Color newColor = new();
         if (skinColor.assignedColor == newColor)
             skinColor = customizationOptions.skinTones.EnumerateVariants().First();
         if (hairColor.assignedColor == newColor)

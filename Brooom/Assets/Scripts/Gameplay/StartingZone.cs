@@ -72,7 +72,7 @@ public class StartingZone : MonoBehaviour
 			UpdateCountdownUI();
 			if (currentTime < 0) {
 				// Start the race
-				RaceControllerBase.Instance?.StartRace();
+				if (RaceControllerBase.Instance != null) RaceControllerBase.Instance.StartRace();
 				// Destroy the whole starting zone
 				Destroy(transform.parent.gameObject);
 			}

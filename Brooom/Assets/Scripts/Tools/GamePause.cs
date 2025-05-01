@@ -24,9 +24,9 @@ public class GamePause : MonoBehaviour {
     [SerializeField] bool isInTutorial = false;
 
     [Tooltip("Objects representing menu options which should be displayed when pausing the game in race.")]
-    [SerializeField] List<GameObject> optionsInRace = new List<GameObject>();
+    [SerializeField] List<GameObject> optionsInRace = new();
     [Tooltip("Objects representing menu options which should be displayed when pausing the game in tutorial.")]
-    [SerializeField] List<GameObject> optionsInTutorial = new List<GameObject>();
+    [SerializeField] List<GameObject> optionsInTutorial = new();
 
     private Animator animator; // to show/hide pause menu
 

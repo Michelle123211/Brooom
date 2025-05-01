@@ -29,21 +29,21 @@ public class GenericTween : MonoBehaviour {
     [Header("Tweened properties")]
     // position
     [Tooltip("Start and end positions are given as relative displacements.")]
-    public TweenPropertyPosition positionTween = new TweenPropertyPosition();
+    public TweenPropertyPosition positionTween = new();
     // rotation
     [Tooltip("Start and end positions are given as relative displacements.")]
-    public TweenPropertyRotation rotationTween = new TweenPropertyRotation();
+    public TweenPropertyRotation rotationTween = new();
     // scale
-    public TweenPropertyScale scaleTween = new TweenPropertyScale();
+    public TweenPropertyScale scaleTween = new();
     // alpha through CanvasGroup or SpriteRenderer or Image
     [Tooltip("Affects alpha property of the CanvasGroup, SpriteRenderer or Image component.")]
-    public TweenPropertyAlpha alphaTween = new TweenPropertyAlpha();
+    public TweenPropertyAlpha alphaTween = new ();
     // color through SpriteRenderer or Image or Light2D or TextMeshProUGUI or Text
     [Tooltip("Affects color of the SpriteRenderer, Image, Light2D, Light, TextMeshProUGUI or Text component.")]
-    public TweenPropertyColor colorTween = new TweenPropertyColor();
+    public TweenPropertyColor colorTween = new();
     // intensity through Light2D
     [Tooltip("Affects intensity of the Light2D or Light component.")]
-    public TweenPropertyIntensity intensityTween = new TweenPropertyIntensity();
+    public TweenPropertyIntensity intensityTween = new();
 
     [Header("Callbacks")]
     [Tooltip("Called when the tween is finished (if the tween should be reverted after, then this is called only after the reversed tween finished).")]

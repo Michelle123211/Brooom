@@ -49,7 +49,7 @@ public class ConditionalHidePropertyDrawer : PropertyDrawer {
         for (int i = 0; i < length - 1; ++i) {
             newTokens[i] = tokens[i];
         }
-        newTokens[newTokens.Length - 1] = attributeTyped.conditionField; // replace last token with the name of the condition field
+        newTokens[^1] = attributeTyped.conditionField; // replace last token with the name of the condition field
         string conditionPath = string.Join(".", newTokens);
         SerializedProperty conditionField = property.serializedObject.FindProperty(conditionPath);
         // Check value in the condition field

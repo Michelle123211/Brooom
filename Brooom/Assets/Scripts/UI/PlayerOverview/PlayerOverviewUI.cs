@@ -87,7 +87,7 @@ public class PlayerOverviewUI : MonoBehaviour {
     // Gets localized stats' names and takes their first letter as an axis label
     private List<string> GetLocalizedStatsGraphLabels() {
         List<string> statNames = PlayerStats.GetListOfStatNames();
-        List<string> labels = new List<string>();
+        List<string> labels = new();
         foreach (var name in statNames) {
             // Take only the first letter
             labels.Add(LocalizationManager.Instance.GetLocalizedString("PlayerStat" + name)[0].ToString());
@@ -98,7 +98,7 @@ public class PlayerOverviewUI : MonoBehaviour {
     // Gets localized stats' descriptions (which will be used in a tooltip)
     private List<string> GetLocalizedStatsDescription() {
         List<string> statNames = PlayerStats.GetListOfStatNames();
-        List<string> descriptions = new List<string>();
+        List<string> descriptions = new();
         foreach (var name in statNames) {
             descriptions.Add(LocalizationManager.Instance.GetLocalizedString("PlayerStatTooltip" + name));
         }

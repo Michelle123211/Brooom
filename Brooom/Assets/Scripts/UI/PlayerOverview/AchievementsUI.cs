@@ -15,7 +15,7 @@ public class AchievementsUI : MonoBehaviour {
     [Tooltip("A Transform which is a parent of all the achievements slots.")]
     [SerializeField] Transform achievementParent;
 
-    HashSet<string> newAchievements = new HashSet<string>(); // resets between scenes
+    HashSet<string> newAchievements = new(); // resets between scenes
 
     /// <summary>
     /// Gets current achievements' progress, instantiates and initializes slots for each of them and and highlights achievements which are new.

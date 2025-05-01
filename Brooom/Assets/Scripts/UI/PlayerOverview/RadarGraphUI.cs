@@ -19,7 +19,7 @@ public class RadarGraphUI : MonoBehaviour {
     [Tooltip("Maximum value on all axes.")]
     [SerializeField] float maxValue = 1;
     [Tooltip("Labels of the graph axes.")]
-    [SerializeField] List<string> graphAxisLabels = new List<string>();
+    [SerializeField] List<string> graphAxisLabels = new();
     [Tooltip("Color used for the main lines in the graph.")]
     [SerializeField] Color mainColor = Color.black;
     [Tooltip("Thickness of the main lines in the graph.")]
@@ -49,9 +49,9 @@ public class RadarGraphUI : MonoBehaviour {
     [Tooltip("A polygon may be tweened to grow into its final size. This parameter sets duration of such tween.")]
     [SerializeField] float polygonTweenDuration = 0.5f;
 
-    private List<Vector3> axes = new List<Vector3>(); // uniformly placed in a circle, based on number of parameters
-    private List<RadarGraphPolygonUI> polygons = new List<RadarGraphPolygonUI>();
-    private List<RadarGraphLabelUI> labels = new List<RadarGraphLabelUI>();
+    private List<Vector3> axes = new(); // uniformly placed in a circle, based on number of parameters
+    private List<RadarGraphPolygonUI> polygons = new();
+    private List<RadarGraphLabelUI> labels = new();
 
     private bool isInitialized = false;
 
@@ -177,7 +177,7 @@ public class RadarGraphUI : MonoBehaviour {
         UIPathRenderer lineRenderer = GetComponent<UIPathRenderer>();
         // Draw secondary lines
         for (int i = 1; i <= secondaryLinesCount; i++) {
-            List<Vector3> path = new List<Vector3>();
+            List<Vector3> path = new();
             foreach (var axis in axes)
                 path.Add(axis * i / (secondaryLinesCount + 1));
             lineRenderer.AddPath(path, secondaryColor, secondaryThickness, true);
@@ -236,7 +236,7 @@ public class RadarGraphUI : MonoBehaviour {
         }
         // Ensure minimum count
         if (values != null && values.Count >= parametersCount) return values;
-        List<float> newValues = new List<float>();
+        List<float> newValues = new();
         for (int i = 0; i < parametersCount; i++) {
             if (values != null && i < values.Count) newValues.Add(values[i]);
             else newValues.Add(0f);
@@ -251,7 +251,7 @@ public class RadarGraphUI : MonoBehaviour {
         if (values == null) values = new List<float>();
         values = ResolveNumberOfValues(values);
         // Compute actual points from values and radius
-        List<Vector3> points = new List<Vector3>();
+        List<Vector3> points = new();
         for (int i = 0; i < parametersCount; i++) {
             points.Add(axes[i] * Mathf.Clamp(values[i], 0, maxValue) / maxValue);
         }
