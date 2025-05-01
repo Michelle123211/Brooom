@@ -3,13 +3,26 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-// The smallest class describing the current player state
+
+/// <summary>
+/// The smallest class describing the current player state, which is used when storing the data persistently.
+/// </summary>
 [System.Serializable]
 public class PlayerStateSaveData {
+
     // Initialize everything to default values
+
+    /// <summary>Whether the player has completed the game.</summary>
     public bool gameComplete = false;
+    /// <summary>Previous and current stats values.</summary>
     public StatisticsSaveData stats = new StatisticsSaveData();
+    /// <summary>Current amount of coins</summary>
     public int coins = 0;
+
+    /// <summary>
+    /// Known opponents, i.e. name assigned to a particular place in leaderboard.
+    /// Getter and setter convert <c>string[]</c> array from <c>knownOpponentsArray</c> to <c>Dictionary&lt;int, string&gt;</c> and vice versa.
+    /// </summary>
     public Dictionary<int, string> KnownOpponents {
         get {
             return GetDictionaryOfOpponents(knownOpponentsArray);
@@ -18,9 +31,12 @@ public class PlayerStateSaveData {
             knownOpponentsArray = GetArrayOfOpponents(value);
         }
     }
-    // Known opponents stored in array (which is serializable by JsonUtility as opposed to Dictionary)
-    public string[] knownOpponentsArray; // each string contains index and name separated by |
 
+    /// <summary>Known opponents from leaderboard stored in array (which is serializable by <c>JsonUtility</c> as opposed to <c>Dictionary</c>).
+    /// Each string contains place and name separated by |.</summary>
+    public string[] knownOpponentsArray;
+
+    // Creates opponents dictionary out of opponents array
     private Dictionary<int, string> GetDictionaryOfOpponents(string[] opponentsArray) {
         Dictionary<int, string> opponentsDictionary = new Dictionary<int, string>();
         foreach (var opponent in opponentsArray) {
@@ -32,6 +48,7 @@ public class PlayerStateSaveData {
         return opponentsDictionary;
     }
 
+    // Creates opponents array out of opponents dictionary
     private string[] GetArrayOfOpponents(Dictionary<int, string> opponentsDictionary) {
         string[] opponentsArray = new string[opponentsDictionary.Count];
         int i = 0;
@@ -41,8 +58,12 @@ public class PlayerStateSaveData {
         }
         return opponentsArray;
     }
+
 }
 
+/// <summary>
+/// Previous stats values and current stats values in a representation used for persistently storing the data.
+/// </summary>
 [System.Serializable]
 public class StatisticsSaveData {
     public PlayerStats previousStats;

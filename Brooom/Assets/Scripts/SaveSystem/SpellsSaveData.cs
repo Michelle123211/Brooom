@@ -2,14 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A class used when persistently storing data related to spells (i.e. available spells, equipped spells, cast spells).
+/// </summary>
 [System.Serializable]
 public class SpellsSaveData {
 
-	#region Purchased spells
-	// Spells availability stored in array (which is serializable by JsonUtility as opposed to Dictionary)
-	public string[] spellsAvailabilityArray = null; // each string contains spell identifier and availability separated by |
+    #region Purchased spells
+    /// <summary>Spells availability stored in array (which is serializable by <c>JsonUtility</c> as opposed to <c>Dictionary</c>).
+    /// Each string contains spell identifier and availability separated by |.</summary>
+    public string[] spellsAvailabilityArray = null;
 
-    // Property with getter/setter converting Dictionary<string, bool> to array of strings and vice versa
+    /// <summary>
+    /// Whether a spell (represented by its identifier) is available (i.e. has been purchased).
+    /// Getter and setter convert <c>string[]</c> array from <c>spellsAvailabilityArray</c> to <c>Dictionary&lt;string, bool&gt;</c> and vice versa.
+    /// </summary>
     public Dictionary<string, bool> SpellsAvailability {
         get {
             return GetDictionaryOfSpells(spellsAvailabilityArray);
@@ -19,6 +27,7 @@ public class SpellsSaveData {
         }
     }
 
+    // Converts string[] to Dictionary<string, bool> (used for spells availability and spells usage)
     private Dictionary<string, bool> GetDictionaryOfSpells(string[] spellsArray) {
         Dictionary<string, bool> spellsDictionary = new Dictionary<string, bool>();
         foreach (var spell in spellsArray) {
@@ -33,6 +42,7 @@ public class SpellsSaveData {
         return spellsDictionary;
     }
 
+    // Converts Dictionary<string, bool> to string[] (used for spells availability and spells usage)
     private string[] GetArrayOfSpells(Dictionary<string, bool> spellsDictionary) {
         string[] spellsArray = new string[spellsDictionary.Count];
         int i = 0;
@@ -45,10 +55,14 @@ public class SpellsSaveData {
     #endregion
 
     #region Equipped spells
-    // Spells in slots stored in array of spell identifiers (or 'empty' for empty slots)
+
+    /// <summary>Spells equipped in slots stored in array of spell identifiers (or 'empty' for empty slots)</summary>
     public string[] equippedSpellsIdentifiers = null;
 
-    // Property with getter/setter converting Spell[] to array of strings and vice versa
+    /// <summary>
+    /// Spells equipped in slots.
+    /// Getter and setter convert <c>string[]</c> array from <c>equippedSpellsIdentifiers</c> to <c>Spell[]</c> and vice versa.
+    /// </summary>
     public Spell[] EquippedSpells {
         get {
             return GetEquippedSpells(equippedSpellsIdentifiers);
@@ -58,6 +72,7 @@ public class SpellsSaveData {
         }
     }
 
+    // Converts string[] to Spell[]
     private Spell[] GetEquippedSpells(string[] equippedSpellsIdentifiers) {
         Spell[] equippedSpells = new Spell[equippedSpellsIdentifiers.Length];
         int i = 0;
@@ -69,6 +84,7 @@ public class SpellsSaveData {
         return equippedSpells;
     }
 
+    // Converts Spell[] to string[]
     private string[] GetEquippedSpellsIdentifiers(Spell[] equippedSpells) {
         string[] equippedSpellsIdentifiers = new string[equippedSpells.Length];
         int i = 0;
@@ -82,10 +98,15 @@ public class SpellsSaveData {
     #endregion
 
     #region Used spells
-    // Spells usage stored in array (which is serializable by JsonUtility as opposed to Dictionary)
-    public string[] spellsUsageArray = null; // each string contains spell identifier and whether it was used already separated by |
 
-    // Property with getter/setter converting Dictionary<string, bool> to array of strings and vice versa
+    /// <summary>Spells usage stored in array (which is serializable by <c>JsonUtility</c> as opposed to <c>Dictionary</c>).
+    /// Each string contains spell identifier and whether it was used already separated by |.</summary>
+    public string[] spellsUsageArray = null;
+
+    /// <summary>
+    /// Whether a spell (represented by its identifier) has been used/cast already.
+    /// Getter and setter convert <c>string[]</c> array from <c>spellsUsageArray</c> to <c>Dictionary&lt;string, bool&gt;</c> and vice versa.
+    /// </summary>
     public Dictionary<string, bool> SpellsUsage {
         get {
             return GetDictionaryOfSpells(spellsUsageArray);

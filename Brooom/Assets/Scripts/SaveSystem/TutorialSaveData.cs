@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A class used when persistently storing current tutorial state.
+/// </summary>
 [System.Serializable]
 public class TutorialSaveData {
-	// Current stage of the tutorial
+	/// <summary>Current stage of the tutorial.</summary>
 	public string mainStage;
-	// Any substate of the current stage (could be empty)
+	/// <summary>Any substate of the current stage (could be empty).</summary>
 	public string subState;
 }

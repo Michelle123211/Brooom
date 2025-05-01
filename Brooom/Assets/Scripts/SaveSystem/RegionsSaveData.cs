@@ -3,14 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// A class used when persistently storing data related to regions (i.e. visited regions).
+/// </summary>
 [System.Serializable]
 public class RegionsSaveData {
 
 	#region Visited regions
-	// Regions visited stored in array (which is serializable by JsonUtility as opposed to Dictionary)
-	public string[] regionsVisitedArray = null; // each string contains region identifier and whether it was visited already separated by |
+	/// <summary>
+	/// Whether a region has been visited, stored in array (which is serializable by JsonUtility as opposed to Dictionary).
+	/// Each string contains region identifier and <c>bool</c> whether it was visited already separated by |.
+	/// </summary>
+	public string[] regionsVisitedArray = null;
 
-	// Property with getter/setter converting Dictionary<LevelRegionType, bool> to array of strings and vice versa
+	/// <summary>
+	/// Whether a region has been visited already.
+	/// Getter and setter convert <c>string[]</c> array from <c>regionsVisitedArray</c> to <c>Dictionary&lt;LevelRegionType, bool&gt;</c> and vice versa.
+	/// </summary>
 	public Dictionary<LevelRegionType, bool> RegionsVisited {
 		get {
 			return GetDictionaryOfRegions(regionsVisitedArray);
@@ -20,6 +30,7 @@ public class RegionsSaveData {
 		}
 	}
 
+	// Creates a dictionary with information about whether regions were visited or not out of anarray
 	private Dictionary<LevelRegionType, bool> GetDictionaryOfRegions(string[] regionsArray) {
 		Dictionary<LevelRegionType, bool> regionsDictionary = new Dictionary<LevelRegionType, bool>();
 		foreach (var region in regionsArray) {
@@ -34,6 +45,7 @@ public class RegionsSaveData {
 		return regionsDictionary;
 	}
 
+	// Creates an array with information about whether regions were visited or not out of a dictionary
 	private string[] GetArrayOfRegions(Dictionary<LevelRegionType, bool> regionsDictionary) {
 		string[] regionsArray = new string[regionsDictionary.Count];
 		int i = 0;
