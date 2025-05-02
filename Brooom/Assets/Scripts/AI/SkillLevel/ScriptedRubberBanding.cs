@@ -30,7 +30,9 @@ public abstract class ScriptedRubberBanding : SkillLevelImplementation {
 
 	/// <inheritdoc/>
 	public override PlayerStats GetCurrentStats() {
-		float raceFraction = RaceControllerBase.Instance.IsInitialized ? GetNormalizedDistanceRaced(agentRaceState) : 0f;
+		float raceFraction = RaceControllerBase.Instance.IsInitialized 
+			? GetNormalizedDistanceRaced(RaceControllerBase.Instance.playerRacer.state) // how far in the race the player is
+			: 0f;
 		// Maximum stats in the first 5 % of the race
 		if (raceFraction < 0.05f) {
 			currentStatsValues = maxStatsValues;
