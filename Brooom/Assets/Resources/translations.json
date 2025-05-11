@@ -176,8 +176,8 @@
   },
   {
     "Key": "AboutLabelAttributions",
-    "English": "Made using <b>FMOD Studio</b> by Firelight Technologies Pty Ltd.\nAudio found on <b>kenney.nl</b>, <b>freesound.org</b> and <b>itch.io</b>\n\n<b>Audio assets requiring attribution:</b>\n- Magic sound 1.wav by JomelleJager (https://freesound.org/s/252681/)\n- wind tree silver birch 02 140215.wav by klankbeeld (https://freesound.org/s/219534/)\n- Bees.wav by Benboncan (https://freesound.org/s/73370/)\n- bees.wav by paulotantastico (https://freesound.org/s/531713/)\n- 20230627.all.the.bees.wav by dobroide (https://freesound.org/s/696181/)\n\nAll fonts, used in the game, were obtained from <b>https://fonts.google.com/</b>.",
-    "Czech": "Vytvořeno s využitím <b>FMOD Studio</b> od Firelight Technologies Pty Ltd.\nAudio nalezeno na <b>kenney.nl</b>, <b>freesound.org</b> a <b>itch.io</b>\n\n<b>Audio klipy vyžadující uvedení původu</b>:\n- Magic sound 1.wav od JomelleJager (https://freesound.org/s/252681/)\n- wind tree silver birch 02 140215.wav od klankbeeld (https://freesound.org/s/219534/)\n- Bees.wav od Benboncan (https://freesound.org/s/73370/)\n- bees.wav od paulotantastico (https://freesound.org/s/531713/)\n- 20230627.all.the.bees.wav od dobroide (https://freesound.org/s/696181/)\n\nVšechny fonty použité ve hře byly získány z <b>https://fonts.google.com/</b>."
+    "English": "Made using <b>FMOD Studio</b> by Firelight Technologies Pty Ltd.\nAudio found on <b>kenney.nl</b>, <b>freesound.org</b> and <b>itch.io</b>\n\n<b>Audio assets requiring attribution:</b>\n- Magic sound 1.wav by JomelleJager (https://freesound.org/s/252681/)\n- wind tree silver birch 02 140215.wav by klankbeeld (https://freesound.org/s/219534/)\n- Bees.wav by Benboncan (https://freesound.org/s/73370/)\n- bees.wav by paulotantastico (https://freesound.org/s/531713/)\n- 20230627.all.the.bees.wav by dobroide (https://freesound.org/s/696181/)\n\nAll fonts, used in the game, were obtained from <b>https://fonts.google.com/</b>.\n\nFor color palette implementation, modification of project <b>https://github.com/leth4/Colorlink</b> was used.",
+    "Czech": "Vytvořeno s využitím <b>FMOD Studio</b> od Firelight Technologies Pty Ltd.\nAudio nalezeno na <b>kenney.nl</b>, <b>freesound.org</b> a <b>itch.io</b>\n\n<b>Audio klipy vyžadující uvedení původu</b>:\n- Magic sound 1.wav od JomelleJager (https://freesound.org/s/252681/)\n- wind tree silver birch 02 140215.wav od klankbeeld (https://freesound.org/s/219534/)\n- Bees.wav od Benboncan (https://freesound.org/s/73370/)\n- bees.wav od paulotantastico (https://freesound.org/s/531713/)\n- 20230627.all.the.bees.wav od dobroide (https://freesound.org/s/696181/)\n\nVšechny fonty použité ve hře byly získány z <b>https://fonts.google.com/</b>.\n\nPro implementaci barevné palety byla použita modifikace projektu <b>https://github.com/leth4/Colorlink</b>."
   },
   {
     "Key": "AboutLabelContactTitle",
@@ -1204,18 +1204,18 @@
   },
   {
     "Key": "TutorialIntroduction_Movement_Basics",
-    "English": "Let's try some basic movement first.\n- <b>{0}</b> to fly <b>forward</b>\n- <b>{1}</b> to <b>brake</b>\n- <b>{2}/{3}</b> to <b>turn</b> left/right\nGive it a try.",
-    "Czech": "Nejprve vyzkoušíme základní pohyb.\n- <b>{0}</b> pro let <b>dopředu</b>\n- <b>{1}</b> pro <b>zabrždění</b>\n- <b>{2}/{3}</b> pro <b>zatáčení</b> doleva/doprava\nZkus si to."
+    "English": "Let's try some basic movement first.\n- <b>{0}</b> to fly <b>forward</b>\n- <b>{1}</b> to <b>brake</b>\n- <b>{2}/{3}</b> to <b>turn</b> left/right\nGive it a try, perform each action a few times.",
+    "Czech": "Nejprve vyzkoušíme základní pohyb.\n- <b>{0}</b> pro let <b>dopředu</b>\n- <b>{1}</b> pro <b>zabrždění</b>\n- <b>{2}/{3}</b> pro <b>zatáčení</b> doleva/doprava\nZkus si to, každou akci párkrát proveď."
   },
   {
     "Key": "TutorialIntroduction_Movement_UpAndDown",
-    "English": "All right, not bad! Let's make it a bit harder.\n- <b>{0}</b> to fly <b>up</b>\n- <b>{1}</b> to fly <b>down</b>",
-    "Czech": "Vida, to nebylo špatné. Zkusme trochu přitvrdit.\n- <b>{0}</b> pro let <b>nahoru</b>\n- <b>{1}</b> pro let <b>dolů</b>"
+    "English": "All right, not bad! Let's make it a bit harder.\n- <b>{0}</b> to fly <b>up</b>\n- <b>{1}</b> to fly <b>down</b>\nAgain, perform each action a few times.",
+    "Czech": "Vida, to nebylo špatné. Zkusme trochu přitvrdit.\n- <b>{0}</b> pro let <b>nahoru</b>\n- <b>{1}</b> pro let <b>dolů</b>\nOpět proveď párkrát každou z akcí."
   },
   {
     "Key": "TutorialIntroduction_Movement_LookingAround",
-    "English": "You also need to be aware of your surroundings.\nUse <b>Mouse</b> to <b>look around</b> and <b>{0}</b> to <b>look back</b>.\nAnd if you feel disoriented, you can always use <b>{1}</b> to <b>reset view</b> forward.",
-    "Czech": "Musíš také vnímat své okolí.\nPoužij <b>Myš</b> pro <b>rozhlížení se</b> kolem a <b>{0}</b> pro <b>pohled dozadu</b>.\nA pokud jsi dezorientovaný, můžeš kdykoliv použít <b>{1}</b> pro <b>reset pohledu</b> dopředu."
+    "English": "You also need to be aware of your surroundings.\nUse <b>Mouse</b> to <b>look around</b> and <b>{0}</b> to <b>look back</b>.\nAnd if you feel disoriented, you can always use <b>{1}</b> to <b>reset view</b> forward.\nTry to perform each action a few times.",
+    "Czech": "Musíš také vnímat své okolí.\nPoužij <b>Myš</b> pro <b>rozhlížení se</b> kolem a <b>{0}</b> pro <b>pohled dozadu</b>.\nA pokud jsi dezorientovaný, můžeš kdykoliv použít <b>{1}</b> pro <b>reset pohledu</b> dopředu.\nZkus si každou z akcí párkrát provést."
   },
   {
     "Key": "TutorialIntroduction_Movement_Zone",
