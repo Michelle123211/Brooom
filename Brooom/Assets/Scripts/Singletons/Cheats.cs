@@ -44,6 +44,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 
 	private bool cursorWasLocked = false; // whether the cursor wa locked before opening cheats
 
+	SpellController playerSpellController = null; // used in mana and recharge cheats
+
 	/// <summary>
 	/// Plays sound effect. Called whenever the value in cheats' input field changes (i.e. with each key stroke).
 	/// </summary>
@@ -527,8 +529,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		disabledScenes: new Scene[] { Scene.MainMenu, Scene.LevelGeneratorDemo, Scene.QuickRace }));
 	}
 	private void FillManaUp() {
-		SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
-		if (playerSpellController.CurrentMana < playerSpellController.MaxMana) {
+		if (playerSpellController != null && playerSpellController.CurrentMana < playerSpellController.MaxMana) {
 			playerSpellController.ChangeManaAmount(playerSpellController.MaxMana - playerSpellController.CurrentMana);
 		}
 	}
@@ -536,14 +537,12 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		// mana - change mana amount or enable/disable unlimited mana, available only in Race
 		void ScheduleFillingManaUp(int _) { // the parameter must be there because this method is used as a callback on mana value change
 			// Schedule filling mana up so that it is done independently of the current callbacks being invoked
-			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 			Invoke(nameof(FillManaUp), 0.1f);
 		}
 		commands.Add(new CheatCommand("mana", "Changes mana amount or enables/disables unlimited mana. Usage: 'mana <amount>' for a specific amount, e.g. 'mana 80', or 'mana max' for maximum amount, or 'mana off' or 'mana on' to enable/disable unlimited mana.",
 			(commandParts) => {
 				bool success = false;
 				string message = string.Empty;
-				SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 				// Handle errors
 				if (commandParts.Length != 2) message = "Invalid number of parameters, one is needed.";
 				else if (playerSpellController == null) message = "A suitable target has not been found.";
@@ -581,14 +580,13 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	private void InitializeRechargeCommand() {
 		// recharge - change spells' charge or enable/disable cooldown, available only in Race
 		void RechargeAllSpells(int _) { // the parameter must be there because this method is used as a callback on spell cast
-			SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
-			playerSpellController.RechargeAllSpells();
+			if (playerSpellController != null)
+				playerSpellController.RechargeAllSpells();
 		}
 		commands.Add(new CheatCommand("recharge", "Changes spells' charge or enables/disables cooldown. Usage: 'recharge all' to immediately recharge all spells, or 'recharge on' or 'recharge off' to enable/disable spells' cooldown.",
 			(commandParts) => {
 				bool success = false;
 				string message = string.Empty;
-				SpellController playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
 				// Handle errors
 				if (commandParts.Length != 2) message = "Invalid number of parameters, one is needed.";
 				else if (playerSpellController == null) message = "A suitable target has not been found.";
@@ -791,6 +789,10 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		Utils.TweenAwareDisable(messageArea); // hide message area, do it silently
 	}
 
+	private void FindPlayerSpellController(Scene _) { // the parameter is there because it is used as a callback on scene changed
+		playerSpellController = UtilsMonoBehaviour.FindObjectOfTypeAndTag<SpellController>("Player");
+	}
+
 	private void Update() {
 		if (cheatsEnabled) {
 			// Handle input
@@ -834,6 +836,7 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 		}
 		// Register callbacks
 		Messaging.RegisterForMessage("GameStarted", ProcessInitializationCommands);
+		SceneLoader.Instance.onSceneLoaded += FindPlayerSpellController;
 		SceneLoader.Instance.onSceneLoaded += ProcessSceneInitializationCommands;
 	}
 	#endregion
