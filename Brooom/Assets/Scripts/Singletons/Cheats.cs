@@ -42,6 +42,8 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 	private int lastCommandIndex; // last command entered
 	private int historyOffset; // offset of the last command displayed from the history
 
+	private bool cursorWasLocked = false; // whether the cursor wa locked before opening cheats
+
 	/// <summary>
 	/// Plays sound effect. Called whenever the value in cheats' input field changes (i.e. with each key stroke).
 	/// </summary>
@@ -150,12 +152,17 @@ public class Cheats : MonoBehaviourSingleton<Cheats>, ISingleton {
 			// Focus on the input field
 			commandField.Select();
 			commandField.ActivateInputField();
+			// Show mouse cursor
+			cursorWasLocked = Utils.IsCursorLocked();
+			Utils.EnableCursor();
 		} else {
 			// Hide the cheats UI
 			Analytics.Instance.LogEvent(AnalyticsCategory.Game, "Cheats closed.");
 			AudioManager.Instance.PlayOneShot(AudioManager.Instance.Events.GUI.PanelClose);
 			Utils.TweenAwareDisable(cheatsUI);
 			cheatsAreVisible = false;
+			// Restore cursor to previous state
+			if (cursorWasLocked) Utils.DisableCursor();
 		}
 	}
 
