@@ -194,6 +194,7 @@ public class RaceUI : MonoBehaviour {
     /// </summary>
     public void ShowMissedCheckpointWarning() {
         missedCheckpointWarning.TweenAwareEnable();
+        missedCheckpointWarning.TweenAwareEnable(); // automatically disabled at the end of the tween
     }
 
     private bool wrongDirectionWarningVisible = false;
