@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UtilsMonoBehaviour : MonoBehaviour
-{
+
+/// <summary>
+/// This class contains useful static methods which need to be in a class derived from <c>MonoBehaviour</c>
+/// to have access to something from it (e.g. <c>Destroy()</c> method), or which are working with objects in some way.
+/// It is not necessary to have an object with this script in a scene. It is enough that it is derived from <c>Monobehaviour</c>
+/// and then the methods can be used everywhere.
+/// </summary>
+public class UtilsMonoBehaviour : MonoBehaviour {
+
     /// <summary>
     /// Activates/deactivates all objects in the list.
     /// </summary>
