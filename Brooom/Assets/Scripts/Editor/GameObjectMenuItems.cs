@@ -25,12 +25,27 @@ public class GameObjectMenuItems : MonoBehaviour {
 	// Adds a menu item to create a spell prefab containing a few basic components (directly in Resources/Spells/ folder)
 	[MenuItem("Assets/Create/Spell System/Spell", priority = 10)]
 	public static void CreateSpellPrefab(MenuCommand menuCommand) {
+		CreateSpellPrefabVariant("Assets/Prefabs/Spells/SpellPrefab.prefab");
+	}
+
+	// Adds a menu item to create a prefab for a self-cast spell, containing a few basic components (directly in Resources/Spells/ folder)
+	[MenuItem("Assets/Create/Spell System/Self-cast Spell", priority = 10)]
+	public static void CreateSelfCastSpellPrefab(MenuCommand menuCommand) {
+		CreateSpellPrefabVariant("Assets/Prefabs/Spells/SpellSelfCastPrefab.prefab");
+	}
+
+	// Adds a menu item to create a prefab for a spell cast to a different point, containing a few basic components (directly in Resources/Spells/ folder)
+	[MenuItem("Assets/Create/Spell System/Spell with Trajectory", priority = 10)]
+	public static void CreateSpellWithTrajectoryPrefab(MenuCommand menuCommand) {
+		CreateSpellPrefabVariant("Assets/Prefabs/Spells/SpellWithTrajectoryPrefab.prefab");
+	}
+
+	private static void CreateSpellPrefabVariant(string prefabPath) {
 		// Get an asset name
 		string name = AssetNameDialogEditor.ShowDialog();
 		if (string.IsNullOrEmpty(name)) // Asset name dialog was cancelled
 			return;
 		// Get the original spell prefab
-		string prefabPath = "Assets/Prefabs/Spells/SpellPrefab.prefab";
 		GameObject originalPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
 		if (originalPrefab == null) Debug.Log("Prefab is null.");
 		// Create an instance and save it as a prefab variant
@@ -43,4 +58,5 @@ public class GameObjectMenuItems : MonoBehaviour {
 		// Open the newly created asset in the Project window
 		ProjectWindowUtil.ShowCreatedAsset(prefabVariant);
 	}
+
 }
