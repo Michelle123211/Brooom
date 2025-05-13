@@ -7,6 +7,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 340530399415905335, guid: 8b56d100b8391d74c9041cd5987d66f8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3548515022325890735, guid: 8b56d100b8391d74c9041cd5987d66f8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3725938522927781499, guid: 8b56d100b8391d74c9041cd5987d66f8,
         type: 3}
       propertyPath: actionsEnabled
@@ -216,12 +226,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathPoints:
-  - {x: 20, y: 5, z: 20}
-  - {x: 30, y: 5, z: 0}
-  - {x: 20, y: 8, z: -20}
-  - {x: 0, y: 5, z: -30}
-  - {x: -20, y: 2, z: -20}
-  - {x: -30, y: 5, z: 0}
-  - {x: -20, y: 7, z: 20}
-  - {x: 0, y: 5, z: 30}
+  - {x: 30, y: 8, z: -10}
+  - {x: 40, y: 8, z: -30}
+  - {x: 30, y: 11, z: -50}
+  - {x: 10, y: 8, z: -60}
+  - {x: -10, y: 5, z: -50}
+  - {x: -20, y: 8, z: -30}
+  - {x: -10, y: 10, z: -10}
+  - {x: 10, y: 8, z: 0}
   distanceThreshold: 3
