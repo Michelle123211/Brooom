@@ -33,7 +33,8 @@ public class NavigationBonusEffect : BonusEffect {
 
 	/// <inheritdoc/>
 	public override bool IsAvailable() {
-		if (SceneLoader.Instance.CurrentScene == Scene.TestingTrack) return false; // not available in Testing Track
+		// Not available in Testing Track or Tutorial - there is no actual track to highlight
+		if (SceneLoader.Instance.CurrentScene == Scene.TestingTrack || SceneLoader.Instance.CurrentScene == Scene.Tutorial) return false;
 		else return true; // otherwise, always available
 	}
 }
