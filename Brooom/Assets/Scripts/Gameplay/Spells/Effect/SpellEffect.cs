@@ -139,7 +139,7 @@ public abstract class ReversibleSpellEffect : SpellEffect {
 }
 
 /// <summary>
-/// A base class for a spell effect which is appied to a racer and then reversed after some time.
+/// A base class for a spell effect which is applied to a racer and then reversed after some time.
 /// </summary>
 public abstract class RacerAffectingSpellEffect : ReversibleSpellEffect {
 
