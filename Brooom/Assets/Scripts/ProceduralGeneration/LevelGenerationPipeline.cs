@@ -343,39 +343,6 @@ public class LevelRepresentation {
 }
 
 /// <summary>
-/// An object representation of a single point of terrain in a grid of points representing the whole terrain.
-/// It contains information necessary for terrain generation, e.g. world position, assigned terrain region, whether it is on border between adjacent regions.
-/// </summary>
-public class TerrainPoint {
-
-	/// <summary>World position this point represents.</summary>
-	public Vector3 position;
-	/// <summary>Terrain color assigned to this point based on a region it belongs to.</summary>
-	public Color color;
-	/// <summary>A terrain region this terrain point belongs to.</summary>
-	public LevelRegionType region;
-	/// <summary>Whether this point belongs to what is considered a border between adjacent regions.</summary>
-	public bool isOnBorder;
-
-	private Vector3 origPosition;
-
-	public TerrainPoint(Vector3 position) {
-		origPosition = position;
-		Reset();
-	}
-
-	/// <summary>
-	/// Resets the terrain point to initial values and initial position (set in constructor).
-	/// </summary>
-	public void Reset() {
-		position = origPosition;
-		color = Color.black;
-		region = LevelRegionType.NONE;
-		isOnBorder = false;
-	}
-}
-
-/// <summary>
 /// An object representation of a single track point (hoop/checkpoint) in a array of points representing the whole track.
 /// It contains information necessary for track generation, e.g. world position, assigned track region, whether it is hoop or checkpoint.
 /// </summary>
