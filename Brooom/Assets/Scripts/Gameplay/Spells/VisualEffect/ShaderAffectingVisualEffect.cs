@@ -59,7 +59,7 @@ public class ShaderAffectingVisualEffect : DurativeVisualEffect {
 public struct InterpolatedShaderParameter<T> {
 	[Tooltip("Name of the shader parameter to be interpolated.")]
 	public string parameterName;
-	[Tooltip("The initial value of the parameter (will be set at tha start of the interpolation).")]
+	[Tooltip("The initial value of the parameter (will be set at the start of the interpolation).")]
 	public T initialValue;
 	[Tooltip("The target value of the parameter (will be reached at the end of the interpolation).")]
 	public T targetValue;

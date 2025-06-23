@@ -6,7 +6,7 @@ using System.IO;
 /// <summary>
 /// This class is used to provide random names for the opponents (in race and in leaderboard) as well as random names used in character creation.
 /// </summary>
-public class NamesManagement : MonoBehaviour {
+public class NamesManagement {
 
 	// Name of the file in the StreamingAssets folder containing possible names for the randomization
 	private const string namesFilename = "names.txt";

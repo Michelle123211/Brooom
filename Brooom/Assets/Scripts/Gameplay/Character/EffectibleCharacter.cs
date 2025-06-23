@@ -5,7 +5,7 @@ using System;
 
 
 /// <summary>
-/// A component managing all effect currently acting on the character (could be positive or negative).
+/// A component managing all effects currently acting on the character (could be positive or negative).
 /// It keeps track of all these effects, adds new ones when requested and removes the ones which have finished already.
 /// </summary>
 public class EffectibleCharacter : MonoBehaviour {
