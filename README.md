@@ -1,5 +1,7 @@
 # Brooom: Race your way up!
 
+[![Build Status](https://github.com/Michelle123211/Brooom/actions/workflows/buildGame.yml/badge.svg?branch=main)](https://github.com/Michelle123211/Brooom/actions/workflows/buildGame.yml)
+
 ## Milestones
 
 **Milestone 1** (April 2023, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone1.zip)):
