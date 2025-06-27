@@ -71,7 +71,7 @@ public class RaceUI : MonoBehaviour {
     private CharacterRaceState playerRaceState;
 
 
-    #region Coutndown
+    #region Countdown
     /// <summary>
     /// Shows countdown before the race starts with the given value for a brief moment.
     /// Font size and alpha value are tweened to make the countdown appear and disappear nicely.

@@ -120,7 +120,11 @@
             "m_Id": "04fe28c89f644037b1c20fabf951467e"
         }
     ],
-    "m_StickyNoteDatas": [],
+    "m_StickyNoteDatas": [
+        {
+            "m_Id": "02bb9e097f8f4f89ad5b47aadfd077aa"
+        }
+    ],
     "m_Edges": [
         {
             "m_OutputSlot": {
@@ -498,6 +502,26 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StickyNoteData",
+    "m_ObjectId": "02bb9e097f8f4f89ad5b47aadfd077aa",
+    "m_Title": "Inspiration",
+    "m_Content": "Sunny Valley Studio - Outline effect in Unity in 60 sec using Shader Graph\nhttps://www.youtube.com/shorts/FyEiPibJuRU\n\nCG Smoothie - The BEST Outline Shader Graph Tutorial | Unity Tutorials\nhttps://www.youtube.com/watch?v=Bm6Bmcjd1Mw\n",
+    "m_TextSize": 0,
+    "m_Theme": 0,
+    "m_Position": {
+        "serializedVersion": "2",
+        "x": -886.0,
+        "y": -1142.0,
+        "width": 405.0,
+        "height": 108.0
+    },
+    "m_Group": {
+        "m_Id": ""
+    }
 }
 
 {
