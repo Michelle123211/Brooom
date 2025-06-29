@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-// Displays error when the spell identifies is empty
+// Displays error when the spell identifier is empty
 [CustomEditor(typeof(SpellEffectColorInitializer))]
 public class SpellEffectColorInitializerEditor : Editor {
 

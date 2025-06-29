@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 // TODO: Right now this attribute doesn't work properly for fields/properties which are arrays
-// Visibility of a decorate property in the Inspector is determined by value of another property (set in attribute's parameter)
+// Visibility of a decorated property in the Inspector is determined by value of another property (set in attribute's parameter)
 [CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
 public class ConditionalHidePropertyDrawer : PropertyDrawer {
 
