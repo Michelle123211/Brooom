@@ -27,9 +27,9 @@ public class StatSettingsUI : MonoBehaviour {
 	/// <param name="value">Initial value to be used.</param>
 	public void Initialize(string statName, int value) {
 		nameText.text = LocalizationManager.Instance.GetLocalizedString($"PlayerStat{statName}");
+		tooltip.text = $"PlayerStatTooltip{statName}";
 		slider.value = value;
 		GetComponentInChildren<SettingsSliderUI>().UpdateValueLabel(value);
-		tooltip.text = $"PlayerStatTooltip{statName}";
 	}
 
 }

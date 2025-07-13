@@ -33,7 +33,7 @@ public class BroomUpgradeSettingsUI : MonoBehaviour {
 	public void Initialize(BroomUpgrade broomUpgrade) {
 		this.assignedUpgrade = broomUpgrade;
 		// Upgrade UI
-		nameText.text = LocalizationManager.Instance.GetLocalizedString("BroomUpgrade" + broomUpgrade.UpgradeName);
+		nameText.text = LocalizationManager.Instance.GetLocalizedString("BroomUpgrade" + assignedUpgrade.UpgradeName);
 		tooltip.text = $"BroomUpgradeTooltip{assignedUpgrade.UpgradeName}";
 		slider.minValue = 0;
 		slider.maxValue = broomUpgrade.MaxLevel;
