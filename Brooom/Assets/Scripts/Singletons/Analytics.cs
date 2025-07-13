@@ -48,8 +48,9 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 	/// <param name="category">Category of the event to log.</param>
 	/// <param name="eventDescription">Event description.</param>
 	public void LogEvent(AnalyticsCategory category, string eventDescription) {
-		if (!analyticsEnabled) return;
+		if (!analyticsEnabled && category != AnalyticsCategory.Analytics) return; // Analytics category can be logged even when analytics are disabled
 		// Output into a file in the following format - "CurrentDatetime | CurrentScene | Category | EventDescription"
+		if (file == null) OpenOutputFile(); // the analytics may have been enabled during runtime, so make sure the file is opened
 		file.WriteLine($"{DateTime.Now.ToString(culture)} | {SceneLoader.Instance.CurrentScene} | {category} | {eventDescription}");
 	}
 
@@ -382,6 +383,16 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 
 	/// <inheritdoc/>
 	public void AwakeSingleton() {
+		if (analyticsEnabled) OpenOutputFile();
+	}
+
+	/// <inheritdoc/>
+	public void InitializeSingleton() {
+		// Nothing to do here because it uses eager initialization, so this method is called at the same time as AwakeSingleton()
+	}
+
+	// Creates an output file and opens it
+	private void OpenOutputFile() {
 		// Make sure the analytics output file exists
 		string eventsFolder = Path.Combine(Application.persistentDataPath, "Events");
 		if (!Directory.Exists(eventsFolder))
@@ -400,19 +411,9 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 		LogEvent(AnalyticsCategory.Analytics, "Analytics set up.");
 	}
 
-	/// <inheritdoc/>
-	public void InitializeSingleton() {
-		// Nothing to do here because it uses eager initialization, so this method is called at the same time as AwakeSingleton()
-	}
-
-	private void Start() {
-		RegisterForMessages();
-		RegisterGlobalCallbacks();
-	}
-
-	private void OnDestroy() {
-		UnregisterFromMessages();
-		UnregisterGlobalCallbacks();
+	// Flushes the content and closes the output file (if opened)
+	private void CloseOutputFile() {
+		if (file == null) return; // the file hasn't been opened
 
 		// Flush the content and close the file
 		LogEvent(AnalyticsCategory.Analytics, "Analytics shut down.");
@@ -431,6 +432,18 @@ public class Analytics : MonoBehaviourSingleton<Analytics>, ISingleton {
 			if (File.Exists(originalFilePath))
 				File.Copy(originalFilePath, newFilePath, true); // will overwrite an existing file
 		}
+	}
+
+	private void Start() {
+		RegisterForMessages();
+		RegisterGlobalCallbacks();
+	}
+
+	private void OnDestroy() {
+		UnregisterFromMessages();
+		UnregisterGlobalCallbacks();
+
+		CloseOutputFile();
 	}
 	#endregion
 }
