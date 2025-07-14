@@ -111,3 +111,8 @@
 - Game logo in Main Menu
 - Testing + debugging
 - Experiment preparation and distribution (testing spell icons' comprehensibility, general playtesting, measuring game satisfaction)
+
+**Milestone 12** - Optimizations and bugfixes (14th July 2025, [link](https://github.com/Michelle123211/Brooom/blob/main/Milestones/Milestone13.zip)):
+
+- Quick Race
+- Separate level generator
