@@ -116,3 +116,5 @@
 
 - Quick Race
 - Separate level generator
+- Experiments evaluation + integration of feedback
+- Finalization of demo version - game icon, polish, source code documentation
